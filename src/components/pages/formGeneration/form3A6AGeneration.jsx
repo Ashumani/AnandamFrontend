@@ -18,22 +18,22 @@ const form3A6AGeneration = () => {
                   <h5 className="card-title text-center">Generate 3A/6A</h5>
                   <form>
                     <div className="row">
-                      <div className="col mb-3">
+                      <div className="col-sm">
                         <label htmlFor="inputText">From</label>
                         <input type="date" className="form-control" />
                       </div>
-                      <div className="col mb-3">
+                      <div className="col-sm">
                         <label htmlFor="inputEmail">To</label>
                         <input type="date" className="form-control" />
                       </div>
-                      <div className="col mb-3">
+                      <div className="col-sm">
                         <label htmlFor="inputEmail">UAN</label>
                         <input type="number" className="form-control" />
                       </div>
-                      <div className="col-sm-3 mt-4">
-                        <button
+                      <div className="col-sm">
+                        <button style={{ "margin":"30px 10px 10px 10px"}}
                           type="submit"
-                          className="btn btn-outline-secondary"
+                          className="btn btn-outline-primary btn-block"
                         >
                           Get
                         </button>

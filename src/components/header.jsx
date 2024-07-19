@@ -1,8 +1,25 @@
 // import React from "react";
 // import { Link } from "react-router-dom";
 import { togglesidebar } from "../assets/js/custome.js";
+import profileImg from "../assets/img/3.jpg";
+import {useState} from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
+  const [selectedOption, setSelectedOption] = useState({ id: 1, label: 'All', path: '/auth/dashboard' }); // State to store selected option
+  // Handler function for selecting an option
+  const handleSelect = (option) => {
+    setSelectedOption(option);
+    // Additional logic based on selected option
+  };
+
+  // Array of options for the dropdown menu
+  const dropdownOptions = [
+    { id: 1, label: 'All', path: '/auth/dashboard' },
+    { id: 2, label: 'Option 2', path: ''  },
+    { id: 3, label: 'Option 3', path: ''  }
+  ];
+
   return (
     <div>
       <header
@@ -17,7 +34,7 @@ const Header = () => {
           <i className="bi bi-list toggle-sidebar-btn" onClick={togglesidebar}></i>
         </div>
 
-        <div className="search-bar">
+        {/* <div className="search-bar">
           <form
             className="search-form d-flex align-items-center"
             method="POST"
@@ -33,7 +50,36 @@ const Header = () => {
               <i className="bi bi-search"></i>
             </button>
           </form>
-        </div>
+        </div> */}
+
+        <div className="dropdown">
+      <button
+        className="btn btn-light dropdown-toggle text-dark"
+        type="button"
+        id="dropdownMenuButton"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        {selectedOption ? selectedOption.label : 'Select an option'}
+      </button>
+      <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        {/* Map over dropdownOptions to create dynamic menu items */}
+        {dropdownOptions.map((option) => (
+          <a
+            key={option.id}
+            className="dropdown-item"
+            onClick={() => handleSelect(option)}
+          >
+          <Link to={option.path}>
+            <p>
+              {option.label}
+            </p>
+          </Link>
+          </a>
+        ))}
+      </div>
+    </div>
 
         <nav className="header-nav ms-auto">
           <ul className="d-flex align-items-center">
@@ -222,12 +268,12 @@ const Header = () => {
                 data-bs-toggle="dropdown"
               >
                 <img
-                  src="assets/img/profile-img.jpg"
+                  src={profileImg}
                   alt="Profile"
                   className="rounded-circle"
                 />
                 <span className="d-none d-md-block dropdown-toggle ps-2">
-                  K. Anderson
+                  Manish Kirnapure
                 </span>
               </a>
 

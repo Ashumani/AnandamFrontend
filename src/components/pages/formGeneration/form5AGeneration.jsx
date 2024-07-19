@@ -19,25 +19,25 @@ const form5AGeneration = () => {
 
                   <form>
                     <div className="row">
-                      <div className="col mb-2">
+                      <div className="col-sm">
                         <label htmlFor="inputText">From</label>
                         <input type="date" className="form-control" />
                       </div>
-                      <div className="col mb-2">
+                      <div className="col-sm">
                         <label htmlFor="inputEmail">To</label>
                         <input type="date" className="form-control" />
                       </div>
-                      <div className="col mt-4 text-center">
+                      {/* <div className="col mt-4 text-center">
                         <legend>Or</legend>
-                      </div>
-                      <div className="col mb-3">
+                      </div> */}
+                      <div className="col-sm">
                         <label htmlFor="inputEmail">UAN</label>
                         <input type="number" className="form-control" />
                       </div>
-                      <div className="col mt-4">
-                        <button
+                      <div className="col-sm">
+                        <button style={{ "margin":"30px 10px 10px 0px"}}
                           type="submit"
-                          className="btn btn-outline-secondary"
+                          className="btn btn-outline-primary btn-block"
                         >
                           Get
                         </button>

@@ -72,28 +72,28 @@ const dashboard = () => {
         <div className='main-cards'>
           <div className='card cardprop1'>
             <div className='card-inner'>
-              <h3>PRODUCTS</h3>
+              <h3>Clients</h3>
               <BsFillArchiveFill className='card_icon' />
             </div>
             <h1>300</h1>
           </div>
           <div className='card cardprop2'>
             <div className='card-inner'>
-              <h3>CATEGORIES</h3>
+              <h3>EPF</h3>
               <BsFillGrid3X3GapFill className='card_icon' />
             </div>
-            <h1>12</h1>
+            <h1>12/150</h1>
           </div>
           <div className='card cardprop3'>
             <div className='card-inner'>
-              <h3>CUSTOMERS</h3>
+              <h3>ESIC</h3>
               <BsPeopleFill className='card_icon' />
             </div>
-            <h1>33</h1>
+            <h1>33/150</h1>
           </div>
           <div className='card cardprop4'>
             <div className='card-inner'>
-              <h3>ALERTS</h3>
+              <h3>DSC</h3>
               <BsFillBellFill className='card_icon' />
             </div>
             <h1>42</h1>

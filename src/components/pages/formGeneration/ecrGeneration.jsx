@@ -4,8 +4,8 @@ import Sidebar from "../../sidebar";
 const ecrGeneration = () => {
   return (
     <div>
-      <Header/>
-      <Sidebar/>
+      <Header />
+      <Sidebar />
       <div className="main-container">
         <div className='main-title'>
           <h3>GENERATE ECR</h3>
@@ -20,23 +20,35 @@ const ecrGeneration = () => {
                   </h5>
                   <form>
                     <div className="row">
-                      <div className="col mb-3">
-                        <label htmlFor="inputText">Month</label>
-                        <input type="text" className="form-control" />
-                      </div>
-                      <div className="col mb-3">
-                        <label htmlFor="inputEmail">Year</label>
-                        <input type="email" className="form-control" />
-                      </div>
-                      <div className="col-sm-3 mt-4">
-                        <button
-                          type="submit"
-                          className="btn btn-outline-secondary"
+                      <div className="col mb-4">
+                        <select
+                          className="form-select"
+                          aria-label="Default select example"
                         >
-                          Get
+                          <option value="M">Jan</option>
+                          <option value="U">Feb</option>
+                        </select>
+
+                      </div>
+                      <div className="col mb-4">
+                        <select
+                          className="form-select"
+                          aria-label="Default select example"
+                        >
+                          <option value="M">2023</option>
+                          <option value="U">2024</option>
+                        </select>
+
+                      </div>
+                      <div className="col-md-2">
+                        <button type="button" className="btn btn-primary btn-block" >
+                          Upload
                         </button>
                       </div>
                     </div>
+
+
+
                   </form>
                   <table className="table table-striped">
                     <thead>
