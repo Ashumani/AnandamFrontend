@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-
+import { getEstId } from './pages/Auth/authToken';
 // import "../components/pages/dashboard"
-
+import { useSidebar } from './SidebarContext'; // Import the context
 
 const Sidebar = () => {
 
+    const { showAll } = useSidebar();
     const [side_items] = useState(
         [{
             "mainItem": "Master",
@@ -68,7 +69,7 @@ const Sidebar = () => {
         }, {
             "mainItem": "Billing",
             "path": "",
-            "icon": "bi bi-bar-chart",
+            "icon": "bi bi-wallet-fill",
             "subItems": [
                 {
                     "item": "Create Bill",
@@ -77,12 +78,26 @@ const Sidebar = () => {
                 },
                 {
                     "item": "View Bill",
-                    "path": "/auth/dashboard/kyc",
+                    "path": "/auth/dashboard/bill/billView",
+                    "icon": "bi bi-circle"
+                }
+            ]
+        },
+        {
+            "mainItem": "Download",
+            "path": "",
+            "icon": "bi bi-download",
+            "subItems": [
+                {
+                    "item": "Download",
+                    "path": "/auth/dashboard/form/download",
                     "icon": "bi bi-circle"
                 }
             ]
         }]
     );
+    const [isShow] = useState(true);
+
 
     return (
         <>
@@ -94,7 +109,8 @@ const Sidebar = () => {
                             <span>Dashboard</span>
                         </a>
                     </li>
-                    {side_items.map((item, index) => (
+                    
+                    {showAll && side_items.map((item, index) => (
                         <li key={index} className="nav-item">
                             <a className="nav-link collapsed" data-bs-target={`#components-nav-${index}`} data-bs-toggle="collapse" href="#">
                                 <i className={item.icon}></i>

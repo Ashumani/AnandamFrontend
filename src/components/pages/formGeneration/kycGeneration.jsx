@@ -5,8 +5,7 @@ import Sidebar from "../../sidebar";
 const kycGeneration = () => {
   return (
     <div>
-      <Header />
-      <Sidebar />
+     
       <div className="main-container">
         <div className='main-title'>
           <h3>GENERATE KYC</h3>

@@ -105,7 +105,7 @@ const standalone = () => {
                     </div>
                     </div>
                     <a href="contact.html" className="nav-item nav-link">Contact</a>
-                    <a href="/auth/login" className="nav-item nav-link">Login</a>
+                    <a href="/login" className="nav-item nav-link">Login</a>
                 </div>
                 <div className="mt-4 mt-lg-0 me-lg-n4 py-3 px-4 bg-primary d-flex align-items-center">
                     <div className="d-flex flex-shrink-0 align-items-center justify-content-center bg-white" style={{ width: '45px', height: '45px' }}>

@@ -13,8 +13,7 @@ const summary = () => {
 
   return (
     <div>
-      <Header />
-      <Sidebar />
+   
       <div className="main-container">
         <div className='main-title'>
           <h3>Summary</h3>
@@ -22,8 +21,7 @@ const summary = () => {
         <section className="section">
           <br />
           <div className="row">
-            <div className="col-2 mb-2">
-              <div className="col">
+            <div className="col-sm">
                 <select
                   className="form-select"
                   aria-label="Default select example"
@@ -31,10 +29,9 @@ const summary = () => {
                   <option value="M">Jan</option>
                   <option value="U">Feb</option>
                 </select>
-              </div>
+             
             </div>
-            <div className="col-2 mb-2">
-              <div className="col">
+            <div className="col-sm">
                 <select
                   className="form-select"
                   aria-label="Default select example"
@@ -43,10 +40,9 @@ const summary = () => {
                   <option value="U">2024</option>
                 </select>
               </div>
-            </div>
-            <div className="col-md-2">
-              <button type="button" className="btn btn-primary" >
-                <Link to="http://localhost:5173/auth/dashboard/monthlypf"><span className="text-white">Go</span></Link>
+                        <div className="col-sm-2">
+              <button type="button" className="btn btn-outline-primary btn-block" >
+                <Link to="/auth/dashboard/monthlypf"><span >Next</span></Link>
               </button>
             </div>
           </div>
@@ -78,6 +74,16 @@ const summary = () => {
                 </tr>
               ))}
             </tbody>
+            <tfoot>
+              <tr>
+                <th id="total"  colSpan="2">Total :</th>
+                <td>200</td>
+                <td>200</td>
+                <td>200</td>
+                <td>200</td>
+                <td>200</td>
+              </tr>
+            </tfoot>
           </table>
         </section>
       </div>

@@ -1,6 +1,7 @@
 import { useState } from "react"
-import { loginData } from '../../api';
+import { loginData } from '../../api/services';
 import { useNavigate } from "react-router-dom";
+import {getAuthToken, setAuthToken } from "./authToken"
 
 const login = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -17,6 +18,11 @@ const login = () => {
     try {
       const userData = await loginData(email, password);
       navigate('/auth/dashboard')
+      console.log("token",userData.token);
+      setAuthToken(userData.token);
+      console.log("token",getAuthToken());
+      
+      
       console.log('Login successful', userData)
     } catch (error) {
       console.error('Login error ', error);
@@ -98,5 +104,6 @@ const login = () => {
     </div>
   );
 };
+
 
 export default login;

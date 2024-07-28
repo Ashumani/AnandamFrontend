@@ -4,8 +4,7 @@ import Sidebar from "../../sidebar";
 const ecrGeneration = () => {
   return (
     <div>
-      <Header />
-      <Sidebar />
+     
       <div className="main-container">
         <div className='main-title'>
           <h3>GENERATE ECR</h3>
@@ -42,7 +41,7 @@ const ecrGeneration = () => {
                       </div>
                       <div className="col-md-2">
                         <button type="button" className="btn btn-primary btn-block" >
-                          Upload
+                          Next
                         </button>
                       </div>
                     </div>

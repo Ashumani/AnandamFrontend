@@ -61,8 +61,8 @@ const dashboard = () => {
 
   return (
     <div>
-      <Header/>
-      <Sidebar/>
+     
+      
 
       <main className='main-container'>
         <div className='main-title'>

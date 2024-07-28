@@ -2,23 +2,69 @@
 // import { Link } from "react-router-dom";
 import { togglesidebar } from "../assets/js/custome.js";
 import profileImg from "../assets/img/3.jpg";
-import {useState} from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react"
+// import { Link } from "react-router-dom";
+import { fetchAllEmployer } from "./api/services.js";
+import { setEstId, getEstId, deleteEstId, getErId } from "./pages/Auth/authToken.js";
+import Sidebar from "./sidebar.jsx";
+import { useSidebar } from './SidebarContext';
 
 const Header = () => {
-  const [selectedOption, setSelectedOption] = useState({ id: 1, label: 'All', path: '/auth/dashboard' }); // State to store selected option
-  // Handler function for selecting an option
-  const handleSelect = (option) => {
-    setSelectedOption(option);
-    // Additional logic based on selected option
+
+  const { setShowAll } = useSidebar();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedId, setSelectedId] = useState('');
+  const [selectedKey, setSelectedKey]= useState('');
+  const [items, setItems] = useState([]);
+  // const [reload, setReload] = useState(true);
+  useEffect(() => {
+    const fetchData = async () => {
+
+      try {
+        // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+        const response = await fetchAllEmployer();
+        setItems(response.data)
+        setLoading(false);
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setError('Error fetching data. Please try again.');
+        setLoading(false);
+
+      }
+    };
+    if (getEstId() != "All" && getEstId() != null) {
+      handleChange({"target":{"value":getEstId()}})
+      
+    }else{
+      setShowAll(false);
+    }
+
+    fetchData();
+
+  }, []);
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setSelectedId(value);
+    if (value === "All") {
+      deleteEstId();
+      setSelectedKey(null)
+      setShowAll(false);
+    } else {
+      const selectedItem = items.find(item => item.est_epf_id === value);
+      if (selectedItem) {
+        setSelectedKey(selectedItem.est_name);// Update selectedKey with item's key
+        // setSelectedKey(selectedItem.est_name); 
+        setEstId(value, selectedItem.id);
+      
+      }
+      
+      setShowAll(true);
+    }
   };
 
-  // Array of options for the dropdown menu
-  const dropdownOptions = [
-    { id: 1, label: 'All', path: '/auth/dashboard' },
-    { id: 2, label: 'Option 2', path: ''  },
-    { id: 3, label: 'Option 3', path: ''  }
-  ];
 
   return (
     <div>
@@ -33,53 +79,19 @@ const Header = () => {
           </a>
           <i className="bi bi-list toggle-sidebar-btn" onClick={togglesidebar}></i>
         </div>
-
-        {/* <div className="search-bar">
-          <form
-            className="search-form d-flex align-items-center"
-            method="POST"
-            action="#"
-          >
-            <input
-              type="text"
-              name="query"
-              placeholder="Search"
-              title="Enter search keyword"
-            />
-            <button type="submit" title="Search">
-              <i className="bi bi-search"></i>
-            </button>
-          </form>
-        </div> */}
-
         <div className="dropdown">
-      <button
-        className="btn btn-light dropdown-toggle text-dark"
-        type="button"
-        id="dropdownMenuButton"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-        {selectedOption ? selectedOption.label : 'Select an option'}
-      </button>
-      <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        {/* Map over dropdownOptions to create dynamic menu items */}
-        {dropdownOptions.map((option) => (
-          <a
-            key={option.id}
-            className="dropdown-item"
-            onClick={() => handleSelect(option)}
-          >
-          <Link to={option.path}>
-            <p>
-              {option.label}
-            </p>
-          </Link>
-          </a>
-        ))}
-      </div>
-    </div>
+
+          <select className="btn btn-sm btn-light dropdown-toggle dropdown-toggle-split ml-4 " onChange={handleChange} id={selectedKey} value={selectedId}>
+            <option value="All">All</option>
+            {items.map((item) => (
+              <option key={item.id} value={item.est_epf_id}>
+                {item.est_epf_id}
+              </option>
+            ))}
+          </select>
+          {/* {selectedId && <p>Selected ID: {selectedId} Selected Key: {selectedKey}</p>} */}
+          {selectedKey && <p> Company Name : {selectedKey}</p>}
+        </div>
 
         <nav className="header-nav ms-auto">
           <ul className="d-flex align-items-center">
@@ -279,7 +291,7 @@ const Header = () => {
 
               <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                 <li className="dropdown-header">
-                  <h6>Kevin Anderson</h6>
+                  <h6>Manish Kirnapure</h6>
                   <span>Web Designer</span>
                 </li>
                 <li>
