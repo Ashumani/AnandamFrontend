@@ -13,6 +13,7 @@ import billing from './components/pages/biller/biller'
 import billingMaster from './components/pages/biller/billMaster'
 import standalone from "./components/pages/standaloneHome/standalone"
 import download from "./components/pages/download/download"
+import testing from "./components/pages/testing/testing"
 
 const AllRoutes = () => {
   return (
@@ -31,6 +32,7 @@ const AllRoutes = () => {
         <Route exact path='/auth/dashboard/bill/create' Component={billing}/>
         <Route exact path='/auth/dashboard/bill/billView' Component={billingMaster}/>
         <Route exact path='/auth/dashboard/form/download' Component={download}/>
+        <Route exact path='/auth/dashboard/testing' Component={testing}/>
     </Routes>
   )
 }

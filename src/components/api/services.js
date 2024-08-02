@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { getAuthToken } from '../pages/Auth/authToken';
 
+
 const BASE_URL = 'http://localhost:4001';
 const authToken = getAuthToken()
 const header = {
@@ -25,6 +26,15 @@ export const loginData = async (username,password) => {
 export const erRegister = async (params) => {
     try {
         const response = await axios.post(`${BASE_URL}/employer/register`,params,{ headers:header });
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const getEmployer = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/employer/getEmployer`,params,{ headers:header });
         return response.data;
     } catch (error) {
         throw error.response.data.error;
@@ -60,7 +70,7 @@ export const fetchAllEmployer = async () => {
 
 //Empllyee API
 
-export const getEERegister = async (params) => {
+export const saveEERegister = async (params) => {
     try {
         const response = await axios.post(`${BASE_URL}/employee/eeRegister`,params,{ headers: header});
         return response.data;
@@ -100,6 +110,43 @@ export const getEmployee = async (id) => {
 export const getEmployeeByUANandEPFid = async (params) => {
     try {
         const response = await axios.post(`${BASE_URL}/employee/getEmployeeByUANandEPFid`,params,{ headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+
+   
+}
+
+
+//monthly
+export const getEpfReturnByMonth = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/monthly/getEpfReturnByMonth`,params,{ headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+
+export const fillEpfReturn = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/monthly/fillEpfReturn`,params,{ headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const uploadEmployee = async (id, formdata) => {
+    try {
+        const uplaodHeader = {
+            Authorization: `Bearer ${authToken}`,
+            'Content-Type': 'multipart/form-data'
+          }
+       
+        const response = await axios.post(`${BASE_URL}/upload/employee/`+id,formdata,{ headers: uplaodHeader});
         return response.data;
     } catch (error) {
         throw error.response.data.error;

@@ -1,13 +1,22 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { useState, useEffect } from "react"
-import { getEstId } from "../Auth/authToken";
-import { getAllEmployee, getEERegister, getEmployee, updateEmployeer } from "../../api/services";
+import { getEstId, getErId } from "../Auth/authToken";
+import { getAllEmployee, saveEERegister, getEmployee, updateEmployeer, uploadEmployee } from "../../api/services";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
+import Swal from 'sweetalert2';
+import moment from 'moment-timezone';
+
 const employee = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
+  const itemsPerPage = 5; // Number of items per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, set_totalPages] = useState(1);
 
+  // Get current items based on the current page
+  const [startIndex, set_startIndex] = useState('');
+  const [currentItems, set_currentItems] = useState([]);
 
   const [ee_id, set_ee_id] = useState('');
   const [est_id, set_est_id] = useState('');
@@ -22,8 +31,8 @@ const employee = () => {
   const [ee_dol, set_ee_dol] = useState('');
   const [ee_gender, set_ee_gender] = useState('Male');
   const [ee_maritial_status, set_ee_maritial_status] = useState('U');
-  const [ee_father_husband, set_ee_father_husband] = useState('F');
-  const [ee_relation, set_ee_relation] = useState('');
+  const [ee_father_husband, set_ee_father_husband] = useState('');
+  const [ee_relation, set_ee_relation] = useState('F');
   const [ee_gross_wages, set_ee_gross_wages] = useState('');
   const [ee_epf_wages, set_ee_epf_wages] = useState('');
   const [ee_sub_id, set_ee_sub_id] = useState('');
@@ -45,6 +54,12 @@ const employee = () => {
         const response = await getAllEmployee(params);
         if (response.status == true) {
           setEmployeeData(response.data);
+          set_totalPages(Math.ceil(response.data.length / itemsPerPage));
+
+          // Get current items based on the current page
+          set_startIndex((currentPage - 1) * itemsPerPage);
+          set_currentItems(response.data.slice(startIndex, startIndex + itemsPerPage));
+
         }
 
 
@@ -58,11 +73,12 @@ const employee = () => {
     fetchData();
   }, []);
 
+
   const saveEEDetails = async () => {
     // api call
     try {
       const params = {
-        "est_id": est_id,
+        "est_id": getErId(),
         "ee_name": ee_name,
         "ee_mobile_number": ee_mobile_number,
         "ee_email_id": ee_email_id,
@@ -82,7 +98,7 @@ const employee = () => {
       }
 
 
-      await getEERegister(params);
+      await saveEERegister(params);
       // eslint-disable-next-line react-hooks/exhaustive-deps
       reset();
 
@@ -124,6 +140,7 @@ const employee = () => {
     }
   };
 
+
   const UpdateEmployee = async () => {
     // api call
     try {
@@ -159,7 +176,63 @@ const employee = () => {
     }
   };
 
+  const [file, setFile] = useState(null);
 
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+  const uplaodEmployee = async () => {
+    if (!file) {
+      alert('Please choose a file first.');
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const id = getErId()
+
+      // console.log('======', params)
+
+      const data = await uploadEmployee(id, formData);
+      if (data.status === true) {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'success',
+          toast: true,
+          title: data.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+
+
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: data.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      useEffect();
+      reset();
+
+    } catch (error) {
+      console.error('Login error ', error);
+      setError(error);
+    }
+  }
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  
+  };
   const handleMaritalStatusChange = (e) => {
     set_ee_maritial_status(e.target.value);
   };
@@ -181,12 +254,12 @@ const employee = () => {
     set_ee_dol('');
     set_ee_gender('Male')
     set_ee_maritial_status('U')
-    set_ee_father_husband('');
+    set_ee_father_husband('F');
     set_ee_relation('');
     set_ee_gross_wages('');
     set_ee_epf_wages('');
     set_ee_sub_id('');
-    
+
   }
   const closeModal = () => {
     const modalElement = document.getElementById('exampleModal');
@@ -206,16 +279,16 @@ const employee = () => {
         <section className="section">
           <br />
           <div className="row">
-            <div className="col-md-2">
+            <div className="col-sm-2">
               <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                 Add Employee
               </button>
             </div>
-            <div className="col-md-4">
-              <input className="form-control" type="file" id="formFile" />
+            <div className="col-sm-4">
+              <input className="form-control" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
             </div>
-            <div className="col-md-2">
-              <button type="button" className="btn btn-primary" >
+            <div className="col-sm-2">
+              <button type="button" className="btn btn-primary" onClick={uplaodEmployee}>
                 Upload
               </button>
             </div>
@@ -292,7 +365,7 @@ const employee = () => {
                             <label>Relation</label>
                             <select
                               className="form-select"
-                              aria-label="Default select example" value={ee_maritial_status} onChange={handleRelationChange}
+                              aria-label="Default select example" value={ee_relation} onChange={handleRelationChange}
                             >
                               <option value="F">Father</option>
                               <option value="S">Spouse</option>
@@ -320,8 +393,12 @@ const employee = () => {
                         </div>
                         <div className="row">
                           <div className="col mb-2">
+                            <label htmlFor="inputNumber">Aadhar No</label>
+                            <input type="text" className="form-control" required onChange={(e) => set_ee_aadhar_no(e.target.value)} value={ee_aadhar_no} />
+                          </div>
+                          <div className="col mb-2">
                             <label htmlFor="inputNumber">Date Of Exit</label>
-                            <input type="date" className="form-control" required onChange={(e) => set_ee_dob(e.target.value)} value={ee_dob} />
+                            <input type="date" className="form-control" required onChange={(e) => set_ee_dol(e.target.value)} value={ee_dol} />
                           </div>
 
                           <div className="col-sm">
@@ -343,7 +420,7 @@ const employee = () => {
                       Save
                     </button>
                   ) : (
-                    <button type="submit" className="btn btn-outline-primary"  onClick={UpdateEmployee}>
+                    <button type="submit" className="btn btn-outline-primary" onClick={UpdateEmployee}>
                       Update
                     </button>
                   )}
@@ -352,37 +429,37 @@ const employee = () => {
               </div>
             </div>
           </div>
-          <br />
-          <br />
-          <table className="table table-striped">
+         
+          <div className="table-responsive">
+          <table className="table table-striped table-hover text-center">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">UAN</th>
-                <th scope="col">PFNO</th>
-                <th scope="col">Aadhar</th>
-                <th scope="col">Name</th>
-                <th scope="col">DOB</th>
-                <th scope="col">DOJ</th>
-                <th scope="col">Gender</th>
-                <th scope="col">MaritialStatus</th>
-                <th scope="col">Father/Husband</th>
-                <th scope="col">Relation</th>
-                <th scope="col">EPF Waages</th>
-                <th scope="col">Eps Wages</th>
-                <th scope="col">Action</th>
+                <th>#</th>
+                <th>UAN</th>
+                <th>PFNO</th>
+                <th>Aadhar</th>
+                <th>Name</th>
+                <th>DOB</th>
+                <th>DOJ</th>
+                <th>Gender</th>
+                <th>MaritialStatus</th>
+                <th>Father/Husband</th>
+                <th>Relation</th>
+                <th>EPF Wages</th>
+                <th>Eps Wages</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {employeeData.map((employee, index) => (
+              {currentItems.map((employee, index) => (
                 <tr key={index}>
                   <th scope="row">{employee.id}</th>
                   <td>{employee.ee_uan_no}</td>
                   <td>{employee.ee_pf_no}</td>
-                  <td>{employee.ee_aadhar_no}</td>
-                  <td>{employee.ee_name}</td>
-                  <td>{employee.ee_dob}</td>
-                  <td>{employee.ee_doj}</td>
+                  <td>******</td>
+                  <td >{employee.ee_name}</td>
+                  <td >{moment(employee.ee_dob).format('YYYY-MM-DD')}</td>
+                  <td>{moment(employee.ee_doj).format('YYYY-MM-DD')}</td>
                   <td>{employee.ee_gender}</td>
                   <td>{employee.ee_maritial_status}</td>
                   <td>{employee.ee_father_husband}</td>
@@ -391,10 +468,10 @@ const employee = () => {
                   <td>{employee.ee_epf_wages}</td>
                   <td>
                     <div className="d-flex align-items-center">
-                      <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={()=>{fetchEmployee(employee.id)}}>
+                      <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchEmployee(employee.id) }}>
                         <i className="bi bi-eye text-info"></i>
                       </button>
-                      <button className="btn btn-light mx-1" data-toggle="modal" data-target="#exampleModal" onClick={()=>{fetchEmployee(employee.id)}}>
+                      <button className="btn btn-light mx-1" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchEmployee(employee.id) }}>
                         <i className="bi bi-pencil-fill text-info"></i>
                       </button>
                       <button className="btn btn-light" disabled>
@@ -406,6 +483,32 @@ const employee = () => {
               ))}
             </tbody>
           </table>
+          </div>
+         
+          {/* Pagination Controls */}
+          <div className="pagination">
+            <button className="btn btn-primary"
+              disabled={currentPage === 1}
+              onClick={() => handlePageChange(currentPage - 1)}
+            >
+              Previous
+            </button>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index}
+                onClick={() => handlePageChange(index + 1)}
+                style={{ margin: '0 2px', backgroundColor: currentPage === index + 1 ? '#1e60aa' : 'white', border: '0px' }}
+              >
+                {index + 1}
+              </button>
+            ))}
+            <button className="btn btn-primary"
+              disabled={currentPage === totalPages}
+              onClick={() => handlePageChange(currentPage + 1)}
+            >
+              Next
+            </button>
+          </div>
         </section>
       </div>
     </div>

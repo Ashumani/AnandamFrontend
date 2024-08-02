@@ -1,7 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import Header from "../../header";
-import Sidebar from "../../sidebar";
 import { erRegister, erUpdate, getErRegister } from '../../api/services';
 import { useState, useEffect } from "react"
 import { getEstId } from "../Auth/authToken";
@@ -50,8 +48,8 @@ const employer = () => {
         "er_email_id": Email,
         "est_address": Address,
         "ee_epf_rate": EpfRate,
-        "eps_rate": EpsRate,
-        "er_eps_rate": ErRate,
+        "ee_eps_rate": EpsRate,
+        "er_diff_rate": ErRate,
         "acc1_rate": Acc1,
         "acc2_rate": Acc2,
         "acc10_rate": Acc10,
@@ -83,8 +81,8 @@ const employer = () => {
         "er_email_id": Email,
         "est_address": Address,
         "ee_epf_rate": EpfRate,
-        "eps_rate": EpsRate,
-        "er_eps_rate": ErRate,
+        "ee_eps_rate": EpsRate,
+        "er_diff_rate": ErRate,
         "acc1_rate": Acc1,
         "acc2_rate": Acc2,
         "acc10_rate": Acc10,
@@ -92,7 +90,6 @@ const employer = () => {
         "acc22_rate": Acc22
       }
 
-      console.log("No Pra",params)
        await erUpdate(ErId,params);
 
     } catch (error) {
@@ -121,8 +118,8 @@ const employer = () => {
         setMobile(response.data.er_mobile_number)
         setAddress(response.data.est_address)
         setEpfRate(response.data.ee_epf_rate)
-        setEpsRate(response.data.eps_rate)
-        setErRate(response.data.er_eps_rate)
+        setEpsRate(response.data.er_eps_rate)
+        setErRate(response.data.er_diff_rate)
         setAcc1(response.data.acc1_rate)
         setAcc2(response.data.acc2_rate)
         setAcc10(response.data.acc10_rate)
