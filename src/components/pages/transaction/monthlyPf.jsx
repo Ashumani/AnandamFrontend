@@ -3,6 +3,7 @@ import { getErId, getEstId } from "../Auth/authToken";
 import {  getEmployeeByUANandEPFid } from "../../api/services";
 
 import "./style.css"
+import Swal from 'sweetalert2';
 
 
 const monthlyPf = () => {
@@ -107,6 +108,7 @@ const monthlyPf = () => {
       // setError(error);
     }
   };
+
 
   const reset = async () => {
     set_ee_id('');

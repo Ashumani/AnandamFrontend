@@ -1,7 +1,8 @@
 
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
-import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn } from "../../api/services";
+import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn } from "../../api/services";
+import Swal from 'sweetalert2';
 
 
 const summary = () => {
@@ -11,6 +12,14 @@ const summary = () => {
     { id: 2, firstName: 'Jacob', lastName: 'Thornton', handle: '@fat' },
     { id: 3, firstName: 'Larry', lastName: 'the Bird', handle: '@twitter' },
   ];
+
+  const returnsYear = {
+    "month": [{ "monthNum": 1, "monthText": "Jan" }, { "monthNum": 2, "monthText": "Feb" }, { "monthNum": 3, "monthText": "Mar" }, { "monthNum": 4, "monthText": "Apr" }, { "monthNum": 5, "monthText": "May" }, { "monthNum": 6, "monthText": "Jun" }, { "monthNum": 7, "monthText": "Jul" }, { "monthNum": 8, "monthText": "Aug" }, { "monthNum": 9, "monthText": "Sep" }, { "monthNum": 10, "monthText": "Oct" }, { "monthNum": 11, "monthText": "Nov" }, { "monthNum": 12, "monthText": "Dec" }],
+    "Year": [2020, 2021, 2022, 2023, 2024]
+  }
+
+  const [selectedMonth, setSelectedMonth] = useState(1);
+  const [selectedYear, setSelectedYear] = useState(2024);
 
   const itemsPerPage = 5; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
@@ -192,8 +201,8 @@ const summary = () => {
       const params = {
         "est_id": getErId(),
         "ee_id": 0,
-        "month": 1,
-        "year": 2024
+        "month": selectedMonth,
+        "year": selectedYear
       }
       const userData = await getEpfReturnByMonth(params);
       setEmployeeData(userData.data)
@@ -211,11 +220,73 @@ const summary = () => {
     }
   };
 
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+  const uploadMonthly = async () => {
+    if (!file) {
+      alert('Please choose a file first.');
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const id = getErId()
+
+      // console.log('======', params)
+
+      const data = await uploadMonthlyReturn(id, formData);
+      if (data.status === true) {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'success',
+          toast: true,
+          title: data.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+
+        getAll();
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: data.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+
+      reset();
+
+    } catch (error) {
+      console.error('Login error ', error);
+      // setError(error);
+    }
+  }
 
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     getReturnByMonth();
+  };
+
+
+
+  const handleYearChange = (e) => {
+    setSelectedYear(e.target.value);
+  };
+
+  const handleMonthChange = (e) => {
+    setSelectedMonth(e.target.value);
   };
 
   return (
@@ -232,20 +303,24 @@ const summary = () => {
               <div className="col-sm">
                 <select
                   className="form-select"
-                  aria-label="Default select example"
+                  aria-label="Default select example" value={selectedMonth} onChange={handleMonthChange}
                 >
-                  <option value="M">Jan</option>
-                  <option value="U">Feb</option>
+                  {returnsYear.month.map((returnYear) => (
+                    // eslint-disable-next-line react/jsx-key
+                    <option value={returnYear.monthNum}>{returnYear.monthText}</option>
+                  ))}
                 </select>
 
               </div>
               <div className="col-sm">
                 <select
                   className="form-select"
-                  aria-label="Default select example"
+                  aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
                 >
-                  <option value="M">2023</option>
-                  <option value="U">2024</option>
+                  {returnsYear.Year.map((retYear) => (
+                    // eslint-disable-next-line react/jsx-key
+                    <option value={retYear}>{retYear}</option>
+                  ))}
                 </select>
               </div>
               <div className="col-sm-2">
@@ -479,12 +554,12 @@ const summary = () => {
                       </button>
                     </div>
                     <div className="modal-body">
-                    
-                        {respStatus === 'true' ? (
-                          <h5 style={{ color: 'green', marginRight: '10px', fontSize: '24px' }}>Data Save Successfully</h5>
-                        ) : (
-                          <h5 style={{ color: 'red', marginRight: '10px', fontSize: '24px' }}>Data Save Successfully</h5>
-                        )}
+
+                      {respStatus === 'true' ? (
+                        <h5 style={{ color: 'green', marginRight: '10px', fontSize: '24px' }}>Data Save Successfully</h5>
+                      ) : (
+                        <h5 style={{ color: 'red', marginRight: '10px', fontSize: '24px' }}>Data Save Successfully</h5>
+                      )}
                     </div>
                     <div className="modal-footer">
                       <button type="button" className="btn btn-primary" onClick={handleSuccessClose}>OK</button>
@@ -498,17 +573,19 @@ const summary = () => {
               <div className="modal-dialog" role="document">
                 <div className="modal-content">
                   <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 className="modal-title" id="exampleModalLabel">Uplaod FIles</h5>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                   <div className="modal-body">
-                    ...
+                    <div className="col-md-4">
+                      <input className="form-control" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
+                    </div>
                   </div>
                   <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" className="btn btn-primary">Save changes</button>
+                    <button type="button" className="btn btn-primary" onClick={uploadMonthly}>Upload</button>
                   </div>
                 </div>
               </div>

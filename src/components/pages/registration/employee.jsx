@@ -37,7 +37,7 @@ const employee = () => {
   const [ee_epf_wages, set_ee_epf_wages] = useState('');
   const [ee_sub_id, set_ee_sub_id] = useState('');
 
-  const [employeeData, setEmployeeData] = useState([]);
+  // const [employeeData, setEmployeeData] = useState([]);
   const [isUpdate, setIsUpdate] = useState(false);
 
 
@@ -46,33 +46,42 @@ const employee = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const params = {
-        "est_epf_id": getEstId()
-      }
-      try {
-        // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-        const response = await getAllEmployee(params);
-        if (response.status == true) {
-          setEmployeeData(response.data);
-          set_totalPages(Math.ceil(response.data.length / itemsPerPage));
-
-          // Get current items based on the current page
-          set_startIndex((currentPage - 1) * itemsPerPage);
-          set_currentItems(response.data.slice(startIndex, startIndex + itemsPerPage));
-
-        }
-
-
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setError('Error fetching data. Please try again.');
-        setLoading(false);
-      }
+     getAll();
     };
 
     fetchData();
+    
   }, []);
 
+  const getAll = async () => {
+    // api call
+    const params = {
+      "est_epf_id": getEstId(),
+      "limit":itemsPerPage,
+      "offset":currentPage
+    }
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await getAllEmployee(params);
+      if (response.status == true) {
+        // setEmployeeData(response.data);
+        
+        // set_totalPages(Math.ceil(response.data.length / itemsPerPage));
+        
+        // // Get current items based on the current page
+        // set_startIndex((currentPage - 1) * itemsPerPage);
+        set_totalPages(Math.ceil(response.count / itemsPerPage));
+        set_currentItems(response.data);
+       
+      }
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Error fetching data. Please try again.');
+      setLoading(false);
+    }
+  };
 
   const saveEEDetails = async () => {
     // api call
@@ -99,6 +108,7 @@ const employee = () => {
 
 
       await saveEERegister(params);
+      getAll();
       // eslint-disable-next-line react-hooks/exhaustive-deps
       reset();
 
@@ -163,11 +173,10 @@ const employee = () => {
         "ee_epf_wages": ee_epf_wages,
         "ee_sub_id": ee_sub_id,
       }
-      console.log('======', params)
-
+     
       await updateEmployeer(params);
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      useEffect();
+      getAll();
       reset();
 
     } catch (error) {
@@ -207,7 +216,7 @@ const employee = () => {
           timer: 1500,
         });
 
-
+        getAll();
       } else {
         Swal.fire({
           position: 'top-right',
@@ -220,7 +229,7 @@ const employee = () => {
         });
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      useEffect();
+      
       reset();
 
     } catch (error) {
@@ -231,6 +240,7 @@ const employee = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+    getAll();
   
   };
   const handleMaritalStatusChange = (e) => {
@@ -452,8 +462,8 @@ const employee = () => {
             </thead>
             <tbody>
               {currentItems.map((employee, index) => (
-                <tr key={index}>
-                  <th scope="row">{employee.id}</th>
+                <tr key={employee.id}>
+                  <th >{index+1}</th>
                   <td>{employee.ee_uan_no}</td>
                   <td>{employee.ee_pf_no}</td>
                   <td>******</td>

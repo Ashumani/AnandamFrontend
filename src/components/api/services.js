@@ -152,3 +152,17 @@ export const uploadEmployee = async (id, formdata) => {
         throw error.response.data.error;
     }
 }
+
+export const uploadMonthlyReturn = async (id, formdata) => {
+    try {
+        const uplaodHeader = {
+            Authorization: `Bearer ${authToken}`,
+            'Content-Type': 'multipart/form-data'
+          }
+       
+        const response = await axios.post(`${BASE_URL}/upload/monthly/`+id,formdata,{ headers: uplaodHeader});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
