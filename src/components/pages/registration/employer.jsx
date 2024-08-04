@@ -158,21 +158,21 @@ const employer = () => {
                   Employer Registration
                 </h5>
 
-                <div className="form-row">
-                  <div className="form-group col-md-3 ">
+                <div className="row">
+                  <div className="form-group col-sm ">
                     <label htmlFor="inputText">EPF No</label>
                     <input type="text" className="form-control" required onChange={(e) => setEstEpfId(e.target.value)} value={EstEpfId} />
                   </div>
-                  <div className="form-group col-md-3">
+                  <div className="form-group col-sm">
                     <label htmlFor="inputEmail">ESIC No</label>
                     <input type="text" className="form-control" required onChange={(e) => setEstEsicId(e.target.value)} value={EstEsicId} />
                   </div>
 
-                  <div className="form-group col-md-3">
+                  <div className="form-group col-sm">
                     <label htmlFor="inputEmail">Establishment Type</label>
                     <input type="text" className="form-control" required onChange={(e) => setEstType(e.target.value)} value={EstType} />
                   </div>
-                  <div className="form-group col-md-3">
+                  <div className="form-group col-sm">
                     <label htmlFor="inputText">Date of Coverage</label>
                     <input type="date" className="form-control" required onChange={(e) => setDoc(e.target.value)} value={estDoc} />
                   </div>

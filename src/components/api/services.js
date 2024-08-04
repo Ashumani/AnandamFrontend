@@ -166,3 +166,12 @@ export const uploadMonthlyReturn = async (id, formdata) => {
         throw error.response.data.error;
     }
 }
+
+export const getSummary = async (id) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/monthly/getSummary/`+id,{ headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}

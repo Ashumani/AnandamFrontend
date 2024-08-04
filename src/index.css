@@ -96,19 +96,4 @@ html{
 } */
 
 
-.table-responsive {
-    margin: 20px;
-}
-
-.table th, .table td {
-    vertical-align: middle; /* Aligns content vertically in table cells */
-}
-
-.btn {
-    padding: 0.3rem 1rem; /* Adjust button padding */
-}
-
-.bi {
-    font-size: 1.0rem; /* Adjust icon size */
-}
 

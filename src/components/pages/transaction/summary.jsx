@@ -1,17 +1,12 @@
 
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
-import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn } from "../../api/services";
+import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary } from "../../api/services";
 import Swal from 'sweetalert2';
 
 
 const summary = () => {
 
-  const summaryData = [
-    { id: 1, firstName: 'Mark', lastName: 'Otto', handle: '@mdo' },
-    { id: 2, firstName: 'Jacob', lastName: 'Thornton', handle: '@fat' },
-    { id: 3, firstName: 'Larry', lastName: 'the Bird', handle: '@twitter' },
-  ];
 
   const returnsYear = {
     "month": [{ "monthNum": 1, "monthText": "Jan" }, { "monthNum": 2, "monthText": "Feb" }, { "monthNum": 3, "monthText": "Mar" }, { "monthNum": 4, "monthText": "Apr" }, { "monthNum": 5, "monthText": "May" }, { "monthNum": 6, "monthText": "Jun" }, { "monthNum": 7, "monthText": "Jul" }, { "monthNum": 8, "monthText": "Aug" }, { "monthNum": 9, "monthText": "Sep" }, { "monthNum": 10, "monthText": "Oct" }, { "monthNum": 11, "monthText": "Nov" }, { "monthNum": 12, "monthText": "Dec" }],
@@ -64,10 +59,48 @@ const summary = () => {
   const [er_epf, set_er_epf] = useState('');
   const [er_eps, set_er_eps] = useState('');
 
+  const [total_acc1, set_total_acc1] = useState('');
+  const [total_acc2, set_total_acc2] = useState('');
+  const [total_acc10, set_total_acc10] = useState('');
+  const [total_acc21, set_total_acc21] = useState('');
+  const [total_acc22, set_total_acc22] = useState('');
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      getAllSummary();
+    };
+
+    fetchData();
+
+  }, []);
+
+  const getAllSummary = async () => {
+    // api call
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await getSummary(getErId());
+      if (response.status == true) {
+        set_totalPages(Math.ceil(response.count / itemsPerPage));
+        set_currentItems(response.data);
+        set_total_acc1(response.total.total_acc1);
+        set_total_acc2(response.total.total_acc2);
+        set_total_acc10(response.total.total_acc10);
+        set_total_acc21(response.total.total_acc21);
+        set_total_acc22(response.total.total_acc22);
+
+      }
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+
+    }
+  };
   const fetchEmployee = async () => {
     // api call
     try {
+      reset1();
       const params = {
         "est_id": getErId(),
         "ee_uan_no": search_uan,
@@ -106,8 +139,8 @@ const summary = () => {
         "ee_uan": ee_uan_no,
         "est_epf_id": getEstId(),
         "er_name": ee_name,
-        "month": 1,
-        "year": 2024,
+        "month": selectedMonth,
+        "year": selectedYear,
         "gross_wages": cal_gross_wages,
         "epf_wages": cal_epf_wages,
         "edli_wages": ee_edli_wages,
@@ -118,14 +151,31 @@ const summary = () => {
         "ncp_days": 0
       }
       const userData = await fillEpfReturn(params);
-      if (userData.status === false) {
-        setModelMessage(userData.message)
-        setTimeout(() => {
-          setShowSuccessPopup(true);
-        }, 300);
+  
+      if (userData.status === true) {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'success',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+        getReturnByMonth()
 
         handleClose();
 
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
       }
 
       // Show success popup
@@ -149,9 +199,9 @@ const summary = () => {
 
       set_ee_eps_wages(epf_wages < 15000 ? epf_wages : 15000)
       set_ee_edli_wages(epf_wages < 15000 ? epf_wages : 15000)
-      set_ee_epf(epf_wages * userData.data.ee_epf_rate / 100)
-      set_er_epf(epf_wages * userData.data.er_diff_rate / 100)
-      set_er_eps(epf_wages * userData.data.er_eps_rate / 100)
+      set_ee_epf(Math.round(epf_wages * userData.data.ee_epf_rate / 100))
+      set_er_epf(Math.floor(epf_wages * userData.data.er_diff_rate / 100))
+      set_er_eps(Math.round(epf_wages * userData.data.er_eps_rate / 100))
 
     } catch (error) {
       console.error('Login error ', error);
@@ -160,6 +210,12 @@ const summary = () => {
   };
 
   const reset = async () => {
+    set_search_pf('')
+    set_search_uan('')
+    reset1();
+
+  }
+  const reset1 = async () => {
     set_ee_id('');
     set_ee_name('');
     set_ee_uan_no('');
@@ -174,20 +230,23 @@ const summary = () => {
     set_ee_gross_wages('');
     set_ee_epf_wages('');
     set_ee_sub_id('');
-    set_cal_gross_wages();
-    set_cal_epf_wages();
+    set_cal_gross_wages('');
+    set_cal_epf_wages('');
     set_ee_eps_wages('')
     set_ee_edli_wages('')
     set_ee_epf('')
     set_er_epf('')
     set_er_eps('')
-    set_search_pf('')
-    set_search_uan('')
     setModelMessage('')
 
 
   }
 
+  const monthlyBack = async () => {
+    getAllSummary();
+    setMonthly(true)
+
+  }
   const handleShow = () => { setShowModal(true) };
   const handleClose = () => { setShowModal(false), reset(); }
   const handleSuccessClose = () => setShowSuccessPopup(false);
@@ -330,11 +389,11 @@ const summary = () => {
               </div>
             </div>
 
-            <br />
-            <br />
+            <h5 className="mt-4">EPF Summary </h5>
             <table className="table table-striped">
               <thead>
                 <tr>
+                  <th scope="col">Number Of EE</th>
                   <th scope="col">Month</th>
                   <th scope="col">Year</th>
                   <th scope="col">Account 1</th>
@@ -347,24 +406,25 @@ const summary = () => {
               <tbody>
                 {currentItems.map((employee, index) => (
                   <tr key={index}>
-                    <th scope="row">{employee.id}</th>
-                    <td>{employee.firstName}</td>
-                    <td>{employee.lastName}</td>
-                    <td>{employee.handle}</td>
-                    <td>{employee.handle}</td>
-                    <td>{employee.handle}</td>
-                    <td>{employee.handle}</td>
+                    <th scope="row">{employee.NumbersOfEE}</th>
+                    <td>{employee.month}</td>
+                    <td>{employee.year}</td>
+                    <td>{employee.acc1}</td>
+                    <td>{employee.acc2}</td>
+                    <td>{employee.acc10}</td>
+                    <td>{employee.acc21}</td>
+                    <td>{employee.acc22}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
                 <tr>
-                  <th id="total" colSpan="2">Total :</th>
-                  <td>200</td>
-                  <td>200</td>
-                  <td>200</td>
-                  <td>200</td>
-                  <td>200</td>
+                  <th id="total" colSpan="3">Total :</th>
+                  <td>{total_acc1}</td>
+                  <td>{total_acc2}</td>
+                  <td>{total_acc10}</td>
+                  <td>{total_acc21}</td>
+                  <td>{total_acc22}</td>
                 </tr>
               </tfoot>
             </table>
@@ -380,7 +440,7 @@ const summary = () => {
             <div className="row">
               <div className="col-sm">
                 <button type="button" className="btn btn-outline-primary btn-block" onClick={handleShow}>
-                  Add
+                  Add ({selectedMonth}-{selectedYear})
                 </button>
               </div>
               <div className="col-sm">
@@ -407,6 +467,17 @@ const summary = () => {
                   ECR
                 </button>
               </div>
+              <div className="col-sm">
+                <button
+                  type="button"
+                  className="btn btn-outline-primary btn-block" onClick={monthlyBack}
+                >
+                  BACK
+                </button>
+              </div>
+              <div className="col-sm">
+              <input type="text" className="form-control" placeholder="Search" />
+            </div>
               {/* <div className="col-md-4">
               <input className="form-control" type="file" id="formFile" />
 
@@ -419,7 +490,7 @@ const summary = () => {
                 <div className="modal-dialog modal-lg" role="document">
                   <div className="modal-content">
                     <div className="modal-header">
-                      <h5 className="modal-title" id="exampleModalLabel">EPF Return Filing</h5>
+                      <h5 className="modal-title" id="exampleModalLabel">EPF Return Filing For {selectedMonth}-{selectedYear}</h5>
                       <button type="button" className="close" onClick={handleClose} aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -430,15 +501,16 @@ const summary = () => {
 
                           <form>
                             <div className="row">
-                              <div className="col-4">
+                              <div className="col-md-4">
                                 <input type="number" className="form-control" placeholder="Enter UAN Number" onChange={(e) => set_search_uan(e.target.value)} value={search_uan} />
                               </div>
-                              <div className="col-4">
+                              <div className="col-md-4">
                                 <input type="text" className="form-control" placeholder="Enter PF Number" onChange={(e) => set_search_pf(e.target.value)} value={search_pf} />
                               </div>
-                              <div className="col-4">
+                              <div className="col-sm">
                                 <button type="button" className="btn btn-outline-primary" onClick={fetchEmployee}>Search</button>
                               </div>
+                             
                             </div>
                             <div className="row">
                               <div className="col mb-2">
@@ -590,8 +662,8 @@ const summary = () => {
                 </div>
               </div>
             </div>
-            <br />
-            <br />
+          
+            <h5 className="mt-4">EPF Return For Month {selectedMonth}-{selectedYear}</h5>
             <table className="table table-striped">
               <thead>
                 <tr>

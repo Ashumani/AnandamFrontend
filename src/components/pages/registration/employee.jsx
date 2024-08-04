@@ -46,33 +46,33 @@ const employee = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-     getAll();
+      getAll();
     };
 
     fetchData();
-    
+
   }, []);
 
   const getAll = async () => {
     // api call
     const params = {
       "est_epf_id": getEstId(),
-      "limit":itemsPerPage,
-      "offset":currentPage
+      "limit": itemsPerPage,
+      "offset": currentPage
     }
     try {
       // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
       const response = await getAllEmployee(params);
       if (response.status == true) {
         // setEmployeeData(response.data);
-        
+
         // set_totalPages(Math.ceil(response.data.length / itemsPerPage));
-        
+
         // // Get current items based on the current page
         // set_startIndex((currentPage - 1) * itemsPerPage);
         set_totalPages(Math.ceil(response.count / itemsPerPage));
         set_currentItems(response.data);
-       
+
       }
 
 
@@ -173,7 +173,7 @@ const employee = () => {
         "ee_epf_wages": ee_epf_wages,
         "ee_sub_id": ee_sub_id,
       }
-     
+
       await updateEmployeer(params);
       // eslint-disable-next-line react-hooks/exhaustive-deps
       getAll();
@@ -229,7 +229,7 @@ const employee = () => {
         });
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      
+
       reset();
 
     } catch (error) {
@@ -241,7 +241,7 @@ const employee = () => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     getAll();
-  
+
   };
   const handleMaritalStatusChange = (e) => {
     set_ee_maritial_status(e.target.value);
@@ -302,9 +302,12 @@ const employee = () => {
                 Upload
               </button>
             </div>
+            <div className="col-sm-4">
+              <input type="text" className="form-control" placeholder="Search" />
+            </div>
           </div>
 
-
+          <br />
           <div className="modal fade bd-example-modal-lg" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-lg" role="document">
               <div className="modal-content">
@@ -439,62 +442,62 @@ const employee = () => {
               </div>
             </div>
           </div>
-         
+
           <div className="table-responsive">
-          <table className="table table-striped table-hover text-center">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>UAN</th>
-                <th>PFNO</th>
-                <th>Aadhar</th>
-                <th>Name</th>
-                <th>DOB</th>
-                <th>DOJ</th>
-                <th>Gender</th>
-                <th>MaritialStatus</th>
-                <th>Father/Husband</th>
-                <th>Relation</th>
-                <th>EPF Wages</th>
-                <th>Eps Wages</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems.map((employee, index) => (
-                <tr key={employee.id}>
-                  <th >{index+1}</th>
-                  <td>{employee.ee_uan_no}</td>
-                  <td>{employee.ee_pf_no}</td>
-                  <td>******</td>
-                  <td >{employee.ee_name}</td>
-                  <td >{moment(employee.ee_dob).format('YYYY-MM-DD')}</td>
-                  <td>{moment(employee.ee_doj).format('YYYY-MM-DD')}</td>
-                  <td>{employee.ee_gender}</td>
-                  <td>{employee.ee_maritial_status}</td>
-                  <td>{employee.ee_father_husband}</td>
-                  <td>{employee.ee_relation}</td>
-                  <td>{employee.ee_gross_wages}</td>
-                  <td>{employee.ee_epf_wages}</td>
-                  <td>
-                    <div className="d-flex align-items-center">
-                      <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchEmployee(employee.id) }}>
-                        <i className="bi bi-eye text-info"></i>
-                      </button>
-                      <button className="btn btn-light mx-1" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchEmployee(employee.id) }}>
-                        <i className="bi bi-pencil-fill text-info"></i>
-                      </button>
-                      <button className="btn btn-light" disabled>
-                        <i className="bi bi-trash text-danger"></i>
-                      </button>
-                    </div>
-                  </td>
+            <table className="table table-striped table-hover text-center">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>UAN</th>
+                  <th>PFNO</th>
+                  <th>Aadhar</th>
+                  <th>Name</th>
+                  <th>DOB</th>
+                  <th>DOJ</th>
+                  <th>Gender</th>
+                  <th>MaritialStatus</th>
+                  <th>Father/Husband</th>
+                  <th>Relation</th>
+                  <th>EPF Wages</th>
+                  <th>Eps Wages</th>
+                  <th>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {currentItems.map((employee, index) => (
+                  <tr key={employee.id}>
+                    <th >{index + 1}</th>
+                    <td>{employee.ee_uan_no}</td>
+                    <td>{employee.ee_pf_no}</td>
+                    <td>******</td>
+                    <td >{employee.ee_name}</td>
+                    <td >{moment(employee.ee_dob).format('YYYY-MM-DD')}</td>
+                    <td>{moment(employee.ee_doj).format('YYYY-MM-DD')}</td>
+                    <td>{employee.ee_gender}</td>
+                    <td>{employee.ee_maritial_status}</td>
+                    <td>{employee.ee_father_husband}</td>
+                    <td>{employee.ee_relation}</td>
+                    <td>{employee.ee_gross_wages}</td>
+                    <td>{employee.ee_epf_wages}</td>
+                    <td>
+                      <div className="d-flex align-items-center">
+                        <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchEmployee(employee.id) }}>
+                          <i className="bi bi-eye text-info"></i>
+                        </button>
+                        <button className="btn btn-light mx-1" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchEmployee(employee.id) }}>
+                          <i className="bi bi-pencil-fill text-info"></i>
+                        </button>
+                        <button className="btn btn-light" disabled>
+                          <i className="bi bi-trash text-danger"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-         
+
           {/* Pagination Controls */}
           <div className="pagination">
             <button className="btn btn-primary"
