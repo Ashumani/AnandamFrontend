@@ -46,7 +46,7 @@ const employee = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      getAll();
+      await getAll();
     };
 
     fetchData();
@@ -108,7 +108,7 @@ const employee = () => {
 
 
       await saveEERegister(params);
-      getAll();
+      await getAll();
       // eslint-disable-next-line react-hooks/exhaustive-deps
       reset();
 

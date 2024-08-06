@@ -8,6 +8,8 @@ import { fetchAllEmployer } from "./api/services.js";
 import { setEstId, getEstId, deleteEstId, getErId } from "./pages/Auth/authToken.js";
 import Sidebar from "./sidebar.jsx";
 import { useSidebar } from './SidebarContext';
+import { Link } from "react-router-dom";
+
 
 const Header = () => {
 
@@ -15,7 +17,7 @@ const Header = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedId, setSelectedId] = useState('');
-  const [selectedKey, setSelectedKey]= useState('');
+  const [selectedKey, setSelectedKey] = useState('');
   const [items, setItems] = useState([]);
   // const [reload, setReload] = useState(true);
   useEffect(() => {
@@ -35,9 +37,9 @@ const Header = () => {
       }
     };
     if (getEstId() != "All" && getEstId() != null) {
-      handleChange({"target":{"value":getEstId()}})
-      
-    }else{
+      handleChange({ "target": { "value": getEstId() } })
+
+    } else {
       setShowAll(false);
     }
 
@@ -58,9 +60,9 @@ const Header = () => {
         setSelectedKey(selectedItem.est_name);// Update selectedKey with item's key
         // setSelectedKey(selectedItem.est_name); 
         setEstId(value, selectedItem.id);
-      
+
       }
-      
+
       setShowAll(true);
     }
   };
@@ -90,9 +92,8 @@ const Header = () => {
             ))}
           </select>
           {/* {selectedId && <p>Selected ID: {selectedId} Selected Key: {selectedKey}</p>} */}
-          {selectedKey && <p> Company Name : {selectedKey}</p>}
         </div>
-
+        <div className="mt-2 ms-4">{selectedKey && <h5> {selectedKey}</h5>}</div>
         <nav className="header-nav ms-auto">
           <ul className="d-flex align-items-center">
             <li className="nav-item d-block d-lg-none">
