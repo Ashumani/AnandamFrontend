@@ -2,6 +2,7 @@ import { useState } from "react"
 import { loginData } from '../../api/services';
 import { useNavigate } from "react-router-dom";
 import {getAuthToken, setAuthToken } from "./authToken"
+import Swal from 'sweetalert2';
 
 const login = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -17,24 +18,47 @@ const login = () => {
     // api call
     try {
       const userData = await loginData(email, password);
-      navigate('/auth/dashboard')
-      console.log("token",userData.token);
-      setAuthToken(userData.token);
-      console.log("token",getAuthToken());
+      if (userData.status === true) {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'success',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+        navigate('/auth/dashboard')
+        console.log("token",userData.data.token);
+        setAuthToken(userData.data.token);
+        console.log("token",getAuthToken());  
+        console.log('Login successful', userData)
       
-      
-      console.log('Login successful', userData)
-    } catch (error) {
+
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+      }
+     } catch (error) {
       console.error('Login error ', error);
       setError(error);
     }
   };
   return (
     <div className="main-container">
-      <section className="section register d-flex flex-column align-items-center justify-content-center py-4">
+      {/* <section className="section register d-flex flex-column align-items-center justify-content-center py-4"> */}
+      <section className="section register flex-column align-items-center justify-content-center py-4">
         <div className="main-container">
-          <div className="row justify-content-center">
-            <div className="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+        {/* <div className="row justify-content-center"> */}
+          <div className="row">
+            <div className="col-lg-5 col-md-6 d-flex flex-column align-items-center justify-content-center">
               <div className="d-flex justify-content-center py-4">
                 <a
                   href="index.html"

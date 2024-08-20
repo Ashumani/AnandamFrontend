@@ -175,3 +175,12 @@ export const getSummary = async (id) => {
         throw error.response.data.error;
     }
 }
+
+export const downlaodFile = async (url) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/`+url,{ headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}

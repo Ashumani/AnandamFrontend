@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
-import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary } from "../../api/services";
+import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary, downlaodFile } from "../../api/services";
 import Swal from 'sweetalert2';
 
 
@@ -166,6 +167,53 @@ const summary = () => {
 
         handleClose();
 
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+      }
+
+      // Show success popup
+
+
+
+    } catch (error) {
+      console.error('Login error ', error);
+      // setError(error);
+    }
+  };
+
+  
+  const genECR = async () => {
+    // api call
+    try {
+      const params = {
+        "est_id": getErId(),
+        "ee_id": 0,
+        "month": selectedMonth,
+        "year": selectedYear
+      }
+      const userData = await getEpfReturnByMonth(params);
+     
+      if (userData.status === true) {
+        const userData = await downlaodFile(userData.url);
+        // window.URL.revokeObjectURL(url);
+        Swal.fire({
+          position: 'top-right',
+          icon: 'success',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+        
       } else {
         Swal.fire({
           position: 'top-right',
@@ -462,7 +510,7 @@ const summary = () => {
               <div className="col-sm">
                 <button
                   type="button"
-                  className="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#importReturn"
+                  className="btn btn-outline-primary btn-block" onClick={genECR}
                 >
                   ECR
                 </button>
@@ -651,7 +699,7 @@ const summary = () => {
                     </button>
                   </div>
                   <div className="modal-body">
-                    <div className="col-md-4">
+                    <div className="col-md-12">
                       <input className="form-control" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
                     </div>
                   </div>

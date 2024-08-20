@@ -30,12 +30,12 @@ const Sidebar = () => {
             "icon": "bi bi-journal-text",
             "subItems": [
                 {
-                    "item": "EPF Return",
-                    "path": "/auth/dashboard/monthlypf",
+                    "item": "Salary",
+                    "path": "/auth/dashboard/salary",
                     "icon": "bi bi-circle"
                 },
                 {
-                    "item": "EPF Summary",
+                    "item": "EPF Return",
                     "path": "/auth/dashboard/summary",
                     "icon": "bi bi-circle"
                 }
