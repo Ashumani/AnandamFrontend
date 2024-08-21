@@ -2,12 +2,10 @@
 
 import { useState, useEffect } from "react"
 import { getEstId, getErId } from "../Auth/authToken";
-import { getAllEmployee, saveEERegister, getEmployee, updateEmployeer, uploadEmployee } from "../../api/services";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
+import { getAllEmployee, saveEERegister, getEmployee, updateEmployee, uploadEmployee, searchEmployee } from "../../api/services";
 import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
-
+import React, { useRef } from 'react';
 const employee = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const itemsPerPage = 5; // Number of items per page
@@ -17,7 +15,7 @@ const employee = () => {
   // Get current items based on the current page
   const [startIndex, set_startIndex] = useState('');
   const [currentItems, set_currentItems] = useState([]);
-
+  const modalRef = useRef(null);
   const [ee_id, set_ee_id] = useState('');
   const [est_id, set_est_id] = useState('');
   const [ee_name, set_ee_name] = useState('');
@@ -121,10 +119,11 @@ const employee = () => {
   const fetchEmployee = async (id) => {
     // api call
     try {
-      closeModal()
+      // closeModal()
+      openModal();
       const userData = await getEmployee(id);
       if (userData.status === true) {
-        set_ee_id(userData.data.set_ee_id);
+        set_ee_id(userData.data.id);
         set_est_id(userData.data.est_id);
         set_ee_name(userData.data.ee_name);
         set_ee_mobile_number(userData.data.ee_mobile_number);
@@ -141,6 +140,7 @@ const employee = () => {
         set_ee_relation(userData.data.ee_relation);
         set_ee_gross_wages(userData.data.ee_gross_wages);
         set_ee_epf_wages(userData.data.ee_epf_wages);
+        set_ee_sub_id(userData.data.ee_sub_id);
         setIsUpdate(true)
       }
 
@@ -174,16 +174,92 @@ const employee = () => {
         "ee_sub_id": ee_sub_id,
       }
 
-      await updateEmployeer(params);
+      const data = await updateEmployee(ee_id, params);
+      if (data.status === true) {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'success',
+          toast: true,
+          title: data.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+
+        closeModal()
+        getAll();
+        reset();
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: data.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      getAll();
-      reset();
+     
 
     } catch (error) {
       console.error('Login error ', error);
       setError(error);
     }
   };
+  const searchEmp = async () => {
+    // api call
+    try {
+      const params ={
+        "est_id":1,
+        "search":"A"
+    }
+      const data = await searchEmployee(params);
+      if (data.status === true) {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'success',
+          toast: true,
+          title: data.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+       
+          // setEmployeeData(response.data);
+  
+          // set_totalPages(Math.ceil(response.data.length / itemsPerPage));
+  
+          // // Get current items based on the current page
+          // set_startIndex((currentPage - 1) * itemsPerPage);
+          set_totalPages(Math.ceil(data.count / itemsPerPage));
+          set_currentItems(data.data);
+
+
+        closeModal()
+        getAll();
+        reset();
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: data.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+     
+
+    } catch (error) {
+      console.error('Login error ', error);
+      setError(error);
+    }
+  };
+
 
   const [file, setFile] = useState(null);
 
@@ -271,12 +347,24 @@ const employee = () => {
     set_ee_sub_id('');
 
   }
+
+
   const closeModal = () => {
-    const modalElement = document.getElementById('exampleModal');
-    setIsUpdate(false)
+    const modalElement = modalRef.current;
     if (modalElement) {
+      // eslint-disable-next-line no-undef
       const modal = new bootstrap.Modal(modalElement);
       modal.hide();
+    }
+  };
+
+  const openModal = () => {
+    const modalElement = modalRef.current;
+    console.log(modalElement)
+    if (modalElement) {
+      // eslint-disable-next-line no-undef
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
     }
   };
   return (
@@ -290,7 +378,7 @@ const employee = () => {
           <br />
           <div className="row">
             <div className="col-sm-2">
-              <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+              <button type="button" className="btn btn-primary" onClick={openModal}>
                 Add Employee
               </button>
             </div>
@@ -303,12 +391,12 @@ const employee = () => {
               </button>
             </div>
             <div className="col-sm-4">
-              <input type="text" className="form-control" placeholder="Search" />
+              <input type="text" className="form-control" placeholder="Search" onChange={searchEmp} />
             </div>
           </div>
 
           <br />
-          <div className="modal fade bd-example-modal-lg" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal fade bd-example-modal-lg" id="exampleModal" ref={modalRef} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header bg-primary">
@@ -427,13 +515,14 @@ const employee = () => {
                 </div>
                 <div className="modal-footer">
 
-                  <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={reset}>Close</button>
+                  {/* <button type="button" className="btn btn-secondary" data-dismiss="modal" aria-label="Close" onClick={closeModal}>Close</button> */}
+                  <button type="button" className="btn btn-secondary" data-dismiss="modal"  onClick={closeModal}>Close</button>
                   {!isUpdate ? (
-                    <button type="submit" className="btn btn-outline-primary" onClick={saveEEDetails}>
+                    <button type="button" className="btn btn-outline-primary" onClick={saveEEDetails}>
                       Save
                     </button>
                   ) : (
-                    <button type="submit" className="btn btn-outline-primary" onClick={UpdateEmployee}>
+                    <button type="button" className="btn btn-outline-primary" onClick={UpdateEmployee}>
                       Update
                     </button>
                   )}
@@ -481,10 +570,10 @@ const employee = () => {
                     <td>{employee.ee_epf_wages}</td>
                     <td>
                       <div className="d-flex align-items-center">
-                        <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchEmployee(employee.id) }}>
+                        <button className="btn btn-light" onClick={() => { fetchEmployee(employee.id) }}>
                           <i className="bi bi-eye text-info"></i>
                         </button>
-                        <button className="btn btn-light mx-1" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchEmployee(employee.id) }}>
+                        <button className="btn btn-light mx-1"  onClick={() => { fetchEmployee(employee.id) }}>
                           <i className="bi bi-pencil-fill text-info"></i>
                         </button>
                         <button className="btn btn-light" disabled>

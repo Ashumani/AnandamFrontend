@@ -79,14 +79,15 @@ export const saveEERegister = async (params) => {
     }
 }
 
-export const updateEmployeer = async (id, params) => {
+export const updateEmployee = async (id, params) => {
     try {
-        const response = await axios.post(`${BASE_URL}/employee/updateEmployeer/`+id,params,{ headers: header});
+        const response = await axios.post(`${BASE_URL}/employee/updateEmployee/`+id,params,{ headers: header});
         return response.data;
     } catch (error) {
         throw error.response.data.error;
     }
 }
+
 
 
 export const getAllEmployee = async (params) => {
@@ -113,9 +114,15 @@ export const getEmployeeByUANandEPFid = async (params) => {
         return response.data;
     } catch (error) {
         throw error.response.data.error;
+    } 
+}
+export const searchEmployee = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/employee/searchEmployee`,params,{ headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
     }
-
-   
 }
 
 
