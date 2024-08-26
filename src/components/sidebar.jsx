@@ -9,12 +9,12 @@ const Sidebar = () => {
     const { showAll } = useSidebar();
     const [side_items] = useState(
         [{
-            "mainItem": "Master",
+            "mainItem": "Ragistration",
             "path": "",
             "icon": "bi bi-menu-button-wide",
             "subItems": [
                 {
-                    "item": "Employeer Registration",
+                    "item": "Employer Registration",
                     "path": "/auth/dashboard/employer",
                     "icon": "bi bi-circle"
                 },
@@ -107,6 +107,12 @@ const Sidebar = () => {
                         <a className="nav-link " href="/auth/dashboard">
                             <i className="bi bi-grid"></i>
                             <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link " href="/auth/dashboard/master">
+                            <i className="bi bi-grid"></i>
+                            <span>Master</span>
                         </a>
                     </li>
                     

@@ -146,6 +146,22 @@ export const fillEpfReturn = async (params) => {
     }
 }
 
+export const updateEpfReturn = async (id, params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/monthly/updateEpfReturn/`+id,params,{ headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+export const fetchEpfReturn = async (id) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/monthly/fetchEpfReturn/`+id,{ headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 export const uploadEmployee = async (id, formdata) => {
     try {
         const uplaodHeader = {
@@ -183,10 +199,29 @@ export const getSummary = async (id) => {
     }
 }
 
+
 export const downlaodFile = async (url) => {
     try {
-        const response = await axios.get(`${BASE_URL}/`+url,{ headers: header});
-        return response.data;
+       
+        const urlParts  =  url.split('/')
+        const response = await axios.get(`${BASE_URL}/`+url,{responseType: 'blob', headers: header});
+        url = window.URL.createObjectURL(new Blob([response.data]));
+
+        // Create a link element
+        const a = document.createElement('a');
+        a.href = url;
+         
+        // Extract filename from response headers or use a default
+        const filename =urlParts[urlParts.length - 1];
+  
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+  
+        // Cleanup
+        window.URL.revokeObjectURL(url);
+  
     } catch (error) {
         throw error.response.data.error;
     }

@@ -8,7 +8,7 @@ import { fetchAllEmployer } from "./api/services.js";
 import { setEstId, getEstId, deleteEstId, getErId } from "./pages/Auth/authToken.js";
 import Sidebar from "./sidebar.jsx";
 import { useSidebar } from './SidebarContext';
-import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 
 const Header = () => {
@@ -19,6 +19,7 @@ const Header = () => {
   const [selectedId, setSelectedId] = useState('');
   const [selectedKey, setSelectedKey] = useState('');
   const [items, setItems] = useState([]);
+  const navigate = useNavigate();
   // const [reload, setReload] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
@@ -54,6 +55,7 @@ const Header = () => {
       deleteEstId();
       setSelectedKey(null)
       setShowAll(false);
+      navigate('/auth/dashboard');
     } else {
       const selectedItem = items.find(item => item.est_epf_id === value);
       if (selectedItem) {

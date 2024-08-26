@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
-import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary, downlaodFile } from "../../api/services";
+import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary, downlaodFile, fetchEpfReturn } from "../../api/services";
 import Swal from 'sweetalert2';
-
+import React, { useRef } from 'react';
 
 const summary = () => {
 
@@ -13,7 +13,7 @@ const summary = () => {
     "month": [{ "monthNum": 1, "monthText": "Jan" }, { "monthNum": 2, "monthText": "Feb" }, { "monthNum": 3, "monthText": "Mar" }, { "monthNum": 4, "monthText": "Apr" }, { "monthNum": 5, "monthText": "May" }, { "monthNum": 6, "monthText": "Jun" }, { "monthNum": 7, "monthText": "Jul" }, { "monthNum": 8, "monthText": "Aug" }, { "monthNum": 9, "monthText": "Sep" }, { "monthNum": 10, "monthText": "Oct" }, { "monthNum": 11, "monthText": "Nov" }, { "monthNum": 12, "monthText": "Dec" }],
     "Year": [2020, 2021, 2022, 2023, 2024]
   }
-
+  const modalRef = useRef(null);
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [selectedYear, setSelectedYear] = useState(2024);
 
@@ -35,7 +35,7 @@ const summary = () => {
   const [modelMessage, setModelMessage] = useState('');
   const [respStatus, setRespStatus] = useState('Success');
 
-
+  const [isUpdate, set_isUpdate] = useState(false);
   const [search_uan, set_search_uan] = useState('');
   const [search_pf, set_search_pf] = useState('');
   const [ee_id, set_ee_id] = useState('');
@@ -60,6 +60,7 @@ const summary = () => {
   const [er_epf, set_er_epf] = useState('');
   const [er_eps, set_er_eps] = useState('');
 
+  const [eReturn_id, set_eReturn_id] = useState('');
   const [total_acc1, set_total_acc1] = useState('');
   const [total_acc2, set_total_acc2] = useState('');
   const [total_acc10, set_total_acc10] = useState('');
@@ -131,6 +132,44 @@ const summary = () => {
     }
   };
 
+  const fetchReturn = async (id) => {
+    // api call
+    try {
+      reset1();
+      set_isUpdate(true);
+      const userData = await fetchEpfReturn(id);
+      if (userData.status === true) {
+        set_eReturn_id(userData.data.id);
+        set_ee_id(userData.data.ee_id);
+        set_ee_name(userData.data.ee_name);
+        set_ee_uan_no(userData.data.ee_uan_no);
+        set_ee_pf_no(userData.data.ee_pf_no);
+        set_ee_dob(userData.data.ee_dob);
+        set_ee_doj(userData.data.ee_doj);
+        set_ee_dol(userData.data.ee_dol);
+        set_ee_gender(userData.data.ee_gender);
+        set_ee_maritial_status(userData.data.ee_maritial_status);
+        set_ee_father_husband(userData.data.ee_father_husband);
+        set_ee_relation(userData.data.ee_relation);
+        set_ee_gross_wages(userData.data.ee_gross_wages);
+        set_ee_epf_wages(userData.data.ee_epf_wages);
+        set_cal_gross_wages(userData.data.gross_wages);
+        set_cal_epf_wages(userData.data.epf_wages);
+        set_ee_sub_id(userData.data.ee_sub_id);
+        set_ee_edli_wages(userData.data.edli_wages);
+        set_ee_eps_wages(userData.data.eps_wages);
+        set_ee_epf(userData.data.ee_share);
+        set_er_epf(userData.data.diff_share);
+        set_er_eps(userData.data.eps_share);
+        // setIsUpdate(true)
+      }
+
+    } catch (error) {
+      console.error('Login error ', error);
+      // setError(error);
+    }
+  };
+
   const saveReturns = async () => {
     // api call
     try {
@@ -152,7 +191,7 @@ const summary = () => {
         "ncp_days": 0
       }
       const userData = await fillEpfReturn(params);
-  
+
       if (userData.status === true) {
         Swal.fire({
           position: 'top-right',
@@ -189,7 +228,64 @@ const summary = () => {
     }
   };
 
-  
+  const updateReturns = async () => {
+    // api call
+    try {
+      const params = {
+        "est_id": getErId(),
+        "ee_id": ee_id,
+        "ee_uan": ee_uan_no,
+        "est_epf_id": getEstId(),
+        "er_name": ee_name,
+        "month": selectedMonth,
+        "year": selectedYear,
+        "gross_wages": cal_gross_wages,
+        "epf_wages": cal_epf_wages,
+        "edli_wages": ee_edli_wages,
+        "eps_wages": ee_epf_wages,
+        "ee_share": ee_epf,
+        "diff_share": er_epf,
+        "eps_share": er_eps,
+        "ncp_days": 0
+      }
+      const userData = await fillEpfReturn(eReturn_id, params);
+
+      if (userData.status === true) {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'success',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+        getReturnByMonth()
+
+        handleClose();
+
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+      }
+
+      // Show success popup
+
+
+
+    } catch (error) {
+      console.error('Login error ', error);
+      // setError(error);
+    }
+  };
+
   const genECR = async () => {
     // api call
     try {
@@ -200,9 +296,10 @@ const summary = () => {
         "year": selectedYear
       }
       const userData = await getEpfReturnByMonth(params);
-     
+
       if (userData.status === true) {
-        const userData = await downlaodFile(userData.url);
+        
+        await downlaodFile(userData.url);
         // window.URL.revokeObjectURL(url);
         Swal.fire({
           position: 'top-right',
@@ -213,7 +310,7 @@ const summary = () => {
           showCloseButton: true,
           timer: 1500,
         });
-        
+
       } else {
         Swal.fire({
           position: 'top-right',
@@ -286,7 +383,7 @@ const summary = () => {
     set_er_epf('')
     set_er_eps('')
     setModelMessage('')
-
+    set_isUpdate(false);
 
   }
 
@@ -396,6 +493,26 @@ const summary = () => {
     setSelectedMonth(e.target.value);
   };
 
+  const closeModal = () => {
+    const modalElement = modalRef.current;
+    if (modalElement) {
+      // eslint-disable-next-line no-undef
+      const modal = new bootstrap.Modal(modalElement);
+      modal.hide();
+      reset1()
+    }
+  };
+
+  const openModal = () => {
+    const modalElement = modalRef.current;
+    console.log(modalElement)
+    if (modalElement) {
+      // eslint-disable-next-line no-undef
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  };
+
   return (
 
     <div>
@@ -487,7 +604,7 @@ const summary = () => {
             <br />
             <div className="row">
               <div className="col-sm">
-                <button type="button" className="btn btn-outline-primary btn-block" onClick={handleShow}>
+                <button type="button" className="btn btn-outline-primary btn-block" onClick={openModal}>
                   Add ({selectedMonth}-{selectedYear})
                 </button>
               </div>
@@ -524,8 +641,8 @@ const summary = () => {
                 </button>
               </div>
               <div className="col-sm">
-              <input type="text" className="form-control" placeholder="Search" />
-            </div>
+                <input type="text" className="form-control" placeholder="Search" />
+              </div>
               {/* <div className="col-md-4">
               <input className="form-control" type="file" id="formFile" />
 
@@ -533,107 +650,108 @@ const summary = () => {
             </div>
 
             {/* Add Epf Return Model */}
-            {showModal && (
-              <div style={{ display: 'block' }} className="modal fade show" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog modal-lg" role="document">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" id="exampleModalLabel">EPF Return Filing For {selectedMonth}-{selectedYear}</h5>
-                      <button type="button" className="close" onClick={handleClose} aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div className="modal-body text-dark">
-                      <div className="row">
-                        <div className="col-lg-12">
+            {/* {showModal && ( */}
+            {/* <div style={{ display: 'block' }} className="modal fade show" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+            <div className="modal fade bd-example-modal-lg" id="exampleModal" ref={modalRef} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div className="modal-dialog modal-lg" role="document">
+                <div className="modal-content">
+                  <div className="modal-header bg-primary">
+                    <h5 className="modal-title" id="exampleModalLabel">EPF Return Filing For {selectedMonth}-{selectedYear}</h5>
+                    <button type="button" className="close text-white" data-dismiss="modal" aria-label="Close" onClick={closeModal}>
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div className="modal-body text-dark">
+                    <div className="row">
+                      <div className="col-lg-12">
 
-                          <form>
-                            <div className="row">
-                              <div className="col-md-4">
-                                <input type="number" className="form-control" placeholder="Enter UAN Number" onChange={(e) => set_search_uan(e.target.value)} value={search_uan} />
-                              </div>
-                              <div className="col-md-4">
-                                <input type="text" className="form-control" placeholder="Enter PF Number" onChange={(e) => set_search_pf(e.target.value)} value={search_pf} />
-                              </div>
-                              <div className="col-sm">
-                                <button type="button" className="btn btn-outline-primary" onClick={fetchEmployee}>Search</button>
-                              </div>
-                             
+                        <form>
+                          <div className="row">
+                            <div className="col-md-4">
+                              <input type="number" className="form-control" placeholder="Enter UAN Number" onChange={(e) => set_search_uan(e.target.value)} value={search_uan} />
                             </div>
-                            <div className="row">
-                              <div className="col mb-2">
-                                <label htmlFor="inputPassword">Name</label>
-                                <input type="text" className="form-control" disabled onChange={(e) => set_ee_name(e.target.value)} value={ee_name} />
-                              </div>
-                              <div className="col mb-2">
-                                <label htmlFor="inputNumber">Gender</label>
-                                <input type="text" className="form-control" disabled onChange={(e) => set_ee_gender(e.target.value)} value={ee_gender} />
-                              </div>
-                              <div className="col mb-2">
-                                <label htmlFor="inputNumber">Father/husband</label>
-                                <input type="text" className="form-control" disabled onChange={(e) => set_ee_father_husband(e.target.value)} value={ee_father_husband} />
-                              </div>
-                              <div className="col mb-2">
-                                <label htmlFor="inputNumber">Maritial Status</label>
-                                <input type="text" className="form-control" disabled onChange={(e) => set_ee_maritial_status(e.target.value)} value={ee_maritial_status} />
-                              </div>
+                            <div className="col-md-4">
+                              <input type="text" className="form-control" placeholder="Enter PF Number" onChange={(e) => set_search_pf(e.target.value)} value={search_pf} />
+                            </div>
+                            <div className="col-sm">
+                              <button type="button" className="btn btn-outline-primary" onClick={fetchEmployee}>Search</button>
                             </div>
 
-                            <div className="row">
-                              <div className="col mb-3">
-                                <label htmlFor="inputNumber">Date Of Birth</label>
-                                <input type="text" className="form-control" disabled onChange={(e) => set_ee_dob(e.target.value)} value={ee_dob} />
-                              </div>
-                              <div className="col mb-3">
-                                <label htmlFor="inputTime">Date Of Joining</label>
-                                <input type="text" className="form-control" disabled onChange={(e) => set_ee_doj(e.target.value)} value={ee_doj} />
-                              </div>
-                              <div className="col mb-3">
-                                <label htmlFor="inputDate">EPS Exmpted</label>
-                                <input type="text" className="form-control" disabled onChange={(e) => set_ee_doj(e.target.value)} value={ee_doj} />
-                              </div>
-                              <div className="col mb-3">
-                                <label htmlFor="inputColor">Gross Wages</label>
-                                <input type="number" className="form-control" disabled onChange={(e) => set_ee_gross_wages(e.target.value)} value={ee_gross_wages} />
-                              </div>
-                              <div className="col mb-3">
-                                <label htmlFor="inputPassword">EPF Wages</label>
-                                <input type="number" className="form-control" disabled onChange={(e) => set_ee_epf_wages(e.target.value)} value={ee_epf_wages} />
-                              </div>
+                          </div>
+                          <div className="row">
+                            <div className="col mb-2">
+                              <label htmlFor="inputPassword">Name</label>
+                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_name(e.target.value)} value={ee_name} />
+                            </div>
+                            <div className="col mb-2">
+                              <label htmlFor="inputNumber">Gender</label>
+                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_gender(e.target.value)} value={ee_gender} />
+                            </div>
+                            <div className="col mb-2">
+                              <label htmlFor="inputNumber">Father/husband</label>
+                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_father_husband(e.target.value)} value={ee_father_husband} />
+                            </div>
+                            <div className="col mb-2">
+                              <label htmlFor="inputNumber">Maritial Status</label>
+                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_maritial_status(e.target.value)} value={ee_maritial_status} />
+                            </div>
+                          </div>
+
+                          <div className="row">
+                            <div className="col mb-3">
+                              <label htmlFor="inputNumber">Date Of Birth</label>
+                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_dob(e.target.value)} value={ee_dob} />
+                            </div>
+                            <div className="col mb-3">
+                              <label htmlFor="inputTime">Date Of Joining</label>
+                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_doj(e.target.value)} value={ee_doj} />
+                            </div>
+                            <div className="col mb-3">
+                              <label htmlFor="inputDate">EPS Exmpted</label>
+                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_doj(e.target.value)} value={ee_doj} />
+                            </div>
+                            <div className="col mb-3">
+                              <label htmlFor="inputColor">Gross Wages</label>
+                              <input type="number" className="form-control" disabled onChange={(e) => set_ee_gross_wages(e.target.value)} value={ee_gross_wages} />
+                            </div>
+                            <div className="col mb-3">
+                              <label htmlFor="inputPassword">EPF Wages</label>
+                              <input type="number" className="form-control" disabled onChange={(e) => set_ee_epf_wages(e.target.value)} value={ee_epf_wages} />
+                            </div>
+                          </div>
+
+                          <div className="row">
+                            <div className="col-sm">
+                              <label htmlFor="inputColor">Gross Wages</label>
+                              <input type="text" className="form-control" onChange={(e) => set_cal_gross_wages(e.target.value)} value={cal_gross_wages} />
+                            </div>
+                            <div className="col-sm">
+                              <label htmlFor="inputEPFWages">EPF Wages</label>
+                              <input type="text" className="form-control" onBlur={(e) => calculation(e.target.value)} onChange={(e) => set_cal_epf_wages(e.target.value)} value={cal_epf_wages} />
                             </div>
 
-                            <div className="row">
-                              <div className="col-sm">
-                                <label htmlFor="inputColor">Gross Wages</label>
-                                <input type="text" className="form-control" onChange={(e) => set_cal_gross_wages(e.target.value)} value={cal_gross_wages} />
-                              </div>
-                              <div className="col-sm">
-                                <label htmlFor="inputEPFWages">EPF Wages</label>
-                                <input type="text" className="form-control" onBlur={(e) => calculation(e.target.value)} onChange={(e) => set_cal_epf_wages(e.target.value)} value={cal_epf_wages} />
-                              </div>
-
-                              <div className="col-sm">
-                                <label htmlFor="inputPassword">EDLI Wages</label>
-                                <input type="text" className="form-control" disabled value={ee_edli_wages} />
-                              </div>
-                              <div className="col-sm">
-                                <label htmlFor="inputPassword">EPS Wages</label>
-                                <input type="text" className="form-control" disabled value={ee_eps_wages} />
-                              </div>
-                              <div className="col mb-3">
-                                <label htmlFor="inputPassword">EE</label>
-                                <input type="text" className="form-control" disabled value={ee_epf} />
-                              </div>
-                              <div className="col mb-3">
-                                <label htmlFor="inputPassword">ER</label>
-                                <input type="text" className="form-control" disabled value={er_epf} />
-                              </div>
-                              <div className="col mb-3">
-                                <label htmlFor="inputPassword">EPS</label>
-                                <input type="text" className="form-control" disabled value={er_eps} />
-                              </div>
+                            <div className="col-sm">
+                              <label htmlFor="inputPassword">EDLI Wages</label>
+                              <input type="text" className="form-control" disabled value={ee_edli_wages} />
                             </div>
-                            <div className="row">
+                            <div className="col-sm">
+                              <label htmlFor="inputPassword">EPS Wages</label>
+                              <input type="text" className="form-control" disabled value={ee_eps_wages} />
+                            </div>
+                            <div className="col mb-3">
+                              <label htmlFor="inputPassword">EE</label>
+                              <input type="text" className="form-control" disabled value={ee_epf} />
+                            </div>
+                            <div className="col mb-3">
+                              <label htmlFor="inputPassword">ER</label>
+                              <input type="text" className="form-control" disabled value={er_epf} />
+                            </div>
+                            <div className="col mb-3">
+                              <label htmlFor="inputPassword">EPS</label>
+                              <input type="text" className="form-control" disabled value={er_eps} />
+                            </div>
+                          </div>
+                          {/* <div className="row">
                               <div className="col-sm">
                                 <button type="button" className="btn btn-outline-primary btn-block" onClick={saveReturns}>Save</button>
                               </div>
@@ -644,16 +762,34 @@ const summary = () => {
                                 <button type="button" className="btn btn-outline-primary btn-block">Reset</button>
                               </div>
                               <div className="col-sm">
-                                <button type="button" className="btn btn-outline-primary btn-block" onClick={handleClose} aria-label="Close">Close</button>
+                                <button type="button" className="btn btn-outline-primary btn-block" data-dismiss="modal" aria-label="Close"  onClick={closeModal} >Close</button>
                               </div>
-                            </div>
-                          </form>
-                        </div>
+                            </div> */}
+                        </form>
                       </div>
                     </div>
                   </div>
+                  <div className="modal-footer d-flex">
+                    <div className="row">
+                      <div className="col-sm">
+                        <button type="button" disabled={isUpdate} className="btn btn-outline-primary btn-block" onClick={saveReturns}>Save</button>
+                      </div>
+                      <div className="col-sm">
+                        <button type="button" disabled={!isUpdate} className="btn btn-outline-primary btn-block"  onClick={updateReturns}>Update</button>
+                      </div>
+                      <div className="col-sm">
+                        <button type="button"  className="btn btn-outline-primary btn-block">Reset</button>
+                      </div>
+                      <div className="col-sm">
+                        <button type="button" className="btn btn-outline-primary btn-block" data-dismiss="modal" aria-label="Close" onClick={closeModal} >Close</button>
+                      </div>
+                    </div>
+
+                  </div>
                 </div>
-              </div>)}
+              </div>
+            </div>
+            {/* )} */}
 
             {/* return success or  failure msg */}
             {showSuccessPopup && (
@@ -710,7 +846,7 @@ const summary = () => {
                 </div>
               </div>
             </div>
-          
+
             <h5 className="mt-4">EPF Return For Month {selectedMonth}-{selectedYear}</h5>
             <table className="table table-striped">
               <thead>
@@ -745,10 +881,10 @@ const summary = () => {
                     <td>{employee.ncp_days}</td>
                     <td>
                       <div className="d-flex align-items-center">
-                        <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchEmployee(employee.id) }}>
+                        <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
                           <i className="bi bi-eye text-info"></i>
                         </button>
-                        <button className="btn btn-light mx-1" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchEmployee(employee.id) }}>
+                        <button className="btn btn-light mx-1" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
                           <i className="bi bi-pencil-fill text-info"></i>
                         </button>
                         <button className="btn btn-light" disabled>

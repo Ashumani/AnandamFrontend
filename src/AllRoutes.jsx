@@ -15,6 +15,7 @@ import standalone from "./components/pages/standaloneHome/standalone"
 import download from "./components/pages/download/download"
 import testing from "./components/pages/testing/testing"
 import salary from "./components/pages/transaction/salary"
+import master from "./components/pages/master/master"
 
 const AllRoutes = () => {
   return (
@@ -34,6 +35,7 @@ const AllRoutes = () => {
         <Route exact path='/auth/dashboard/bill/billView' Component={billingMaster}/>
         <Route exact path='/auth/dashboard/form/download' Component={download}/>
         <Route exact path='/auth/dashboard/salary' Component={salary}/>
+        <Route exact path='/auth/dashboard/master' Component={master}/>
         <Route exact path='/auth/dashboard/testing' Component={testing}/>
     </Routes>
   )
