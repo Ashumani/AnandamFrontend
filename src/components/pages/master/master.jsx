@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getEstId, getErId } from "../Auth/authToken";
-import { getAllEmployee, saveEERegister, getEmployee, updateEmployee, uploadEmployee, searchEmployee } from "../../api/services";
+import { getMasterList, saveEERegister, getEmployee, updateEmployee, uploadEmployee, searchEmployee } from "../../api/services";
 import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
 import React, { useRef } from 'react';
@@ -44,7 +44,7 @@ const master = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // await getAll();
+      await getAll();
     };
 
     fetchData();
@@ -54,13 +54,12 @@ const master = () => {
   const getAll = async () => {
     // api call
     const params = {
-      "est_epf_id": getEstId(),
       "limit": itemsPerPage,
       "offset": currentPage
     }
     try {
       // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-      const response = await getAllEmployee(params);
+      const response = await getMasterList(params);
       if (response.status == true) {
         // setEmployeeData(response.data);
 
@@ -401,8 +400,8 @@ const master = () => {
                 {currentItems.map((employee, index) => (
                   <tr key={employee.id}>
                     <th >{index + 1}</th>
-                    <td>{employee.ee_uan_no}</td>
-                    <td>{employee.ee_pf_no}</td>
+                    <td>{employee.est_name}</td>
+                    <td>{employee.est_epf_id}</td>
                     <td>******</td>
                     <td >{employee.ee_name}</td>
                     <td >{moment(employee.ee_dob).format('YYYY-MM-DD')}</td>

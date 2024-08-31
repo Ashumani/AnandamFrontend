@@ -11,6 +11,7 @@ const employee = () => {
   const itemsPerPage = 5; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, set_totalPages] = useState(1);
+  const [search_emp, set_search_emp]=useState('');
 
   // Get current items based on the current page
   const [startIndex, set_startIndex] = useState('');
@@ -67,7 +68,7 @@ const employee = () => {
         // set_totalPages(Math.ceil(response.data.length / itemsPerPage));
 
         // // Get current items based on the current page
-        // set_startIndex((currentPage - 1) * itemsPerPage);
+        set_startIndex((currentPage - 1) * itemsPerPage);
         set_totalPages(Math.ceil(response.count / itemsPerPage));
         set_currentItems(response.data);
 
@@ -212,21 +213,12 @@ const employee = () => {
     // api call
     try {
       const params ={
-        "est_id":1,
-        "search":"A"
+        "est_id":getErId(),
+        "search":search_emp
     }
       const data = await searchEmployee(params);
       if (data.status === true) {
-        Swal.fire({
-          position: 'top-right',
-          icon: 'success',
-          toast: true,
-          title: data.message,
-          showConfirmButton: false,
-          showCloseButton: true,
-          timer: 1500,
-        });
-       
+        
           // setEmployeeData(response.data);
   
           // set_totalPages(Math.ceil(response.data.length / itemsPerPage));
@@ -237,9 +229,9 @@ const employee = () => {
           set_currentItems(data.data);
 
 
-        closeModal()
-        getAll();
-        reset();
+        // closeModal()
+        // getAll();
+        // reset();
       } else {
         Swal.fire({
           position: 'top-right',
@@ -294,14 +286,15 @@ const employee = () => {
 
         getAll();
       } else {
+        const uan = data.data.map((x) => x.ee_uan_no);
         Swal.fire({
-          position: 'top-right',
+          position: 'top',
           icon: 'error',
           toast: true,
-          title: data.message,
-          showConfirmButton: false,
+          title: data.message + " : " + uan,
+          showConfirmButton: true,
           showCloseButton: true,
-          timer: 1500,
+          timer: 10000,
         });
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -314,10 +307,13 @@ const employee = () => {
     }
   }
 
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = async (pageNumber) => {
     setCurrentPage(pageNumber);
-    getAll();
-
+    try {
+      await getAll(); // Assuming getAll() returns a Promise
+    } catch (error) {
+      console.error('Failed to fetch data:', error);
+    }
   };
   const handleMaritalStatusChange = (e) => {
     set_ee_maritial_status(e.target.value);
@@ -391,7 +387,7 @@ const employee = () => {
               </button>
             </div>
             <div className="col-sm-4">
-              <input type="text" className="form-control" placeholder="Search" onChange={searchEmp} />
+              <input type="text" className="form-control" placeholder="Search" onChange={(e) => set_search_emp(e.target.value)} onBlur={searchEmp} />
             </div>
           </div>
 
@@ -589,28 +585,40 @@ const employee = () => {
 
           {/* Pagination Controls */}
           <div className="pagination">
-            <button className="btn btn-primary"
-              disabled={currentPage === 1}
-              onClick={() => handlePageChange(currentPage - 1)}
-            >
-              Previous
-            </button>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <button
-                key={index}
-                onClick={() => handlePageChange(index + 1)}
-                style={{ margin: '0 2px', backgroundColor: currentPage === index + 1 ? '#1e60aa' : 'white', border: '0px' }}
-              >
-                {index + 1}
-              </button>
-            ))}
-            <button className="btn btn-primary"
-              disabled={currentPage === totalPages}
-              onClick={() => handlePageChange(currentPage + 1)}
-            >
-              Next
-            </button>
-          </div>
+      <button
+        className="btn btn-primary"
+        disabled={currentPage === 1}
+        onClick={() => handlePageChange(currentPage - 1)}
+        aria-label="Previous page"
+      >
+        Previous
+      </button>
+      {totalPages > 0 && (
+        Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index + 1)}
+            style={{
+              margin: '0 2px',
+              backgroundColor: currentPage === index + 1 ? '#1e60aa' : 'white',
+              border: '0px',
+              color: currentPage === index + 1 ? 'white' : 'black'
+            }}
+            aria-label={`Page ${index + 1}`}
+          >
+            {index + 1}
+          </button>
+        ))
+      )}
+      <button
+        className="btn btn-primary"
+        disabled={currentPage === totalPages}
+        onClick={() => handlePageChange(currentPage + 1)}
+        aria-label="Next page"
+      >
+        Next
+      </button>
+    </div>
         </section>
       </div>
     </div>

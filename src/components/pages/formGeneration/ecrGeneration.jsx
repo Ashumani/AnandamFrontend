@@ -8,6 +8,10 @@ import Swal from 'sweetalert2';
 
 const ecrGeneration = () => {
 
+  const returnsYear = {
+    "month": [{ "monthNum": 1, "monthText": "Jan" }, { "monthNum": 2, "monthText": "Feb" }, { "monthNum": 3, "monthText": "Mar" }, { "monthNum": 4, "monthText": "Apr" }, { "monthNum": 5, "monthText": "May" }, { "monthNum": 6, "monthText": "Jun" }, { "monthNum": 7, "monthText": "Jul" }, { "monthNum": 8, "monthText": "Aug" }, { "monthNum": 9, "monthText": "Sep" }, { "monthNum": 10, "monthText": "Oct" }, { "monthNum": 11, "monthText": "Nov" }, { "monthNum": 12, "monthText": "Dec" }],
+    "Year": [2020, 2021, 2022, 2023, 2024]
+  }
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [selectedYear, setSelectedYear] = useState(2024);
 
@@ -99,8 +103,10 @@ const ecrGeneration = () => {
                           className="form-select"
                           aria-label="Default select example" value={selectedMonth} onChange={handleMonthChange}
                         >
-                          <option value="M">Jan</option>
-                          <option value="U">Feb</option>
+                          {returnsYear.month.map((returnYear) => (
+                    // eslint-disable-next-line react/jsx-key
+                    <option value={returnYear.monthNum}>{returnYear.monthText}</option>
+                  ))}
                         </select>
 
                       </div>
@@ -109,8 +115,10 @@ const ecrGeneration = () => {
                           className="form-select"
                           aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
                         >
-                          <option value="M">2023</option>
-                          <option value="U">2024</option>
+                          {returnsYear.Year.map((retYear) => (
+                    // eslint-disable-next-line react/jsx-key
+                    <option value={retYear}>{retYear}</option>
+                  ))}
                         </select>
 
                       </div>

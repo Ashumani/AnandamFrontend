@@ -68,6 +68,15 @@ export const fetchAllEmployer = async () => {
     }
 }
 
+export const getMasterList = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/employer/getMasterList`,params,{ headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
 //Empllyee API
 
 export const saveEERegister = async (params) => {
@@ -149,6 +158,15 @@ export const fillEpfReturn = async (params) => {
 export const updateEpfReturn = async (id, params) => {
     try {
         const response = await axios.post(`${BASE_URL}/monthly/updateEpfReturn/`+id,params,{ headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const get3A = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/monthly/get3A`,params,{ headers: header});
         return response.data;
     } catch (error) {
         throw error.response.data.error;

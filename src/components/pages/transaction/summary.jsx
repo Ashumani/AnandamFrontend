@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
-import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary, downlaodFile, fetchEpfReturn } from "../../api/services";
+import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary, downlaodFile, fetchEpfReturn, updateEpfReturn } from "../../api/services";
 import Swal from 'sweetalert2';
 import React, { useRef } from 'react';
 
@@ -248,7 +248,7 @@ const summary = () => {
         "eps_share": er_eps,
         "ncp_days": 0
       }
-      const userData = await fillEpfReturn(eReturn_id, params);
+      const userData = await updateEpfReturn(eReturn_id, params);
 
       if (userData.status === true) {
         Swal.fire({
@@ -455,16 +455,17 @@ const summary = () => {
           timer: 1500,
         });
 
-        getAll();
+        // getAll();
       } else {
+        const uan = data.data.map((x) => x.ee_uan);
         Swal.fire({
-          position: 'top-right',
+          position: 'top',
           icon: 'error',
           toast: true,
-          title: data.message,
-          showConfirmButton: false,
+          title: data.message + " : " + uan,
+          showConfirmButton: true,
           showCloseButton: true,
-          timer: 1500,
+          timer: 10000,
         });
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps

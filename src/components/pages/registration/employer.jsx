@@ -30,6 +30,7 @@ const employer = () => {
   const [Acc10, setAcc10] = useState('');
   const [Acc21, setAcc21] = useState('');
   const [Acc22, setAcc22] = useState('');
+  const [rate, setRate] = useState('');
   const [isUpdate, setIsUpdate] = useState(false);
   // eslint-disable-next-line react-hooks/rules-of-hooks, no-unused-vars
 
@@ -54,7 +55,8 @@ const employer = () => {
         "acc2_rate": Acc2,
         "acc10_rate": Acc10,
         "acc21_rate": Acc21,
-        "acc22_rate": Acc22
+        "acc22_rate": Acc22,
+        "rate":rate
       }
 
       const userData = await erRegister(params);
@@ -87,7 +89,8 @@ const employer = () => {
         "acc2_rate": Acc2,
         "acc10_rate": Acc10,
         "acc21_rate": Acc21,
-        "acc22_rate": Acc22
+        "acc22_rate": Acc22,
+        "rate":rate
       }
 
        await erUpdate(ErId,params);
@@ -125,6 +128,7 @@ const employer = () => {
         setAcc10(response.data.acc10_rate)
         setAcc21(response.data.acc21_rate)
         setAcc22(response.data.acc22_rate)
+        setRate(response.data.rate)
         setErId(response.data.id)
         setLoading(false);
         setIsUpdate(true)
@@ -243,6 +247,10 @@ const employer = () => {
                   <div className="form-group col-sm">
                     <label htmlFor="inputText">Account 22</label>
                     <input type="text" className="form-control" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
+                  </div>
+                  <div className="form-group col-sm">
+                    <label htmlFor="inputText">Rate</label>
+                    <input type="text" className="form-control" required onChange={(e) => setRate(e.target.value)} value={rate} />
                   </div>
                 </div>
               </div>

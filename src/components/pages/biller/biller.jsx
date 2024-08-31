@@ -1,6 +1,7 @@
 import { getEmployer } from '../../api/services';
 import { useState, useEffect } from "react"
 import { getEstId } from "../Auth/authToken";
+import moment from 'moment';
 
 const ecr = () => {
 
@@ -10,9 +11,26 @@ const ecr = () => {
     const [est_doc, setDOC] = useState('');
     const [est_address, setAddress] = useState('');
     const [bill_number, setBillNumber] = useState('');
+    const [rate, set_rate] = useState('');
 
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
+
+    const [checkedPf, setCheckedPf] = useState(false);
+    const [checkedEsic, setCheckedEsic] = useState(false);
+
+    const [checkedCoverage, setCheckedCoverage] = useState(false);
+
+    const [checkedOther, setCheckedOther] = useState(false);
+
+    const [pfAmount, setpfAmount] = useState(0);
+    const [esicAmount, setEsicAmount] = useState(0);
+    const [otherAmount, setOtherAmount] = useState(0);
+    const [totalAmount, setTotalAmount] = useState(0);
+    const [coverageAmount, setCoverageAmount] = useState(0);
+    const [finalBillArray, setFinalBillArray] = useState([]);
+    const [otherReason, setOtherReason] = useState('');
+
     const fetchEmployer = async () => {
         const params = {
             "est_epf_id": est_id
@@ -26,6 +44,7 @@ const ecr = () => {
             //   setMobile(response.data.er_mobile_number)
             setAddress(response.data.est_address)
             setDOC(response.data.est_doc)
+            set_rate(response.data.rate)
 
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -33,6 +52,120 @@ const ecr = () => {
 
         }
     };
+    const calculation = async () => {
+
+        try {
+            let item = {
+                "perticular": "",
+                "rate": "",
+                "amount": "",
+                "billNumber": bill_number
+            }
+
+            if (checkedCoverage && coverageAmount > 0) {
+                item.perticular = "EPF Registration Charge"
+                item.rate = coverageAmount
+                item.amount = coverageAmount
+                setFinalBillArray(prevArray => [...prevArray, item]);
+            }
+
+            if (checkedOther && otherAmount > 0) {
+                item.perticular = otherReason
+                item.rate = otherAmount
+                item.amount = otherAmount
+                setFinalBillArray(prevArray => [...prevArray, item]);
+            }
+
+            const totalAmount = finalBillArray.reduce((total, bill) => total + bill.amount, 0);
+            setTotalAmount(totalAmount);
+            resetModel();
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            // setError('Error fetching data. Please try again.');
+        }
+    };
+
+
+    const handleChange = (event) => {
+        // Define your dates using year-month format
+        const date1 = moment(fromDate, 'YYYY-MM');
+        const date2 = moment(toDate, 'YYYY-MM');
+        // Calculate the difference in months
+        const differenceInMonths = date2.diff(date1, 'months');
+
+        if (event.target.id == "flexSwitchCheckPf" && event.target.checked) {
+            setCheckedPf(event.target.checked);
+            setpfAmount(rate * differenceInMonths)
+            let item = {
+                "perticular": "EPF Challan For Period " + fromDate + " To " + toDate,
+                "rate": rate,
+                "amount": rate * differenceInMonths,
+                "billNumber": bill_number
+            }
+            setFinalBillArray(prevArray => [...prevArray, item]);
+        } else if (event.target.id == "flexSwitchCheckPf" && !event.target.checked) {
+            setCheckedPf(event.target.checked);
+            setpfAmount(0)
+        }
+        if (event.target.id == "flexSwitchCheckEsic" && event.target.checked) {
+            setCheckedEsic(event.target.checked);
+            setEsicAmount(rate * differenceInMonths)
+            let item = {
+                "perticular": "ESIC Challan For Period " + fromDate + " To " + toDate,
+                "rate": rate,
+                "amount": rate * differenceInMonths,
+                "billNumber": bill_number
+            }
+            setFinalBillArray(prevArray => [...prevArray, item]);
+        } else if (event.target.id == "flexSwitchCheckEsic" && !event.target.checked) {
+            setCheckedEsic(event.target.checked);
+            setEsicAmount(0)
+        }
+
+        if (event.target.id == "flexSwitchCheckCoverage") {
+            setCheckedCoverage(event.target.checked);
+            setCoverageAmount(0)
+        }
+        if (event.target.id == "flexSwitchCheckOther") {
+            setCheckedOther(event.target.checked);
+            setOtherAmount(0)
+        }
+    };
+
+    const addBill = () => {
+        resetModel()
+    };
+
+    const resetModel = () => {
+
+        setFromDate('');
+        setToDate('');
+        setCheckedPf(false);
+        setCheckedEsic(false);
+        setCheckedCoverage(false);
+        setCheckedOther(false);
+        setpfAmount(0);
+    };
+
+    const resetPage = () => {
+
+        setEstName('');
+        setEstId('');
+        setErName('');
+        setDOC('');
+        setAddress('');
+        setBillNumber('');
+        set_rate('');
+        setFromDate('');
+        setToDate('');
+        setCheckedPf(false);
+        setCheckedEsic(false);
+        setCheckedCoverage(false);
+        setCheckedOther(false);
+        setpfAmount(0);
+    };
+
     return (
 
         <div className="main-container">
@@ -51,13 +184,11 @@ const ecr = () => {
                                     <div className="row">
                                         <div className="col-sm">
                                             <label htmlFor="inputText" >Est Id</label>
-                                            <input type="text" className="form-control"  onChange={(e) => setEstId(e.target.value)} value={est_id} />
-
+                                            <input type="text" className="form-control" onChange={(e) => setEstId(e.target.value)} value={est_id} />
                                         </div>
                                         <div className="col-sm">
                                             <label htmlFor="inputText" >Bill Number</label>
-                                            <input type="text" className="form-control"  onChange={(e) => setBillNumber(e.target.value)} value={bill_number} />
-
+                                            <input type="text" className="form-control" onChange={(e) => setBillNumber(e.target.value)} value={bill_number} />
                                         </div>
                                         <div className="col-sm-2">
                                             <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "30px 10px 10px 10px" }} onClick={fetchEmployer}>Get Details</button>
@@ -86,14 +217,29 @@ const ecr = () => {
                                 <div className="row">
                                     <div className="col-sm">
                                         <label htmlFor="inputText" >From</label>
-                                        <input type="date" className="form-control" required onChange={(e) => setFromDate(e.target.value)} value={fromDate} />
+                                        <input type="month" className="form-control" required onChange={(e) => setFromDate(e.target.value)} value={fromDate} />
                                     </div>
                                     <div className="col-sm">
                                         <label htmlFor="inputText" >To</label>
-                                        <input type="date" className="form-control" required onChange={(e) => setToDate(e.target.value)} value={toDate} />
+                                        <input type="month" className="form-control" required onChange={(e) => setToDate(e.target.value)} value={toDate} />
                                     </div>
-                                    <div className="col-sm-2">
+                                    <div className="col-sm">
                                         <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Next</button>
+                                    </div>
+                                    <div className="col-sm">
+                                        <button type="button" className="btn btn-outline-primary btn-block"  style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Save</button>
+                                    </div>
+                                    <div className="col-sm">
+                                        <button type="button" className="btn btn-outline-primary btn-block"  style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Make PDF</button>
+                                    </div>
+                                    <div className="col-sm">
+                                        <button type="button" className="btn btn-outline-primary btn-block"  style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Email PDF</button>
+                                    </div>
+                                    <div className="col-sm">
+                                        <button type="button" className="btn btn-outline-primary btn-block"  style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Print PDF</button>
+                                    </div>
+                                    <div className="col-sm">
+                                        <button type="button" className="btn btn-outline-primary btn-block"  style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Received</button>
                                     </div>
                                 </div>
 
@@ -102,17 +248,92 @@ const ecr = () => {
                                     <div className="modal-dialog" role="document">
                                         <div className="modal-content">
                                             <div className="modal-header">
-                                                <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                <h5 className="modal-title" id="exampleModalLabel">Bill Parameter</h5>
                                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div className="modal-body">
-                                                ...
+                                                <div className='row'>
+                                                    <div className='col-sm'>
+                                                        <div className="form-check form-switch">
+                                                            <input className="form-check-input" type="checkbox" id="flexSwitchCheckPf" checked={checkedPf} onChange={handleChange} />
+                                                            <label className="form-check-label">PF Challan</label>
+                                                        </div>
+                                                    </div><div className='col-md'>
+                                                        <div className="form-check form-switch">
+                                                            {/* <input className="form-control" type="text" id="flexSwitchCheckDefault" /> */}
+                                                            <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control float-right" type="text" id="flexSwitchCheckDefault" disabled value={pfAmount} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className='row'>
+                                                    <div className='col-sm'>
+                                                        <div className="form-check form-switch">
+                                                            <input className="form-check-input" type="checkbox" id="flexSwitchCheckEsic" checked={checkedEsic} onChange={handleChange} />
+                                                            <label className="form-check-label">ESIC Challan</label>
+                                                        </div>
+                                                    </div><div className='col-md'>
+                                                        <div className="form-check form-switch">
+                                                            {/* <input className="form-control" type="text" id="flexSwitchCheckDefault" /> */}
+                                                            {/* <label className="form-check-label float-right">{esicAmount}</label> */}
+                                                            <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control float-right" type="text" id="flexSwitchCheckDefault" disabled value={esicAmount} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className='row'>
+                                                    <div className='col-sm'>
+                                                        <div className="form-check form-switch">
+                                                            <input className="form-check-input" type="checkbox" id="flexSwitchCheckCoverage" checked={checkedCoverage} onChange={handleChange} />
+                                                            <label className="form-check-label">Coverage Amount</label>
+                                                        </div>
+                                                    </div>
+                                                    <div className='col-sm-4'>
+                                                        {checkedCoverage ? (
+                                                            <div className="form-check form-switch">
+                                                                <input style={{ outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control float-right" type="text" id="flexSwitchCheckDefault" disabled={!checkedCoverage} onChange={(e) => setCoverageAmount(e.target.value)} value={coverageAmount} />
+                                                            </div>
+
+                                                        ) : (
+                                                            <div className="form-check form-switch">
+                                                                <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control float-right" type="text" id="flexSwitchCheckDefault" disabled={!checkedCoverage} onChange={(e) => setCoverageAmount(e.target.value)} value={coverageAmount} />
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                <div className='row mt-2'>
+                                                    <div className='col-sm-2'>
+                                                        <div className="form-check form-switch">
+                                                            <input className="form-check-input" type="checkbox" id="flexSwitchCheckOther" checked={checkedOther} onChange={handleChange} />
+                                                            <label className="form-check-label">Others</label>
+                                                        </div>
+                                                    </div>
+                                                    <div className='col-sm-6'>
+                                                        {checkedOther && (
+                                                            <div className="form-check form-switch">
+                                                                <input style={{ outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control float-right" type="text" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => setOtherReason(e.target.value)} />
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <div className='col-sm-4'>
+                                                        {checkedOther ? (
+                                                            <div className="form-check form-switch">
+                                                                <input style={{ outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control" type="text" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => setOtherAmount(e.target.value)} value={otherAmount} />
+                                                            </div>
+                                                        ) : (
+                                                            <div className="form-check form-switch">
+                                                                <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control" type="text" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => setOtherAmount(e.target.value)} value={otherAmount} />
+                                                            </div>
+                                                        )}
+
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <h5><p className="float-right">Total : 0</p></h5>
                                             </div>
                                             <div className="modal-footer">
                                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="button" className="btn btn-primary">Save changes</button>
+                                                <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={calculation}>Add</button>
                                             </div>
                                         </div>
                                     </div>
@@ -125,28 +346,36 @@ const ecr = () => {
                                             <th scope="col">#</th>
                                             <th scope="col">Perticular</th>
                                             <th scope="col">Rate</th>
-                                            <th scope="col">Ammount</th>
-
+                                            <th scope="col">Amount</th>
+                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>EPF Challan For priod Mar-2023 To Apr-2024</td>
-                                            <td>1000</td>
-                                            <td>12000</td>
-
-                                        </tr>
-
+                                        {finalBillArray.map((employee, index) => (
+                                            <tr key={index}>
+                                                <th scope="row">{index}</th>
+                                                <th scope="row">{employee.perticular}</th>
+                                                <td>{employee.rate}</td>
+                                                <td>{employee.amount}</td>
+                                                <td>
+                                                    <div className="d-flex align-items-center">
+                                                        <button className="btn btn-light">
+                                                            <i className="bi bi-trash text-danger"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th id="total" colSpan="3">Total :</th>
-                                            <td>12000</td>
+                                            <th id="total" colSpan="3">Total : </th>
+                                            <td>{totalAmount}</td>
+                                            <td></td>
                                         </tr>
                                     </tfoot>
                                 </table>
-                                <div className="row">
+                                {/* <div className="row">
                                     <div className="col-sm-2">
                                         <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "2px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Save</button>
                                     </div>
@@ -159,7 +388,10 @@ const ecr = () => {
                                     <div className="col-sm-2">
                                         <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "2px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Print PDF</button>
                                     </div>
-                                </div>
+                                    <div className="col-sm-2">
+                                        <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "2px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Received</button>
+                                    </div>
+                                </div> */}
                             </div>
                         </div>
 
