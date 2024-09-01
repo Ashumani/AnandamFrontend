@@ -5,6 +5,7 @@ import { getErId, getEstId } from "../Auth/authToken";
 import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary, downlaodFile, fetchEpfReturn, updateEpfReturn } from "../../api/services";
 import Swal from 'sweetalert2';
 import React, { useRef } from 'react';
+import moment from "moment";
 
 const summary = () => {
 
@@ -190,6 +191,7 @@ const summary = () => {
         "eps_share": er_eps,
         "ncp_days": 0
       }
+
       const userData = await fillEpfReturn(params);
 
       if (userData.status === true) {
@@ -298,7 +300,7 @@ const summary = () => {
       const userData = await getEpfReturnByMonth(params);
 
       if (userData.status === true) {
-        
+
         await downlaodFile(userData.url);
         // window.URL.revokeObjectURL(url);
         Swal.fire({
@@ -345,8 +347,16 @@ const summary = () => {
       set_ee_eps_wages(epf_wages < 15000 ? epf_wages : 15000)
       set_ee_edli_wages(epf_wages < 15000 ? epf_wages : 15000)
       set_ee_epf(Math.round(epf_wages * userData.data.ee_epf_rate / 100))
-      set_er_epf(Math.floor(epf_wages * userData.data.er_diff_rate / 100))
-      set_er_eps(Math.round(epf_wages * userData.data.er_eps_rate / 100))
+      let years = moment().diff(ee_dob, 'years');
+      if (years > 58) {
+        set_er_epf(Math.floor(epf_wages * userData.data.ee_epf_rate / 100))
+        set_er_eps(0)
+
+      } else {
+        set_er_epf(Math.floor(epf_wages * userData.data.er_diff_rate / 100))
+        set_er_eps(Math.round(epf_wages * userData.data.er_eps_rate / 100))
+
+      }
 
     } catch (error) {
       console.error('Login error ', error);
@@ -806,10 +816,10 @@ const summary = () => {
                         <button type="button" disabled={isUpdate} className="btn btn-outline-primary btn-block" onClick={saveReturns}>Save</button>
                       </div>
                       <div className="col-sm">
-                        <button type="button" disabled={!isUpdate} className="btn btn-outline-primary btn-block"  onClick={updateReturns}>Update</button>
+                        <button type="button" disabled={!isUpdate} className="btn btn-outline-primary btn-block" onClick={updateReturns}>Update</button>
                       </div>
                       <div className="col-sm">
-                        <button type="button"  className="btn btn-outline-primary btn-block">Reset</button>
+                        <button type="button" className="btn btn-outline-primary btn-block">Reset</button>
                       </div>
                       <div className="col-sm">
                         <button type="button" className="btn btn-outline-primary btn-block" data-dismiss="modal" aria-label="Close" onClick={closeModal} >Close</button>
