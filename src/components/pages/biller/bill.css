@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+  
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  /* th {
+    background-color: #f0f0f0;
+  } */
+
+  .text-black {
+    color: black;
+  }
+
+  .text-head{
+    background-color:#1e9695
+  }
+
+  .anandamTitle{
+    font-style: italic;
+    font-family: 'Bradley Hand ITC';
+  }

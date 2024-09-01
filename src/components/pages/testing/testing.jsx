@@ -1,67 +1,38 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const testing = () => {
-  const [data, setData] = useState([]);
-  const [file, setFile] = useState(null);
+  const [pdfData, setPdfData] = useState({
+    title: 'Sample PDF',
+    text: 'This is a sample PDF generated using React.',
+  });
 
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-  };
-
-  const handleUpload = async () => {
-    if (!file) {
-      alert('Please choose a file first.');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('file', file);
-
+  const generatePdf = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      setData(response.data);
+      // Create a new jsPDF instance
+      const pdf = new jsPDF();
+
+      // Add the title to the PDF
+      pdf.setFontSize(24);
+      pdf.text(pdfData.title, 10, 10);
+
+      // Add the text to the PDF
+      pdf.setFontSize(14);
+      pdf.text(pdfData.text, 10, 20);
+
+      // Save the PDF
+      pdf.save('sample.pdf');
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error('Error generating PDF:', error);
     }
   };
+
   return (
     <div>
-      <div className="main-container">
-        <div className='main-title'>
-          <h3>EPF RETURN</h3>
-        </div>
-        <section className="section">
-        <div>
-      <input type="file" accept=".xlsx, .xls" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload</button>
-      {data.length > 0 && (
-        <table>
-          <thead>
-            <tr>
-              {Object.keys(data[0]).map((key) => (
-                <th key={key}>{key}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((row, index) => (
-              <tr key={index}>
-                {Object.values(row).map((value, idx) => (
-                  <td key={idx}>{value}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
-        </section>
-      </div>
+      <h1>{pdfData.title}</h1>
+      <p>{pdfData.text}</p>
+      <button onClick={generatePdf}>Generate PDF</button>
     </div>
   );
 };

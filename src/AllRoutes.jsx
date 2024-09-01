@@ -11,6 +11,7 @@ import from5A from './components/pages/formGeneration/form5AGeneration'
 import kyc from './components/pages/formGeneration/kycGeneration'
 import billing from './components/pages/biller/biller'
 import billingMaster from './components/pages/biller/billMaster'
+import bill from './components/pages/biller/BillComponent'
 import standalone from "./components/pages/standaloneHome/standalone"
 import download from "./components/pages/download/download"
 import testing from "./components/pages/testing/testing"
@@ -37,6 +38,7 @@ const AllRoutes = () => {
         <Route exact path='/auth/dashboard/salary' Component={salary}/>
         <Route exact path='/auth/dashboard/master' Component={master}/>
         <Route exact path='/auth/dashboard/testing' Component={testing}/>
+        <Route exact path='/auth/dashboard/bill/pdf' Component={bill}/>
     </Routes>
   )
 }
