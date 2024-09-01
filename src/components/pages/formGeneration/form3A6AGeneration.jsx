@@ -120,6 +120,7 @@ const form3A6AGeneration = () => {
                       ))}
                     </tbody>
                   </table>
+                  
                 </div>
               </div>
             </div>

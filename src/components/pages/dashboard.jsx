@@ -5,8 +5,8 @@ import { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill }
   from 'react-icons/bs'
 import { BarChart, PieChart, Pie, AreaChart, Area, Bar, ComposedChart, ScatterChart, Scatter, ZAxis, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line }
   from 'recharts';
-import Sidebar from '../sidebar';
-import Header from '../header';
+import { getCardsCount } from "../api/services";
+import { useState, useEffect } from "react"
 
 
 const dashboard = () => {
@@ -59,10 +59,50 @@ const dashboard = () => {
   const data1 = [{ name: "A", value: 100 }, { name: "B", value: 200 }, { name: "C", value: 300 }, { name: "D", value: 400 }]
   const data2 = [{ name: "A", value: 200 }, { name: "B", value: 300 }, { name: "C", value: 400 }, { name: "D", value: 500 }]
 
+  const [cardResponse, setCardResponse] = useState('')
+
+  const [totalepf, settotalepf] = useState('')
+  const [epfchallancreated, setepfchallancreated] = useState('')
+  const [totalesic, settotalesic] = useState('')
+  const [esicchallancreated, setesicchallancreated] = useState('')
+  const [totaldsc, settotaldsc] = useState('')
+  const [expiredsc, setexpiredsc] = useState('')
+  useEffect(() => {
+    const fetchData = async () => {
+      await getAll();
+    };
+
+    fetchData();
+
+  }, []);
+
+  const getAll = async () => {
+    // api call
+
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await getCardsCount();
+      if (response.status == true) {
+        settotalepf(response.data[0].totalepf)
+        setepfchallancreated(response.data[0].epfchallancreated)
+        settotalesic(response.data[0].totalesic)
+        setesicchallancreated(response.data[0].esicchallancreated)
+        settotaldsc(response.data[0].totaldsc)
+        setexpiredsc(response.data[0].expiredsc)
+      }
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // setError('Error fetching data. Please try again.');
+      // setLoading(false);
+    }
+  };
+
   return (
     <div>
-     
-      
+
+
 
       <main className='main-container'>
         <div className='main-title'>
@@ -75,28 +115,28 @@ const dashboard = () => {
               <h3>Clients</h3>
               <BsFillArchiveFill className='card_icon' />
             </div>
-            <h1>300</h1>
+            <h1>{totalepf}</h1>
           </div>
           <div className='card cardprop2'>
             <div className='card-inner'>
               <h3>EPF</h3>
               <BsFillGrid3X3GapFill className='card_icon' />
             </div>
-            <h1>12/150</h1>
+            <h1>{totalepf}/{epfchallancreated}</h1>
           </div>
           <div className='card cardprop3'>
             <div className='card-inner'>
               <h3>ESIC</h3>
               <BsPeopleFill className='card_icon' />
             </div>
-            <h1>33/150</h1>
+            <h1>{totalesic}/{esicchallancreated}</h1>
           </div>
           <div className='card cardprop4'>
             <div className='card-inner'>
               <h3>DSC</h3>
               <BsFillBellFill className='card_icon' />
             </div>
-            <h1>42</h1>
+            <h1>{totaldsc}/{expiredsc}</h1>
           </div>
         </div>
 

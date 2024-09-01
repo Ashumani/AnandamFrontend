@@ -553,6 +553,36 @@ const summary = () => {
                   {/* <Link to="/auth/dashboard/monthlypf"><span >Next</span></Link> */}
                 </button>
               </div>
+              <div className="col-sm-2">
+                <button
+                  type="file"
+                  className="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#importReturn"
+                >
+                  Import
+                </button>
+              </div>
+
+            </div>
+            <div className="modal fade" id="importReturn" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">Uplaod FIles</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div className="modal-body">
+                    <div className="col-md-12">
+                      <input className="form-control" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
+                    </div>
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" className="btn btn-primary" onClick={uploadMonthly}>Upload</button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <h5 className="mt-4">EPF Summary </h5>

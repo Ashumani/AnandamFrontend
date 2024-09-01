@@ -217,7 +217,32 @@ export const getSummary = async (id) => {
     }
 }
 
+export const createBill = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/bill/getAllBill`, params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 
+export const getAllBill = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/bill/getAllBill`, params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const getCardsCount = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/dashboard/getCardsCount`, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 export const downlaodFile = async (url) => {
     try {
        

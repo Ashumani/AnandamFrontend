@@ -1,7 +1,8 @@
-import { getEmployer } from '../../api/services';
+import { createBill, getEmployer } from '../../api/services';
 import { useState, useEffect } from "react"
 import { getEstId } from "../Auth/authToken";
 import moment from 'moment';
+import Swal from 'sweetalert2';
 
 const ecr = () => {
 
@@ -133,8 +134,44 @@ const ecr = () => {
         }
     };
 
-    const addBill = () => {
-        resetModel()
+    const addBill = async () => {
+        let params = {
+            "est_epf_id": est_id,
+            "est_esic_id": "12345678",
+            "rate":rate,
+            "amount": totalAmount,
+            "billData": finalBillArray
+        }
+        try {
+            // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+            const data = await createBill(params);
+            if (data.status === true) {
+                Swal.fire({
+                  position: 'top-right',
+                  icon: 'success',
+                  toast: true,
+                  title: data.message,
+                  showConfirmButton: false,
+                  showCloseButton: true,
+                  timer: 1500,
+                });
+              } else {
+                Swal.fire({
+                  position: 'top',
+                  icon: 'error',
+                  toast: true,
+                  title: data.message,
+                  showConfirmButton: true,
+                  showCloseButton: true,
+                  timer: 1500,
+                });
+              }
+           
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            // setError('Error fetching data. Please try again.');
+
+        }
     };
 
     const resetModel = () => {
@@ -227,7 +264,7 @@ const ecr = () => {
                                         <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Next</button>
                                     </div>
                                     <div className="col-sm">
-                                        <button type="button" className="btn btn-outline-primary btn-block"  style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Save</button>
+                                        <button type="button" className="btn btn-outline-primary btn-block"  style={{ "margin": "30px 5px 10px 10px" }} onClick={addBill}>Save</button>
                                     </div>
                                     <div className="col-sm">
                                         <button type="button" className="btn btn-outline-primary btn-block"  style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Make PDF</button>

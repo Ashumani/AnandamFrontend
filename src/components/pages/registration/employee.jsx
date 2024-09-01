@@ -11,7 +11,7 @@ const employee = () => {
   const itemsPerPage = 5; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, set_totalPages] = useState(1);
-  const [search_emp, set_search_emp]=useState('');
+  const [search_emp, set_search_emp] = useState('');
 
   // Get current items based on the current page
   const [startIndex, set_startIndex] = useState('');
@@ -45,19 +45,19 @@ const employee = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getAll();
+      await getAll(1);
     };
 
     fetchData();
 
   }, []);
 
-  const getAll = async () => {
+  const getAll = async (pageNumber) => {
     // api call
     const params = {
       "est_epf_id": getEstId(),
       "limit": itemsPerPage,
-      "offset": currentPage
+      "offset": pageNumber
     }
     try {
       // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
@@ -104,10 +104,8 @@ const employee = () => {
         "ee_epf_wages": ee_epf_wages,
         "ee_sub_id": ee_sub_id,
       }
-
-
       await saveEERegister(params);
-      await getAll();
+      await getAll(1);
       // eslint-disable-next-line react-hooks/exhaustive-deps
       reset();
 
@@ -202,7 +200,7 @@ const employee = () => {
         });
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-     
+
 
     } catch (error) {
       console.error('Login error ', error);
@@ -212,21 +210,21 @@ const employee = () => {
   const searchEmp = async () => {
     // api call
     try {
-      const params ={
-        "est_id":getErId(),
-        "search":search_emp
-    }
+      const params = {
+        "est_id": getErId(),
+        "search": search_emp
+      }
       const data = await searchEmployee(params);
       if (data.status === true) {
-        
-          // setEmployeeData(response.data);
-  
-          // set_totalPages(Math.ceil(response.data.length / itemsPerPage));
-  
-          // // Get current items based on the current page
-          // set_startIndex((currentPage - 1) * itemsPerPage);
-          set_totalPages(Math.ceil(data.count / itemsPerPage));
-          set_currentItems(data.data);
+
+        // setEmployeeData(response.data);
+
+        // set_totalPages(Math.ceil(response.data.length / itemsPerPage));
+
+        // // Get current items based on the current page
+        // set_startIndex((currentPage - 1) * itemsPerPage);
+        set_totalPages(Math.ceil(data.count / itemsPerPage));
+        set_currentItems(data.data);
 
 
         // closeModal()
@@ -244,7 +242,7 @@ const employee = () => {
         });
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-     
+
 
     } catch (error) {
       console.error('Login error ', error);
@@ -284,7 +282,7 @@ const employee = () => {
           timer: 1500,
         });
 
-        getAll();
+        getAll(1);
       } else {
         const uan = data.data.map((x) => x.ee_uan_no);
         Swal.fire({
@@ -310,7 +308,7 @@ const employee = () => {
   const handlePageChange = async (pageNumber) => {
     setCurrentPage(pageNumber);
     try {
-      await getAll(); // Assuming getAll() returns a Promise
+      await getAll(pageNumber); // Assuming getAll() returns a Promise
     } catch (error) {
       console.error('Failed to fetch data:', error);
     }
@@ -512,7 +510,7 @@ const employee = () => {
                 <div className="modal-footer">
 
                   {/* <button type="button" className="btn btn-secondary" data-dismiss="modal" aria-label="Close" onClick={closeModal}>Close</button> */}
-                  <button type="button" className="btn btn-secondary" data-dismiss="modal"  onClick={closeModal}>Close</button>
+                  <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={closeModal}>Close</button>
                   {!isUpdate ? (
                     <button type="button" className="btn btn-outline-primary" onClick={saveEEDetails}>
                       Save
@@ -529,7 +527,7 @@ const employee = () => {
           </div>
 
           <div className="table-responsive">
-            <table className="table table-striped table-hover text-center">
+            <table className="table table-sm table-striped table-hover text-center">
               <thead>
                 <tr>
                   <th>#</th>
@@ -569,7 +567,7 @@ const employee = () => {
                         <button className="btn btn-light" onClick={() => { fetchEmployee(employee.id) }}>
                           <i className="bi bi-eye text-info"></i>
                         </button>
-                        <button className="btn btn-light mx-1"  onClick={() => { fetchEmployee(employee.id) }}>
+                        <button className="btn btn-light mx-1" onClick={() => { fetchEmployee(employee.id) }}>
                           <i className="bi bi-pencil-fill text-info"></i>
                         </button>
                         <button className="btn btn-light" disabled>
@@ -585,40 +583,40 @@ const employee = () => {
 
           {/* Pagination Controls */}
           <div className="pagination">
-      <button
-        className="btn btn-primary"
-        disabled={currentPage === 1}
-        onClick={() => handlePageChange(currentPage - 1)}
-        aria-label="Previous page"
-      >
-        Previous
-      </button>
-      {totalPages > 0 && (
-        Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index}
-            onClick={() => handlePageChange(index + 1)}
-            style={{
-              margin: '0 2px',
-              backgroundColor: currentPage === index + 1 ? '#1e60aa' : 'white',
-              border: '0px',
-              color: currentPage === index + 1 ? 'white' : 'black'
-            }}
-            aria-label={`Page ${index + 1}`}
-          >
-            {index + 1}
-          </button>
-        ))
-      )}
-      <button
-        className="btn btn-primary"
-        disabled={currentPage === totalPages}
-        onClick={() => handlePageChange(currentPage + 1)}
-        aria-label="Next page"
-      >
-        Next
-      </button>
-    </div>
+            <button
+              className="btn btn-primary"
+              disabled={currentPage === 1}
+              onClick={() => handlePageChange(currentPage - 1)}
+              aria-label="Previous page"
+            >
+              Previous
+            </button>
+            {totalPages > 0 && (
+              Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handlePageChange(index + 1)}
+                  style={{
+                    margin: '0 2px',
+                    backgroundColor: currentPage === index + 1 ? '#1e60aa' : 'white',
+                    border: '0px',
+                    color: currentPage === index + 1 ? 'white' : 'black'
+                  }}
+                  aria-label={`Page ${index + 1}`}
+                >
+                  {index + 1}
+                </button>
+              ))
+            )}
+            <button
+              className="btn btn-primary"
+              disabled={currentPage === totalPages}
+              onClick={() => handlePageChange(currentPage + 1)}
+              aria-label="Next page"
+            >
+              Next
+            </button>
+          </div>
         </section>
       </div>
     </div>

@@ -1,33 +1,70 @@
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken"
 import { Link } from "react-router-dom";
+import { getAllBill } from "../../api/services";
 
 const billMaster = () => {
- // Sample data
- const data = [
-  { id: 1, company: 'Anandam', estId: 'NGNAG0012345000', particular: 'EPF Challan For Period Mar-23 To Apr-24', rate: 1000, amount: 12000, paymentMode: 'Cash', status: 'Paid', discount: 0 },
-  { id: 2, company: 'Anandam', estId: 'NGNAG0012345000', particular: 'EPF Challan For Period Mar-20 To Apr-24', rate: 1000, amount: 12000, paymentMode: 'Cash', status: 'Paid', discount: 0 },
-  { id: 3, company: 'Anandam', estId: 'NGNAG0012345000', particular: 'EPF Challan For Period Mar-21 To Apr-24', rate: 1000, amount: 12000, paymentMode: 'Cash', status: 'Paid', discount: 0 },
-  // Add more data as needed
-];
+  // Sample data
+  const data = [
+    { id: 1, company: 'Anandam', estId: 'NGNAG0012345000', particular: 'EPF Challan For Period Mar-23 To Apr-24', rate: 1000, amount: 12000, paymentMode: 'Cash', status: 'Paid', discount: 0 },
+    { id: 2, company: 'Anandam', estId: 'NGNAG0012345000', particular: 'EPF Challan For Period Mar-20 To Apr-24', rate: 1000, amount: 12000, paymentMode: 'Cash', status: 'Paid', discount: 0 },
+    { id: 3, company: 'Anandam', estId: 'NGNAG0012345000', particular: 'EPF Challan For Period Mar-21 To Apr-24', rate: 1000, amount: 12000, paymentMode: 'Cash', status: 'Paid', discount: 0 },
+    // Add more data as needed
+  ];
+  const itemsPerPage = 5; // Number of items per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, set_totalPages] = useState(1);
 
-const itemsPerPage = 1; // Number of items per page
-const [currentPage, setCurrentPage] = useState(1);
+  // Get current items based on the current page
+  const [startIndex, set_startIndex] = useState('');
+  const [currentItems, set_currentItems] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      await getAll(0);
+    };
 
-const totalPages = Math.ceil(data.length / itemsPerPage);
+    fetchData();
 
-// Get current items based on the current page
-const startIndex = (currentPage - 1) * itemsPerPage;
-const currentItems = data.slice(startIndex, startIndex + itemsPerPage);
+  }, []);
 
-const handlePageChange = (pageNumber) => {
-  setCurrentPage(pageNumber);
-};
+  const getAll = async (pageNumber) => {
+    // api call
+    const params = {
+      "est_epf_id": getEstId(),
+      "limit": itemsPerPage,
+      "offset": pageNumber
+    }
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await getAllBill(params);
+      if (response.status == true) {
+        // setEmployeeData(response.data);
 
-  
+        set_totalPages(Math.ceil(response.data.length / itemsPerPage));
+
+        // Get current items based on the current page
+        set_startIndex((currentPage - 1) * itemsPerPage);
+        set_totalPages(Math.ceil(response.count / itemsPerPage));
+        set_currentItems(response.data);
+
+      }
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // setError('Error fetching data. Please try again.');
+      // setLoading(false);
+    }
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+
   return (
     <div>
-      
+
       <div className="main-container">
         <div className='main-title'>
           <h3>Billing</h3>
@@ -69,37 +106,50 @@ const handlePageChange = (pageNumber) => {
                       </div>
                     </div>
                   </form>
-
-                  <table className="table table-striped">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Company Name</th>
-                        <th scope="col">Est Id</th>
-                        <th scope="col">Particular</th>
-                        <th scope="col">Rate</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Payment Mode</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Discount</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {currentItems.map(item => (
-                        <tr key={item.id}>
-                          <th scope="row">{item.id}</th>
-                          <td>{item.company}</td>
-                          <td>{item.estId}</td>
-                          <td>{item.particular}</td>
-                          <td>{item.rate}</td>
-                          <td>{item.amount}</td>
-                          <td>{item.paymentMode}</td>
-                          <td>{item.status}</td>
-                          <td>{item.discount}</td>
+                  <div className="table-responsive">
+                    <table className="table table-sm table-hover">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Company Name</th>
+                          <th scope="col">Est Id</th>
+                          <th scope="col">Particular</th>
+                          <th scope="col">Rate</th>
+                          <th scope="col">Amount</th>
+                          <th scope="col">Payment Mode</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Discount</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {currentItems.map(item => (
+                          <tr key={item.id}>
+                            <th scope="row">{item.id}</th>
+                            <td>{item.est_name}</td>
+                            <td>{item.est_epf_id}</td>
+                            {/* <td>{item.particular}</td> */}
+                            <td>
+                              <table>
+                                <tbody>
+                                  {item.billData.map(billItem => (
+                                    <tr key={billItem.bill_id}>
+                                      <td>{billItem.perticular}</td>
+                                      <td>{billItem.amount}</td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </td>
+                            <td>{item.rate}</td>
+                            <td>{item.amount}</td>
+                            <td>{item.paymentMode}</td>
+                            <td>{item.status}</td>
+                            <td>{item.discount}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
 
                   {/* Pagination Controls */}
                   <div className="pagination">
@@ -110,10 +160,10 @@ const handlePageChange = (pageNumber) => {
                       Previous
                     </button>
                     {Array.from({ length: totalPages }, (_, index) => (
-                      <button 
+                      <button
                         key={index}
                         onClick={() => handlePageChange(index + 1)}
-                        style={{ margin: '0 2px', backgroundColor: currentPage === index + 1 ? '#1e60aa' : 'white' , border:'0px'}}
+                        style={{ margin: '0 2px', backgroundColor: currentPage === index + 1 ? '#1e60aa' : 'white', border: '0px' }}
                       >
                         {index + 1}
                       </button>
