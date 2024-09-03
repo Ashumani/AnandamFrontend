@@ -145,6 +145,16 @@ export const getEpfReturnByMonth = async (params) => {
     }
 }
 
+export const generateECR = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/monthly/generateECR`,params,{ headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+
 
 export const fillEpfReturn = async (params) => {
     try {
@@ -219,7 +229,7 @@ export const getSummary = async (id) => {
 
 export const createBill = async (params) => {
     try {
-        const response = await axios.post(`${BASE_URL}/bill/getAllBill`, params, { headers: header});
+        const response = await axios.post(`${BASE_URL}/bill/create`, params, { headers: header});
         return response.data;
     } catch (error) {
         throw error.response.data.error;
@@ -234,6 +244,16 @@ export const getAllBill = async (params) => {
         throw error.response.data.error;
     }
 }
+
+export const getBill = async (id) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/bill/getBill/`+id, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
 
 export const getCardsCount = async () => {
     try {

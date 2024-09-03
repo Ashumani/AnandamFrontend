@@ -8,7 +8,7 @@ import moment from 'moment-timezone';
 import React, { useRef } from 'react';
 const employee = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const itemsPerPage = 5; // Number of items per page
+  const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, set_totalPages] = useState(1);
   const [search_emp, set_search_emp] = useState('');
@@ -547,9 +547,12 @@ const employee = () => {
                 </tr>
               </thead>
               <tbody>
-                {currentItems.map((employee, index) => (
+                {currentItems.map((employee, index) =>{
+                  const globalIndex = currentPage * itemsPerPage - itemsPerPage + index;
+                   return(
+                 
                   <tr key={employee.id}>
-                    <th >{index + 1}</th>
+                    <th >{globalIndex + 1}</th>
                     <td>{employee.ee_uan_no}</td>
                     <td>{employee.ee_pf_no}</td>
                     <td>******</td>
@@ -576,7 +579,7 @@ const employee = () => {
                       </div>
                     </td>
                   </tr>
-                ))}
+                )})}
               </tbody>
             </table>
           </div>

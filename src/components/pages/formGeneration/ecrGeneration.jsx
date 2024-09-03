@@ -6,6 +6,7 @@ import { downlaodFile, getEpfReturnByMonth } from "../../api/services";
 import Swal from 'sweetalert2';
 
 
+
 const ecrGeneration = () => {
 
   const returnsYear = {
@@ -15,38 +16,58 @@ const ecrGeneration = () => {
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [selectedYear, setSelectedYear] = useState(2024);
 
-  const itemsPerPage = 5; // Number of items per page
+  const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, set_totalPages] = useState(1);
 
   // Get current items based on the current page
   const [startIndex, set_startIndex] = useState('');
   const [currentItems, set_currentItems] = useState([]);
-
-
-
   const [employeeData, setEmployeeData] = useState([]);
   const [ecrUrl, set_EcrURL] = useState('');
   const [isDownload, set_isDownload] = useState(false);
 
-  const getReturnByMonth = async () => {
+  const [total_gross_wages, set_total_gross_wages] = useState(0)
+  const [total_epf_wages, set_total_epf_wages] = useState(0)
+  const [total_edli_wages, set_total_edli_wages] = useState(0)
+  const [total_eps_wages, set_total_eps_wages] = useState(0)
+  const [total_ee_share, set_total_ee_share] = useState(0)
+  const [total_eps_share, set_total_eps_share] = useState(0)
+  const [total_diff_share, set_total_diff_share] = useState(0)
+  const [total_ncp_days, set_total_ncp_days] = useState(0)
+  const [total_refund, set_total_refund] = useState(0)
+
+  const getReturnByMonth = async (pageNumber) => {
     // api call
     try {
       const params = {
         "est_id": getErId(),
         "ee_id": 0,
         "month": selectedMonth,
-        "year": selectedYear
+        "year": selectedYear,
+        "limit": itemsPerPage,
+        "offset": pageNumber
       }
       const userData = await getEpfReturnByMonth(params);
       set_isDownload(true)
       set_EcrURL(userData.url)
       setEmployeeData(userData.data)
-      set_totalPages(Math.ceil(userData.data.length / itemsPerPage));
+
+      set_totalPages(Math.ceil(parseInt(userData.count) / itemsPerPage));
 
       // Get current items based on the current page
-      set_startIndex((currentPage - 1) * itemsPerPage);
-      set_currentItems(userData.data.slice(startIndex, startIndex + itemsPerPage));
+      // set_startIndex((currentPage - 1) * itemsPerPage);
+      // set_currentItems(userData.data.slice(startIndex, startIndex + itemsPerPage));
+      set_currentItems(userData.data);
+      set_total_gross_wages(userData.total.total_gross_wages)
+      set_total_epf_wages(userData.total.total_epf_wages)
+      set_total_edli_wages(userData.total.total_edli_wages)
+      set_total_eps_wages(userData.total.total_eps_wages)
+      set_total_ee_share(userData.total.total_ee_share)
+      set_total_eps_share(userData.total.total_eps_share)
+      set_total_diff_share(userData.total.total_diff_share)
+      set_total_ncp_days(userData.total.total_ncp_days)
+      set_total_refund(userData.total.total_refund)
 
 
 
@@ -77,7 +98,7 @@ const ecrGeneration = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    getReturnByMonth();
+    getReturnByMonth(pageNumber);
   };
 
 
@@ -104,9 +125,9 @@ const ecrGeneration = () => {
                           aria-label="Default select example" value={selectedMonth} onChange={handleMonthChange}
                         >
                           {returnsYear.month.map((returnYear) => (
-                    // eslint-disable-next-line react/jsx-key
-                    <option value={returnYear.monthNum}>{returnYear.monthText}</option>
-                  ))}
+                            // eslint-disable-next-line react/jsx-key
+                            <option value={returnYear.monthNum}>{returnYear.monthText}</option>
+                          ))}
                         </select>
 
                       </div>
@@ -116,14 +137,14 @@ const ecrGeneration = () => {
                           aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
                         >
                           {returnsYear.Year.map((retYear) => (
-                    // eslint-disable-next-line react/jsx-key
-                    <option value={retYear}>{retYear}</option>
-                  ))}
+                            // eslint-disable-next-line react/jsx-key
+                            <option value={retYear}>{retYear}</option>
+                          ))}
                         </select>
 
                       </div>
                       <div className="col-md-2">
-                        <button type="button" className="btn btn-primary btn-block" onClick={getReturnByMonth} >
+                        <button type="button" className="btn btn-primary btn-block" onClick={() => { getReturnByMonth(1) }} >
                           Next
                         </button>
                       </div>
@@ -138,10 +159,10 @@ const ecrGeneration = () => {
                       <h5 className="mt-4">EPF Return For Month {selectedMonth}-{selectedYear}</h5>
                     </div>
                     <div className="col-md-2">
-                        <button type="button" className="btn btn-primary btn-block" onClick={download} disabled={!isDownload} >
-                          Download
-                        </button>
-                      </div>
+                      <button type="button" className="btn btn-primary btn-block" onClick={download} disabled={!isDownload} >
+                        Download
+                      </button>
+                    </div>
                   </div>
                   <table className="table table-striped">
                     <thead>
@@ -161,20 +182,23 @@ const ecrGeneration = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {currentItems.map((employee, index) => (
-                        <tr key={index}>
-                          <th scope="row">{index}</th>
-                          <th scope="row">{employee.ee_uan}</th>
-                          <td>{employee.er_name}</td>
-                          <td>{employee.gross_wages}</td>
-                          <td>{employee.epf_wages}</td>
-                          <td>{employee.edli_wages}</td>
-                          <td>{employee.eps_wages}</td>
-                          <td>{employee.ee_share}</td>
-                          <td>{employee.diff_share}</td>
-                          <td>{employee.eps_share}</td>
-                          <td>{employee.ncp_days}</td>
-                          {/* <td>
+                      {currentItems.map((employee, index) => {
+                        const globalIndex = currentPage * itemsPerPage - itemsPerPage + index;
+                        return (
+
+                          <tr key={index}>
+                            <th scope="row">{globalIndex + 1}</th>
+                            <th scope="row">{employee.ee_uan}</th>
+                            <td>{employee.er_name}</td>
+                            <td>{employee.gross_wages}</td>
+                            <td>{employee.epf_wages}</td>
+                            <td>{employee.edli_wages}</td>
+                            <td>{employee.eps_wages}</td>
+                            <td>{employee.ee_share}</td>
+                            <td>{employee.diff_share}</td>
+                            <td>{employee.eps_share}</td>
+                            <td>{employee.ncp_days}</td>
+                            {/* <td>
                       <div className="d-flex align-items-center">
                         <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchEmployee(employee.id) }}>
                           <i className="bi bi-eye text-info"></i>
@@ -187,9 +211,24 @@ const ecrGeneration = () => {
                         </button>
                       </div>
                     </td> */}
-                        </tr>
-                      ))}
+                          </tr>
+                        )
+                      })}
                     </tbody>
+                    <tfoot>
+                <tr>
+                  <th id="total" colSpan="3">Total :</th>
+                  <td>{total_gross_wages}</td>
+                  <td>{total_epf_wages}</td>
+                  <td>{total_edli_wages}</td>
+                  <td>{total_eps_wages}</td>
+                  <td>{total_ee_share}</td>
+                  <td>{total_eps_share}</td>
+                  <td>{total_diff_share}</td>
+                  <td>{total_ncp_days}</td>
+                  <td></td>
+                </tr>
+              </tfoot>
                   </table>
                   {/* Pagination Controls */}
                   <div className="pagination">

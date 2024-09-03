@@ -34,6 +34,15 @@ const employer = () => {
   const [isUpdate, setIsUpdate] = useState(false);
   // eslint-disable-next-line react-hooks/rules-of-hooks, no-unused-vars
 
+
+  const [dsc_on_name, set_dsc_on_name] = useState('');
+  const [dsc_expire, set_dsc_expire] = useState('');
+  const [dsc_mobile, set_dsc_mobile] = useState('');
+  const [dsc_designation, set_dsc_designation] = useState('');
+  const [ErDesignation, set_designation] = useState('');
+  const [city, setCity] = useState('');
+
+
   const saveErDetails = async () => {
     // api call
     try {
@@ -48,6 +57,12 @@ const employer = () => {
         "er_mobile_number": Mobile,
         "er_email_id": Email,
         "est_address": Address,
+        "er_designation": ErDesignation,
+        "name_on_dsc": dsc_on_name,
+        "dsc_designation": dsc_designation,
+        "dsc_date": dsc_expire,
+        "dsc_mobile_number": dsc_mobile,
+        "er_city": city,
         "ee_epf_rate": EpfRate,
         "ee_eps_rate": EpsRate,
         "er_diff_rate": ErRate,
@@ -56,19 +71,19 @@ const employer = () => {
         "acc10_rate": Acc10,
         "acc21_rate": Acc21,
         "acc22_rate": Acc22,
-        "rate":rate
+        "rate": rate
       }
 
-      const userData = await erRegister(params);
+       await erRegister(params);
 
-      console.log('Data Save', userData)
+     
     } catch (error) {
       console.error('Login error ', error);
       setError(error);
     }
   };
 
-    const updateErDetails = async () => {
+  const updateErDetails = async () => {
     // api call
     try {
 
@@ -82,6 +97,12 @@ const employer = () => {
         "er_mobile_number": Mobile,
         "er_email_id": Email,
         "est_address": Address,
+        "er_designation": ErDesignation,
+        "name_on_dsc": dsc_on_name,
+        "dsc_designation": dsc_designation,
+        "dsc_date": dsc_expire,
+        "dsc_mobile_number": dsc_mobile,
+        "er_city": city,
         "ee_epf_rate": EpfRate,
         "ee_eps_rate": EpsRate,
         "er_diff_rate": ErRate,
@@ -90,10 +111,10 @@ const employer = () => {
         "acc10_rate": Acc10,
         "acc21_rate": Acc21,
         "acc22_rate": Acc22,
-        "rate":rate
+        "rate": rate
       }
 
-       await erUpdate(ErId,params);
+      await erUpdate(ErId, params);
 
     } catch (error) {
       console.error('Login error ', error);
@@ -123,6 +144,12 @@ const employer = () => {
         setEpfRate(response.data.ee_epf_rate)
         setEpsRate(response.data.er_eps_rate)
         setErRate(response.data.er_diff_rate)
+        set_dsc_on_name(response.data.name_on_dsc)
+        setCity(response.data.er_city)
+        set_dsc_designation(response.data.dsc_designation)
+        set_dsc_expire(response.data.dsc_date)
+        set_dsc_mobile(response.data.dsc_mobile_number)
+        set_designation(response.data.er_designation)
         setAcc1(response.data.acc1_rate)
         setAcc2(response.data.acc2_rate)
         setAcc10(response.data.acc10_rate)
@@ -191,6 +218,14 @@ const employer = () => {
                     <label htmlFor="inputEmail">Employer Namee</label>
                     <input type="text" className="form-control" required onChange={(e) => setErName(e.target.value)} value={ErName} />
                   </div>
+                  <div className="form-group col-md">
+                    <label htmlFor="inputEmail">Designation</label>
+                    <input type="text" className="form-control" required onChange={(e) => set_designation(e.target.value)} value={ErDesignation} />
+                  </div>
+                  <div className="form-group col-md">
+                    <label htmlFor="inputEmail">City</label>
+                    <input type="text" className="form-control" required onChange={(e) => setCity(e.target.value)} value={city} />
+                  </div>
                 </div>
 
                 <div className="row">
@@ -210,6 +245,32 @@ const employer = () => {
               </div>
             </div>
 
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title text-center">
+                  Authorized Digital Signature
+                </h5>
+                <div className="row">
+                  <div className="form-group col-sm">
+                    <label htmlFor="inputText">Name On DSC </label>
+                    <input type="text" className="form-control" required onChange={(e) => set_dsc_on_name(e.target.value)} value={dsc_on_name} />
+                  </div>
+                  <div className="form-group col-sm">
+                    <label htmlFor="inputEmail">Designation</label>
+                    <input type="text" className="form-control" required onChange={(e) => set_dsc_designation(e.target.value)} value={dsc_designation} />
+                  </div>
+                  <div className="form-group col-sm">
+                    <label htmlFor="inputEmail">Expire Date</label>
+                    <input type="date" className="form-control" required onChange={(e) => set_dsc_expire(e.target.value)} value={dsc_expire} />
+                  </div>
+                  <div className="form-group col-sm">
+                    <label htmlFor="inputText">Mobile</label>
+                    <input type="text" className="form-control" required onChange={(e) => set_dsc_mobile(e.target.value)} value={dsc_mobile} />
+                  </div>
+
+                </div>
+              </div>
+            </div>
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title text-center">

@@ -18,7 +18,7 @@ const summary = () => {
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [selectedYear, setSelectedYear] = useState(2024);
 
-  const itemsPerPage = 5; // Number of items per page
+  const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, set_totalPages] = useState(1);
 
@@ -67,6 +67,17 @@ const summary = () => {
   const [total_acc10, set_total_acc10] = useState('');
   const [total_acc21, set_total_acc21] = useState('');
   const [total_acc22, set_total_acc22] = useState('');
+  const [total_acc, set_total_acc] = useState('');
+
+  const [total_gross_wages, set_total_gross_wages] = useState(0)
+  const [total_epf_wages, set_total_epf_wages] = useState(0)
+  const [total_edli_wages, set_total_edli_wages] = useState(0)
+  const [total_eps_wages, set_total_eps_wages] = useState(0)
+  const [total_ee_share, set_total_ee_share] = useState(0)
+  const [total_eps_share, set_total_eps_share] = useState(0)
+  const [total_diff_share, set_total_diff_share] = useState(0)
+  const [total_ncp_days, set_total_ncp_days] = useState(0)
+  const [total_refund, set_total_refund] = useState(0)
 
 
   useEffect(() => {
@@ -91,6 +102,7 @@ const summary = () => {
         set_total_acc10(response.total.total_acc10);
         set_total_acc21(response.total.total_acc21);
         set_total_acc22(response.total.total_acc22);
+        set_total_acc(response.total.total_acc);
 
       }
 
@@ -204,7 +216,7 @@ const summary = () => {
           showCloseButton: true,
           timer: 1500,
         });
-        getReturnByMonth()
+        getReturnByMonth(1)
 
         handleClose();
 
@@ -262,7 +274,7 @@ const summary = () => {
           showCloseButton: true,
           timer: 1500,
         });
-        getReturnByMonth()
+        getReturnByMonth(1)
 
         handleClose();
 
@@ -409,23 +421,34 @@ const summary = () => {
 
 
 
-  const getReturnByMonth = async () => {
+  const getReturnByMonth = async (pageNumber) => {
     // api call
     try {
       const params = {
         "est_id": getErId(),
         "ee_id": 0,
         "month": selectedMonth,
-        "year": selectedYear
+        "year": selectedYear,
+        "limit": itemsPerPage,
+        "offset": pageNumber
       }
       const userData = await getEpfReturnByMonth(params);
       setEmployeeData(userData.data)
       setMonthly(false)
-      set_totalPages(Math.ceil(userData.data.length / itemsPerPage));
+      set_totalPages(Math.ceil(userData.count / itemsPerPage));
 
       // Get current items based on the current page
       set_startIndex((currentPage - 1) * itemsPerPage);
-      set_currentItems(userData.data.slice(startIndex, startIndex + itemsPerPage));
+      set_currentItems(userData.data);
+      set_total_gross_wages(userData.total.total_gross_wages)
+      set_total_epf_wages(userData.total.total_epf_wages)
+      set_total_edli_wages(userData.total.total_edli_wages)
+      set_total_eps_wages(userData.total.total_eps_wages)
+      set_total_ee_share(userData.total.total_ee_share)
+      set_total_eps_share(userData.total.total_eps_share)
+      set_total_diff_share(userData.total.total_diff_share)
+      set_total_ncp_days(userData.total.total_ncp_days)
+      set_total_refund(userData.total.total_refund)
 
 
     } catch (error) {
@@ -491,7 +514,7 @@ const summary = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    getReturnByMonth();
+    getReturnByMonth(pageNumber);
   };
 
 
@@ -559,7 +582,7 @@ const summary = () => {
                 </select>
               </div>
               <div className="col-sm-2">
-                <button type="button" className="btn btn-outline-primary btn-block" onClick={getReturnByMonth} >Next
+                <button type="button" className="btn btn-outline-primary btn-block" onClick={() => { getReturnByMonth(1) }} >Next
                   {/* <Link to="/auth/dashboard/monthlypf"><span >Next</span></Link> */}
                 </button>
               </div>
@@ -607,6 +630,7 @@ const summary = () => {
                   <th scope="col">Account 10</th>
                   <th scope="col">Account 21</th>
                   <th scope="col">Account 22</th>
+                  <th scope="col">Total</th>
                 </tr>
               </thead>
               <tbody>
@@ -620,6 +644,7 @@ const summary = () => {
                     <td>{employee.acc10}</td>
                     <td>{employee.acc21}</td>
                     <td>{employee.acc22}</td>
+                    <td>{employee.total}</td>
                   </tr>
                 ))}
               </tbody>
@@ -631,6 +656,7 @@ const summary = () => {
                   <td>{total_acc10}</td>
                   <td>{total_acc21}</td>
                   <td>{total_acc22}</td>
+                  <td>{total_acc}</td>
                 </tr>
               </tfoot>
             </table>
@@ -936,6 +962,20 @@ const summary = () => {
                   </tr>
                 ))}
               </tbody>
+              <tfoot>
+                <tr>
+                  <th id="total" colSpan="3">Total :</th>
+                  <td>{total_gross_wages}</td>
+                  <td>{total_epf_wages}</td>
+                  <td>{total_edli_wages}</td>
+                  <td>{total_eps_wages}</td>
+                  <td>{total_ee_share}</td>
+                  <td>{total_eps_share}</td>
+                  <td>{total_diff_share}</td>
+                  <td>{total_ncp_days}</td>
+                  <td></td>
+                </tr>
+              </tfoot>
             </table>
             {/* Pagination Controls */}
             <div className="pagination">

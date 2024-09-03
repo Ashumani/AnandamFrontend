@@ -1,4 +1,4 @@
-import { createBill, getEmployer } from '../../api/services';
+import { createBill, getBill, getEmployer } from '../../api/services';
 import { useState, useEffect } from "react"
 import { getEstId } from "../Auth/authToken";
 import moment from 'moment';
@@ -17,17 +17,18 @@ const ecr = () => {
     const [est_address, setAddress] = useState('');
     const [bill_number, setBillNumber] = useState('');
     const [rate, set_rate] = useState('');
-
+    const [estEmail,setEmail] = useState('')
+    const [estMobile,setMobile] = useState('')
+    const [estDesignation,setDesignation] = useState('')
+    const [estCity,setCity] = useState('')
+    const [date, setDate] = useState('');
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
 
     const [checkedPf, setCheckedPf] = useState(false);
     const [checkedEsic, setCheckedEsic] = useState(false);
-
     const [checkedCoverage, setCheckedCoverage] = useState(false);
-
     const [checkedOther, setCheckedOther] = useState(false);
-
     const [pfAmount, setpfAmount] = useState(0);
     const [esicAmount, setEsicAmount] = useState(0);
     const [otherAmount, setOtherAmount] = useState(0);
@@ -35,7 +36,7 @@ const ecr = () => {
     const [coverageAmount, setCoverageAmount] = useState(0);
     const [finalBillArray, setFinalBillArray] = useState([]);
     const [otherReason, setOtherReason] = useState('');
-
+    const [modalTotal, setModalTotal] = useState(0)
     const fetchEmployer = async () => {
         const params = {
             "est_epf_id": est_id
@@ -43,6 +44,7 @@ const ecr = () => {
         try {
             // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
             const response = await getEmployer(params);
+            setEstId(response.data.est_epf_id);
             setEstName(response.data.est_name)
             setErName(response.data.er_name)
             //   setEmail(response.data.er_email_id)
@@ -50,7 +52,39 @@ const ecr = () => {
             setAddress(response.data.est_address)
             setDOC(response.data.est_doc)
             set_rate(response.data.rate)
+            setEmail(response.data.er_email_id)
+            setMobile(response.data.er_mobile_number)
+            setDesignation(response.data.est_designation)
+            setCity(response.data.est_city)
+            
+            
 
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            // setError('Error fetching data. Please try again.');
+
+        }
+    };
+    const getBillById = async () => {
+
+        try {
+            // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+            const response = await getBill(bill_number);
+            setEstId(response.data.est_epf_id);
+            setEstName(response.data.est_name)
+            setErName(response.data.er_name)
+            setEmail(response.data.er_email_id)
+            setMobile(response.data.er_mobile_number)
+            setDesignation(response.data.est_designation)
+            setCity(response.data.est_city)
+            setAddress(response.data.est_address)
+            setDate(response.data.date)
+            setDOC(response.data.est_doc)
+            set_rate(response.data.rate)
+            setFinalBillArray(response.data.billData)
+            setTotalAmount(response.data.amount)
+
+          
         } catch (error) {
             console.error('Error fetching data:', error);
             // setError('Error fetching data. Please try again.');
@@ -102,6 +136,7 @@ const ecr = () => {
         if (event.target.id == "flexSwitchCheckPf" && event.target.checked) {
             setCheckedPf(event.target.checked);
             setpfAmount(rate * differenceInMonths)
+            setModalTotal(rate * differenceInMonths - modalTotal)
             let item = {
                 "perticular": "EPF Challan For Period " + fromDate + " To " + toDate,
                 "rate": rate,
@@ -111,11 +146,13 @@ const ecr = () => {
             setFinalBillArray(prevArray => [...prevArray, item]);
         } else if (event.target.id == "flexSwitchCheckPf" && !event.target.checked) {
             setCheckedPf(event.target.checked);
+            setModalTotal(rate * differenceInMonths - modalTotal)
             setpfAmount(0)
         }
         if (event.target.id == "flexSwitchCheckEsic" && event.target.checked) {
             setCheckedEsic(event.target.checked);
             setEsicAmount(rate * differenceInMonths)
+            setModalTotal(rate * differenceInMonths + modalTotal)
             let item = {
                 "perticular": "ESIC Challan For Period " + fromDate + " To " + toDate,
                 "rate": rate,
@@ -125,6 +162,7 @@ const ecr = () => {
             setFinalBillArray(prevArray => [...prevArray, item]);
         } else if (event.target.id == "flexSwitchCheckEsic" && !event.target.checked) {
             setCheckedEsic(event.target.checked);
+            setModalTotal(rate * differenceInMonths - modalTotal)
             setEsicAmount(0)
         }
 
@@ -137,6 +175,10 @@ const ecr = () => {
             setOtherAmount(0)
         }
     };
+
+    const calculate = async () => {
+        setModalTotal(modalTotal + coverageAmount);
+    }
 
     const addBill = async () => {
         let params = {
@@ -174,7 +216,6 @@ const ecr = () => {
         } catch (error) {
             console.error('Error fetching data:', error);
             // setError('Error fetching data. Please try again.');
-
         }
     };
 
@@ -242,7 +283,7 @@ const ecr = () => {
                                             <input type="text" className="form-control" onChange={(e) => setBillNumber(e.target.value)} value={bill_number} />
                                         </div>
                                         <div className="col-sm-2">
-                                            <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "30px 10px 10px 10px" }} onClick={fetchEmployer}>Get Details</button>
+                                            <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "30px 10px 10px 10px" }} onClick={getBillById}>Get Details</button>
                                         </div>
                                     </div>
                                 </form>
@@ -347,7 +388,7 @@ const ecr = () => {
 
                                                         ) : (
                                                             <div className="form-check form-switch">
-                                                                <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control float-right" type="text" id="flexSwitchCheckDefault" disabled={!checkedCoverage} onChange={(e) => setCoverageAmount(e.target.value)} value={coverageAmount} />
+                                                                <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control float-right" type="text" id="flexSwitchCheckDefault" disabled={!checkedCoverage} onChange={(e) => { setCoverageAmount(e.target.value); calculate(); }} value={coverageAmount} />
                                                             </div>
                                                         )}
                                                     </div>
@@ -373,14 +414,14 @@ const ecr = () => {
                                                             </div>
                                                         ) : (
                                                             <div className="form-check form-switch">
-                                                                <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control" type="text" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => setOtherAmount(e.target.value)} value={otherAmount} />
+                                                                <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control" type="text" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => { setOtherAmount(e.target.value); setModalTotal(modalTotal + e.target.value) }} value={otherAmount} />
                                                             </div>
                                                         )}
 
                                                     </div>
                                                 </div>
                                                 <hr />
-                                                <h5><p className="float-right">Total : 0</p></h5>
+                                                <h5><p className="float-right">Total : {modalTotal}</p></h5>
                                             </div>
                                             <div className="modal-footer">
                                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -473,15 +514,15 @@ const ecr = () => {
                                                                 <tbody>
                                                                     <tr>
                                                                         <th>Invoice Number</th>
-                                                                        <td>143</td>
+                                                                        <td>{bill_number}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <th>Invoice Date</th>
-                                                                        <td>10-Aug-24</td>
+                                                                        <td>{date}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <th>Employer ID</th>
-                                                                        <td>NGNAG69970</td>
+                                                                        <td>{est_id}</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -490,12 +531,12 @@ const ecr = () => {
                                                     <div className='row'>
                                                         <div className='col-sm'>
                                                             <h5 className='text-head'>To</h5>
-                                                            <p><strong>Shree Manpower Service</strong></p>
-                                                            <p><strong>Partner</strong></p>
-                                                            <p><strong>Narendra Nagar</strong></p>
-                                                            <p><strong>ShrNagpur</strong></p>
-                                                            <p><strong>8793143976</strong></p>
-                                                            <p><strong>manishkirnapure9@gmail.com</strong></p>
+                                                            <p><strong>{est_name}</strong></p>
+                                                            <p><strong>{estDesignation}</strong></p>
+                                                            <p><strong>{est_address}</strong></p>
+                                                            <p><strong>{estCity}</strong></p>
+                                                            <p><strong>{estMobile}</strong></p>
+                                                            <p><strong>{estEmail}</strong></p>
                                                         </div>
                                                         <div className='col-sm-4'></div>
                                                     </div>
@@ -510,21 +551,18 @@ const ecr = () => {
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr>
-                                                                    <td>1</td>
-                                                                    <td>Preparation of Monthly PF Challan From Jul 2024 To Jul 2024</td>
-                                                                    <td>Rs. 1,000.00</td>
-                                                                    <td>Rs. 1,000.00</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>2</td>
-                                                                    <td>Preparation of Monthly ESIC Challan From Jul 2024 To Jul 2024</td>
-                                                                    <td>Rs. 500.00</td>
-                                                                    <td>Rs. 500.00</td>
-                                                                </tr>
+                                                                {finalBillArray.map((employee, index) => (
+                                                                    <tr key={index}>
+                                                                        <th scope="row">{index}</th>
+                                                                        <th scope="row">{employee.perticular}</th>
+                                                                        <td>Rs. {rate}</td>
+                                                                        <td>Rs. {employee.amount}</td>
+
+                                                                    </tr>
+                                                                ))}
                                                                 <tr>
                                                                     <td colSpan="3">Total</td>
-                                                                    <td>Rs. 1,500.00</td>
+                                                                    <td>Rs. {totalAmount}</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -561,7 +599,7 @@ const ecr = () => {
                                                 </div>
                                             </div>
                                             <div className="modal-footer">
-                                            <button className='btn btn-outline-primary btn-block' onClick={generatePDF}>Download PDF</button>
+                                                <button className='btn btn-outline-primary btn-block' onClick={generatePDF}>Download PDF</button>
                                             </div>
                                         </div>
                                     </div>
