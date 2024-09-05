@@ -28,7 +28,10 @@ const Header = () => {
         // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
         const response = await fetchAllEmployer();
         setItems(response.data)
+        const selectedItem = response.data.find(item => item.est_epf_id === getEstId());
+        setSelectedKey(selectedItem.est_name);
         setLoading(false);
+
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -37,8 +40,10 @@ const Header = () => {
 
       }
     };
+
     if (getEstId() != "All" && getEstId() != null) {
-      handleChange({ "target": { "value": getEstId() } })
+
+      handleChange2({ "target": { "value": getEstId() } })
 
     } else {
       setShowAll(false);
@@ -57,10 +62,36 @@ const Header = () => {
       setShowAll(false);
       navigate('/auth/dashboard');
     } else {
+
+      // navigate(window.location.pathname)
+      window.location.reload();
       const selectedItem = items.find(item => item.est_epf_id === value);
+
       if (selectedItem) {
         setSelectedKey(selectedItem.est_name);// Update selectedKey with item's key
-        // setSelectedKey(selectedItem.est_name); 
+        setEstId(value, selectedItem.id);
+
+
+      }
+
+      setShowAll(true);
+    }
+  };
+
+  const handleChange2 = (e) => {
+    const value = e.target.value;
+    setSelectedId(value);
+    if (value === "All") {
+      deleteEstId();
+      setSelectedKey(null)
+      setShowAll(false);
+      navigate('/auth/dashboard');
+    } else {
+
+      const selectedItem = items.find(item => item.est_epf_id === value);
+      // window.location.reload();
+      if (selectedItem) {
+        setSelectedKey(selectedItem.est_name);// Update selectedKey with item's key
         setEstId(value, selectedItem.id);
 
       }
@@ -68,6 +99,8 @@ const Header = () => {
       setShowAll(true);
     }
   };
+
+
 
 
   return (

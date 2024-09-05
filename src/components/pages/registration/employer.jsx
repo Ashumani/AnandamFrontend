@@ -32,6 +32,7 @@ const employer = () => {
   const [Acc22, setAcc22] = useState('');
   const [rate, setRate] = useState('');
   const [isUpdate, setIsUpdate] = useState(false);
+  const [checkedDSC, setCheckedDSC] = useState(false);
   // eslint-disable-next-line react-hooks/rules-of-hooks, no-unused-vars
 
 
@@ -71,12 +72,13 @@ const employer = () => {
         "acc10_rate": Acc10,
         "acc21_rate": Acc21,
         "acc22_rate": Acc22,
-        "rate": rate
+        "rate": rate,
+        "dsc_status": checkedDSC
       }
 
-       await erRegister(params);
+      await erRegister(params);
 
-     
+
     } catch (error) {
       console.error('Login error ', error);
       setError(error);
@@ -111,7 +113,8 @@ const employer = () => {
         "acc10_rate": Acc10,
         "acc21_rate": Acc21,
         "acc22_rate": Acc22,
-        "rate": rate
+        "rate": rate,
+        "dsc_status": checkedDSC
       }
 
       await erUpdate(ErId, params);
@@ -157,6 +160,7 @@ const employer = () => {
         setAcc22(response.data.acc22_rate)
         setRate(response.data.rate)
         setErId(response.data.id)
+        setCheckedDSC(response.data.dsc_status)
         setLoading(false);
         setIsUpdate(true)
       } catch (error) {
@@ -170,7 +174,13 @@ const employer = () => {
     fetchData();
   }, []);
 
+  const handleChange = (event) => {
 
+    if (event.target.id == "flexSwitchCheckPf") {
+      setCheckedDSC(event.target.checked);
+     
+    }
+  };
 
   return (
     <div>
@@ -185,7 +195,7 @@ const employer = () => {
           <form>
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title text-center">
+                <h5 className="card-title text-left">
                   Employer Registration
                 </h5>
 
@@ -247,10 +257,21 @@ const employer = () => {
 
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title text-center">
-                  Authorized Digital Signature
-                </h5>
+                <div className='row'>
+                <div className="form-group col-sm">
+                    <h5 className="card-title text-left">
+                      Authorized Digital Signature
+                    </h5>
+                  </div>
+                  <div className="form-group col-sm-1">
+                    <div className="form-check form-switch">
+                      <input className="form-check-input" type="checkbox" id="flexSwitchCheckPf" checked={checkedDSC} onChange={handleChange} />
+                    </div>
+                  </div>                
+                </div>
+                {checkedDSC && (
                 <div className="row">
+
                   <div className="form-group col-sm">
                     <label htmlFor="inputText">Name On DSC </label>
                     <input type="text" className="form-control" required onChange={(e) => set_dsc_on_name(e.target.value)} value={dsc_on_name} />
@@ -268,12 +289,12 @@ const employer = () => {
                     <input type="text" className="form-control" required onChange={(e) => set_dsc_mobile(e.target.value)} value={dsc_mobile} />
                   </div>
 
-                </div>
+                </div>)}
               </div>
             </div>
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title text-center">
+                <h5 className="card-title text-left">
                   Retruns Parameter
                 </h5>
                 <div className="row">
@@ -317,11 +338,11 @@ const employer = () => {
               </div>
             </div>
             {!isUpdate ? (
-              <button type="submit" className="btn btn-outline-secondary" onClick={saveErDetails}>
+              <button type="button" className="btn btn-outline-secondary" onClick={saveErDetails}>
                 Save
               </button>
             ) : (
-              <button type="submit" className="btn btn-outline-secondary" onClick={updateErDetails}>
+              <button type="button" className="btn btn-outline-secondary" onClick={updateErDetails}>
                 Update
               </button>
             )}

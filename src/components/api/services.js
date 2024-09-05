@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { getAuthToken } from '../pages/Auth/authToken';
-
+import { handleDecryption, handleEncryption } from './masking';
 
 const BASE_URL = 'http://localhost:4001';
 const authToken = getAuthToken()
@@ -34,6 +34,8 @@ export const erRegister = async (params) => {
 
 export const getEmployer = async (params) => {
     try {
+
+       
         const response = await axios.post(`${BASE_URL}/employer/getEmployer`,params,{ headers:header });
         return response.data;
     } catch (error) {
@@ -97,13 +99,13 @@ export const updateEmployee = async (id, params) => {
     }
 }
 
-
-
 export const getAllEmployee = async (params) => {
     try {
+        // await handleEncryption(params)
         const response = await axios.post(`${BASE_URL}/employee/getAllEmployee`,params,{ headers: header});
         return response.data;
     } catch (error) {
+        console.log(error.message);
         throw error.response.data.error;
     }
 }
@@ -139,6 +141,24 @@ export const searchEmployee = async (params) => {
 export const getEpfReturnByMonth = async (params) => {
     try {
         const response = await axios.post(`${BASE_URL}/monthly/getEpfReturnByMonth`,params,{ headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const sameAsPrev = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/monthly/sameAsPrev`,params,{ headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const deleteReturnById = async (id) => {
+    try {
+        const response = await axios.delete(`${BASE_URL}/monthly/deleteReturnById/`+id,{ headers: header});
         return response.data;
     } catch (error) {
         throw error.response.data.error;

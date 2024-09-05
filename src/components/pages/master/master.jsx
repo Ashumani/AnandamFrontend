@@ -6,6 +6,7 @@ import { getMasterList, saveEERegister, getEmployee, updateEmployee, uploadEmplo
 import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
 import React, { useRef } from 'react';
+import { Link } from "react-router-dom";
 const master = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const itemsPerPage = 5; // Number of items per page
@@ -200,7 +201,7 @@ const master = () => {
         });
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-     
+
 
     } catch (error) {
       console.error('Login error ', error);
@@ -210,10 +211,10 @@ const master = () => {
   const searchEmp = async () => {
     // api call
     try {
-      const params ={
-        "est_id":1,
-        "search":"A"
-    }
+      const params = {
+        "est_id": 1,
+        "search": "A"
+      }
       const data = await searchEmployee(params);
       if (data.status === true) {
         Swal.fire({
@@ -225,15 +226,15 @@ const master = () => {
           showCloseButton: true,
           timer: 1500,
         });
-       
-          // setEmployeeData(response.data);
-  
-          // set_totalPages(Math.ceil(response.data.length / itemsPerPage));
-  
-          // // Get current items based on the current page
-          // set_startIndex((currentPage - 1) * itemsPerPage);
-          set_totalPages(Math.ceil(data.count / itemsPerPage));
-          set_currentItems(data.data);
+
+        // setEmployeeData(response.data);
+
+        // set_totalPages(Math.ceil(response.data.length / itemsPerPage));
+
+        // // Get current items based on the current page
+        // set_startIndex((currentPage - 1) * itemsPerPage);
+        set_totalPages(Math.ceil(data.count / itemsPerPage));
+        set_currentItems(data.data);
 
 
         closeModal()
@@ -251,7 +252,7 @@ const master = () => {
         });
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-     
+
 
     } catch (error) {
       console.error('Login error ', error);
@@ -375,9 +376,36 @@ const master = () => {
         </div>
         <section className="section">
           <br />
+          <div className="row">
+          <div className="col-sm-2">
+              <button
+                type="file"
+                className="btn btn-outline-primary btn-block" 
+              > <Link to="/auth/dashboard/employer"><span> Add Employer</span></Link>
+               
+              </button>
+            </div>
+              <div className="col-sm-2">
+              <button
+                type="file"
+                className="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#importReturn"
+              >
+                Import
+              </button>
+            </div>
+            <div className="col-sm-2">
+              <button
+                type="file"
+                className="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#importReturn"
+              >
+                Export
+              </button>
+            </div>
+          
+          </div>
 
-          <div className="table-responsive">
-            <table className="table table-striped table-hover text-center">
+          <div className="table-responsive mt-2">
+            <table className="table table-striped table-sm table-hover text-center">
               <thead>
                 <tr>
                   <th>#</th>
@@ -391,8 +419,6 @@ const master = () => {
                   <th>Total Bill Amount</th>
                   <th>Received Bill Amount</th>
                   <th>Balance Bill Amount</th>
-                  <th>EPF Wages</th>
-                  <th>Eps Wages</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -402,22 +428,20 @@ const master = () => {
                     <th >{index + 1}</th>
                     <td>{employee.est_name}</td>
                     <td>{employee.est_epf_id}</td>
-                    <td>******</td>
-                    <td >{employee.ee_name}</td>
-                    <td >{moment(employee.ee_dob).format('YYYY-MM-DD')}</td>
-                    <td>{moment(employee.ee_doj).format('YYYY-MM-DD')}</td>
+                    <td>{employee.dsc_status}</td>
+                    <td >{moment(employee.dsc_date).format('YYYY-MM-DD')}</td>
+                    <td>{employee.empcount}</td>
                     <td>{employee.ee_gender}</td>
                     <td>{employee.ee_maritial_status}</td>
                     <td>{employee.ee_father_husband}</td>
                     <td>{employee.ee_relation}</td>
                     <td>{employee.ee_gross_wages}</td>
-                    <td>{employee.ee_epf_wages}</td>
                     <td>
                       <div className="d-flex align-items-center">
                         <button className="btn btn-light" onClick={() => { fetchEmployee(employee.id) }}>
                           <i className="bi bi-eye text-info"></i>
                         </button>
-                        <button className="btn btn-light mx-1"  onClick={() => { fetchEmployee(employee.id) }}>
+                        <button className="btn btn-light mx-1" onClick={() => { fetchEmployee(employee.id) }}>
                           <i className="bi bi-pencil-fill text-info"></i>
                         </button>
                         <button className="btn btn-light" disabled>

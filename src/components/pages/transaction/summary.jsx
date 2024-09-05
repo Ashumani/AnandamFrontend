@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
-import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary, downlaodFile, fetchEpfReturn, updateEpfReturn } from "../../api/services";
+import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary, downlaodFile, fetchEpfReturn, updateEpfReturn, sameAsPrev, deleteReturnById, generateECR } from "../../api/services";
 import Swal from 'sweetalert2';
 import React, { useRef } from 'react';
 import moment from "moment";
@@ -242,6 +242,95 @@ const summary = () => {
     }
   };
 
+  const addFromPrevious = async () => {
+    // api call
+    try {
+      const params = {
+        "est_id": getErId(),
+        "ee_id": 0,
+        "month": selectedMonth,
+        "year": selectedYear
+      }
+      const userData = await sameAsPrev(params);
+
+      if (userData.status === true) {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'success',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+        getReturnByMonth(1)
+
+        handleClose();
+
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+      }
+
+      // Show success popup
+
+
+
+    } catch (error) {
+      console.error('Login error ', error);
+      // setError(error);
+    }
+  };
+
+  const deleteReturn = async (id) => {
+    // api call
+    try {
+      
+      const userData = await deleteReturnById(id);
+
+      if (userData.status === true) {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'success',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+        getReturnByMonth(1)
+
+        
+
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+      }
+
+      // Show success popup
+
+
+
+    } catch (error) {
+      console.error('Login error ', error);
+      // setError(error);
+    }
+  };
+
   const updateReturns = async () => {
     // api call
     try {
@@ -309,7 +398,7 @@ const summary = () => {
         "month": selectedMonth,
         "year": selectedYear
       }
-      const userData = await getEpfReturnByMonth(params);
+      const userData = await generateECR(params);
 
       if (userData.status === true) {
 
@@ -694,6 +783,14 @@ const summary = () => {
               <div className="col-sm">
                 <button
                   type="button"
+                  className="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#confirmationModal"
+                >
+                  Same as Prev
+                </button>
+              </div>
+              <div className="col-sm">
+                <button
+                  type="button"
                   className="btn btn-outline-primary btn-block" onClick={genECR}
                 >
                   ECR
@@ -830,7 +927,7 @@ const summary = () => {
                               </div>
                               <div className="col-sm">
                                 <button type="button" className="btn btn-outline-primary btn-block" data-dismiss="modal" aria-label="Close"  onClick={closeModal} >Close</button>
-                              </div>
+                              </di  v>
                             </div> */}
                         </form>
                       </div>
@@ -913,6 +1010,26 @@ const summary = () => {
                 </div>
               </div>
             </div>
+            <div id="confirmationModal" className="modal fade">
+              <div className="modal-dialog modal-confirm">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <div className="icon-box">
+                      <i className="material-icons">&#xE5CD;</i>
+                    </div>
+                    <h4 className="modal-title">Are you sure?</h4>
+                    <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  </div>
+                  <div className="modal-body text-black">
+                    <p>Import Prevoius Month data to selected Month</p>
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-info" data-dismiss="modal">Cancel</button>
+                    <button type="button" className="btn btn-danger" onClick={addFromPrevious}>Add</button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <h5 className="mt-4">EPF Return For Month {selectedMonth}-{selectedYear}</h5>
             <table className="table table-striped">
@@ -954,7 +1071,7 @@ const summary = () => {
                         <button className="btn btn-light mx-1" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
                           <i className="bi bi-pencil-fill text-info"></i>
                         </button>
-                        <button className="btn btn-light" disabled>
+                        <button className="btn btn-light"  onClick={() => { deleteReturn(employee.id) }} >
                           <i className="bi bi-trash text-danger"></i>
                         </button>
                       </div>

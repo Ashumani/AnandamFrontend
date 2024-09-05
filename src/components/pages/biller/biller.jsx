@@ -37,6 +37,16 @@ const ecr = () => {
     const [finalBillArray, setFinalBillArray] = useState([]);
     const [otherReason, setOtherReason] = useState('');
     const [modalTotal, setModalTotal] = useState(0)
+
+    const biller = async () => {
+
+        if(bill_number){
+            await getBillById()
+        }else{
+            await fetchEmployer()
+        }
+    }
+    
     const fetchEmployer = async () => {
         const params = {
             "est_epf_id": est_id
@@ -276,14 +286,14 @@ const ecr = () => {
                                     <div className="row">
                                         <div className="col-sm">
                                             <label htmlFor="inputText" >Est Id</label>
-                                            <input type="text" className="form-control" onChange={(e) => setEstId(e.target.value)} value={est_id} />
+                                            <input type="text" className="form-control"  onChange={(e) => setEstId(e.target.value)} value={est_id} />
                                         </div>
                                         <div className="col-sm">
                                             <label htmlFor="inputText" >Bill Number</label>
                                             <input type="text" className="form-control" onChange={(e) => setBillNumber(e.target.value)} value={bill_number} />
                                         </div>
                                         <div className="col-sm-2">
-                                            <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "30px 10px 10px 10px" }} onClick={getBillById}>Get Details</button>
+                                            <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "30px 10px 10px 10px" }} onClick={biller}>Get Details</button>
                                         </div>
                                     </div>
                                 </form>

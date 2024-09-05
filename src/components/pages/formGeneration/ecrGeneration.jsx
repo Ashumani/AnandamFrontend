@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
-import { downlaodFile, getEpfReturnByMonth } from "../../api/services";
+import { downlaodFile, generateECR, getEpfReturnByMonth } from "../../api/services";
 import Swal from 'sweetalert2';
 
 
@@ -76,10 +76,47 @@ const ecrGeneration = () => {
       // setError(error);
     }
   };
+
+
   const download = async () => {
     // api call
     try {
-      await downlaodFile(ecrUrl);
+      const params = {
+        "est_id": getErId(),
+        "ee_id": 0,
+        "month": selectedMonth,
+        "year": selectedYear
+      }
+      const userData = await generateECR(params);
+
+      if (userData.status === true) {
+
+        await downlaodFile(userData.url);
+        // window.URL.revokeObjectURL(url);
+        Swal.fire({
+          position: 'top-right',
+          icon: 'success',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+      }
+
+      // Show success popup
+
 
 
     } catch (error) {
