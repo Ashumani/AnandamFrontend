@@ -256,6 +256,14 @@ export const createBill = async (params) => {
     }
 }
 
+export const updateBill = async (id,params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/bill/update/`+id, params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 export const getAllBill = async (params) => {
     try {
         const response = await axios.post(`${BASE_URL}/bill/getAllBill`, params, { headers: header});
@@ -278,6 +286,15 @@ export const getBill = async (id) => {
 export const getCardsCount = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/dashboard/getCardsCount`, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const getSalaryByMonth = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/salary/getSalaryByMonth`, params, { headers: header});
         return response.data;
     } catch (error) {
         throw error.response.data.error;

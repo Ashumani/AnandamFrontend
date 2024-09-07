@@ -413,8 +413,8 @@ const master = () => {
                   <th>EST Id</th>
                   <th>DSC Status</th>
                   <th>DSC Expire Date</th>
-                  <th>Total Employee</th>
-                  <th>Last Month Employee</th>
+                  <th>Total Emp</th>
+                  <th>Last Month Emp</th>
                   <th>Total Challan</th>
                   <th>Total Bill Amount</th>
                   <th>Received Bill Amount</th>
@@ -428,22 +428,22 @@ const master = () => {
                     <th >{index + 1}</th>
                     <td>{employee.est_name}</td>
                     <td>{employee.est_epf_id}</td>
-                    <td>{employee.dsc_status}</td>
+                    <td>{employee.dsc_status ? "Active" : "InActive"}</td>
                     <td >{moment(employee.dsc_date).format('YYYY-MM-DD')}</td>
                     <td>{employee.empcount}</td>
-                    <td>{employee.ee_gender}</td>
-                    <td>{employee.ee_maritial_status}</td>
-                    <td>{employee.ee_father_husband}</td>
-                    <td>{employee.ee_relation}</td>
-                    <td>{employee.ee_gross_wages}</td>
+                    <td>{employee.lastmonthemp}</td>
+                    <td>{employee.totalchallan}</td>
+                    <td>{employee.totalbill}</td>
+                    <td>{employee.recievedamount}</td>
+                    <td>{employee.balanceamount}</td>
                     <td>
                       <div className="d-flex align-items-center">
-                        <button className="btn btn-light" onClick={() => { fetchEmployee(employee.id) }}>
+                        {/* <button className="btn btn-light" onClick={() => { fetchEmployee(employee.id) }}>
                           <i className="bi bi-eye text-info"></i>
-                        </button>
-                        <button className="btn btn-light mx-1" onClick={() => { fetchEmployee(employee.id) }}>
+                        </button> */}
+                        {/* <button className="btn btn-light mx-1" onClick={() => { fetchEmployee(employee.id) }}>
                           <i className="bi bi-pencil-fill text-info"></i>
-                        </button>
+                        </button> */}
                         <button className="btn btn-light" disabled>
                           <i className="bi bi-trash text-danger"></i>
                         </button>
