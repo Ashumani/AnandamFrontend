@@ -147,6 +147,15 @@ export const getEpfReturnByMonth = async (params) => {
     }
 }
 
+export const getSalaryReturn = async (id) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/salary/getSalaryReturn/`+id,{ headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
 export const sameAsPrev = async (params) => {
     try {
         const response = await axios.post(`${BASE_URL}/monthly/sameAsPrev`,params,{ headers: header});
@@ -238,6 +247,19 @@ export const uploadMonthlyReturn = async (id, formdata) => {
     }
 }
 
+export const uploadSalary = async (id, formdata) => {
+    try {
+        const uplaodHeader = {
+            Authorization: `Bearer ${authToken}`,
+            'Content-Type': 'multipart/form-data'
+          }
+       
+        const response = await axios.post(`${BASE_URL}/upload/salary/`+id,formdata,{ headers: uplaodHeader});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 export const getSummary = async (id) => {
     try {
         const response = await axios.get(`${BASE_URL}/monthly/getSummary/`+id,{ headers: header});
@@ -300,6 +322,25 @@ export const getSalaryByMonth = async (params) => {
         throw error.response.data.error;
     }
 }
+
+export const getSalarySummary = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/salary/getSalarySummary`, params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const saveSalaryReturn = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/salary/saveSalaryReturn`, params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
 export const downlaodFile = async (url) => {
     try {
        
