@@ -14,6 +14,9 @@ const summary = () => {
     "month": [{ "monthNum": 1, "monthText": "Jan" }, { "monthNum": 2, "monthText": "Feb" }, { "monthNum": 3, "monthText": "Mar" }, { "monthNum": 4, "monthText": "Apr" }, { "monthNum": 5, "monthText": "May" }, { "monthNum": 6, "monthText": "Jun" }, { "monthNum": 7, "monthText": "Jul" }, { "monthNum": 8, "monthText": "Aug" }, { "monthNum": 9, "monthText": "Sep" }, { "monthNum": 10, "monthText": "Oct" }, { "monthNum": 11, "monthText": "Nov" }, { "monthNum": 12, "monthText": "Dec" }],
     "Year": [2020, 2021, 2022, 2023, 2024]
   }
+  const [isDisabled, set_isDisabled] = useState(true);
+  const [isSaveEnable, set_isSaveEnable] = useState(true);
+
   const modalRef = useRef(null);
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [selectedYear, setSelectedYear] = useState(2024);
@@ -122,6 +125,7 @@ const summary = () => {
         "ee_pf_no": search_pf
       }
       const userData = await getEmployeeByUANandEPFid(params);
+      
       if (userData.status === true) {
         set_ee_id(userData.data.id);
         set_ee_name(userData.data.ee_name);
@@ -136,8 +140,21 @@ const summary = () => {
         set_ee_relation(userData.data.ee_relation);
         set_ee_gross_wages(userData.data.ee_gross_wages);
         set_ee_epf_wages(userData.data.ee_epf_wages);
-        // setIsUpdate(true)
+        set_isDisabled(false)
+       
+
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
       }
+
 
     } catch (error) {
       console.error('Login error ', error);
@@ -458,6 +475,7 @@ const summary = () => {
         set_er_eps(Math.round(epf_wages * userData.data.er_eps_rate / 100))
 
       }
+      set_isSaveEnable(false)
 
     } catch (error) {
       console.error('Login error ', error);
@@ -887,11 +905,11 @@ const summary = () => {
                           <div className="row">
                             <div className="col-sm">
                               <label htmlFor="inputColor">Gross Wages</label>
-                              <input type="number" className="form-control" onChange={(e) => set_cal_gross_wages(e.target.value)} value={cal_gross_wages} />
+                              <input type="number" className="form-control" disabled={isDisabled} onChange={(e) => set_cal_gross_wages(e.target.value)} value={cal_gross_wages} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputEPFWages">EPF Wages</label>
-                              <input type="number" className="form-control" onBlur={(e) => calculation(e.target.value)} onChange={(e) => set_cal_epf_wages(e.target.value)} value={cal_epf_wages} />
+                              <input type="number" className="form-control" disabled={isDisabled} onBlur={(e) => calculation(e.target.value)} onChange={(e) => set_cal_epf_wages(e.target.value)} value={cal_epf_wages} />
                             </div>
 
                             <div className="col-sm">
@@ -936,7 +954,7 @@ const summary = () => {
                   <div className="modal-footer d-flex">
                     <div className="row">
                       <div className="col-sm">
-                        <button type="button" disabled={isUpdate} className="btn btn-outline-primary btn-block" onClick={saveReturns}>Save</button>
+                        <button type="button" disabled={isUpdate || isSaveEnable} className="btn btn-outline-primary btn-block" onClick={saveReturns}>Save</button>
                       </div>
                       <div className="col-sm">
                         <button type="button" disabled={!isUpdate} className="btn btn-outline-primary btn-block" onClick={updateReturns}>Update</button>

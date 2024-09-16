@@ -16,6 +16,8 @@ const salary = () => {
   }
   const modalRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isDisabled, set_isDisabled] = useState(true);
+
 
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
@@ -103,8 +105,19 @@ const salary = () => {
         set_ee_relation(userData.data.ee_relation);
         set_ee_gross_wages(userData.data.ee_gross_wages);
         set_ee_epf_wages(userData.data.ee_epf_wages);
-        // setIsUpdate(true)
+        set_isDisabled(false)
+      }else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
       }
+
 
     } catch (error) {
       console.error('Login error ', error);
@@ -843,31 +856,31 @@ const salary = () => {
                           <div className="row">
                             <div className="col-sm">
                               <label htmlFor="inputPassword">Rate</label>
-                              <input type="number" className="form-control" onChange={(e) => set_ee_rate(e.target.value)} value={ee_rate} />
+                              <input type="number" className="form-control" disabled={isDisabled} onChange={(e) => set_ee_rate(e.target.value)} value={ee_rate} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">Basic</label>
-                              <input type="number" className="form-control" id="basic" onBlur={calculation} onChange={(e) => { set_ee_basic(e.target.value) }} value={ee_basic} />
+                              <input type="number" className="form-control" disabled={isDisabled} id="basic" onBlur={calculation} onChange={(e) => { set_ee_basic(e.target.value) }} value={ee_basic} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">DA</label>
-                              <input type="number" className="form-control" id="da" onBlur={calculation} onChange={(e) => { set_ee_da(e.target.value) }} value={ee_da} />
+                              <input type="number" className="form-control" disabled={isDisabled} id="da" onBlur={calculation} onChange={(e) => { set_ee_da(e.target.value) }} value={ee_da} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">HRA</label>
-                              <input type="number" className="form-control" id="hra" onBlur={calculation} onChange={(e) => { set_ee_hra(e.target.value) }} value={ee_hra} />
+                              <input type="number" className="form-control" disabled={isDisabled} id="hra" onBlur={calculation} onChange={(e) => { set_ee_hra(e.target.value) }} value={ee_hra} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">Others</label>
-                              <input type="number" className="form-control" id="others" onBlur={calculation} onChange={(e) => { set_ee_others(e.target.value) }} value={ee_others} />
+                              <input type="number" className="form-control" disabled={isDisabled} id="others" onBlur={calculation} onChange={(e) => { set_ee_others(e.target.value) }} value={ee_others} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">Days</label>
-                              <input type="number" className="form-control" id="days" onChange={(e) => set_ee_days(e.target.value)} value={ee_days} />
+                              <input type="number" className="form-control" disabled={isDisabled} id="days" onChange={(e) => set_ee_days(e.target.value)} value={ee_days} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">OT</label>
-                              <input type="number" className="form-control" id="ot" onBlur={calculation} onChange={(e) => { set_ee_ot(e.target.value); }} value={ee_ot} />
+                              <input type="number" className="form-control" disabled={isDisabled} id="ot" onBlur={calculation} onChange={(e) => { set_ee_ot(e.target.value); }} value={ee_ot} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputColor">Gross Wages</label>
@@ -891,7 +904,7 @@ const salary = () => {
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">Adv</label>
-                              <input type="number" className="form-control" onChange={(e) => set_ee_adv(e.target.value)} value={ee_adv} />
+                              <input type="number" className="form-control" disabled={isDisabled}  onChange={(e) => set_ee_adv(e.target.value)} value={ee_adv} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">TDS</label>
@@ -931,7 +944,7 @@ const salary = () => {
                   <div className="modal-footer d-flex">
                     <div className="row">
                       <div className="col-sm">
-                        <button type="button" disabled={!isUpdate} className="btn btn-outline-primary btn-block" onClick={saveReturns}>Save</button>
+                        <button type="button" disabled={!isUpdate || isDisabled} className="btn btn-outline-primary btn-block" onClick={saveReturns}>Save</button>
                       </div>
                       <div className="col-sm">
                         <button type="button" disabled={isUpdate} className="btn btn-outline-primary btn-block" onClick={updateReturns}>Update</button>

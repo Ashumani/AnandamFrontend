@@ -28,12 +28,11 @@ const login = () => {
           showCloseButton: true,
           timer: 1500,
         });
-        navigate('/auth/dashboard')
-        console.log("token",userData.data.token);
         setAuthToken(userData.data.token);
-        console.log("token",getAuthToken());  
-        console.log('Login successful', userData)
-      
+        navigate('/auth/dashboard')
+        window.location.reload();
+        
+        
 
       } else {
         Swal.fire({
