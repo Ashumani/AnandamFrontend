@@ -325,6 +325,7 @@ export const getSalaryByMonth = async (params) => {
 
 export const getSalarySummary = async (params) => {
     try {
+        
         const response = await axios.post(`${BASE_URL}/salary/getSalarySummary`, params, { headers: header});
         return response.data;
     } catch (error) {

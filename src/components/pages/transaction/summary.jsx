@@ -191,7 +191,7 @@ const summary = () => {
         "ee_id": ee_id,
         "ee_uan": ee_uan_no,
         "est_epf_id": getEstId(),
-        "er_name": ee_name,
+        "ee_name": ee_name,
         "month": selectedMonth,
         "year": selectedYear,
         "gross_wages": cal_gross_wages,
@@ -339,7 +339,7 @@ const summary = () => {
         "ee_id": ee_id,
         "ee_uan": ee_uan_no,
         "est_epf_id": getEstId(),
-        "er_name": ee_name,
+        "ee_name": ee_name,
         "month": selectedMonth,
         "year": selectedYear,
         "gross_wages": cal_gross_wages,
@@ -887,32 +887,32 @@ const summary = () => {
                           <div className="row">
                             <div className="col-sm">
                               <label htmlFor="inputColor">Gross Wages</label>
-                              <input type="text" className="form-control" onChange={(e) => set_cal_gross_wages(e.target.value)} value={cal_gross_wages} />
+                              <input type="number" className="form-control" onChange={(e) => set_cal_gross_wages(e.target.value)} value={cal_gross_wages} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputEPFWages">EPF Wages</label>
-                              <input type="text" className="form-control" onBlur={(e) => calculation(e.target.value)} onChange={(e) => set_cal_epf_wages(e.target.value)} value={cal_epf_wages} />
+                              <input type="number" className="form-control" onBlur={(e) => calculation(e.target.value)} onChange={(e) => set_cal_epf_wages(e.target.value)} value={cal_epf_wages} />
                             </div>
 
                             <div className="col-sm">
                               <label htmlFor="inputPassword">EDLI Wages</label>
-                              <input type="text" className="form-control" disabled value={ee_edli_wages} />
+                              <input type="number" className="form-control" disabled value={ee_edli_wages} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">EPS Wages</label>
-                              <input type="text" className="form-control" disabled value={ee_eps_wages} />
+                              <input type="number" className="form-control" disabled value={ee_eps_wages} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">EE</label>
-                              <input type="text" className="form-control" disabled value={ee_epf} />
+                              <input type="number" className="form-control" disabled value={ee_epf} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">ER</label>
-                              <input type="text" className="form-control" disabled value={er_epf} />
+                              <input type="number" className="form-control" disabled value={er_epf} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">EPS</label>
-                              <input type="text" className="form-control" disabled value={er_eps} />
+                              <input type="number" className="form-control" disabled value={er_eps} />
                             </div>
                           </div>
                           {/* <div className="row">
@@ -1054,7 +1054,7 @@ const summary = () => {
                   <tr key={index}>
                     <th scope="row">{index}</th>
                     <th scope="row">{employee.ee_uan}</th>
-                    <td>{employee.er_name}</td>
+                    <td>{employee.ee_name}</td>
                     <td>{employee.gross_wages}</td>
                     <td>{employee.epf_wages}</td>
                     <td>{employee.edli_wages}</td>

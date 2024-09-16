@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
 import { getEmployeeByUANandEPFid, getSalaryByMonth, getSalaryReturn, getSalarySummary, saveSalaryReturn, uploadSalary } from "../../api/services";
 import React, { useRef } from 'react';
 import "./style.css"
 import Swal from 'sweetalert2';
-
+import * as XLSX from 'xlsx';
 
 const salary = () => {
 
@@ -14,6 +15,7 @@ const salary = () => {
     "Year": [2020, 2021, 2022, 2023, 2024]
   }
   const modalRef = useRef(null);
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
@@ -70,7 +72,7 @@ const salary = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      GetSalarySummary();
+      GetSalarySummary(1);
     };
 
     fetchData();
@@ -88,7 +90,7 @@ const salary = () => {
       }
       const userData = await getEmployeeByUANandEPFid(params);
       if (userData.status === true) {
-        set_ee_id(userData.data.set_ee_id);
+        set_ee_id(userData.data.id);
         set_ee_name(userData.data.ee_name);
         set_ee_uan_no(userData.data.ee_uan_no);
         set_ee_pf_no(userData.data.ee_pf_no);
@@ -109,22 +111,22 @@ const salary = () => {
       // setError(error);
     }
   };
-
-  const GetSalaryByMonth = async () => {
-    // api call
+  const ViewSalaryByMonth = async (pageNumber, month, year) => {
     try {
+      setSelectedMonth(month)
+      setSelectedYear(year)
       const params = {
-        "est_id": "2",
-        "ee_id": 0,
-        "month": selectedMonth,
-        "year": selectedYear,
+        "est_id": getErId(),
+        "ee_id": ee_id,
+        "month": month,
+        "year": year,
         "limit": itemsPerPage,
-        "offset": 1
+        "offset": pageNumber
       }
+      setEmployeeData([])
       const userData = await getSalaryByMonth(params);
       if (userData.status === true) {
         setEmployeeData(userData.data)
-        IsSummary(false)
         set_totalPages(Math.ceil(userData.count / itemsPerPage));
 
         // Get current items based on the current page
@@ -132,6 +134,37 @@ const salary = () => {
         set_currentItems(userData.data);
 
       }
+      IsSummary(false)
+
+    } catch (error) {
+      console.error('Login error ', error);
+      // setError(error);
+    }
+  }
+  const GetSalaryByMonth = async (pageNumber) => {
+    // api call
+    try {
+
+      const params = {
+        "est_id": getErId(),
+        "ee_id": ee_id,
+        "month": selectedMonth,
+        "year": selectedYear,
+        "limit": itemsPerPage,
+        "offset": pageNumber
+      }
+      setEmployeeData([])
+      const userData = await getSalaryByMonth(params);
+      if (userData.status === true) {
+        setEmployeeData(userData.data)
+        set_totalPages(Math.ceil(userData.count / itemsPerPage));
+
+        // Get current items based on the current page
+        set_startIndex((currentPage - 1) * itemsPerPage);
+        set_currentItems(userData.data);
+
+      }
+      IsSummary(false)
 
     } catch (error) {
       console.error('Login error ', error);
@@ -139,17 +172,18 @@ const salary = () => {
     }
   };
 
-  const GetSalarySummary = async () => {
+  const GetSalarySummary = async (pageNumber) => {
     // api call
     try {
       const params = {
-        "est_id": "2",
+        "est_id": getErId(),
         "ee_id": 0,
-        "month": 9,
-        "year": 2024,
-        "limit": 10,
-        "offset": 1
+        "month": selectedMonth,
+        "year": selectedYear,
+        "limit": itemsPerPage,
+        "offset": pageNumber
       }
+      console.log(params)
       const userData = await getSalarySummary(params);
       if (userData.status === true) {
         setEmployeeData(userData.data)
@@ -165,12 +199,13 @@ const salary = () => {
   const GetSalaryById = async (id) => {
     // api call
     try {
-     
+
       const userData = await getSalaryReturn(id);
       if (userData.status === true) {
         set_ee_id(userData.data.set_ee_id);
         set_ee_name(userData.data.ee_name);
         set_ee_uan_no(userData.data.ee_uan_no);
+        set_search_uan(userData.data.ee_uan_no);
         set_ee_pf_no(userData.data.ee_pf_no);
         set_ee_dob(userData.data.ee_dob);
         set_ee_doj(userData.data.ee_doj);
@@ -196,7 +231,9 @@ const salary = () => {
         set_ee_netpay(userData.data.netpay);
         set_ee_pt(userData.data.pt);
         set_ee_mswf(userData.data.mswf);
+        set_cal_gross_wages(userData.data.gross)
         openModal();
+        set_isUpdate(false);
 
 
       }
@@ -210,7 +247,17 @@ const salary = () => {
   const saveReturns = async () => {
     // api call
     try {
+      if (parseInt(ee_basic) < 1 || parseInt(ee_days) < 1) {
+        Swal.fire({
+          title: 'Warning',
+          text: 'Basic salary and Days cannot be zero',
+          icon: 'warning',
+          confirmButtonText: 'Okay'
+        });
+        return;
+      }
       const params = {
+        "ee_id": ee_id,
         "uan": ee_uan_no,
         "est_id": getErId(),
         "month": selectedMonth,
@@ -222,7 +269,7 @@ const salary = () => {
         "others": ee_others,
         "no_of_days": ee_days,
         "ot": ee_ot,
-        "gross": ee_gross_wages,
+        "gross": cal_gross_wages,
         "pt": ee_pt,
         "pf": ee_epf,
         "esic": ee_esic,
@@ -271,6 +318,7 @@ const salary = () => {
     // api call
     try {
       const params = {
+        "ee_id": ee_id,
         "uan": ee_uan_no,
         "est_id": getErId(),
         "month": selectedMonth,
@@ -282,7 +330,7 @@ const salary = () => {
         "others": ee_others,
         "no_of_days": ee_days,
         "ot": ee_ot,
-        "gross": ee_gross_wages,
+        "gross": cal_gross_wages,
         "pt": ee_pt,
         "pf": ee_epf,
         "esic": ee_esic,
@@ -344,15 +392,35 @@ const salary = () => {
   };
 
   const calculation = async () => {
+    const pf = (parseInt(ee_basic) + parseInt(ee_da)) * 12 / 100
+    const gross = parseInt(ee_basic) + parseInt(ee_da) + parseInt(ee_hra) + parseInt(ee_others) + parseInt(ee_ot)
+    const esic = Math.round(gross * 0.75 / 100)
+    let pt = 0
+    if (set_ee_gender == "Male") {
+      if (gross < 7500) {
+        pt = 200
+      } else if (gross > 7499 && gross < 10000) {
+        pt = 175
+      } else {
+        pt = 200
+      }
+    } else {
+      if (gross > 24499) {
+        pt = 200
+      } else {
+        pt = 0
+      }
+    }
 
-    set_ee_epf((parseInt(ee_basic) + parseInt(ee_da)) * 12 / 100)
-    set_ee_esic(Math.round((parseInt(ee_basic) + parseInt(ee_da)) * 0.75 / 100))
-    set_cal_gross_wages(parseInt(ee_basic) + parseInt(ee_da) + parseInt(ee_hra) + parseInt(ee_others) + parseInt(ee_ot))
-    if (parseInt(selectedMonth) == 6) {
+    const deduction = pf + esic + parseInt(ee_adv) + parseInt(ee_tds) + pt
+    set_ee_epf(pf)
+    set_ee_esic(esic)
+    set_cal_gross_wages(gross)
+    if (parseInt(selectedMonth) == 6 || parseInt(selectedMonth) == 12) {
       set_ee_mswf(20)
     }
 
-    set_ee_pt(200)
+    set_ee_pt(pt)
 
     if (parseInt(cal_gross_wages) <= 10000) {
       set_ee_tds(0)
@@ -361,12 +429,12 @@ const salary = () => {
     } else {
       set_ee_tds((10000 * 0.1) + (parseInt(cal_gross_wages) - 20000) * 0.2)
     }
-    set_ee_netpay((parseInt(ee_basic) + parseInt(ee_da) + parseInt(ee_hra) + parseInt(ee_others) + parseInt(ee_ot)) - (parseInt(ee_epf) + parseInt(ee_esic) + parseInt(ee_adv) + parseInt(ee_tds) + parseInt(ee_deduction)))
-    set_ee_deduction((parseInt(ee_epf) + parseInt(ee_esic) + parseInt(ee_adv) + parseInt(ee_tds) + parseInt(ee_deduction)))
+    set_ee_netpay(gross - deduction)
+    set_ee_deduction(deduction)
   }
 
   const SummaryBack = async () => {
-    GetSalarySummary();
+    GetSalarySummary(1);
     IsSummary(true)
 
   }
@@ -464,12 +532,12 @@ const salary = () => {
 
 
   const closeModal = () => {
+    window.location.reload();
     const modalElement = modalRef.current;
     if (modalElement) {
       // eslint-disable-next-line no-undef
       const modal = new bootstrap.Modal(modalElement);
-      modal.hide();
-
+      modal.close();
     }
   };
 
@@ -481,6 +549,18 @@ const salary = () => {
       const modal = new bootstrap.Modal(modalElement);
       modal.show();
     }
+  };
+
+
+  const exportToExcel = () => {
+    // Get the table element
+    const table = document.getElementById('tableToExport');
+
+    // Create a workbook and a worksheet from the table
+    const wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+
+    // Write the workbook to a file
+    XLSX.writeFile(wb, 'table.xlsx');
   };
 
   return (
@@ -552,7 +632,7 @@ const salary = () => {
                 </div>
               </div>
             )}
-            {/* Import EPF Return Model */}
+            {/* Import Salary Return Model */}
             <div className="modal fade" id="importReturn" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div className="modal-dialog" role="document">
                 <div className="modal-content">
@@ -622,10 +702,10 @@ const salary = () => {
                     <td>{employee.totalnetpay}</td>
                     <td>
                       <div className="d-flex align-items-center">
-                        <button className="btn btn-light" onClick={() => { fetchEmployee(employee.id) }}>
+                        <button className="btn btn-light" onClick={() => { ViewSalaryByMonth(1, employee.month, employee.year) }}>
                           <i className="bi bi-eye text-info"></i>
                         </button>
-                        <button className="btn btn-light mx-1" onClick={() => { fetchEmployee(employee.id) }}>
+                        <button className="btn btn-light mx-1" onClick={() => { ViewSalaryByMonth(1, employee.month, employee.year) }}>
                           <i className="bi bi-pencil-fill text-info"></i>
                         </button>
                         <button className="btn btn-light" disabled>
@@ -663,7 +743,7 @@ const salary = () => {
               <div className="col-sm">
                 <button
                   type="button"
-                  className="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#importReturn"
+                  className="btn btn-outline-primary btn-block" onClick={exportToExcel}
                 >
                   Export
                 </button>
@@ -692,7 +772,7 @@ const salary = () => {
 
             {/* Add Epf Return Model */}
 
-            <div className="modal fade bd-example-modal-lg" id="exampleModal" ref={modalRef} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            {isModalOpen && (<div className="modal fade bd-example-modal-lg" id="exampleModal" ref={modalRef} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div className="modal-dialog modal-lg" role="document">
                 <div className="modal-content">
                   <div className="modal-header bg-primary">
@@ -763,71 +843,71 @@ const salary = () => {
                           <div className="row">
                             <div className="col-sm">
                               <label htmlFor="inputPassword">Rate</label>
-                              <input type="text" className="form-control" onChange={(e) => set_ee_rate(e.target.value)} value={ee_rate} />
+                              <input type="number" className="form-control" onChange={(e) => set_ee_rate(e.target.value)} value={ee_rate} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">Basic</label>
-                              <input type="text" className="form-control" id="basic" onBlur={calculation} onChange={(e) => { set_ee_basic(e.target.value) }} value={ee_basic} />
+                              <input type="number" className="form-control" id="basic" onBlur={calculation} onChange={(e) => { set_ee_basic(e.target.value) }} value={ee_basic} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">DA</label>
-                              <input type="text" className="form-control" id="da" onBlur={calculation} onChange={(e) => { set_ee_da(e.target.value) }} value={ee_da} />
+                              <input type="number" className="form-control" id="da" onBlur={calculation} onChange={(e) => { set_ee_da(e.target.value) }} value={ee_da} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">HRA</label>
-                              <input type="text" className="form-control" id="hra" onBlur={calculation} onChange={(e) => { set_ee_hra(e.target.value) }} value={ee_hra} />
+                              <input type="number" className="form-control" id="hra" onBlur={calculation} onChange={(e) => { set_ee_hra(e.target.value) }} value={ee_hra} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">Others</label>
-                              <input type="text" className="form-control" id="others" onBlur={calculation} onChange={(e) => { set_ee_others(e.target.value) }} value={ee_others} />
+                              <input type="number" className="form-control" id="others" onBlur={calculation} onChange={(e) => { set_ee_others(e.target.value) }} value={ee_others} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">Days</label>
-                              <input type="text" className="form-control" id="days" onBlur={calculation} onChange={(e) => set_ee_days(e.target.value)} value={ee_days} />
+                              <input type="number" className="form-control" id="days" onChange={(e) => set_ee_days(e.target.value)} value={ee_days} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">OT</label>
-                              <input type="text" className="form-control" id="ot" onBlur={calculation} onChange={(e) => { set_ee_ot(e.target.value); }} value={ee_ot} />
+                              <input type="number" className="form-control" id="ot" onBlur={calculation} onChange={(e) => { set_ee_ot(e.target.value); }} value={ee_ot} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputColor">Gross Wages</label>
-                              <input type="text" className="form-control" id="gross" disabled onChange={(e) => { set_cal_gross_wages(e.target.value); }} value={cal_gross_wages} />
+                              <input type="number" className="form-control" id="gross" disabled onChange={(e) => { set_cal_gross_wages(e.target.value); }} value={cal_gross_wages} />
                             </div>
 
                           </div>
                           <div className="row">
                             <div className="col-sm">
                               <label htmlFor="inputEPFWages">PT</label>
-                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_pt(e.target.value)} value={ee_pt} />
+                              <input type="number" className="form-control" disabled onChange={(e) => set_ee_pt(e.target.value)} value={ee_pt} />
                             </div>
 
                             <div className="col-sm">
                               <label htmlFor="inputPassword">PF</label>
-                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_epf(e.target.value)} value={ee_epf} />
+                              <input type="number" className="form-control" disabled onChange={(e) => set_ee_epf(e.target.value)} value={ee_epf} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">ESIC</label>
-                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_esic(e.target.value)} value={ee_esic} />
+                              <input type="number" className="form-control" disabled onChange={(e) => set_ee_esic(e.target.value)} value={ee_esic} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">Adv</label>
-                              <input type="text" className="form-control" onChange={(e) => set_ee_adv(e.target.value)} value={ee_adv} />
+                              <input type="number" className="form-control" onChange={(e) => set_ee_adv(e.target.value)} value={ee_adv} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">TDS</label>
-                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_tds(e.target.value)} value={ee_tds} />
+                              <input type="number" className="form-control" disabled onChange={(e) => set_ee_tds(e.target.value)} value={ee_tds} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">MSWF</label>
-                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_mswf(e.target.value)} value={ee_mswf} />
+                              <input type="number" className="form-control" disabled onChange={(e) => set_ee_mswf(e.target.value)} value={ee_mswf} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">Deduction</label>
-                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_deduction(e.target.value)} value={ee_deduction} />
+                              <input type="number" className="form-control" disabled onChange={(e) => set_ee_deduction(e.target.value)} value={ee_deduction} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">NetPay</label>
-                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_netpay(e.target.value)} value={ee_netpay} />
+                              <input type="number" className="form-control" disabled onChange={(e) => set_ee_netpay(e.target.value)} value={ee_netpay} />
                             </div>
                           </div>
                           {/* <div className="row">
@@ -860,14 +940,14 @@ const salary = () => {
                         <button type="button" className="btn btn-outline-primary btn-block">Reset</button>
                       </div>
                       <div className="col-sm">
-                        <button type="button" className="btn btn-outline-primary btn-block" data-dismiss="modal" aria-label="Close" onClick={closeModal} >Close</button>
+                        <button type="button" className="btn btn-outline-primary btn-block" aria-label="Close" onClick={closeModal} >Close</button>
                       </div>
                     </div>
 
                   </div>
                 </div>
               </div>
-            </div>
+            </div>)}
 
 
             {/* return success or  failure msg */}
@@ -914,7 +994,7 @@ const salary = () => {
               </div>
             </div>
             <h5 className="mt-4">Salary For Month {selectedMonth}-{selectedYear}</h5>
-            <table className="table table-striped">
+            <table className="table table-striped" id="tableToExport">
               <thead>
                 <tr>
                   <th scope="col">Sn</th>
@@ -963,10 +1043,10 @@ const salary = () => {
                     <td>{employee.netpay}</td>
                     <td>
                       <div className="d-flex align-items-center">
-                        <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { GetSalaryById(employee.id) }}>
+                        <button className="btn btn-light" onClick={() => { GetSalaryById(employee.id) }}>
                           <i className="bi bi-eye text-info"></i>
                         </button>
-                        <button className="btn btn-light mx-1" data-toggle="modal" data-target="#exampleModal" onClick={() => { GetSalaryById(employee.id) }}>
+                        <button className="btn btn-light mx-1" onClick={() => { GetSalaryById(employee.id) }}>
                           <i className="bi bi-pencil-fill text-info"></i>
                         </button>
                         <button className="btn btn-light" disabled>
