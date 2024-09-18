@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from "react"
 import { getEstId, getErId } from "../Auth/authToken";
-import { getMasterList, saveEERegister, getEmployee, updateEmployee, uploadEmployee, searchEmployee } from "../../api/services";
+import { getMasterList, saveEERegister, getEmployee, updateEmployee, uploadEmployee, searchEmployee, uploadEmployer } from "../../api/services";
 import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
 import React, { useRef } from 'react';
 import { Link } from "react-router-dom";
 const master = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const itemsPerPage = 5; // Number of items per page
+  const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, set_totalPages] = useState(1);
 
@@ -260,14 +260,7 @@ const master = () => {
     }
   };
 
-
-  const [file, setFile] = useState(null);
-
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-  };
-
-  const uplaodEmployee = async () => {
+  const uplaodBulkEmployer = async () => {
     if (!file) {
       alert('Please choose a file first.');
       return;
@@ -276,11 +269,7 @@ const master = () => {
     try {
       const formData = new FormData();
       formData.append('file', file);
-      const id = getErId()
-
-      // console.log('======', params)
-
-      const data = await uploadEmployee(id, formData);
+      const data = await uploadEmployer(formData);
       if (data.status === true) {
         Swal.fire({
           position: 'top-right',
@@ -292,27 +281,30 @@ const master = () => {
           timer: 1500,
         });
 
-        getAll();
+
       } else {
         Swal.fire({
-          position: 'top-right',
+          title: 'Error',
+          text: data.message + " : "+ data.data,
           icon: 'error',
-          toast: true,
-          title: data.message,
-          showConfirmButton: false,
-          showCloseButton: true,
-          timer: 1500,
+          confirmButtonText: 'Okay'
         });
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
 
-      reset();
 
     } catch (error) {
       console.error('Login error ', error);
       setError(error);
     }
   }
+
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
+
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -377,15 +369,15 @@ const master = () => {
         <section className="section">
           <br />
           <div className="row">
-          <div className="col-sm-2">
+            <div className="col-sm-2">
               <button
                 type="file"
-                className="btn btn-outline-primary btn-block" 
+                className="btn btn-outline-primary btn-block"
               > <Link to="/auth/dashboard/employer"><span> Add Employer</span></Link>
-               
+
               </button>
             </div>
-              <div className="col-sm-2">
+            <div className="col-sm-2">
               <button
                 type="file"
                 className="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#importReturn"
@@ -401,7 +393,7 @@ const master = () => {
                 Export
               </button>
             </div>
-          
+
           </div>
 
           <div className="table-responsive mt-2">
@@ -419,7 +411,7 @@ const master = () => {
                   <th>Total Bill Amount</th>
                   <th>Received Bill Amount</th>
                   <th>Balance Bill Amount</th>
-                  <th>Action</th>
+                 
                 </tr>
               </thead>
               <tbody>
@@ -436,19 +428,7 @@ const master = () => {
                     <td>{employee.totalbill}</td>
                     <td>{employee.recievedamount}</td>
                     <td>{employee.balanceamount}</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        {/* <button className="btn btn-light" onClick={() => { fetchEmployee(employee.id) }}>
-                          <i className="bi bi-eye text-info"></i>
-                        </button> */}
-                        {/* <button className="btn btn-light mx-1" onClick={() => { fetchEmployee(employee.id) }}>
-                          <i className="bi bi-pencil-fill text-info"></i>
-                        </button> */}
-                        <button className="btn btn-light" disabled>
-                          <i className="bi bi-trash text-danger"></i>
-                        </button>
-                      </div>
-                    </td>
+                    
                   </tr>
                 ))}
               </tbody>
@@ -478,6 +458,28 @@ const master = () => {
             >
               Next
             </button>
+          </div>
+
+          <div className="modal fade" id="importReturn" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">Uplaod FIles</h5>
+                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <div className="col-md-12">
+                    <input className="form-control" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
+                  </div>
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" className="btn btn-primary" onClick={uplaodBulkEmployer}>Upload</button>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </div>

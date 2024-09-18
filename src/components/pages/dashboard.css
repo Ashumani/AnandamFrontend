@@ -150,10 +150,12 @@ body {
   } */
   
   .cardprop1 {
-    background-color: #2962ff;
+    background-color: #8884d8 !important;
+    box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.3)!important;
   }
   .cardprop2{
-    background-color: #ff6d00;
+    background-color: #b8b5e8 !important;
+    box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.3) !important;
   }
   
   /* .card:nth-child(3) {
@@ -161,13 +163,15 @@ body {
   } */
   
   .cardprop3 {
-    background-color: #2e7d32;
+    background-color: #a7b7d6 !important;
+    box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.3) !important;
   }
   
   .cardprop4 {
-    background-color: #d50000;
+    background-color: #82ca9d !important;
+    box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.3) !important;
   }
-  
+
   .card-inner {
     display: flex;
     align-items: center;

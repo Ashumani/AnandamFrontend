@@ -1,598 +1,715 @@
 /* eslint-disable react/no-unknown-property */
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect } from 'react';
-import "./bootstrap.min.css"
-import "./style.css"
-// import service1 from "../../../assets/img/service-1.jpg"
-// import service2 from "../../../assets/img/service-2.jpg"
-// import service3 from "../../../assets/img/service-3.jpg"
-import service1 from "../../../assets/img/epfo.jpg"
-import service2 from "../../../assets/img/esic.jpg"
-import service3 from "../../../assets/img/DSC.jpg"
-import carousel1 from "../../../assets/img/carousel-1.jpg"
-// import carousel2 from "../../../assets/img/carousel-2.jpg"
-import about1 from "../../../assets/img/about-1.jpg"
-import about2 from "../../../assets/img/about-2.jpg"
-// import team1 from "../../../assets/img/team-1.jpg"
-// import team2 from "../../../assets/img/team-2.jpg"
-// import team3 from "../../../assets/img/team-3.jpg"
-// import team4 from "../../../assets/img/team-4.jpg"
+import logo from "../../../standalone_assets/images/logo-v1.png"
+import slider from "../../../standalone_assets/images/epfo.png"
+// import slider from "../../../standalone_assets/images/slider-dec.png"
 
-import team1 from "../../../assets/img/1.jpg"
-import team2 from "../../../assets/img/2.jpg"
-import team3 from "../../../assets/img/4.png"
-import team4 from "../../../assets/img/5.png"
-
-
-import testimonial1 from "../../../assets/img/testimonial-1.jpg"
-import testimonial2 from "../../../assets/img/testimonial-2.jpg"
-import testimonial3 from "../../../assets/img/testimonial-3.jpg"
-import testimonial4 from "../../../assets/img/testimonial-4.jpg"
-
+import aboutdec from "../../../standalone_assets/images/about-dec.png"
+import serviceicon01 from "../../../standalone_assets/images/service-icon-01.png"
+import serviceicon02 from "../../../standalone_assets/images/service-icon-02.png"
+import serviceicon03 from "../../../standalone_assets/images/service-icon-03.png"
+import serviceicon04 from "../../../standalone_assets/images/service-icon-04.png"
+// import serviceicon01 from "../../../standalone_assets/images/service-icon-01.png"                              
+import servicesimage from "../../../standalone_assets/images/services-image.jpg"
+import servicesimage02 from "../../../standalone_assets/images/services-image-02.jpg"
+import servicesimage03 from "../../../standalone_assets/images/services-image-03.jpg"
+import servicesimage04 from "../../../standalone_assets/images/services-image-04.jpg"
+// import servicesimage from "../../../standalone_assets/images/services-image.jpg"                                      
+import portfolio01 from "../../../standalone_assets/images/portfolio-01.jpg"
+// import portfolio01 from "../../../standalone_assets/images/portfolio-01.jpg"                        
+import portfolio02 from "../../../standalone_assets/images/portfolio-02.jpg"
+import portfolio03 from "../../../standalone_assets/images/portfolio-03.jpg"
+import portfolio04 from "../../../standalone_assets/images/portfolio-04.jpg"
+import blogpost01 from "../../../standalone_assets/images/blog-post-01.jpg"
+import authorpost from "../../../standalone_assets/images/author-post.jpg"
+import blogpost02 from "../../../standalone_assets/images/blog-post-02.jpg"
+import blogpost03 from "../../../standalone_assets/images/blog-post-03.jpg"
+import blogpost04 from "../../../standalone_assets/images/blog-post-04.jpg"
+import contactdec from "../../../standalone_assets/images/contact-dec.png"
+import phoneicon from "../../../standalone_assets/images/phone-icon.png"
+import emailicon from "../../../standalone_assets/images/email-icon.png"
+import locationicon from "../../../standalone_assets/images/location-icon.png"
 const standalone = () => {
 
-    const loadScript = (src) => {
-        return new Promise((resolve, reject) => {
-          const script = document.createElement('script');
-          script.src = src;
-          script.async = true;
-          script.onload = () => resolve();
-          script.onerror = (error) => reject(error);
-          document.body.appendChild(script);
-        });
-      };
+  return (
+    <div>
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-        loadScript('../../../assets/lib/wow/wow.min.js')
-            .then(() => {
-                console.log('wow.min.js loaded successfully');
-            })
-            .catch((error) => {
-                console.error('Error loading wow.min.js:', error);
-            });
-    }, []);
-
-    return (
-        <div className="container-fluid p-0">
-
-            <div className="container-fluid bg-light d-none d-lg-block">
-            <div className="row align-items-center top-bar">
-                <div className="col-lg-3 col-md-12 text-center text-lg-start">
-                <a href="" className="navbar-brand m-0 p-0">
-                    <h1 className="text-primary m-0">Anandam</h1>
-                </a>
-                </div>
-                <div className="col-lg-9 col-md-12 text-end">
-                <div className="h-100 d-inline-flex align-items-center me-4">
-                    <i className="fa fa-map-marker-alt text-primary me-2"></i>
-                    <p className="m-0">Tukdoji Square, Nagpur, India</p>
-                </div>
-                <div className="h-100 d-inline-flex align-items-center me-4">
-                    <i className="far fa-envelope-open text-primary me-2"></i>
-                    <p className="m-0">anandesipf@gmail.com</p>
-                </div>
-                <div className="h-100 d-inline-flex align-items-center">
-                    <a className="btn btn-sm-square bg-white text-primary me-1" href=""><i className="fab fa-facebook-f"></i></a>
-                    <a className="btn btn-sm-square bg-white text-primary me-1" href=""><i className="fab fa-twitter"></i></a>
-                    <a className="btn btn-sm-square bg-white text-primary me-1" href=""><i className="fab fa-linkedin-in"></i></a>
-                    <a className="btn btn-sm-square bg-white text-primary me-0" href=""><i className="fab fa-instagram"></i></a>
-                </div>
-                </div>
-            </div>
-            </div>
-
-            <div className="container-fluid nav-bar bg-light">
-            <nav className="navbar navbar-expand-lg navbar-light bg-white p-3 py-lg-0 px-lg-4">
-                <a href="" className="navbar-brand d-flex align-items-center m-0 p-0 d-lg-none">
-                <h1 className="text-primary m-0">Plumberz</h1>
-                </a>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span className="fa fa-bars"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarCollapse">
-                <div className="navbar-nav me-auto">
-                    <a href="index.html" className="nav-item nav-link active">Home</a>
-                    <a href="about.html" className="nav-item nav-link">About</a>
-                    <a href="service.html" className="nav-item nav-link">Services</a>
-                    <div className="nav-item dropdown">
-                    <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                    <div className="dropdown-menu fade-up m-0">
-                        <a href="booking.html" className="dropdown-item">Booking</a>
-                        <a href="team.html" className="dropdown-item">Technicians</a>
-                        <a href="testimonial.html" className="dropdown-item">Testimonial</a>
-                        <a href="404.html" className="dropdown-item">404 Page</a>
-                    </div>
-                    </div>
-                    <a href="contact.html" className="nav-item nav-link">Contact</a>
-                    <a href="/login" className="nav-item nav-link">Login</a>
-                </div>
-                <div className="mt-4 mt-lg-0 me-lg-n4 py-3 px-4 bg-primary d-flex align-items-center">
-                    <div className="d-flex flex-shrink-0 align-items-center justify-content-center bg-white" style={{ width: '45px', height: '45px' }}>
-                    <i className="fa fa-phone-alt text-primary"></i>
-                    </div>
-                    <div className="ms-3">
-                    <p className="mb-1 text-white">Emergency 24/7</p>
-                    <h5 className="m-0 text-secondary">+91-8793143976</h5>
-                    </div>
-                </div>
-                </div>
-            </nav>
-            </div>
-
-            <div className="container-fluid p-0 mb-5">
-                <div className="owl-carousel header-carousel position-relative">
-                    <div className="owl-carousel-item position-relative">
-                        <img className="img-fluid" src={carousel1} alt="" />
-                        <div className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style={{ background: 'rgba(0, 0, 0, .4)' }}>
-                            <div className="container">
-                                <div className="row justify-content-start">
-                                    <div className="col-10 col-lg-8">
-                                        <h5 className="text-white text-uppercase mb-3 animated slideInDown">EPF & ESIC Services</h5>
-                                        <h1 className="display-3 text-white animated slideInDown mb-4">EPF and ESIC Assistance</h1>
-                                        <p className="fs-5 fw-medium text-white mb-4 pb-2">EPF and ESIC deductions ensure employees financial security and healthcare, providing essential benefits for their future and well-being.</p>
-                                        <a href="" className="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
-                                        <a href="" className="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Free Quote</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {/* <div className="owl-carousel-item position-relative">
-                        <img className="img-fluid" src={carousel2} alt="" />
-                        <div className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style={{ background: 'rgba(0, 0, 0, .4)' }}>
-                            <div className="container">
-                                <div className="row justify-content-start">
-                                    <div className="col-10 col-lg-8">
-                                    <h5 className="text-white text-uppercase mb-3 animated slideInDown">EPF & ESIC Services</h5>
-                                        <h1 className="display-3 text-white animated slideInDown mb-4">EPF and ESIC Assistance</h1>
-                                        <p className="fs-5 fw-medium text-white mb-4 pb-2">EPF and ESIC deductions ensure employees financial security and healthcare, providing essential benefits for their future and well-being.</p>
-                                        <a href="" className="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
-                                        <a href="" className="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Free Quote</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
-                </div>
-            </div>
-
-            <div className="container">
-                <div className="row g-4">
-                    <div className="col-lg-4 col-md-6 service-item-top wow fadeInUp" data-wow-delay="0.1s">
-                        <div className="overflow-hidden">
-                            <img className="image-fluid w-100 h-100" src={service1} alt="" />
-                            {/* <img src={bg} alt="Example" /> */}
-                        </div>
-                        <div className="d-flex align-items-center justify-content-between bg-light p-4">
-                            <h5 className="text-truncate me-3 mb-0">EPF Services</h5>
-                            <a className="btn btn-square btn-outline-primary border-2 border-white flex-shrink-0" href=""><i className="fa fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-                    <div className="col-lg-4 col-md-6 service-item-top wow fadeInUp" data-wow-delay="0.3s">
-                        <div className="overflow-hidden">
-                            <img className="image-fluid w-100 h-100" src={service2} alt="" />
-                        </div>
-                        <div className="d-flex align-items-center justify-content-between bg-light p-4">
-                            <h5 className="text-truncate me-3 mb-0">ESIC Services</h5>
-                            <a className="btn btn-square btn-outline-primary border-2 border-white flex-shrink-0" href=""><i className="fa fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-                    <div className="col-lg-4 col-md-6 service-item-top wow fadeInUp" data-wow-delay="0.5s">
-                        <div className="overflow-hidden">
-                            <img className="image-fluid w-100 h-100" src={service3} alt="" />
-                        </div>
-                        <div className="d-flex align-items-center justify-content-between bg-light p-4">
-                            <h5 className="text-truncate me-3 mb-0">Digital Signature</h5>
-                            <a className="btn btn-square btn-outline-primary border-2 border-white flex-shrink-0" href=""><i className="fa fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="container-xxl py-5">
-                <div className="container">
-                    <div className="row g-5">
-                        <div className="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <h6 className="text-secondary text-uppercase">About Us</h6>
-                            <h1 className="mb-4">We Are Trusted Labour Consultant Since 1990</h1>
-                            <p className="mb-4">We are a team of professional consultants with over 30 years of experience in PF and ESIC consultancy services. Renowned for our efficiency, we provide top-tier legal advisory services including PF, ESIC, and PF withdrawal. Our expertise extends across all levels of organizational needs, ensuring we are the most valuable resource for our clients.</p>
-                            <p className="fw-medium text-primary"><i className="fa fa-check text-success me-3"></i>Smart Solution With Experience Team</p>
-                            <p className="fw-medium text-primary"><i className="fa fa-check text-success me-3"></i>Quality services at affordable prices</p>
-                            <p className="fw-medium text-primary"><i className="fa fa-check text-success me-3"></i>Immediate 24/ 7 emergency services</p>
-                            <div className="bg-primary d-flex align-items-center p-4 mt-5">
-                                <div className="d-flex flex-shrink-0 align-items-center justify-content-center bg-white" style={{ width: '60px', height: '60px' }}>
-                                    <i className="fa fa-phone-alt fa-2x text-primary"></i>
-                                </div>
-                                <div className="ms-3">
-                                    <p className="fs-5 fw-medium mb-2 text-white">Emergency 24/7</p>
-                                    <h3 className="m-0 text-secondary">+91-8793143976</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-6 pt-4" style={{ minHeight: '500px' }}>
-                            <div className="position-relative h-100 wow fadeInUp" data-wow-delay="0.5s">
-                                <img className="position-absolute img-fluid w-60 h-80" src={about1} style={{ objectFit: 'cover', padding: '0 0 50px 100px' }} alt="" />
-                                <img className="position-absolute start-0 bottom-0 img-fluid bg-white pt-2 pe-2 w-40 h-50" src={about2} style={{ objectFit: 'cover' }} alt="" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="container-fluid fact bg-dark my-5 py-5">
-                <div className="container">
-                    <div className="row g-4">
-                        <div className="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
-                            <i className="fa fa-check fa-2x text-white mb-3"></i>
-                            <h2 className="text-white mb-2" data-toggle="counter-up">1234</h2>
-                            <p className="text-white mb-0">Years Experience</p>
-                        </div>
-                        <div className="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.3s">
-                            <i className="fa fa-users-cog fa-2x text-white mb-3"></i>
-                            <h2 className="text-white mb-2" data-toggle="counter-up">1234</h2>
-                            <p className="text-white mb-0">Expert Technicians</p>
-                        </div>
-                        <div className="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.5s">
-                            <i className="fa fa-users fa-2x text-white mb-3"></i>
-                            <h2 className="text-white mb-2" data-toggle="counter-up">1234</h2>
-                            <p className="text-white mb-0">Satisfied Clients</p>
-                        </div>
-                        <div className="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.7s">
-                            <i className="fa fa-wrench fa-2x text-white mb-3"></i>
-                            <h2 className="text-white mb-2" data-toggle="counter-up">1234</h2>
-                            <p className="text-white mb-0">Compleate Projects</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="container-fluid py-5 px-4 px-lg-0">
-                <div className="row g-0">
-                    <div className="col-lg-3 d-none d-lg-flex">
-                        <div className="d-flex align-items-center justify-content-center bg-primary w-100 h-100">
-                            <h1 className="display-3 text-white m-0" style={{ transform: 'rotate(-90deg)' }}>30 Years Experience</h1>
-                        </div>
-                    </div>
-                    <div className="col-md-12 col-lg-9">
-                        <div className="ms-lg-5 ps-lg-5">
-                            <div className="text-center text-lg-start wow fadeInUp" data-wow-delay="0.1s">
-                                <h6 className="text-secondary text-uppercase">Our Services</h6>
-                                <h1 className="mb-5">Explore Our Services</h1>
-                            </div>
-                            <div className="owl-carousel service-carousel position-relative wow fadeInUp" data-wow-delay="0.1s">
-                                <div className="bg-light p-4">
-                                    <div className="d-flex align-items-center justify-content-center border border-5 border-white mb-4" style={{ width: '75px', height: '75px' }}>
-                                        <i className="fa fa-water fa-2x text-primary"></i>
-                                    </div>
-                                    <h4 className="mb-3">EPF & ESIC Return</h4>
-                                    <p>Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam justo.</p>
-                                    <p className="text-primary fw-medium"><i className="fa fa-check text-success me-2"></i>Quality Service</p>
-                                    <p className="text-primary fw-medium"><i className="fa fa-check text-success me-2"></i>Customer Satisfaction</p>
-                                    <p className="text-primary fw-medium"><i className="fa fa-check text-success me-2"></i>Support 24/7</p>
-                                    <a href="" className="btn bg-white text-primary w-100 mt-2">Read More<i className="fa fa-arrow-right text-secondary ms-2"></i></a>
-                                </div>
-                                <div className="bg-light p-4">
-                                    <div className="d-flex align-items-center justify-content-center border border-5 border-white mb-4" style={{ width: '75px', height: '75px' }}>
-                                        <i className="fa fa-toilet fa-2x text-primary"></i>
-                                    </div>
-                                    <h4 className="mb-3">Digital Signature</h4>
-                                    <p>Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam justo.</p>
-                                    <p className="text-primary fw-medium"><i className="fa fa-check text-success me-2"></i>Quality Service</p>
-                                    <p className="text-primary fw-medium"><i className="fa fa-check text-success me-2"></i>Customer Satisfaction</p>
-                                    <p className="text-primary fw-medium"><i className="fa fa-check text-success me-2"></i>Support 24/7</p>
-                                    <a href="" className="btn bg-white text-primary w-100 mt-2">Read More<i className="fa fa-arrow-right text-secondary ms-2"></i></a>
-                                </div>
-                                <div className="bg-light p-4">
-                                    <div className="d-flex align-items-center justify-content-center border border-5 border-white mb-4" style={{ width: '75px', height: '75px' }}>
-                                        <i className="fa fa-shower fa-2x text-primary"></i>
-                                    </div>
-                                    <h4 className="mb-3">Solving Employess Problem</h4>
-                                    <p>Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam justo.</p>
-                                    <p className="text-primary fw-medium"><i className="fa fa-check text-success me-2"></i>Quality Service</p>
-                                    <p className="text-primary fw-medium"><i className="fa fa-check text-success me-2"></i>Customer Satisfaction</p>
-                                    <p className="text-primary fw-medium"><i className="fa fa-check text-success me-2"></i>Support 24/7</p>
-                                    <a href="" className="btn bg-white text-primary w-100 mt-2">Read More<i className="fa fa-arrow-right text-secondary ms-2"></i></a>
-                                </div>
-                                <div className="bg-light p-4">
-                                    <div className="d-flex align-items-center justify-content-center border border-5 border-white mb-4" style={{ width: '75px', height: '75px' }}>
-                                        <i className="fa fa-tint fa-2x text-primary"></i>
-                                    </div>
-                                    <h4 className="mb-3">Accounting</h4>
-                                    <p>Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam justo.</p>
-                                    <p className="text-primary fw-medium"><i className="fa fa-check text-success me-2"></i>Quality Service</p>
-                                    <p className="text-primary fw-medium"><i className="fa fa-check text-success me-2"></i>Customer Satisfaction</p>
-                                    <p className="text-primary fw-medium"><i className="fa fa-check text-success me-2"></i>Support 24/7</p>
-                                    <a href="" className="btn bg-white text-primary w-100 mt-2">Read More<i className="fa fa-arrow-right text-secondary ms-2"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="container-xxl py-5">
-                <div className="container">
-                    <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
-                        <h6 className="text-secondary text-uppercase">Our Technicians</h6>
-                        <h1 className="mb-5">Our Expert Technicians</h1>
-                    </div>
-                    <div className="row g-4">
-                        <div className="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div className="team-item">
-                                <div className="position-relative overflow-hidden">
-                                    <img className="img-fluid" src={team1} alt="" />
-                                </div>
-                                <div className="team-text">
-                                    <div className="bg-light">
-                                        <h5 className="fw-bold mb-0">Manish Kirnapure</h5>
-                                        <small>Apigee Developer</small>
-                                    </div>
-                                    <div className="bg-primary">
-                                        <a className="btn btn-square mx-1" href=""><i className="fab fa-facebook-f"></i></a>
-                                        <a className="btn btn-square mx-1" href=""><i className="fab fa-twitter"></i></a>
-                                        <a className="btn btn-square mx-1" href=""><i className="fab fa-instagram"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                            <div className="team-item">
-                                <div className="position-relative overflow-hidden">
-                                    <img className="img-fluid" src={team2} alt="" />
-                                </div>
-                                <div className="team-text">
-                                    <div className="bg-light">
-                                        <h5 className="fw-bold mb-0">Manish Kirnapure</h5>
-                                        <small>Node Developer</small>
-                                    </div>
-                                    <div className="bg-primary">
-                                        <a className="btn btn-square mx-1" href=""><i className="fab fa-facebook-f"></i></a>
-                                        <a className="btn btn-square mx-1" href=""><i className="fab fa-twitter"></i></a>
-                                        <a className="btn btn-square mx-1" href=""><i className="fab fa-instagram"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                            <div className="team-item">
-                                <div className="position-relative overflow-hidden">
-                                    <img className="img-fluid" src={team3} alt="" />
-                                </div>
-                                <div className="team-text">
-                                    <div className="bg-light">
-                                        <h5 className="fw-bold mb-0">Manish Kirnapure</h5>
-                                        <small>React JS Developer</small>
-                                    </div>
-                                    <div className="bg-primary">
-                                        <a className="btn btn-square mx-1" href=""><i className="fab fa-facebook-f"></i></a>
-                                        <a className="btn btn-square mx-1" href=""><i className="fab fa-twitter"></i></a>
-                                        <a className="btn btn-square mx-1" href=""><i className="fab fa-instagram"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-                            <div className="team-item">
-                                <div className="position-relative overflow-hidden">
-                                    <img className="img-fluid" src={team4} alt="" />
-                                </div>
-                                <div className="team-text">
-                                    <div className="bg-light">
-                                        <h5 className="fw-bold mb-0">Manish Kirnapure</h5>
-                                        <small>Python Developer</small>
-                                    </div>
-                                    <div className="bg-primary">
-                                        <a className="btn btn-square mx-1" href=""><i className="fab fa-facebook-f"></i></a>
-                                        <a className="btn btn-square mx-1" href=""><i className="fab fa-twitter"></i></a>
-                                        <a className="btn btn-square mx-1" href=""><i className="fab fa-instagram"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-                <div className="container">
-                    <div className="text-center">
-                        <h6 className="text-secondary text-uppercase">Testimonial</h6>
-                        <h1 className="mb-5">Our Clients Say!</h1>
-                    </div>
-                    <div className="owl-carousel testimonial-carousel position-relative wow fadeInUp" data-wow-delay="0.1s">
-                        <div className="testimonial-item text-center">
-                            <div className="testimonial-text bg-light text-center p-4 mb-4">
-                                <p className="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                            </div>
-                            <img className="bg-light rounded-circle p-2 mx-auto mb-2" src={testimonial1} style={{ width: '80px', height: '80px' }} />
-                            <div className="mb-2">
-                                <small className="fa fa-star text-secondary"></small>
-                                <small className="fa fa-star text-secondary"></small>
-                                <small className="fa fa-star text-secondary"></small>
-                                <small className="fa fa-star text-secondary"></small>
-                                <small className="fa fa-star text-secondary"></small>
-                            </div>
-                            <h5 className="mb-1">Client Name</h5>
-                            <p className="m-0">Profession</p>
-                        </div>
-                        <div className="testimonial-item text-center">
-                            <div className="testimonial-text bg-light text-center p-4 mb-4">
-                                <p className="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                            </div>
-                            <img className="bg-light rounded-circle p-2 mx-auto mb-2" src={testimonial2} style={{ width: '80px', height: '80px' }} />
-                            <div className="mb-2">
-                                <small className="fa fa-star text-secondary"></small>
-                                <small className="fa fa-star text-secondary"></small>
-                                <small className="fa fa-star text-secondary"></small>
-                                <small className="fa fa-star text-secondary"></small>
-                                <small className="fa fa-star text-secondary"></small>
-                            </div>
-                            <h5 className="mb-1">Client Name</h5>
-                            <p className="m-0">Profession</p>
-                        </div>
-                        <div className="testimonial-item text-center">
-                            <div className="testimonial-text bg-light text-center p-4 mb-4">
-                                <p className="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                            </div>
-                            <img className="bg-light rounded-circle p-2 mx-auto mb-2" src={testimonial3} style={{ width: '80px', height: '80px' }} />
-                            <div className="mb-2">
-                                <small className="fa fa-star text-secondary"></small>
-                                <small className="fa fa-star text-secondary"></small>
-                                <small className="fa fa-star text-secondary"></small>
-                                <small className="fa fa-star text-secondary"></small>
-                                <small className="fa fa-star text-secondary"></small>
-                            </div>
-                            <h5 className="mb-1">Client Name</h5>
-                            <p className="m-0">Profession</p>
-                        </div>
-                        <div className="testimonial-item text-center">
-                            <div className="testimonial-text bg-light text-center p-4 mb-4">
-                                <p className="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                            </div>
-                            <img className="bg-light rounded-circle p-2 mx-auto mb-2" src={testimonial4} style={{ width: '80px', height: '80px' }} />
-                            <div className="mb-2">
-                                <small className="fa fa-star text-secondary"></small>
-                                <small className="fa fa-star text-secondary"></small>
-                                <small className="fa fa-star text-secondary"></small>
-                                <small className="fa fa-star text-secondary"></small>
-                                <small className="fa fa-star text-secondary"></small>
-                            </div>
-                            <h5 className="mb-1">Client Name</h5>
-                            <p className="m-0">Profession</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="container-fluid my-5 px-0">
-        <div className="video wow fadeInUp" data-wow-delay="0.1s">
-            <button type="button" className="btn-play" data-bs-toggle="modal" data-src="https://www.youtube.com/embed/DWRcNpR6Kdc" data-bs-target="#videoModal">
-                <span></span>
-            </button>
-
-            <div className="modal fade" id="videoModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog">
-                    <div className="modal-content rounded-0">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">Youtube Video</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-                           {/* // 16:9 aspect ratio --> */}
-                            <div className="ratio ratio-16x9">
-                                <iframe className="embed-responsive-item" src="" id="video" allowfullscreen allowscriptaccess="always"
-                                    allow="autoplay"></iframe>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <h1 className="text-white mb-4">You Don have to Worry , We are here for you</h1>
-            <h3 className="text-white mb-0">24 Hours 7 Days a Week</h3>
+      <div id="js-preloader" className="js-preloader">
+        <div className="preloader-inner">
+          <span className="dot"></span>
+          <div className="dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </div>
-        <div className="container position-relative wow fadeInUp" data-wow-delay="0.1s" style={{'margin-top': '-6rem'}}>
-            <div className="row justify-content-center">
-                <div className="col-lg-8">
-                    <div className="bg-light text-center p-5">
-                        <h1 className="mb-4">Book For A Service</h1>
-                        <form>
-                            <div className="row g-3">
-                                <div className="col-12 col-sm-6">
-                                    <input type="text" className="form-control border-0" placeholder="Your Name" style={{height: '55px'}} />
+      </div>
+
+      <div className="pre-header">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-8 col-sm-8 col-7">
+              <ul className="info">
+                <li><a href="#"><i className="fa fa-envelope"></i>anand.esipf@gmail.com</a></li>
+                <li><a href="#"><i className="fa fa-phone"></i>+91-8793143976</a></li>
+              </ul>
+            </div>
+            <div className="col-lg-4 col-sm-4 col-5">
+              <ul className="social-media">
+                <li><a href="#"><i className="fa fa-facebook"></i></a></li>
+                <li><a href="#"><i className="fa fa-behance"></i></a></li>
+                <li><a href="#"><i className="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i className="fa fa-dribbble"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <header className="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+        <div className="container">
+          <div className="row">
+            <div className="col-12">
+              <nav className="main-nav">
+                <a href="index.html" className="logo">
+                  <img src={logo} alt="" />
+                </a>
+                <ul className="nav">
+                  <li className="scroll-to-section"><a href="#top" className="active">Home</a></li>
+                  <li className="scroll-to-section"><a href="#about">About</a></li>
+                  <li className="scroll-to-section"><a href="#services">Services</a></li>
+                  <li className="scroll-to-section"><a href="#portfolio">Projects</a></li>
+                  <li className="scroll-to-section"><a href="#blog">Blog</a></li>
+                  <li className="scroll-to-section"><a href="#contact">Contact</a></li>
+                  <li className="scroll-to-section"><div className="border-first-button"><a href="/login">Login</a></div></li>
+                </ul>
+                <a className='menu-trigger'>
+                  <span>Menu</span>
+                </a>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="row">
+                <div className="col-lg-6 align-self-center">
+                  <div className="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <h6>EPF & ESIC Services</h6>
+                        <h2>EPF and ESIC Assistance</h2>
+                        <p>EPF and ESIC deductions ensure employees financial security and healthcare, providing essential benefits for their future and well-being.</p>
+                      </div>
+                      <div className="col-lg-12">
+                        <div className="border-first-button scroll-to-section">
+                          <a href="#contact">Free Quote</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-lg-6">
+                  <div className="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
+                    <img src={slider} alt="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="about" className="about section">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="row">
+                <div className="col-lg-6">
+                  <div className="about-left-image  wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.5s">
+
+                    <img src={aboutdec} alt="" />
+
+                  </div>
+                </div>
+                <div className="col-lg-6 align-self-center  wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
+                  <div className="about-right-content">
+                    <div className="section-heading">
+                      <h6>About Us</h6>
+                      <h4>We Are Trusted Labour Consultant <em> Since 1990</em></h4>
+                      <div className="line-dec"></div>
+                    </div>
+                    <p>We are a team of professional consultants with over 30 years of experience in PF and ESIC consultancy services. Renowned for our efficiency, we provide top-tier legal advisory services including PF, ESIC, and PF withdrawal. Our expertise extends across all levels of organizational needs, ensuring we are the most valuable resource for our clients.</p>
+                    <div className="row">
+                      <div className="col-lg-4 col-sm-4">
+                        <div className="skill-item first-skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
+                          <div className="progress" data-percentage="90">
+                            <span className="progress-left">
+                              <span className="progress-bar"></span>
+                            </span>
+                            <span className="progress-right">
+                              <span className="progress-bar"></span>
+                            </span>
+                            <div className="progress-value">
+                              <div>
+                                90%<br />
+                                <span>Coding</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-4 col-sm-4">
+                        <div className="skill-item second-skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
+                          <div className="progress" data-percentage="80">
+                            <span className="progress-left">
+                              <span className="progress-bar"></span>
+                            </span>
+                            <span className="progress-right">
+                              <span className="progress-bar"></span>
+                            </span>
+                            <div className="progress-value">
+                              <div>
+                                80%<br />
+                                <span>Photoshop</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-4 col-sm-4">
+                        <div className="skill-item third-skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
+                          <div className="progress" data-percentage="80">
+                            <span className="progress-left">
+                              <span className="progress-bar"></span>
+                            </span>
+                            <span className="progress-right">
+                              <span className="progress-bar"></span>
+                            </span>
+                            <div className="progress-value">
+                              <div>
+                                80%<br />
+                                <span>Animation</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="services" className="services section">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="section-heading  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
+                <h6>Our Services</h6>
+                <h4>What we <em>Provides</em></h4>
+                <div className="line-dec"></div>
+              </div>
+            </div>
+            <div className="col-lg-12">
+              <div className="naccs">
+                <div className="grid">
+                  <div className="row">
+                    <div className="col-lg-12">
+                      <div className="menu">
+                        <div className="first-thumb active">
+                          <div className="thumb">
+                            <span className="icon"><img src={serviceicon01} alt="" />
+                            </span>
+                            EPF
+                          </div>
+                        </div>
+                        <div>
+                          <div className="thumb">
+                            <span className="icon"><img src={serviceicon02} alt="" />
+                            </span>
+                            ESIC
+                          </div>
+                        </div>
+                        <div>
+                          <div className="thumb">
+                            <span className="icon"><img src={serviceicon03} alt="" />
+                            </span>
+                            DSC
+                          </div>
+                        </div>
+                        <div>
+                          <div className="thumb">
+                            <span className="icon"><img src={serviceicon04} alt="" />
+                            </span>
+                            Labour Solution
+                          </div>
+                        </div>
+                        <div className="last-thumb">
+                          <div className="thumb">
+                            <span className="icon"><img src={serviceicon01} alt="" />
+                            </span>
+                            Traveling
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-12">
+                      <ul className="nacc">
+                        <li className="active">
+                          <div>
+                            <div className="thumb">
+                              <div className="row">
+                                <div className="col-lg-6 align-self-center">
+                                  <div className="left-text">
+                                    <h4>Expert EPF Consulting for Compliance &amp; Security</h4>
+                                    <p>Our EPF consulting services simplify the complexities of the Employees' Provident Fund Organisation (EPFO) for both employees and employers. We provide expert guidance on EPF regulations, assist with compliance and reporting, and facilitate the filing of claims to ensure timely access to benefits. </p>
+                                    <div className="ticks-list"><span><i className="fa fa-check"></i> Smart Solution With Experience Team</span> <span><i className="fa fa-check"></i> Complience</span> <span><i className="fa fa-check"></i> Immediate 24/ 7 emergency services</span>
+                                      <span><i className="fa fa-check"></i> Quality services at affordable prices</span> <span><i className="fa fa-check"></i> Solving Labour Issue</span> <span><i className="fa fa-check"></i> Optimized Template</span></div>
+                                    {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedr do eiusmod deis tempor incididunt.</p> */}
+                                  </div>
                                 </div>
-                                <div className="col-12 col-sm-6">
-                                    <input type="email" className="form-control border-0" placeholder="Your Email" style={{height: '55px'}} />
+                                <div className="col-lg-6 align-self-center">
+                                  <div className="right-image">
+                                    <img src={servicesimage} alt="" />
+
+                                  </div>
                                 </div>
-                                <div className="col-12 col-sm-6">
-                                    <select className="form-select border-0" style={{height: '55px'}}>
-                                        <option selected>Select A Service</option>
-                                        <option value="1">Service 1</option>
-                                        <option value="2">Service 2</option>
-                                        <option value="3">Service 3</option>
-                                    </select>
-                                </div>
-                                <div className="col-12 col-sm-6">
-                                    <div className="date" id="date1" data-target-input="nearest">
-                                        <input type="text"
-                                            className="form-control border-0 datetimepicker-input"
-                                            placeholder="Service Date" data-target="#date1" data-toggle="datetimepicker" style={{height: '55px'}} />
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div>
+                            <div className="thumb">
+                              <div className="row">
+                                <div className="col-lg-6 align-self-center">
+                                  <div className="left-text">
+                                    <h4>Expert ESIC Consultancy for Compliance   &amp; Employee Benefits</h4>
+                                    <p>Our consultancy provides comprehensive support for the Employees State Insurance Corporation (ESIC), assisting businesses in navigating the complexities of employee benefits and compliance. We offer expert guidance on ESIC registration, contribution calculations, and timely filing of returns. Additionally, we help employees access their entitled medical and financial benefits, ensuring smooth claim processes. With tailored solutions and ongoing support, we aim to enhance organizational compliance while safeguarding the welfare of employees under the ESIC framework.</p>
+                                    <div className="ticks-list"><span><i className="fa fa-check"></i> Smart Solution With Experience Team</span> <span><i className="fa fa-check"></i> Complience</span> <span><i className="fa fa-check"></i> Immediate 24/ 7 emergency services</span>
+                                      <span><i className="fa fa-check"></i> Quality services at affordable prices</span> <span><i className="fa fa-check"></i> Solving Labour Issue</span> <span><i className="fa fa-check"></i> Optimized Template</span></div>
                                     </div>
                                 </div>
-                                <div className="col-12">
-                                    <textarea className="form-control border-0" placeholder="Special Request"></textarea>
+                                <div className="col-lg-6 align-self-center">
+                                  <div className="right-image">
+                                    <img src={servicesimage02} alt="" />
+
+                                  </div>
                                 </div>
-                                <div className="col-12">
-                                    <button className="btn btn-primary w-100 py-3" type="submit">Book Now</button>
-                                </div>
+                              </div>
                             </div>
-                        </form>
+                          </div>
+                        </li>
+                        <li>
+                          <div>
+                            <div className="thumb">
+                              <div className="row">
+                                <div className="col-lg-6 align-self-center">
+                                  <div className="left-text">
+                                    <h4>Car Re-search &amp; Transport</h4>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedr do eiusmod deis tempor incididunt ut labore et dolore kengan darwin doerski token.
+                                      dover lipsum lorem and the others.</p>
+                                    <div className="ticks-list"><span><i className="fa fa-check"></i> Optimized Template</span> <span><i className="fa fa-check"></i> Data Info</span> <span><i className="fa fa-check"></i> SEO Analysis</span>
+                                      <span><i className="fa fa-check"></i> Data Info</span> <span><i className="fa fa-check"></i> SEO Analysis</span> <span><i className="fa fa-check"></i> Optimized Template</span></div>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedr do eiusmod deis tempor incididunt.</p>
+                                  </div>
+                                </div>
+                                <div className="col-lg-6 align-self-center">
+                                  <div className="right-image">
+                                    <img src={servicesimage03} alt="" />
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div>
+                            <div className="thumb">
+                              <div className="row">
+                                <div className="col-lg-6 align-self-center">
+                                  <div className="left-text">
+                                    <h4>Online Shopping &amp; Tracking ID</h4>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedr do eiusmod deis tempor incididunt ut labore et dolore kengan darwin doerski token.
+                                      dover lipsum lorem and the others.</p>
+                                    <div className="ticks-list"><span><i className="fa fa-check"></i> Optimized Template</span> <span><i className="fa fa-check"></i> Data Info</span> <span><i className="fa fa-check"></i> SEO Analysis</span>
+                                      <span><i className="fa fa-check"></i> Data Info</span> <span><i className="fa fa-check"></i> SEO Analysis</span> <span><i className="fa fa-check"></i> Optimized Template</span></div>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedr do eiusmod deis tempor incididunt.</p>
+                                  </div>
+                                </div>
+                                <div className="col-lg-6 align-self-center">
+                                  <div className="right-image">
+                                    <img src={servicesimage04} alt="" />
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div>
+                            <div className="thumb">
+                              <div className="row">
+                                <div className="col-lg-6 align-self-center">
+                                  <div className="left-text">
+                                    <h4>Enjoy &amp; Travel</h4>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedr do eiusmod deis tempor incididunt ut labore et dolore kengan darwin doerski token.
+                                      dover lipsum lorem and the others.</p>
+                                    <div className="ticks-list"><span><i className="fa fa-check"></i> Optimized Template</span> <span><i className="fa fa-check"></i> Data Info</span> <span><i className="fa fa-check"></i> SEO Analysis</span>
+                                      <span><i className="fa fa-check"></i> Data Info</span> <span><i className="fa fa-check"></i> SEO Analysis</span> <span><i className="fa fa-check"></i> Optimized Template</span></div>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedr do eiusmod deis tempor incididunt.</p>
+                                  </div>
+                                </div>
+                                <div className="col-lg-6 align-self-center">
+                                  <div className="right-image">
+                                    <img src={servicesimage} alt="" />
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
                     </div>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+
+
+      <div id="free-quote" className="free-quote">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-4 offset-lg-4">
+              <div className="section-heading  wow fadeIn" data-wow-duration="1s" data-wow-delay="0.3s">
+                <h6>Get Your Free Quote</h6>
+                <h4>Grow With Us Now</h4>
+                <div className="line-dec"></div>
+              </div>
+            </div>
+            <div className="col-lg-8 offset-lg-2  wow fadeIn" data-wow-duration="1s" data-wow-delay="0.8s">
+              <form id="search" action="#" method="GET">
+                <div className="row">
+                  <div className="col-lg-4 col-sm-4">
+                    <fieldset>
+                      <input type="web" name="web" className="website" placeholder="Your website URL..." autoComplete="on" required />
+                    </fieldset>
+                  </div>
+                  <div className="col-lg-4 col-sm-4">
+                    <fieldset>
+                      <input type="address" name="address" className="email" placeholder="Email Address..." autoComplete="on" required />
+                    </fieldset>
+                  </div>
+                  <div className="col-lg-4 col-sm-4">
+                    <fieldset>
+                      <button type="submit" className="main-button">Get Quote Now</button>
+                    </fieldset>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="portfolio" className="our-portfolio section">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-5">
+              <div className="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
+                <h6>Our Portofolio</h6>
+                <h4>See Our Recent <em>Projects</em></h4>
+                <div className="line-dec"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="container-fluid wow fadeIn" data-wow-duration="1s" data-wow-delay="0.7s">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="loop owl-carousel">
+                <div className="item">
+                  <a href="#">
+                    <div className="portfolio-item">
+                      <div className="thumb">
+                        <img src={portfolio01} alt="" />
+
+                      </div>
+                      <div className="down-content">
+                        <h4>Website Builder</h4>
+                        <span>Marketing</span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div className="item">
+                  <a href="#">
+                    <div className="portfolio-item">
+                      <div className="thumb">
+                        <img src={portfolio01} alt="" />
+
+                      </div>
+                      <div className="down-content">
+                        <h4>Website Builder</h4>
+                        <span>Marketing</span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div className="item">
+                  <a href="#">
+                    <div className="portfolio-item">
+                      <div className="thumb">
+                        <img src={portfolio02} alt="" />
+
+                      </div>
+                      <div className="down-content">
+                        <h4>Website Builder</h4>
+                        <span>Marketing</span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div className="item">
+                  <a href="#">
+                    <div className="portfolio-item">
+                      <div className="thumb">
+                        <img src={portfolio03} alt="" />
+
+                      </div>
+                      <div className="down-content">
+                        <h4>Website Builder</h4>
+                        <span>Marketing</span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div className="item">
+                  <a href="#">
+                    <div className="portfolio-item">
+                      <div className="thumb">
+                        <img src={portfolio04} alt="" />
+
+                      </div>
+                      <div className="down-content">
+                        <h4>Website Builder</h4>
+                        <span>Marketing</span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="blog" className="blog">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-4 offset-lg-4  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.3s">
+              <div className="section-heading">
+                <h6>Recent News</h6>
+                <h4>Check Our Blog <em>Posts</em></h4>
+                <div className="line-dec"></div>
+              </div>
+            </div>
+            <div className="col-lg-6 show-up wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s">
+              <div className="blog-post">
+                <div className="thumb">
+                  <a href="#"><img src={blogpost01} alt="" />
+                  </a>
+                </div>
+                <div className="down-content">
+                  <span className="category">SEO Analysis</span>
+                  <span className="date">03 August 2021</span>
+                  <a href="#"><h4>Lorem Ipsum Dolor Sit Amet, Consectetur Adelore
+                    Eiusmod Tempor Incididunt</h4></a>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doers itii eiumod deis tempor incididunt ut labore.</p>
+                  <span className="author"><img src={authorpost} alt="" />
+                    By: Andrea Mentuzi</span>
+                  <div className="border-first-button"><a href="#">Discover More</a></div>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-6 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s">
+              <div className="blog-posts">
+                <div className="row">
+                  <div className="col-lg-12">
+                    <div className="post-item">
+                      <div className="thumb">
+                        <a href="#"><img src={blogpost02} alt="" />
+                        </a>
+                      </div>
+                      <div className="right-content">
+                        <span className="category">SEO Analysis</span>
+                        <span className="date">24 September 2021</span>
+                        <a href="#"><h4>Lorem Ipsum Dolor Sit Amei Eiusmod Tempor</h4></a>
+                        <p>Lorem ipsum dolor sit amet, cocteturi adipiscing eliterski.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-12">
+                    <div className="post-item">
+                      <div className="thumb">
+                        <a href="#"><img src={blogpost03} alt="" />
+                        </a>
+                      </div>
+                      <div className="right-content">
+                        <span className="category">SEO Analysis</span>
+                        <span className="date">24 September 2021</span>
+                        <a href="#"><h4>Lorem Ipsum Dolor Sit Amei Eiusmod Tempor</h4></a>
+                        <p>Lorem ipsum dolor sit amet, cocteturi adipiscing eliterski.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-12">
+                    <div className="post-item last-post-item">
+                      <div className="thumb">
+                        <a href="#"><img src={blogpost04} alt="" />
+                        </a>
+                      </div>
+                      <div className="right-content">
+                        <span className="category">SEO Analysis</span>
+                        <span className="date">24 September 2021</span>
+                        <a href="#"><h4>Lorem Ipsum Dolor Sit Amei Eiusmod Tempor</h4></a>
+                        <p>Lorem ipsum dolor sit amet, cocteturi adipiscing eliterski.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="contact" className="contact-us section">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-6 offset-lg-3">
+              <div className="section-heading wow fadeIn" data-wow-duration="1s" data-wow-delay="0.5s">
+                <h6>Contact Us</h6>
+                <h4>Get In Touch With Us <em>Now</em></h4>
+                <div className="line-dec"></div>
+              </div>
+            </div>
+            <div className="col-lg-12 wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.25s">
+              <form id="contact" action="" method="post">
+                <div className="row">
+                  <div className="col-lg-12">
+                    <div className="contact-dec">
+                      <img src={contactdec} alt="" />
+
+                    </div>
+                  </div>
+                  <div className="col-lg-5">
+                    <div id="map">
+                      <iframe
+                        src="https://maps.google.com/maps?q=Tukdoji+Putla+Square,+Nagpur,+India&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                        width="100%"
+                        height="636"
+                        frameBorder="0"
+                        style={{ border: 0 }}
+                        allowFullScreen
+                        title="Map"
+                      ></iframe>
+                    </div>
+                  </div>
+                  <div className="col-lg-7">
+                    <div className="fill-form">
+                      <div className="row">
+                        <div className="col-lg-4">
+                          <div className="info-post">
+                            <div className="icon">
+                              <img src={phoneicon} alt="" />
+
+                              <a href="#">010-020-0340</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-lg-4">
+                          <div className="info-post">
+                            <div className="icon">
+                              <img src={emailicon} alt="" />
+
+                              <a href="#">our@email.com</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-lg-4">
+                          <div className="info-post">
+                            <div className="icon">
+                              <img src={locationicon} alt="" />
+
+                              <a href="#">123 Rio de Janeiro</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-lg-6">
+                          <fieldset>
+                            <input type="name" name="name" id="name" placeholder="Name" autoComplete="on" required />
+                          </fieldset>
+                          <fieldset>
+                            <input type="text" name="email" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email" required="" />
+                          </fieldset>
+                          <fieldset>
+                            <input type="subject" name="subject" id="subject" placeholder="Subject" autoComplete="on" />
+                          </fieldset>
+                        </div>
+                        <div className="col-lg-6">
+                          <fieldset>
+                            <textarea name="message" type="text" className="form-control" id="message" placeholder="Message" required=""></textarea>
+                          </fieldset>
+                        </div>
+                        <div className="col-lg-12">
+                          <fieldset>
+                            <button type="submit" id="form-submit" className="main-button ">Send Message Now</button>
+                          </fieldset>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12">
+              <p>Copyright © 2022 DigiMedia Co., Ltd. All Rights Reserved.
+                <br />Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+
+
+
     </div>
-
-{/* Header */}
-            <div className="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-                <div className="container py-5">
-                    <div className="row g-5">
-                        <div className="col-lg-3 col-md-6">
-                            <h4 className="text-light mb-4">Address</h4>
-                            <p className="mb-2"><i className="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                            <p className="mb-2"><i className="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                            <p className="mb-2"><i className="fa fa-envelope me-3"></i>info@example.com</p>
-                            <div className="d-flex pt-2">
-                                <a className="btn btn-outline-light btn-social" href=""><i className="fab fa-twitter"></i></a>
-                                <a className="btn btn-outline-light btn-social" href=""><i className="fab fa-facebook-f"></i></a>
-                                <a className="btn btn-outline-light btn-social" href=""><i className="fab fa-youtube"></i></a>
-                                <a className="btn btn-outline-light btn-social" href=""><i className="fab fa-linkedin-in"></i></a>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <h4 className="text-light mb-4">Opening Hours</h4>
-                            <h6 className="text-light">Monday - Friday:</h6>
-                            <p className="mb-4">09.00 AM - 09.00 PM</p>
-                            <h6 className="text-light">Saturday - Sunday:</h6>
-                            <p className="mb-0">09.00 AM - 12.00 PM</p>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <h4 className="text-light mb-4">Services</h4>
-                            <a className="btn btn-link" href="">EPF Return</a>
-                            <a className="btn btn-link" href="">ESIC Return</a>
-                            <a className="btn btn-link" href="">PF withdrawal</a>
-                            <a className="btn btn-link" href="">Avail ESIC and PF benefits</a>
-                            <a className="btn btn-link" href="">Other Labour Problem</a>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <h4 className="text-light mb-4">Newsletter</h4>
-                            <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                            <div className="position-relative mx-auto" style={{ maxWidth: '400px' }}>
-                                <input className="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email" />
-                                <button type="button" className="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="container">
-                    <div className="copyright">
-                        <div className="row">
-                            <div className="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                                &copy; <a className="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
-                            </div>
-                            <div className="col-md-6 text-center text-md-end">
-                                Designed By <a className="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <a href="#" className="btn btn-lg btn-primary btn-lg-square rounded-0 back-to-top"><i className="bi bi-arrow-up"></i></a>
-
-        </div>
-    );
+  );
 };
 
 export default standalone;

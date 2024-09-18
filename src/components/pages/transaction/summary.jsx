@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
-import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary, downlaodFile, fetchEpfReturn, updateEpfReturn, sameAsPrev, deleteReturnById, generateECR } from "../../api/services";
+import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary, downlaodFile, fetchEpfReturn, updateEpfReturn, sameAsPrev, deleteReturnById, generateECR, searchMonthlyEmployee } from "../../api/services";
 import Swal from 'sweetalert2';
 import React, { useRef } from 'react';
 import moment from "moment";
@@ -38,7 +38,7 @@ const summary = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false); // Success popup state
   const [modelMessage, setModelMessage] = useState('');
   const [respStatus, setRespStatus] = useState('Success');
-
+  const [searchEE, setSearchEE] = useState('Success');
   const [isUpdate, set_isUpdate] = useState(false);
   const [search_uan, set_search_uan] = useState('');
   const [search_pf, set_search_pf] = useState('');
@@ -564,6 +564,42 @@ const summary = () => {
     }
   };
 
+  const searchMonthlyEE = async () => {
+    // api call
+    try {
+      const params = {
+        "est_id": getErId(),
+        "search": searchEE,
+        "month": selectedMonth,
+        "year": selectedYear,
+        "limit": itemsPerPage,
+        "offset": 1
+      }
+      const userData = await searchMonthlyEmployee(params);
+      setEmployeeData(userData.data)
+      setMonthly(false)
+      set_totalPages(Math.ceil(userData.count / itemsPerPage));
+
+      // Get current items based on the current page
+      set_startIndex((currentPage - 1) * itemsPerPage);
+      set_currentItems(userData.data);
+      set_total_gross_wages(userData.total.total_gross_wages)
+      set_total_epf_wages(userData.total.total_epf_wages)
+      set_total_edli_wages(userData.total.total_edli_wages)
+      set_total_eps_wages(userData.total.total_eps_wages)
+      set_total_ee_share(userData.total.total_ee_share)
+      set_total_eps_share(userData.total.total_eps_share)
+      set_total_diff_share(userData.total.total_diff_share)
+      set_total_ncp_days(userData.total.total_ncp_days)
+      set_total_refund(userData.total.total_refund)
+
+
+    } catch (error) {
+      console.error('Login error ', error);
+      // setError(error);
+    }
+  };
+
   const [file, setFile] = useState(null);
 
   const handleFileChange = (event) => {
@@ -823,7 +859,7 @@ const summary = () => {
                 </button>
               </div>
               <div className="col-sm">
-                <input type="text" className="form-control" placeholder="Search" />
+                <input type="text" className="form-control" placeholder="Search" onChange={(e) => setSearchEE(e.target.value)}  onBlur={searchMonthlyEE} />
               </div>
               {/* <div className="col-md-4">
               <input className="form-control" type="file" id="formFile" />

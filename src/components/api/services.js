@@ -219,6 +219,27 @@ export const fetchEpfReturn = async (id) => {
         throw error.response.data.error;
     }
 }
+export const searchMonthlyEmployee = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/monthly/search/`,params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+export const uploadEmployer = async ( formdata) => {
+    try {
+        const uplaodHeader = {
+            Authorization: `Bearer ${authToken}`,
+            'Content-Type': 'multipart/form-data'
+          }
+       
+        const response = await axios.post(`${BASE_URL}/upload/employer`,formdata,{ headers: uplaodHeader});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 export const uploadEmployee = async (id, formdata) => {
     try {
         const uplaodHeader = {
@@ -314,6 +335,14 @@ export const getCardsCount = async () => {
     }
 }
 
+export const getGraph = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/dashboard/graphCreate`,params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 export const getSalaryByMonth = async (params) => {
     try {
         const response = await axios.post(`${BASE_URL}/salary/getSalaryByMonth`, params, { headers: header});

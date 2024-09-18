@@ -5,62 +5,64 @@ import { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill }
   from 'react-icons/bs'
 import { BarChart, PieChart, Pie, AreaChart, Area, Bar, ComposedChart, ScatterChart, Scatter, ZAxis, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line }
   from 'recharts';
-import { getCardsCount } from "../api/services";
+import { getCardsCount, getGraph } from "../api/services";
 import { useState, useEffect } from "react"
 
 
 const dashboard = () => {
 
-  const data = [
-    {
-      name: 'Page A',
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      'name': 'Page B',
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: 'Page C',
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: 'Page D',
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: 'Page E',
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: 'Page F',
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: 'Page G',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    }
-  ];
+  // const data = [
+  //   {
+  //     name: 'Page A',
+  //     uv: 4000,
+  //     pv: 2400,
+  //     amt: 2000,
+  //   },
+  //   {
+  //     'name': 'Page B',
+  //     uv: 3000,
+  //     pv: 1398,
+  //     amt: 2210,
+  //   },
+  //   {
+  //     name: 'Page C',
+  //     uv: 2000,
+  //     pv: 9800,
+  //     amt: 2290,
+  //   },
+  //   {
+  //     name: 'Page D',
+  //     uv: 2780,
+  //     pv: 3908,
+  //     amt: 2000,
+  //   },
+  //   {
+  //     name: 'Page E',
+  //     uv: 1890,
+  //     pv: 4800,
+  //     amt: 2181,
+  //   },
+  //   {
+  //     name: 'Page F',
+  //     uv: 2390,
+  //     pv: 3800,
+  //     amt: 2500,
+  //   },
+  //   {
+  //     name: 'Page G',
+  //     uv: 3490,
+  //     pv: 4300,
+  //     amt: 2100,
+  //   }
+  // ];
 
+  const [data, setData] = useState([])
   const data1 = [{ name: "A", value: 100 }, { name: "B", value: 200 }, { name: "C", value: 300 }, { name: "D", value: 400 }]
   const data2 = [{ name: "A", value: 200 }, { name: "B", value: 300 }, { name: "C", value: 400 }, { name: "D", value: 500 }]
 
   const [cardResponse, setCardResponse] = useState('')
 
+  const [totalclient, settotalclient] = useState('')
   const [totalepf, settotalepf] = useState('')
   const [epfchallancreated, setepfchallancreated] = useState('')
   const [totalesic, settotalesic] = useState('')
@@ -70,6 +72,7 @@ const dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       await getAll();
+      await getGraphDetails()
     };
 
     fetchData();
@@ -83,13 +86,36 @@ const dashboard = () => {
       // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
       const response = await getCardsCount();
       if (response.status == true) {
-        settotalepf(response.data[0].totalepf)
-        setepfchallancreated(response.data[0].epfchallancreated)
-        settotalesic(response.data[0].totalesic)
-        setesicchallancreated(response.data[0].esicchallancreated)
-        settotaldsc(response.data[0].totaldsc)
-        setexpiredsc(response.data[0].expiredsc)
+        settotalclient(response.data.totalClient)
+        settotalepf(response.data.totalepf)
+        setepfchallancreated(response.data.epfchallancreated)
+        settotalesic(response.data.totalesic)
+        setesicchallancreated(response.data.esicchallancreated)
+        settotaldsc(response.data.totaldsc)
+        setexpiredsc(response.data.expiredsc)
       }
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // setError('Error fetching data. Please try again.');
+      // setLoading(false);
+    }
+  };
+
+  const getGraphDetails = async () => {
+    // api call
+
+    try {
+      
+      const params = {
+        "fromMonth": 4,
+        "toMonth": 3,
+        "fromYear": 2024,
+        "toYear": 2025
+    }
+      const response = await getGraph(params);
+      setData(response.data)
 
 
     } catch (error) {
@@ -115,7 +141,7 @@ const dashboard = () => {
               <h3>Clients</h3>
               <BsFillArchiveFill className='card_icon' />
             </div>
-            <h1>{totalepf}</h1>
+            <h1>{totalclient}</h1>
           </div>
           <div className='card cardprop2'>
             <div className='card-inner'>

@@ -13,6 +13,8 @@ import billing from './components/pages/biller/biller'
 import billingMaster from './components/pages/biller/billMaster'
 import bill from './components/pages/biller/BillComponent'
 import standalone from "./components/pages/standaloneHome/standalone"
+import standalone2 from "./components/pages/standaloneHome1/standalone"
+
 import download from "./components/pages/download/download"
 import testing from "./components/pages/testing/testing"
 import salary from "./components/pages/transaction/salary"
@@ -22,6 +24,8 @@ const AllRoutes = () => {
   return (
     <Routes>
      <Route exact path='/' Component={standalone}/>
+     <Route exact path='/home2' Component={standalone2}/>
+        
         <Route exact path='/login' Component={login}/>
         <Route exact path='/auth/dashboard' Component={dashboard}/>
         <Route exact path='/auth/dashboard/employer' Component={employer}/>
@@ -40,6 +44,7 @@ const AllRoutes = () => {
         <Route exact path='/auth/dashboard/testing' Component={testing}/>
         <Route exact path='/auth/dashboard/bill/pdf' Component={bill}/>
     </Routes>
+    
   )
 }
 

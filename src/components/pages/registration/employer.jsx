@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { erRegister, erUpdate, getErRegister } from '../../api/services';
+import { erRegister, erUpdate, getErRegister, uploadEmployer } from '../../api/services';
 import { useState, useEffect } from "react"
 import { getEstId } from "../Auth/authToken";
+import Swal from 'sweetalert2';
 // import { useNavigate } from "react-router-dom";
 
 const employer = () => {
@@ -173,6 +174,8 @@ const employer = () => {
 
     fetchData();
   }, []);
+
+
 
   const handleChange = (event) => {
 
