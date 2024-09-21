@@ -397,3 +397,14 @@ export const downlaodFile = async (url) => {
         throw error.response.data.error;
     }
 }
+
+// ------------------------- Extrnal API ------------------------------
+
+export const NewsData = async () => {
+    try {
+        const response = await axios.get(`https://newsdata.io/api/1/news?apikey=pub_53971c38bbbb34b05259bb48d72f797e88dc6&q=EPF`);
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}

@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 // eslint-disable-next-line no-unused-vars
-import React, { useEffect } from 'react';
-import logo from "../../../standalone_assets/images/logo-v1.png"
+import React, { useEffect, useState } from 'react';
+import logo from "../../../standalone_assets/images/Anandam.png"
 import slider from "../../../standalone_assets/images/epfo.png"
 // import slider from "../../../standalone_assets/images/slider-dec.png"
 
@@ -16,13 +16,22 @@ import servicesimage02 from "../../../standalone_assets/images/services-image-02
 import servicesimage03 from "../../../standalone_assets/images/services-image-03.jpg"
 import servicesimage04 from "../../../standalone_assets/images/services-image-04.jpg"
 // import servicesimage from "../../../standalone_assets/images/services-image.jpg"                                      
-import portfolio01 from "../../../standalone_assets/images/portfolio-01.jpg"
-// import portfolio01 from "../../../standalone_assets/images/portfolio-01.jpg"                        
-import portfolio02 from "../../../standalone_assets/images/portfolio-02.jpg"
-import portfolio03 from "../../../standalone_assets/images/portfolio-03.jpg"
-import portfolio04 from "../../../standalone_assets/images/portfolio-04.jpg"
+// import portfolio01 from "../../../standalone_assets/images/portfolio-01.jpg"
+// import portfolio02 from "../../../standalone_assets/images/portfolio-02.jpg"
+// import portfolio03 from "../../../standalone_assets/images/portfolio-03.jpg"
+// import portfolio04 from "../../../standalone_assets/images/portfolio-04.jpg"
+
+import portfolio01 from "../../../standalone_assets/images/img/1.jpg"
+import portfolio02 from "../../../standalone_assets/images/img/2.jpg"
+import portfolio03 from "../../../standalone_assets/images/img/3.jpg"
+import portfolio04 from "../../../standalone_assets/images/img/4.jpg"
+import portfolio05 from "../../../standalone_assets/images/img/5.jpg"
+import portfolio06 from "../../../standalone_assets/images/img/4.png"
+
+
 import blogpost01 from "../../../standalone_assets/images/blog-post-01.jpg"
-import authorpost from "../../../standalone_assets/images/author-post.jpg"
+import authorpost from "../../../assets/img/3.jpg";
+// import authorpost from "../../../standalone_assets/images/author-post.jpg"
 import blogpost02 from "../../../standalone_assets/images/blog-post-02.jpg"
 import blogpost03 from "../../../standalone_assets/images/blog-post-03.jpg"
 import blogpost04 from "../../../standalone_assets/images/blog-post-04.jpg"
@@ -30,7 +39,11 @@ import contactdec from "../../../standalone_assets/images/contact-dec.png"
 import phoneicon from "../../../standalone_assets/images/phone-icon.png"
 import emailicon from "../../../standalone_assets/images/email-icon.png"
 import locationicon from "../../../standalone_assets/images/location-icon.png"
+// import "./standalone.css"
+
 const standalone = () => {
+  // const items = [{ "image": portfolio01, "title": "Manish", category: "T1" }, { "image": portfolio01, "title": "Manish", category: "T1" }, { "image": portfolio01, "title": "Manish", category: "T1" }];
+
 
   return (
     <div>
@@ -72,8 +85,8 @@ const standalone = () => {
           <div className="row">
             <div className="col-12">
               <nav className="main-nav">
-                <a href="index.html" className="logo">
-                  <img src={logo} alt="" />
+                <a href="index.html" className="">
+                  <img style={{width: '25%' }} src={logo} alt="" />
                 </a>
                 <ul className="nav">
                   <li className="scroll-to-section"><a href="#top" className="active">Home</a></li>
@@ -263,7 +276,7 @@ const standalone = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-12">
+                    <div className="col-lg-12 text-justify">
                       <ul className="nacc">
                         <li className="active">
                           <div>
@@ -298,7 +311,7 @@ const standalone = () => {
                                     <p>Our consultancy provides comprehensive support for the Employees State Insurance Corporation (ESIC), assisting businesses in navigating the complexities of employee benefits and compliance. We offer expert guidance on ESIC registration, contribution calculations, and timely filing of returns. Additionally, we help employees access their entitled medical and financial benefits, ensuring smooth claim processes. With tailored solutions and ongoing support, we aim to enhance organizational compliance while safeguarding the welfare of employees under the ESIC framework.</p>
                                     <div className="ticks-list"><span><i className="fa fa-check"></i> Smart Solution With Experience Team</span> <span><i className="fa fa-check"></i> Complience</span> <span><i className="fa fa-check"></i> Immediate 24/ 7 emergency services</span>
                                       <span><i className="fa fa-check"></i> Quality services at affordable prices</span> <span><i className="fa fa-check"></i> Solving Labour Issue</span> <span><i className="fa fa-check"></i> Optimized Template</span></div>
-                                    </div>
+                                  </div>
                                 </div>
                                 <div className="col-lg-6 align-self-center">
                                   <div className="right-image">
@@ -316,12 +329,11 @@ const standalone = () => {
                               <div className="row">
                                 <div className="col-lg-6 align-self-center">
                                   <div className="left-text">
-                                    <h4>Car Re-search &amp; Transport</h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedr do eiusmod deis tempor incididunt ut labore et dolore kengan darwin doerski token.
-                                      dover lipsum lorem and the others.</p>
-                                    <div className="ticks-list"><span><i className="fa fa-check"></i> Optimized Template</span> <span><i className="fa fa-check"></i> Data Info</span> <span><i className="fa fa-check"></i> SEO Analysis</span>
-                                      <span><i className="fa fa-check"></i> Data Info</span> <span><i className="fa fa-check"></i> SEO Analysis</span> <span><i className="fa fa-check"></i> Optimized Template</span></div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedr do eiusmod deis tempor incididunt.</p>
+                                    <h4>DSC for EPFO Portal</h4>
+                                    <p>Digital Signature Certificates (DSCs) are important for EPFO because they provide a high level of security for online transactions and communications</p>
+                                    <div className="ticks-list"><span><i className="fa fa-check"></i> Authenticate identity</span> <span><i className="fa fa-check"></i> Ensure data integrity</span> <span><i className="fa fa-check"></i>Offer non-repudiation</span>
+                                      <span><i className="fa fa-check"></i> Prevent fraud</span> <span><i className="fa fa-check"></i>Speed up processing</span> <span><i className="fa fa-check"></i> Reduce paperwork</span></div>
+                                    <p>Employers need a secure digital signature (DSC) to submit their employee's PF transfer application online. It's like your electronic signature to ensure everything is secure and authentic. Once you have it, you have to register it on the new EPFO portal for employers.</p>
                                   </div>
                                 </div>
                                 <div className="col-lg-6 align-self-center">
@@ -340,12 +352,11 @@ const standalone = () => {
                               <div className="row">
                                 <div className="col-lg-6 align-self-center">
                                   <div className="left-text">
-                                    <h4>Online Shopping &amp; Tracking ID</h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedr do eiusmod deis tempor incididunt ut labore et dolore kengan darwin doerski token.
-                                      dover lipsum lorem and the others.</p>
-                                    <div className="ticks-list"><span><i className="fa fa-check"></i> Optimized Template</span> <span><i className="fa fa-check"></i> Data Info</span> <span><i className="fa fa-check"></i> SEO Analysis</span>
-                                      <span><i className="fa fa-check"></i> Data Info</span> <span><i className="fa fa-check"></i> SEO Analysis</span> <span><i className="fa fa-check"></i> Optimized Template</span></div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedr do eiusmod deis tempor incididunt.</p>
+                                    <h4>Addressing labor problems &amp; Solution</h4>
+                                    <p>To effectively address labor issues related to EPF and ESIC consultancy, it is essential to ensure compliance with the latest regulations. This includes maintaining accurate employee documentation to avoid penalties and conducting regular audits to verify adherence to policies. Educating employees through workshops and providing accessible resources about their rights and benefits under these schemes can foster a more informed workforce.</p>
+                                    <div className="ticks-list"><span><i className="fa fa-check"></i>Ensure Compliance</span> <span><i className="fa fa-check"></i> Streamline Claims Process</span> <span><i className="fa fa-check"></i> Establish Grievance Mechanism</span>
+                                      <span><i className="fa fa-check"></i> Helping Hand For EPF &amp; ESIC</span> <span><i className="fa fa-check"></i>Digital &amp; Transparent  Solutions</span> </div>
+                                    
                                   </div>
                                 </div>
                                 <div className="col-lg-6 align-self-center">
@@ -393,7 +404,7 @@ const standalone = () => {
       </div>
 
 
-      <div id="free-quote" className="free-quote">
+      {/* <div id="free-quote" className="free-quote">
         <div className="container">
           <div className="row">
             <div className="col-lg-4 offset-lg-4">
@@ -426,10 +437,54 @@ const standalone = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
 
       <div id="portfolio" className="our-portfolio section">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-5">
+              <div className="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
+                <h6>Our Portofolio</h6>
+                <h4>See Our Recent <em>Projects</em></h4>
+                <div className="line-dec"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="container-fluid wow fadeIn" style={{ marginRight: '-45px' }} data-wow-duration="1s" data-wow-delay="0.7s">
+  <div className="row">
+    <div className="col-lg-12">
+      <div className="loop owl-carousel owl-loaded owl-drag">
+        <div className="owl-stage-outer">
+          <div className="owl-stage">
+            {/* Loop through items for better maintainability */}
+            {[portfolio01, portfolio02, portfolio03,portfolio04,portfolio05,portfolio06].map((portfolioItem, index) => (
+              <div className="owl-item" key={index} style={{ width: '263.8px' }}>
+                <div className="item">
+                  <a href="#">
+                    <div className="portfolio-item">
+                      <div className="thumb">
+                        <img style={{ height: '320px', objectFit: 'cover' }} src={portfolioItem} alt="" />
+                      </div>
+                      <div className="down-content">
+                        <h4>Manish Kirnapure</h4>
+                        <span>Developer</span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+     </div>
+
+      {/* <div id="portfolio" className="our-portfolio section">
         <div className="container">
           <div className="row">
             <div className="col-lg-5">
@@ -445,81 +500,27 @@ const standalone = () => {
           <div className="row">
             <div className="col-lg-12">
               <div className="loop owl-carousel">
-                <div className="item">
-                  <a href="#">
-                    <div className="portfolio-item">
-                      <div className="thumb">
-                        <img src={portfolio01} alt="" />
+                {items.map((item, index) => (
 
+                  <div className="item" key={index} style={{ transform: `translate3d(${index * -1846}px, 0px, 0px)` }}>
+                    <a href="#">
+                      <div className="portfolio-item">
+                        <div className="thumb">
+                          <img src={item.image} alt="" />
+                        </div>
+                        <div className="down-content">
+                          <h4>{item.title}</h4>
+                          <span>{item.category}</span>
+                        </div>
                       </div>
-                      <div className="down-content">
-                        <h4>Website Builder</h4>
-                        <span>Marketing</span>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-                <div className="item">
-                  <a href="#">
-                    <div className="portfolio-item">
-                      <div className="thumb">
-                        <img src={portfolio01} alt="" />
-
-                      </div>
-                      <div className="down-content">
-                        <h4>Website Builder</h4>
-                        <span>Marketing</span>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-                <div className="item">
-                  <a href="#">
-                    <div className="portfolio-item">
-                      <div className="thumb">
-                        <img src={portfolio02} alt="" />
-
-                      </div>
-                      <div className="down-content">
-                        <h4>Website Builder</h4>
-                        <span>Marketing</span>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-                <div className="item">
-                  <a href="#">
-                    <div className="portfolio-item">
-                      <div className="thumb">
-                        <img src={portfolio03} alt="" />
-
-                      </div>
-                      <div className="down-content">
-                        <h4>Website Builder</h4>
-                        <span>Marketing</span>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-                <div className="item">
-                  <a href="#">
-                    <div className="portfolio-item">
-                      <div className="thumb">
-                        <img src={portfolio04} alt="" />
-
-                      </div>
-                      <div className="down-content">
-                        <h4>Website Builder</h4>
-                        <span>Marketing</span>
-                      </div>
-                    </div>
-                  </a>
-                </div>
+                    </a>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div id="blog" className="blog">
         <div className="container">
@@ -534,18 +535,17 @@ const standalone = () => {
             <div className="col-lg-6 show-up wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s">
               <div className="blog-post">
                 <div className="thumb">
-                  <a href="#"><img src={blogpost01} alt="" />
+                  <a href="https://www.informalnewz.com/government-will-increase-epfo-salary-limit-to-%E2%82%B9-21000-employees-will-get-%E2%82%B9-1-crore-on-retirement/"><img src={blogpost01} alt="" />
                   </a>
                 </div>
                 <div className="down-content">
-                  <span className="category">SEO Analysis</span>
+                  <span className="category">EPFO Analysis</span>
                   <span className="date">03 August 2021</span>
-                  <a href="#"><h4>Lorem Ipsum Dolor Sit Amet, Consectetur Adelore
-                    Eiusmod Tempor Incididunt</h4></a>
+                  <a href="#"><h4>Government will increase EPFO ​​salary limit to ₹ 21,000! Employees will get ₹ 1 crore on retirement</h4></a>
                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doers itii eiumod deis tempor incididunt ut labore.</p>
                   <span className="author"><img src={authorpost} alt="" />
-                    By: Andrea Mentuzi</span>
-                  <div className="border-first-button"><a href="#">Discover More</a></div>
+                    By: Manish Kirnapure</span>
+                  <div className="border-first-button"><a href="https://www.informalnewz.com/government-will-increase-epfo-salary-limit-to-%E2%82%B9-21000-employees-will-get-%E2%82%B9-1-crore-on-retirement/">Discover More</a></div>
                 </div>
               </div>
             </div>
@@ -555,42 +555,42 @@ const standalone = () => {
                   <div className="col-lg-12">
                     <div className="post-item">
                       <div className="thumb">
-                        <a href="#"><img src={blogpost02} alt="" />
+                        <a href="https://cleartax.in/s/pf-balance-check"><img src={blogpost02} alt="" />
                         </a>
                       </div>
                       <div className="right-content">
-                        <span className="category">SEO Analysis</span>
+                        <span className="category">EPF Analysis</span>
                         <span className="date">24 September 2021</span>
-                        <a href="#"><h4>Lorem Ipsum Dolor Sit Amei Eiusmod Tempor</h4></a>
-                        <p>Lorem ipsum dolor sit amet, cocteturi adipiscing eliterski.</p>
+                        <a href="https://cleartax.in/s/pf-balance-check"><h4>EPF Balance Check - PF Balance Check With and Without UAN Number</h4></a>
+                        <p>For more information Read More....</p>
                       </div>
                     </div>
                   </div>
                   <div className="col-lg-12">
                     <div className="post-item">
                       <div className="thumb">
-                        <a href="#"><img src={blogpost03} alt="" />
+                        <a href="https://www.esic.gov.in/information-benefits"><img src={blogpost03} alt="" />
                         </a>
                       </div>
                       <div className="right-content">
-                        <span className="category">SEO Analysis</span>
+                        <span className="category">ESIC Analysis</span>
                         <span className="date">24 September 2021</span>
-                        <a href="#"><h4>Lorem Ipsum Dolor Sit Amei Eiusmod Tempor</h4></a>
-                        <p>Lorem ipsum dolor sit amet, cocteturi adipiscing eliterski.</p>
+                        <a href="https://www.esic.gov.in/information-benefits"><h4>ESIC Benefits</h4></a>
+                        <p>The section 46 of the Act envisages following six social security benefits.</p>
                       </div>
                     </div>
                   </div>
                   <div className="col-lg-12">
                     <div className="post-item last-post-item">
                       <div className="thumb">
-                        <a href="#"><img src={blogpost04} alt="" />
+                        <a href="https://medium.com/@forgot_password/forgot-my-epfo-password-c5b691b5b4dc"><img src={blogpost04} alt="" />
                         </a>
                       </div>
                       <div className="right-content">
-                        <span className="category">SEO Analysis</span>
+                        <span className="category">EPF Analysis</span>
                         <span className="date">24 September 2021</span>
-                        <a href="#"><h4>Lorem Ipsum Dolor Sit Amei Eiusmod Tempor</h4></a>
-                        <p>Lorem ipsum dolor sit amet, cocteturi adipiscing eliterski.</p>
+                        <a href="https://medium.com/@forgot_password/forgot-my-epfo-password-c5b691b5b4dc"><h4>Forgot My Epfo Password</h4></a>
+                        <p>Struggling with a forgotten EPFO password?..Read More...</p>
                       </div>
                     </div>
                   </div>

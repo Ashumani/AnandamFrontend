@@ -988,7 +988,7 @@ Banner Style
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  padding: 226px 0px 120px 0px;
+  padding: 150px 0px 120px 0px;
   position: relative;
   overflow: hidden;
 }
@@ -1728,7 +1728,7 @@ Blog
 
 .show-up {
   position: relative;
-  z-index: 200;
+  z-index: 0;
 }
 
 .blog-post {

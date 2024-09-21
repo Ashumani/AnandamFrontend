@@ -1,40 +1,87 @@
 import React, { useState } from 'react';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import { Document, Packer, Paragraph } from 'docx';
+import { GlobalWorkerOptions, getDocument } from 'pdfjs-dist/build/pdf';
 
-const testing = () => {
-  const [pdfData, setPdfData] = useState({
-    title: 'Sample PDF',
-    text: 'This is a sample PDF generated using React.',
-  });
+// Set the workerSrc property to the correct version
+GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.js`;
 
-  const generatePdf = async () => {
-    try {
-      // Create a new jsPDF instance
-      const pdf = new jsPDF();
+const Download = () => {
+    const [pdfFile, setPdfFile] = useState(null);
 
-      // Add the title to the PDF
-      pdf.setFontSize(24);
-      pdf.text(pdfData.title, 10, 10);
+    const handlePdfFileChange = (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile && selectedFile.type === 'application/pdf') {
+            setPdfFile(selectedFile);
+        } else {
+            alert('Please upload a valid PDF document (.pdf).');
+        }
+    };
 
-      // Add the text to the PDF
-      pdf.setFontSize(14);
-      pdf.text(pdfData.text, 10, 20);
+    const handleConvertToWord = async () => {
+        if (!pdfFile) {
+            alert('Please upload a PDF document first.');
+            return;
+        }
 
-      // Save the PDF
-      pdf.save('sample.pdf');
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-    }
-  };
+        const fileReader = new FileReader();
+        fileReader.onload = async (e) => {
+            const typedarray = new Uint8Array(e.target.result);
+            const pdfDoc = await getDocument(typedarray).promise;
+            const textContent = [];
 
-  return (
-    <div>
-      <h1>{pdfData.title}</h1>
-      <p>{pdfData.text}</p>
-      <button onClick={generatePdf}>Generate PDF</button>
-    </div>
-  );
+            for (let i = 1; i <= pdfDoc.numPages; i++) {
+                const page = await pdfDoc.getPage(i);
+                const text = await page.getTextContent();
+                const textItems = text.items.map(item => item.str);
+                textContent.push(textItems.join(' '));
+            }
+
+            // Create a new Word document
+            const doc = new Document({
+                sections: [
+                    {
+                        properties: {},
+                        children: textContent.map(text => new Paragraph(text)),
+                    },
+                ],
+            });
+
+            // Generate and download the Word document
+            Packer.toBlob(doc).then((blob) => {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'converted.docx');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            });
+        };
+
+        fileReader.readAsArrayBuffer(pdfFile);
+    };
+
+    return (
+        <div className="main-container">
+            <div className='main-title'>
+                <h3>PDF to Word Converter</h3>
+            </div>
+            <section className="section">
+                <div className="row">
+                    <h1>Upload PDF</h1>
+                    <div className="col-sm-4">
+                        <input className="form-control" type="file" accept=".pdf" onChange={handlePdfFileChange} />
+                    </div>
+                    <div className="col-sm-4">
+                        <button type="button" className="btn btn-primary" onClick={handleConvertToWord} disabled={!pdfFile}>
+                            Convert to Word
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    );
 };
 
-export default testing;
+export default Download;

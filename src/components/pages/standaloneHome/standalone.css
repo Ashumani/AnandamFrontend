@@ -1,0 +1,37 @@
+.owl-carousel .owl-stage-outer {
+    position: relative;
+    overflow: hidden;
+    --webkit-transform: translate3d(0px, 0px, 0px);
+}
+
+.owl-carousel .owl-stage {
+    position: relative;
+    -ms-touch-action: pan-Y;
+    touch-action: manipulation;
+    --moz-backface-visibility: hidden;
+    transition: 0.25s;
+    width: 3958px;
+    user-select: none !important;
+    --webkit-transform: translate3d(-1846px, 0px, 0px);
+}
+
+.owl-carousel.owl-drag .owl-item {
+    -ms-touch-action: pan-y;
+    touch-action: pan-y;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.owl-carousel {
+    display: none;
+    width: 100%;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    z-index: 1;
+}
+
+.owl-carousel.owl-loaded {
+    display: block;
+}
