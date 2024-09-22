@@ -150,11 +150,11 @@ body {
   } */
   
   .cardprop1 {
-    background-color: #8884d8 !important;
+    background-color:#a07fce !important;
     box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.3)!important;
   }
   .cardprop2{
-    background-color: #b8b5e8 !important;
+    background-color: #fcbdb3 !important;
     box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.3) !important;
   }
   
@@ -168,7 +168,7 @@ body {
   }
   
   .cardprop4 {
-    background-color: #82ca9d !important;
+    background-color: #f17cc5 !important;
     box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.3) !important;
   }
 

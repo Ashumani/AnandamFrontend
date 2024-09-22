@@ -14,6 +14,7 @@ const summary = () => {
     "month": [{ "monthNum": 1, "monthText": "Jan" }, { "monthNum": 2, "monthText": "Feb" }, { "monthNum": 3, "monthText": "Mar" }, { "monthNum": 4, "monthText": "Apr" }, { "monthNum": 5, "monthText": "May" }, { "monthNum": 6, "monthText": "Jun" }, { "monthNum": 7, "monthText": "Jul" }, { "monthNum": 8, "monthText": "Aug" }, { "monthNum": 9, "monthText": "Sep" }, { "monthNum": 10, "monthText": "Oct" }, { "monthNum": 11, "monthText": "Nov" }, { "monthNum": 12, "monthText": "Dec" }],
     "Year": [2020, 2021, 2022, 2023, 2024]
   }
+  const [ee_above58, set_ee_above58] = useState('')
   const [isDisabled, set_isDisabled] = useState(true);
   const [isSaveEnable, set_isSaveEnable] = useState(true);
 
@@ -140,6 +141,11 @@ const summary = () => {
         set_ee_relation(userData.data.ee_relation);
         set_ee_gross_wages(userData.data.ee_gross_wages);
         set_ee_epf_wages(userData.data.ee_epf_wages);
+        const currentDate = moment();
+        const yearDifference = currentDate.diff(moment(userData.data.ee_dob, 'YYYY-MM-DD'), 'years');
+        set_ee_above58(yearDifference  > 58 ? 'Yes' :'No')
+        // alert(moment(userData.data.ee_dob, 'YYYY-MM-DD') + yearDifference)
+        
         set_isDisabled(false)
        
 
@@ -169,6 +175,9 @@ const summary = () => {
       set_isUpdate(true);
       const userData = await fetchEpfReturn(id);
       if (userData.status === true) {
+        const currentDate = moment();
+        const yearDifference = currentDate.diff(moment(userData.data.ee_dob, 'DD-MM-YYYY'), 'years');
+        set_ee_above58(yearDifference  > 58 ? 'Yes' :'No')
         set_eReturn_id(userData.data.id);
         set_ee_id(userData.data.ee_id);
         set_ee_name(userData.data.ee_name);
@@ -925,8 +934,8 @@ const summary = () => {
                               <input type="text" className="form-control" disabled onChange={(e) => set_ee_doj(e.target.value)} value={ee_doj} />
                             </div>
                             <div className="col mb-3">
-                              <label htmlFor="inputDate">EPS Exmpted</label>
-                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_doj(e.target.value)} value={ee_doj} />
+                              <label htmlFor="inputDate">Above 58</label>
+                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_above58(e.target.value)} value={ee_above58} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputColor">Gross Wages</label>

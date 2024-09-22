@@ -2,6 +2,8 @@
 // import { Link } from "react-router-dom";
 import { togglesidebar } from "../assets/js/custome.js";
 import profileImg from "../assets/img/3.jpg";
+
+import logo from "../standalone_assets/images/Anandam.png"
 import { useState, useEffect } from "react"
 // import { Link } from "react-router-dom";
 import { fetchAllEmployer } from "./api/services.js";
@@ -110,9 +112,10 @@ const Header = () => {
         className="header fixed-top d-flex align-items-center"
       >
         <div className="d-flex align-items-center justify-content-between">
-          <a href="index.html" className="logo d-flex align-items-center">
-            <img src="assets/img/logo.png" alt="" />
-            <span className="d-none d-lg-block">AnanDam</span>
+          <a href="/auth/dashboard" className="logo d-flex align-items-center">
+            {/* <img src="assets/img/logo.png" alt="" /> */}
+            <img className="d-none d-lg-block" style={{width: '80%', "max-height":"250px" }} src={logo} alt="" />
+            {/* <span className="d-none d-lg-block">AnanDam</span> */}
           </a>
           <i className="bi bi-list toggle-sidebar-btn" onClick={togglesidebar}></i>
         </div>

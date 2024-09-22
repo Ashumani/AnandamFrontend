@@ -92,7 +92,7 @@ const standalone = () => {
                   <li className="scroll-to-section"><a href="#top" className="active">Home</a></li>
                   <li className="scroll-to-section"><a href="#about">About</a></li>
                   <li className="scroll-to-section"><a href="#services">Services</a></li>
-                  <li className="scroll-to-section"><a href="#portfolio">Projects</a></li>
+                  <li className="scroll-to-section"><a href="#portfolio">Portfolio</a></li>
                   <li className="scroll-to-section"><a href="#blog">Blog</a></li>
                   <li className="scroll-to-section"><a href="#contact">Contact</a></li>
                   <li className="scroll-to-section"><div className="border-first-button"><a href="/login">Login</a></div></li>
@@ -155,7 +155,7 @@ const standalone = () => {
                   <div className="about-right-content">
                     <div className="section-heading">
                       <h6>About Us</h6>
-                      <h4>We Are Trusted Labour Consultant <em> Since 1990</em></h4>
+                      <h4>We Are Trusted Labor Consultant <em> Since 1990</em></h4>
                       <div className="line-dec"></div>
                     </div>
                     <p>We are a team of professional consultants with over 30 years of experience in PF and ESIC consultancy services. Renowned for our efficiency, we provide top-tier legal advisory services including PF, ESIC, and PF withdrawal. Our expertise extends across all levels of organizational needs, ensuring we are the most valuable resource for our clients.</p>
@@ -264,14 +264,14 @@ const standalone = () => {
                           <div className="thumb">
                             <span className="icon"><img src={serviceicon04} alt="" />
                             </span>
-                            Labour Solution
+                            Labor Solution
                           </div>
                         </div>
                         <div className="last-thumb">
                           <div className="thumb">
                             <span className="icon"><img src={serviceicon01} alt="" />
                             </span>
-                            Traveling
+                            Workshops
                           </div>
                         </div>
                       </div>
@@ -446,7 +446,7 @@ const standalone = () => {
             <div className="col-lg-5">
               <div className="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
                 <h6>Our Portofolio</h6>
-                <h4>See Our Recent <em>Projects</em></h4>
+                <h4>Here is Our <em>Expert Team</em></h4>
                 <div className="line-dec"></div>
               </div>
             </div>

@@ -184,7 +184,7 @@ const dashboard = () => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="pv" fill="#8884d8" />
+              <Bar dataKey="pv" fill="#2b6b86" />
               <Bar dataKey="uv" fill="#82ca9d" />
             </BarChart>
           </ResponsiveContainer>
@@ -197,7 +197,7 @@ const dashboard = () => {
               <Legend />
               <CartesianGrid stroke="#f5f5f5" />
               <Area type="monotone" dataKey="amt" fill="#8884d8" stroke="#8884d8" />
-              <Bar dataKey="pv" barSize={20} fill="#413ea0" />
+              <Bar dataKey="pv" barSize={20} fill="#fcbdb3" />
               <Line type="monotone" dataKey="uv" stroke="#ff7300" />
             </ComposedChart>
           </ResponsiveContainer>
@@ -208,7 +208,7 @@ const dashboard = () => {
           <ResponsiveContainer width="100%" height="100%">
             <PieChart width={730} height={250}>
               <Pie data={data1} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={50} fill="#8884d8" />
-              <Pie data={data2} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#82ca9d" label />
+              <Pie data={data2} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#fb66c2" label />
             </PieChart>
           </ResponsiveContainer>
 
@@ -229,7 +229,7 @@ const dashboard = () => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
+              <Line type="monotone" dataKey="pv" stroke="#fb66c2" activeDot={{ r: 8 }} />
               <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
             </LineChart>
           </ResponsiveContainer>
@@ -242,8 +242,8 @@ const dashboard = () => {
               margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#fb66c2" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#fb66c2" stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
@@ -254,7 +254,7 @@ const dashboard = () => {
               <YAxis />
               <CartesianGrid strokeDasharray="3 3" />
               <Tooltip />
-              <Area type="monotone" dataKey="uv" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
+              <Area type="monotone" dataKey="uv" stroke="#fb66c2" fillOpacity={1} fill="url(#colorUv)" />
               <Area type="monotone" dataKey="pv" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
             </AreaChart>
           </ResponsiveContainer>
