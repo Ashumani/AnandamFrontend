@@ -712,7 +712,7 @@ const summary = () => {
             <div className="row">
               <div className="col-sm">
                 <select
-                  className="form-select"
+                  className="form-select rounded-4"
                   aria-label="Default select example" value={selectedMonth} onChange={handleMonthChange}
                 >
                   {returnsYear.month.map((returnYear) => (
@@ -724,7 +724,7 @@ const summary = () => {
               </div>
               <div className="col-sm">
                 <select
-                  className="form-select"
+                  className="form-select rounded-4"
                   aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
                 >
                   {returnsYear.Year.map((retYear) => (
@@ -734,14 +734,14 @@ const summary = () => {
                 </select>
               </div>
               <div className="col-sm-2">
-                <button type="button" className="btn btn-outline-primary btn-block" onClick={() => { getReturnByMonth(1) }} >Next
+                <button type="button" className="btn btn-outline-primary btn-block rounded-4" onClick={() => { getReturnByMonth(1) }} >Next
                   {/* <Link to="/auth/dashboard/monthlypf"><span >Next</span></Link> */}
                 </button>
               </div>
               <div className="col-sm-2">
                 <button
                   type="file"
-                  className="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#importReturn"
+                  className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#importReturn"
                 >
                   Import
                 </button>
@@ -759,7 +759,7 @@ const summary = () => {
                   </div>
                   <div className="modal-body">
                     <div className="col-md-12">
-                      <input className="form-control" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
+                      <input className="form-control rounded-4" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
                     </div>
                   </div>
                   <div className="modal-footer">
@@ -868,10 +868,10 @@ const summary = () => {
                 </button>
               </div>
               <div className="col-sm">
-                <input type="text" className="form-control" placeholder="Search" onChange={(e) => setSearchEE(e.target.value)}  onBlur={searchMonthlyEE} />
+                <input type="text" className="form-control rounded-4" placeholder="Search" onChange={(e) => setSearchEE(e.target.value)}  onBlur={searchMonthlyEE} />
               </div>
               {/* <div className="col-md-4">
-              <input className="form-control" type="file" id="formFile" />
+              <input className="form-control rounded-4" type="file" id="formFile" />
 
             </div> */}
             </div>
@@ -895,10 +895,10 @@ const summary = () => {
                         <form>
                           <div className="row">
                             <div className="col-md-4">
-                              <input type="number" className="form-control" placeholder="Enter UAN Number" onChange={(e) => set_search_uan(e.target.value)} value={search_uan} />
+                              <input type="number" className="form-control rounded-4" placeholder="Enter UAN Number" onChange={(e) => set_search_uan(e.target.value)} value={search_uan} />
                             </div>
                             <div className="col-md-4">
-                              <input type="text" className="form-control" placeholder="Enter PF Number" onChange={(e) => set_search_pf(e.target.value)} value={search_pf} />
+                              <input type="text" className="form-control rounded-4" placeholder="Enter PF Number" onChange={(e) => set_search_pf(e.target.value)} value={search_pf} />
                             </div>
                             <div className="col-sm">
                               <button type="button" className="btn btn-outline-primary" onClick={fetchEmployee}>Search</button>
@@ -908,74 +908,74 @@ const summary = () => {
                           <div className="row">
                             <div className="col mb-2">
                               <label htmlFor="inputPassword">Name</label>
-                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_name(e.target.value)} value={ee_name} />
+                              <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_name(e.target.value)} value={ee_name} />
                             </div>
                             <div className="col mb-2">
                               <label htmlFor="inputNumber">Gender</label>
-                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_gender(e.target.value)} value={ee_gender} />
+                              <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_gender(e.target.value)} value={ee_gender} />
                             </div>
                             <div className="col mb-2">
                               <label htmlFor="inputNumber">Father/husband</label>
-                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_father_husband(e.target.value)} value={ee_father_husband} />
+                              <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_father_husband(e.target.value)} value={ee_father_husband} />
                             </div>
                             <div className="col mb-2">
                               <label htmlFor="inputNumber">Maritial Status</label>
-                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_maritial_status(e.target.value)} value={ee_maritial_status} />
+                              <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_maritial_status(e.target.value)} value={ee_maritial_status} />
                             </div>
                           </div>
 
                           <div className="row">
                             <div className="col mb-3">
                               <label htmlFor="inputNumber">Date Of Birth</label>
-                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_dob(e.target.value)} value={ee_dob} />
+                              <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_dob(e.target.value)} value={ee_dob} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputTime">Date Of Joining</label>
-                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_doj(e.target.value)} value={ee_doj} />
+                              <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_doj(e.target.value)} value={ee_doj} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputDate">Above 58</label>
-                              <input type="text" className="form-control" disabled onChange={(e) => set_ee_above58(e.target.value)} value={ee_above58} />
+                              <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_above58(e.target.value)} value={ee_above58} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputColor">Gross Wages</label>
-                              <input type="number" className="form-control" disabled onChange={(e) => set_ee_gross_wages(e.target.value)} value={ee_gross_wages} />
+                              <input type="number" className="form-control rounded-4" disabled onChange={(e) => set_ee_gross_wages(e.target.value)} value={ee_gross_wages} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">EPF Wages</label>
-                              <input type="number" className="form-control" disabled onChange={(e) => set_ee_epf_wages(e.target.value)} value={ee_epf_wages} />
+                              <input type="number" className="form-control rounded-4" disabled onChange={(e) => set_ee_epf_wages(e.target.value)} value={ee_epf_wages} />
                             </div>
                           </div>
 
                           <div className="row">
                             <div className="col-sm">
                               <label htmlFor="inputColor">Gross Wages</label>
-                              <input type="number" className="form-control" disabled={isDisabled} onChange={(e) => set_cal_gross_wages(e.target.value)} value={cal_gross_wages} />
+                              <input type="number" className="form-control rounded-4" disabled={isDisabled} onChange={(e) => set_cal_gross_wages(e.target.value)} value={cal_gross_wages} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputEPFWages">EPF Wages</label>
-                              <input type="number" className="form-control" disabled={isDisabled} onBlur={(e) => calculation(e.target.value)} onChange={(e) => set_cal_epf_wages(e.target.value)} value={cal_epf_wages} />
+                              <input type="number" className="form-control rounded-4" disabled={isDisabled} onBlur={(e) => calculation(e.target.value)} onChange={(e) => set_cal_epf_wages(e.target.value)} value={cal_epf_wages} />
                             </div>
 
                             <div className="col-sm">
                               <label htmlFor="inputPassword">EDLI Wages</label>
-                              <input type="number" className="form-control" disabled value={ee_edli_wages} />
+                              <input type="number" className="form-control rounded-4" disabled value={ee_edli_wages} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">EPS Wages</label>
-                              <input type="number" className="form-control" disabled value={ee_eps_wages} />
+                              <input type="number" className="form-control rounded-4" disabled value={ee_eps_wages} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">EE</label>
-                              <input type="number" className="form-control" disabled value={ee_epf} />
+                              <input type="number" className="form-control rounded-4" disabled value={ee_epf} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">ER</label>
-                              <input type="number" className="form-control" disabled value={er_epf} />
+                              <input type="number" className="form-control rounded-4" disabled value={er_epf} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">EPS</label>
-                              <input type="number" className="form-control" disabled value={er_eps} />
+                              <input type="number" className="form-control rounded-4" disabled value={er_eps} />
                             </div>
                           </div>
                           {/* <div className="row">
@@ -1063,7 +1063,7 @@ const summary = () => {
                   </div>
                   <div className="modal-body">
                     <div className="col-md-12">
-                      <input className="form-control" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
+                      <input className="form-control rounded-4" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
                     </div>
                   </div>
                   <div className="modal-footer">

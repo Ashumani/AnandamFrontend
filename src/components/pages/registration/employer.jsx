@@ -203,56 +203,56 @@ const employer = () => {
                 </h5>
 
                 <div className="row">
-                  <div className="form-group col-sm ">
+                  <div className="form-group col-sm  ">
                     <label htmlFor="inputText">EPF No</label>
-                    <input type="text" className="form-control" required onChange={(e) => setEstEpfId(e.target.value)} value={EstEpfId} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setEstEpfId(e.target.value)} value={EstEpfId} />
                   </div>
                   <div className="form-group col-sm">
                     <label htmlFor="inputEmail">ESIC No</label>
-                    <input type="text" className="form-control" required onChange={(e) => setEstEsicId(e.target.value)} value={EstEsicId} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setEstEsicId(e.target.value)} value={EstEsicId} />
                   </div>
 
                   <div className="form-group col-sm">
                     <label htmlFor="inputEmail">Establishment Type</label>
-                    <input type="text" className="form-control" required onChange={(e) => setEstType(e.target.value)} value={EstType} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setEstType(e.target.value)} value={EstType} />
                   </div>
                   <div className="form-group col-sm">
                     <label htmlFor="inputText">Date of Coverage</label>
-                    <input type="date" className="form-control" required onChange={(e) => setDoc(e.target.value)} value={estDoc} />
+                    <input type="date" className="form-control rounded-4" required onChange={(e) => setDoc(e.target.value)} value={estDoc} />
                   </div>
                 </div>
 
                 <div className="row">
                   <div className="form-group col-md">
                     <label htmlFor="inputPassword">Establishment Name</label>
-                    <input type="text" className="form-control" required onChange={(e) => setEstName(e.target.value)} value={EstName} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setEstName(e.target.value)} value={EstName} />
                   </div>
                   <div className="form-group col-md">
                     <label htmlFor="inputEmail">Employer Namee</label>
-                    <input type="text" className="form-control" required onChange={(e) => setErName(e.target.value)} value={ErName} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setErName(e.target.value)} value={ErName} />
                   </div>
                   <div className="form-group col-md">
                     <label htmlFor="inputEmail">Designation</label>
-                    <input type="text" className="form-control" required onChange={(e) => set_designation(e.target.value)} value={ErDesignation} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_designation(e.target.value)} value={ErDesignation} />
                   </div>
                   <div className="form-group col-md">
                     <label htmlFor="inputEmail">City</label>
-                    <input type="text" className="form-control" required onChange={(e) => setCity(e.target.value)} value={city} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setCity(e.target.value)} value={city} />
                   </div>
                 </div>
 
                 <div className="row">
                   <div className="form-group col-md">
                     <label htmlFor="inputText">Email id</label>
-                    <input type="email" className="form-control" required onChange={(e) => setEmail(e.target.value)} value={Email} />
+                    <input type="email" className="form-control rounded-4" required onChange={(e) => setEmail(e.target.value)} value={Email} />
                   </div>
                   <div className="form-group col-md">
                     <label htmlFor="inputPassword">Contact Number</label>
-                    <input type="text" className="form-control" required onChange={(e) => setMobile(e.target.value)} value={Mobile} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setMobile(e.target.value)} value={Mobile} />
                   </div>
                   <div className="form-group col-md">
                     <label htmlFor="inputPassword">Address</label>
-                    <input type="text" className="form-control" required onChange={(e) => setAddress(e.target.value)} value={Address} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAddress(e.target.value)} value={Address} />
                   </div>
                 </div>
               </div>
@@ -277,19 +277,19 @@ const employer = () => {
 
                   <div className="form-group col-sm">
                     <label htmlFor="inputText">Name On DSC </label>
-                    <input type="text" className="form-control" required onChange={(e) => set_dsc_on_name(e.target.value)} value={dsc_on_name} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_on_name(e.target.value)} value={dsc_on_name} />
                   </div>
                   <div className="form-group col-sm">
                     <label htmlFor="inputEmail">Designation</label>
-                    <input type="text" className="form-control" required onChange={(e) => set_dsc_designation(e.target.value)} value={dsc_designation} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_designation(e.target.value)} value={dsc_designation} />
                   </div>
                   <div className="form-group col-sm">
                     <label htmlFor="inputEmail">Expire Date</label>
-                    <input type="date" className="form-control" required onChange={(e) => set_dsc_expire(e.target.value)} value={dsc_expire} />
+                    <input type="date" className="form-control rounded-4" required onChange={(e) => set_dsc_expire(e.target.value)} value={dsc_expire} />
                   </div>
                   <div className="form-group col-sm">
                     <label htmlFor="inputText">Mobile</label>
-                    <input type="text" className="form-control" required onChange={(e) => set_dsc_mobile(e.target.value)} value={dsc_mobile} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_mobile(e.target.value)} value={dsc_mobile} />
                   </div>
 
                 </div>)}
@@ -303,49 +303,49 @@ const employer = () => {
                 <div className="row">
                   <div className="form-group col-sm">
                     <label htmlFor="inputText">EPF </label>
-                    <input type="text" className="form-control" required onChange={(e) => setEpfRate(e.target.value)} value={EpfRate} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setEpfRate(e.target.value)} value={EpfRate} />
                   </div>
                   <div className="form-group col-sm">
                     <label htmlFor="inputEmail">EPS</label>
-                    <input type="text" className="form-control" required onChange={(e) => setEpsRate(e.target.value)} value={EpsRate} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setEpsRate(e.target.value)} value={EpsRate} />
                   </div>
                   <div className="form-group col-sm">
                     <label htmlFor="inputEmail">ER</label>
-                    <input type="text" className="form-control" required onChange={(e) => setErRate(e.target.value)} value={ErRate} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setErRate(e.target.value)} value={ErRate} />
                   </div>
                   <div className="form-group col-sm">
                     <label htmlFor="inputText">Account 1</label>
-                    <input type="text" className="form-control" required onChange={(e) => setAcc1(e.target.value)} value={Acc1} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc1(e.target.value)} value={Acc1} />
                   </div>
                   <div className="form-group col-sm">
                     <label htmlFor="inputText">Account 2</label>
-                    <input type="text" className="form-control" required onChange={(e) => setAcc2(e.target.value)} value={Acc2} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc2(e.target.value)} value={Acc2} />
                   </div>
                   <div className="form-group col-sm">
                     <label htmlFor="inputText">Account 10</label>
-                    <input type="text" className="form-control" required onChange={(e) => setAcc10(e.target.value)} value={Acc10} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc10(e.target.value)} value={Acc10} />
                   </div>
                   <div className="form-group col-sm">
                     <label htmlFor="inputText">Account 21</label>
-                    <input type="text" className="form-control" required onChange={(e) => setAcc21(e.target.value)} value={Acc21} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc21(e.target.value)} value={Acc21} />
                   </div>
                   <div className="form-group col-sm">
                     <label htmlFor="inputText">Account 22</label>
-                    <input type="text" className="form-control" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
                   </div>
                   <div className="form-group col-sm">
                     <label htmlFor="inputText">Rate</label>
-                    <input type="text" className="form-control" required onChange={(e) => setRate(e.target.value)} value={rate} />
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setRate(e.target.value)} value={rate} />
                   </div>
                 </div>
               </div>
             </div>
             {!isUpdate ? (
-              <button type="button" className="btn btn-outline-secondary" onClick={saveErDetails}>
+              <button type="button" className="btn btn-outline-secondary rounded-4" onClick={saveErDetails}>
                 Save
               </button>
             ) : (
-              <button type="button" className="btn btn-outline-secondary" onClick={updateErDetails}>
+              <button type="button" className="btn btn-outline-secondary rounded-4" onClick={updateErDetails}>
                 Update
               </button>
             )}

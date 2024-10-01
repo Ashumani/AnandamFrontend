@@ -80,17 +80,17 @@ const billMaster = () => {
                     <div className="row">
                       <div className="col-sm-2">
                         <label htmlFor="inputEmail">PF</label>
-                        <input type="email" className="form-control" />
+                        <input type="email" className="form-control rounded-4" />
                       </div>
                       <div className="col-sm-2">
                         <label htmlFor="inputPassword">Name</label>
-                        <input type="password" className="form-control" />
+                        <input type="text" className="form-control rounded-4" />
                       </div>
                       <div className="col-sm-2">
                         <button
                           style={{ "margin": "30px 10px 10px 0px" }}
                           type="submit"
-                          className="btn btn-outline-primary btn-block"
+                          className="btn btn-outline-primary btn-block rounded-4"
                         >
                           Search
                         </button>
@@ -99,7 +99,7 @@ const billMaster = () => {
                         <button
                           style={{ "margin": "30px 10px 10px 0px" }}
                           type="submit"
-                          className="btn btn-outline-primary btn-block"
+                          className="btn btn-outline-primary btn-block rounded-4"
                         >
                           <Link to="/auth/dashboard/bill/create"><span>Create Bill</span></Link>
                         </button>

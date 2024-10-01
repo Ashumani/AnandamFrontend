@@ -372,20 +372,20 @@ const employee = () => {
           <br />
           <div className="row">
             <div className="col-sm-2">
-              <button type="button" className="btn btn-primary" onClick={openModal}>
+              <button type="button" className="btn btn-primary rounded-4" onClick={openModal}>
                 Add Employee
               </button>
             </div>
             <div className="col-sm-4">
-              <input className="form-control" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
+              <input className="form-control rounded-4" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
             </div>
             <div className="col-sm-2">
-              <button type="button" className="btn btn-primary" onClick={uplaodEmployee}>
+              <button type="button" className="btn btn-primary rounded-4" onClick={uplaodEmployee}>
                 Upload
               </button>
             </div>
             <div className="col-sm-4">
-              <input type="text" className="form-control" placeholder="Search" onChange={(e) => set_search_emp(e.target.value)} onBlur={searchEmp} />
+              <input type="text" className="form-control rounded-4" placeholder="Search" onChange={(e) => set_search_emp(e.target.value)} onBlur={searchEmp} />
             </div>
           </div>
 
@@ -407,25 +407,25 @@ const employee = () => {
                         <div className="row">
                           <div className="col mb-2">
                             <label htmlFor="inputUAN">UAN</label>
-                            <input type="text" className="form-control" required onChange={(e) => set_ee_uan_no(e.target.value)} value={ee_uan_no} />
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_uan_no(e.target.value)} value={ee_uan_no} />
                           </div>
                           <div className="col mb-2">
                             <label htmlFor="inputPF">PF</label>
-                            <input type="email" className="form-control" required onChange={(e) => set_ee_pf_no(e.target.value)} value={ee_pf_no} />
+                            <input type="email" className="form-control rounded-4" required onChange={(e) => set_ee_pf_no(e.target.value)} value={ee_pf_no} />
                           </div>
                           <div className="col mb-2">
                             <label htmlFor="inputName">Name</label>
-                            <input type="text" className="form-control" required onChange={(e) => set_ee_name(e.target.value)} value={ee_name} />
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_name(e.target.value)} value={ee_name} />
                           </div>
                         </div>
                         <div className="row">
                           <div className="col mb-2">
                             <label htmlFor="inputNumber">Date Of Birth</label>
-                            <input type="date" className="form-control" required onChange={(e) => set_ee_dob(e.target.value)} value={ee_dob} />
+                            <input type="date" className="form-control rounded-4" required onChange={(e) => set_ee_dob(e.target.value)} value={ee_dob} />
                           </div>
                           <div className="col mb-2">
                             <label htmlFor="inputTime">Date Of Joining</label>
-                            <input type="date" className="form-control" required onChange={(e) => set_ee_doj(e.target.value)} value={ee_doj} />
+                            <input type="date" className="form-control rounded-4" required onChange={(e) => set_ee_doj(e.target.value)} value={ee_doj} />
                           </div>
                           <div className="col mt-4">
                             <label htmlFor="inputTime" className="form-label">Gender</label>
@@ -444,7 +444,7 @@ const employee = () => {
                           <div className="col-sm mb-2">
                             <label>Maritial Status</label>
                             <select
-                              className="form-select"
+                              className="form-select rounded-4"
                               aria-label="Default select example" value={ee_maritial_status} onChange={handleMaritalStatusChange}
                             >
                               <option value="M">Married</option>
@@ -454,12 +454,12 @@ const employee = () => {
                           </div>
                           <div className="col-sm mb-2">
                             <label htmlFor="inputText">Father/Husband</label>
-                            <input type="text" className="form-control" required onChange={(e) => set_ee_father_husband(e.target.value)} value={ee_father_husband} />
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_father_husband(e.target.value)} value={ee_father_husband} />
                           </div>
                           <div className="col-sm mb-2">
                             <label>Relation</label>
                             <select
-                              className="form-select"
+                              className="form-select rounded-4"
                               aria-label="Default select example" value={ee_relation} onChange={handleRelationChange}
                             >
                               <option value="F">Father</option>
@@ -469,36 +469,36 @@ const employee = () => {
                           </div>
                           {/* <div className="col-sm mb-2">
                             <label htmlFor="inputText">Relation</label>
-                            <input type="text" className="form-control" required onChange={(e) => set_ee_relation(e.target.value)} value={ee_relation} />
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_relation(e.target.value)} value={ee_relation} />
                           </div> */}
                         </div>
                         <div className="row">
                           <div className="col-sm mb-2">
                             <label htmlFor="inputColor">SubId</label>
-                            <input type="number" className="form-control" onChange={(e) => set_ee_sub_id(e.target.value)} value={ee_sub_id} />
+                            <input type="number" className="form-control rounded-4" onChange={(e) => set_ee_sub_id(e.target.value)} value={ee_sub_id} />
                           </div>
                           <div className="col-sm mb-2">
                             <label htmlFor="inputColor">EPF Wages</label>
-                            <input type="number" className="form-control" required onChange={(e) => set_ee_epf_wages(e.target.value)} value={ee_epf_wages} />
+                            <input type="number" className="form-control rounded-4" required onChange={(e) => set_ee_epf_wages(e.target.value)} value={ee_epf_wages} />
                           </div>
                           <div className="col-sm mb-2">
                             <label htmlFor="inputPassword">EPS Wages</label>
-                            <input type="number" className="form-control" required onChange={(e) => set_ee_gross_wages(e.target.value)} value={ee_gross_wages} />
+                            <input type="number" className="form-control rounded-4" required onChange={(e) => set_ee_gross_wages(e.target.value)} value={ee_gross_wages} />
                           </div>
                         </div>
                         <div className="row">
                           <div className="col mb-2">
                             <label htmlFor="inputNumber">Aadhar No</label>
-                            <input type="text" className="form-control" required onChange={(e) => set_ee_aadhar_no(e.target.value)} value={ee_aadhar_no} />
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_aadhar_no(e.target.value)} value={ee_aadhar_no} />
                           </div>
                           <div className="col mb-2">
                             <label htmlFor="inputNumber">Date Of Exit</label>
-                            <input type="date" className="form-control" required onChange={(e) => set_ee_dol(e.target.value)} value={ee_dol} />
+                            <input type="date" className="form-control rounded-4" required onChange={(e) => set_ee_dol(e.target.value)} value={ee_dol} />
                           </div>
 
                           <div className="col-sm">
                             <label htmlFor="inputColor">isAbove58</label>
-                            <input type="number" className="form-control" onChange={(e) => set_ee_sub_id(e.target.value)} value={ee_sub_id} />
+                            <input type="number" className="form-control rounded-4" onChange={(e) => set_ee_sub_id(e.target.value)} value={ee_sub_id} />
                           </div>
                         </div>
 
@@ -587,7 +587,7 @@ const employee = () => {
           {/* Pagination Controls */}
           <div className="pagination">
             <button
-              className="btn btn-primary"
+              className="btn btn-primary rounded-4"
               disabled={currentPage === 1}
               onClick={() => handlePageChange(currentPage - 1)}
               aria-label="Previous page"
@@ -612,7 +612,7 @@ const employee = () => {
               ))
             )}
             <button
-              className="btn btn-primary"
+              className="btn btn-primary rounded-4"
               disabled={currentPage === totalPages}
               onClick={() => handlePageChange(currentPage + 1)}
               aria-label="Next page"

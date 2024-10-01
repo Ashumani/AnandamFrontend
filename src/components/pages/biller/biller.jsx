@@ -371,14 +371,14 @@ const ecr = () => {
                                     <div className="row">
                                         <div className="col-sm">
                                             <label htmlFor="inputText" >Est Id</label>
-                                            <input type="text" className="form-control" onChange={(e) => setEstId(e.target.value)} value={est_id} />
+                                            <input type="text" className="form-control rounded-4" onChange={(e) => setEstId(e.target.value)} value={est_id} />
                                         </div>
                                         <div className="col-sm">
                                             <label htmlFor="inputText" >Bill Number</label>
-                                            <input type="text" className="form-control" onChange={(e) => setBillNumber(e.target.value)} value={bill_number} />
+                                            <input type="text" className="form-control rounded-4" onChange={(e) => setBillNumber(e.target.value)} value={bill_number} />
                                         </div>
                                         <div className="col-sm-2">
-                                            <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "30px 10px 10px 10px" }} onClick={biller}>Get Details</button>
+                                            <button type="button" className="btn btn-outline-primary rounded-4" style={{ "margin": "30px 10px 10px 10px" }} onClick={biller}>Get Details</button>
                                         </div>
                                     </div>
                                 </form>
@@ -386,49 +386,49 @@ const ecr = () => {
                                 <div className="row">
                                     <div className="col-sm">
                                         <label htmlFor="inputText" >Company Name</label>
-                                        <input type="text" className="form-control" required onChange={(e) => setEstName(e.target.value)} value={est_name} />
+                                        <input type="text" className="form-control rounded-4" required onChange={(e) => setEstName(e.target.value)} value={est_name} />
                                     </div>
                                     <div className="col-sm">
                                         <label htmlFor="inputText" >Employer Name</label>
-                                        <input type="text" className="form-control" required onChange={(e) => setErName(e.target.value)} value={er_name} />
+                                        <input type="text" className="form-control rounded-4" required onChange={(e) => setErName(e.target.value)} value={er_name} />
                                     </div>
                                     <div className="col-sm">
                                         <label htmlFor="inputText" >Date Of Coverage</label>
-                                        <input type="text" className="form-control" required onChange={(e) => setDOC(e.target.value)} value={est_doc} />
+                                        <input type="text" className="form-control rounded-4" required onChange={(e) => setDOC(e.target.value)} value={est_doc} />
                                     </div>
                                     <div className="col-sm">
                                         <label htmlFor="inputText" >Address</label>
-                                        <input type="text" className="form-control" required onChange={(e) => setAddress(e.target.value)} value={est_address} />
+                                        <input type="text" className="form-control rounded-4" required onChange={(e) => setAddress(e.target.value)} value={est_address} />
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col-sm">
                                         <label htmlFor="inputText" >From</label>
-                                        <input type="month" className="form-control" required onChange={(e) => setFromDate(e.target.value)} value={fromDate} />
+                                        <input type="month" className="form-control rounded-4" required onChange={(e) => setFromDate(e.target.value)} value={fromDate} />
                                     </div>
                                     <div className="col-sm">
                                         <label htmlFor="inputText" >To</label>
-                                        <input type="month" className="form-control" required onChange={(e) => setToDate(e.target.value)} value={toDate} />
+                                        <input type="month" className="form-control rounded-4" required onChange={(e) => setToDate(e.target.value)} value={toDate} />
                                     </div>
                                     <div className="col-sm">
-                                        <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Next</button>
+                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Next</button>
                                     </div>
                                     {!IsUpdate ? (<div className="col-sm">
-                                        <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "30px 5px 10px 10px" }} onClick={addBill}>Save</button>
+                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} onClick={addBill}>Save</button>
                                     </div>) : (<div className="col-sm">
-                                        <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "30px 5px 10px 10px" }} onClick={update}>Update</button>
+                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} onClick={update}>Update</button>
                                     </div>)}
                                     <div className="col-sm">
-                                        <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target=".bd-example-modal-xl">Make PDF</button>
+                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target=".bd-example-modal-xl">Make PDF</button>
                                     </div>
                                     <div className="col-sm">
-                                        <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Email PDF</button>
+                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Email PDF</button>
                                     </div>
                                     <div className="col-sm">
-                                        <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Print PDF</button>
+                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Print PDF</button>
                                     </div>
                                     <div className="col-sm">
-                                        <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Received</button>
+                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Received</button>
                                     </div>
                                 </div>
 
@@ -451,8 +451,8 @@ const ecr = () => {
                                                         </div>
                                                     </div><div className='col-md'>
                                                         <div className="form-check form-switch">
-                                                            {/* <input className="form-control" type="text" id="flexSwitchCheckDefault" /> */}
-                                                            <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control float-right" type="text" id="flexSwitchCheckDefault" disabled value={pfAmount} />
+                                                            {/* <input className="form-control rounded-4" type="text" id="flexSwitchCheckDefault" /> */}
+                                                            <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4 float-right" type="text" id="flexSwitchCheckDefault" disabled value={pfAmount} />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -464,9 +464,9 @@ const ecr = () => {
                                                         </div>
                                                     </div><div className='col-md'>
                                                         <div className="form-check form-switch">
-                                                            {/* <input className="form-control" type="text" id="flexSwitchCheckDefault" /> */}
+                                                            {/* <input className="form-control rounded-4" type="text" id="flexSwitchCheckDefault" /> */}
                                                             {/* <label className="form-check-label float-right">{esicAmount}</label> */}
-                                                            <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control float-right" type="text" id="flexSwitchCheckDefault" disabled value={esicAmount} />
+                                                            <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4 float-right" type="text" id="flexSwitchCheckDefault" disabled value={esicAmount} />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -480,12 +480,12 @@ const ecr = () => {
                                                     <div className='col-sm-4'>
                                                         {checkedCoverage ? (
                                                             <div className="form-check form-switch">
-                                                                <input style={{ outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control float-right" type="number" id="flexSwitchCheckDefault" disabled={!checkedCoverage} onChange={(e) => setCoverageAmount(e.target.value)} value={coverageAmount} />
+                                                                <input style={{ outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4 float-right" type="number" id="flexSwitchCheckDefault" disabled={!checkedCoverage} onChange={(e) => setCoverageAmount(e.target.value)} value={coverageAmount} />
                                                             </div>
 
                                                         ) : (
                                                             <div className="form-check form-switch">
-                                                                <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control float-right" type="text" id="flexSwitchCheckDefault" disabled={!checkedCoverage} onChange={(e) => { setCoverageAmount(e.target.value); calculate(); }} value={coverageAmount} />
+                                                                <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4 float-right" type="text" id="flexSwitchCheckDefault" disabled={!checkedCoverage} onChange={(e) => { setCoverageAmount(e.target.value); calculate(); }} value={coverageAmount} />
                                                             </div>
                                                         )}
                                                     </div>
@@ -500,18 +500,18 @@ const ecr = () => {
                                                     <div className='col-sm-6'>
                                                         {checkedOther && (
                                                             <div className="form-check form-switch">
-                                                                <input style={{ outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control float-right" type="text" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => setOtherReason(e.target.value)} />
+                                                                <input style={{ outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4 float-right" type="text" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => setOtherReason(e.target.value)} />
                                                             </div>
                                                         )}
                                                     </div>
                                                     <div className='col-sm-4'>
                                                         {checkedOther ? (
                                                             <div className="form-check form-switch">
-                                                                <input style={{ outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control" type="number" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => { setOtherAmount(e.target.value); }}value={otherAmount} />
+                                                                <input style={{ outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4" type="number" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => { setOtherAmount(e.target.value); }}value={otherAmount} />
                                                             </div>
                                                         ) : (
                                                             <div className="form-check form-switch">
-                                                                <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control" type="number" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => { setOtherAmount(e.target.value); }} value={otherAmount} />
+                                                                <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4" type="number" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => { setOtherAmount(e.target.value); }} value={otherAmount} />
                                                             </div>
                                                         )}
 
