@@ -429,168 +429,151 @@ const master = () => {
             <div className="modal-dialog modal-xl">
               <div className="modal-content">
                 <form>
-                  <div className="card">
-                    <div className="card-body">
-                      <h5 className="card-title text-left">
-                        Employer Registration
-                      </h5>
+                  <div className="modal-header">
+                    <h5 className="modal-title">Employer Registration</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div className="modal-body">
+                    <div className="row mb-3">
+                      <div className="form-group col-sm">
+                        <label htmlFor="epfNo text-black">EPF No</label>
+                        <input type="text" className="form-control rounded-4" id="epfNo" required onChange={(e) => setEstEpfId(e.target.value)} value={EstEpfId} />
+                      </div>
+                      <div className="form-group col-sm">
+                        <label htmlFor="esicNo">ESIC No</label>
+                        <input type="text" className="form-control rounded-4" id="esicNo" required onChange={(e) => setEstEsicId(e.target.value)} value={EstEsicId} />
+                      </div>
+                      <div className="form-group col-sm">
+                        <label htmlFor="estType">Establishment Type</label>
+                        <input type="text" className="form-control rounded-4" id="estType" required onChange={(e) => setEstType(e.target.value)} value={EstType} />
+                      </div>
+                      <div className="form-group col-sm">
+                        <label htmlFor="coverageDate">Date of Coverage</label>
+                        <input type="date" className="form-control rounded-4" id="coverageDate" required onChange={(e) => setDoc(e.target.value)} value={estDoc} />
+                      </div>
+                    </div>
 
-                      <div className="row">
-                        <div className="form-group col-sm  ">
-                          <label htmlFor="inputText">EPF No</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => setEstEpfId(e.target.value)} value={EstEpfId} />
-                        </div>
-                        <div className="form-group col-sm">
-                          <label htmlFor="inputEmail">ESIC No</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => setEstEsicId(e.target.value)} value={EstEsicId} />
-                        </div>
+                    <div className="row mb-3">
+                      <div className="form-group col-md">
+                        <label htmlFor="estName">Establishment Name</label>
+                        <input type="text" className="form-control rounded-4" id="estName" required onChange={(e) => setEstName(e.target.value)} value={EstName} />
+                      </div>
+                      <div className="form-group col-md">
+                        <label htmlFor="employerName">Employer Name</label>
+                        <input type="text" className="form-control rounded-4" id="employerName" required onChange={(e) => setErName(e.target.value)} value={ErName} />
+                      </div>
+                      <div className="form-group col-md">
+                        <label htmlFor="designation">Designation</label>
+                        <input type="text" className="form-control rounded-4" id="designation" required onChange={(e) => set_designation(e.target.value)} value={ErDesignation} />
+                      </div>
+                      <div className="form-group col-md">
+                        <label htmlFor="city">City</label>
+                        <input type="text" className="form-control rounded-4" id="city" required onChange={(e) => setCity(e.target.value)} value={city} />
+                      </div>
+                    </div>
 
+                    <div className="row mb-3">
+                      <div className="form-group col-md">
+                        <label htmlFor="email">Email ID</label>
+                        <input type="email" className="form-control rounded-4" id="email" required onChange={(e) => setEmail(e.target.value)} value={Email} />
+                      </div>
+                      <div className="form-group col-md">
+                        <label htmlFor="contactNumber">Contact Number</label>
+                        <input type="text" className="form-control rounded-4" id="contactNumber" required onChange={(e) => setMobile(e.target.value)} value={Mobile} />
+                      </div>
+                      <div className="form-group col-md">
+                        <label htmlFor="address">Address</label>
+                        <input type="text" className="form-control rounded-4" id="address" required onChange={(e) => setAddress(e.target.value)} value={Address} />
+                      </div>
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="authorizedSignature">Authorized Digital Signature</label>
+                      <div className="form-check">
+                        <input className="form-check-input" type="checkbox" id="flexSwitchCheckPf" checked={checkedDSC} onChange={handleChange} />
+                        <label className="form-check-label" htmlFor="flexSwitchCheckPf">Enable</label>
+                      </div>
+                    </div>
+
+                    {checkedDSC && (
+                      <div className="row mb-3">
                         <div className="form-group col-sm">
-                          <label htmlFor="inputEmail">Establishment Type</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => setEstType(e.target.value)} value={EstType} />
+                          <label htmlFor="dscName">Name On DSC</label>
+                          <input type="text" className="form-control rounded-4" id="dscName" required onChange={(e) => set_dsc_on_name(e.target.value)} value={dsc_on_name} />
                         </div>
                         <div className="form-group col-sm">
-                          <label htmlFor="inputText">Date of Coverage</label>
-                          <input type="date" className="form-control rounded-4" required onChange={(e) => setDoc(e.target.value)} value={estDoc} />
+                          <label htmlFor="dscDesignation">Designation</label>
+                          <input type="text" className="form-control rounded-4" id="dscDesignation" required onChange={(e) => set_dsc_designation(e.target.value)} value={dsc_designation} />
+                        </div>
+                        <div className="form-group col-sm">
+                          <label htmlFor="dscExpire">Expire Date</label>
+                          <input type="date" className="form-control rounded-4" id="dscExpire" required onChange={(e) => set_dsc_expire(e.target.value)} value={dsc_expire} />
+                        </div>
+                        <div className="form-group col-sm">
+                          <label htmlFor="dscMobile">Mobile</label>
+                          <input type="text" className="form-control rounded-4" id="dscMobile" required onChange={(e) => set_dsc_mobile(e.target.value)} value={dsc_mobile} />
                         </div>
                       </div>
+                    )}
 
-                      <div className="row">
-                        <div className="form-group col-md">
-                          <label htmlFor="inputPassword">Establishment Name</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => setEstName(e.target.value)} value={EstName} />
-                        </div>
-                        <div className="form-group col-md">
-                          <label htmlFor="inputEmail">Employer Namee</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => setErName(e.target.value)} value={ErName} />
-                        </div>
-                        <div className="form-group col-md">
-                          <label htmlFor="inputEmail">Designation</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => set_designation(e.target.value)} value={ErDesignation} />
-                        </div>
-                        <div className="form-group col-md">
-                          <label htmlFor="inputEmail">City</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => setCity(e.target.value)} value={city} />
-                        </div>
+                    <div className="row mb-3">
+                      <h5 className="col-sm-12">Returns Parameters</h5>
+                      <div className="form-group col-sm">
+                        <label htmlFor="epfRate">EPF</label>
+                        <input type="text" className="form-control rounded-4" id="epfRate" required onChange={(e) => setEpfRate(e.target.value)} value={EpfRate} />
                       </div>
-
-                      <div className="row">
-                        <div className="form-group col-md">
-                          <label htmlFor="inputText">Email id</label>
-                          <input type="email" className="form-control rounded-4" required onChange={(e) => setEmail(e.target.value)} value={Email} />
-                        </div>
-                        <div className="form-group col-md">
-                          <label htmlFor="inputPassword">Contact Number</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => setMobile(e.target.value)} value={Mobile} />
-                        </div>
-                        <div className="form-group col-md">
-                          <label htmlFor="inputPassword">Address</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => setAddress(e.target.value)} value={Address} />
-                        </div>
+                      <div className="form-group col-sm">
+                        <label htmlFor="epsRate">EPS</label>
+                        <input type="text" className="form-control rounded-4" id="epsRate" required onChange={(e) => setEpsRate(e.target.value)} value={EpsRate} />
+                      </div>
+                      <div className="form-group col-sm">
+                        <label htmlFor="erRate">ER</label>
+                        <input type="text" className="form-control rounded-4" id="erRate" required onChange={(e) => setErRate(e.target.value)} value={ErRate} />
+                      </div>
+                      <div className="form-group col-sm">
+                        <label htmlFor="acc1">Account 1</label>
+                        <input type="text" className="form-control rounded-4" id="acc1" required onChange={(e) => setAcc1(e.target.value)} value={Acc1} />
+                      </div>
+                      <div className="form-group col-sm">
+                        <label htmlFor="acc2">Account 2</label>
+                        <input type="text" className="form-control rounded-4" id="acc2" required onChange={(e) => setAcc2(e.target.value)} value={Acc2} />
+                      </div>
+                      <div className="form-group col-sm">
+                        <label htmlFor="acc10">Account 10</label>
+                        <input type="text" className="form-control rounded-4" id="acc10" required onChange={(e) => setAcc10(e.target.value)} value={Acc10} />
+                      </div>
+                      <div className="form-group col-sm">
+                        <label htmlFor="acc21">Account 21</label>
+                        <input type="text" className="form-control rounded-4" id="acc21" required onChange={(e) => setAcc21(e.target.value)} value={Acc21} />
+                      </div>
+                      <div className="form-group col-sm">
+                        <label htmlFor="acc22">Account 22</label>
+                        <input type="text" className="form-control rounded-4" id="acc22" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
+                      </div>
+                      <div className="form-group col-sm">
+                        <label htmlFor="rate">Rate</label>
+                        <input type="text" className="form-control rounded-4" id="rate" required onChange={(e) => setRate(e.target.value)} value={rate} />
                       </div>
                     </div>
                   </div>
-
-                  <div className="card">
-                    <div className="card-body">
-                      <div className='row'>
-                        <div className="form-group col-sm">
-                          <h5 className="card-title text-left">
-                            Authorized Digital Signature
-                          </h5>
-                        </div>
-                        <div className="form-group col-sm-1">
-                          <div className="form-check form-switch">
-                            <input className="form-check-input" type="checkbox" id="flexSwitchCheckPf" checked={checkedDSC} onChange={handleChange} />
-                          </div>
-                        </div>
-                      </div>
-                      {checkedDSC && (
-                        <div className="row">
-
-                          <div className="form-group col-sm">
-                            <label htmlFor="inputText">Name On DSC </label>
-                            <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_on_name(e.target.value)} value={dsc_on_name} />
-                          </div>
-                          <div className="form-group col-sm">
-                            <label htmlFor="inputEmail">Designation</label>
-                            <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_designation(e.target.value)} value={dsc_designation} />
-                          </div>
-                          <div className="form-group col-sm">
-                            <label htmlFor="inputEmail">Expire Date</label>
-                            <input type="date" className="form-control rounded-4" required onChange={(e) => set_dsc_expire(e.target.value)} value={dsc_expire} />
-                          </div>
-                          <div className="form-group col-sm">
-                            <label htmlFor="inputText">Mobile</label>
-                            <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_mobile(e.target.value)} value={dsc_mobile} />
-                          </div>
-
-                        </div>)}
-                    </div>
-                  </div>
-                  <div className="card">
-                    <div className="card-body">
-                      <h5 className="card-title text-left">
-                        Retruns Parameter
-                      </h5>
-                      <div className="row">
-                        <div className="form-group col-sm">
-                          <label htmlFor="inputText">EPF </label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => setEpfRate(e.target.value)} value={EpfRate} />
-                        </div>
-                        <div className="form-group col-sm">
-                          <label htmlFor="inputEmail">EPS</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => setEpsRate(e.target.value)} value={EpsRate} />
-                        </div>
-                        <div className="form-group col-sm">
-                          <label htmlFor="inputEmail">ER</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => setErRate(e.target.value)} value={ErRate} />
-                        </div>
-                        <div className="form-group col-sm">
-                          <label htmlFor="inputText">Account 1</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc1(e.target.value)} value={Acc1} />
-                        </div>
-                        <div className="form-group col-sm">
-                          <label htmlFor="inputText">Account 2</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc2(e.target.value)} value={Acc2} />
-                        </div>
-                        <div className="form-group col-sm">
-                          <label htmlFor="inputText">Account 10</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc10(e.target.value)} value={Acc10} />
-                        </div>
-                        <div className="form-group col-sm">
-                          <label htmlFor="inputText">Account 21</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc21(e.target.value)} value={Acc21} />
-                        </div>
-                        <div className="form-group col-sm">
-                          <label htmlFor="inputText">Account 22</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
-                        </div>
-                        <div className="form-group col-sm">
-                          <label htmlFor="inputText">Rate</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => setRate(e.target.value)} value={rate} />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-sm">
-                      {!isUpdate ? (
-                        <button type="button" className="btn btn-outline-secondary rounded-4" onClick={saveErDetails}>
-                          Save
-                        </button>
-                      ) : (
-                        <button type="button" className="btn btn-outline-secondary rounded-4" onClick={updateErDetails}>
-                          Update
-                        </button>
-                      )}
-                    </div>
+                  <div className="modal-footer">
+                    {!isUpdate ? (
+                      <button type="button" className="btn btn-outline-secondary rounded-4" onClick={saveErDetails}>
+                        Save
+                      </button>
+                    ) : (
+                      <button type="button" className="btn btn-outline-secondary rounded-4" onClick={updateErDetails}>
+                        Update
+                      </button>
+                    )}
                   </div>
                 </form>
-
               </div>
             </div>
           </div>
+
         </section>
       </div>
     </div>

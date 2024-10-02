@@ -3,10 +3,11 @@ import "./dashboard.css"
 
 import { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill }
   from 'react-icons/bs'
-import { BarChart, PieChart, Pie, AreaChart, Area, Bar, ComposedChart, ScatterChart, Scatter, ZAxis, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line }
+import { BarChart, PieChart, Pie, AreaChart, Area, Bar, ComposedChart, ScatterChart, Scatter, ZAxis, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, LabelList, Cell }
   from 'recharts';
-import { getCardsCount, getGraph } from "../api/services";
+import { getBillGraph, getCardsCount, getGraph, getYearsAndMonth } from "../api/services";
 import { useState, useEffect } from "react"
+import moment from "moment";
 
 
 const dashboard = () => {
@@ -57,9 +58,13 @@ const dashboard = () => {
   // ];
 
   const [data, setData] = useState([])
-  const data1 = [{ name: "A", value: 100 }, { name: "B", value: 200 }, { name: "C", value: 300 }, { name: "D", value: 400 }]
+  const [data1, setData1] = useState([])
+  // const data1 = [{ name: "A", value: 100 }, { name: "B", value: 200 }, { name: "C", value: 300 }, { name: "D", value: 400 }]
   const data2 = [{ name: "A", value: 200 }, { name: "B", value: 300 }, { name: "C", value: 400 }, { name: "D", value: 500 }]
 
+
+
+  const [returnsYear, setReturnsYear] = useState('')
   const [cardResponse, setCardResponse] = useState('')
 
   const [totalclient, settotalclient] = useState('')
@@ -69,10 +74,26 @@ const dashboard = () => {
   const [esicchallancreated, setesicchallancreated] = useState('')
   const [totaldsc, settotaldsc] = useState('')
   const [expiredsc, setexpiredsc] = useState('')
+
+  const fromMonth = 3
+  const toMonth = 4
+  const fromYear = moment().year()
+  const toYear = moment().year() + 1
+  const [selectedYear, setSelectedYear] = useState(fromYear);
+
+  const [chartData, setChartData] = useState([]);
+  const [pieChartData, setPieChartData] = useState([]);
+
+
+
+
   useEffect(() => {
     const fetchData = async () => {
+      await getYears();
       await getAll();
-      await getGraphDetails()
+      await getGraphDetails(fromMonth, toMonth, fromYear, toYear)
+      await getBillDetailsForGraph()
+
     };
 
     fetchData();
@@ -103,17 +124,17 @@ const dashboard = () => {
     }
   };
 
-  const getGraphDetails = async () => {
+  const getGraphDetails = async (fromMonth, toMonth, fromYear, toYear) => {
     // api call
 
     try {
-      
+
       const params = {
-        "fromMonth": 4,
-        "toMonth": 3,
-        "fromYear": 2024,
-        "toYear": 2025
-    }
+        "fromMonth": fromMonth,
+        "toMonth": toMonth,
+        "fromYear": fromYear,
+        "toYear": toYear
+      }
       const response = await getGraph(params);
       setData(response.data)
 
@@ -125,6 +146,59 @@ const dashboard = () => {
     }
   };
 
+  const getBillDetailsForGraph = async () => {
+    // api call
+
+    try {
+
+      const params = {
+        "fromMonth": fromMonth,
+        "toMonth": toMonth,
+        "fromYear": fromYear,
+        "toYear": toYear
+      }
+      const response = await getBillGraph(params);
+      const Data = response.data.map(item => ({
+        name: item.est_epf_id,
+        totalbill: Number(item.totalbill),
+        totalamtreceived: Number(item.totalamtreceived),
+        
+      }));
+      setChartData(Data);
+      setPieChartData(response.total) 
+
+
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // setError('Error fetching data. Please try again.');
+      // setLoading(false);
+    }
+  };
+
+  const getYears = async () => {
+    // api call
+
+    try {
+
+      const response = await getYearsAndMonth();
+      setReturnsYear(response.data);
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // setError('Error fetching data. Please try again.');
+      // setLoading(false);
+    }
+  };
+
+  const handleYearChange = async (e) => {
+    setSelectedYear(e.target.value);
+    await getGraphDetails(fromMonth, toMonth, parseInt(e.target.value), parseInt(e.target.value) + 1)
+  };
+
+  const colors = ['#2b6b86', '#f76e6e'];
   return (
     <div>
 
@@ -165,12 +239,23 @@ const dashboard = () => {
             <h1>{totaldsc}/{expiredsc}</h1>
           </div>
         </div>
+        <div className="row">
+          <div className="col-sm-2">
+            <select
+              className="form-select rounded-4"
+              aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
+            >
+              {returnsYear && returnsYear.yearTo.map((returnYear) => (
+                // eslint-disable-next-line react/jsx-key
+                <option value={returnYear.startYear}>{returnYear.between}</option>
+              ))}
+            </select>
+          </div>
 
+        </div>
         <div className='charts'>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              width={500}
-              height={300}
+            {data && data.length > 0 ? (<BarChart
               data={data}
               margin={{
                 top: 5,
@@ -179,40 +264,137 @@ const dashboard = () => {
                 bottom: 5,
               }}
             >
+              <defs>
+                <linearGradient id="colorPv" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style={{ stopColor: '#2b6b86', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: '#82ca9d', stopOpacity: 1 }} />
+                </linearGradient>
+                <linearGradient id="colorUv" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style={{ stopColor: '#f7c94c', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: '#f76e6e', stopOpacity: 1 }} />
+                </linearGradient>
+              </defs>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
-              <Legend />
-              <Bar dataKey="pv" fill="#2b6b86" />
-              <Bar dataKey="uv" fill="#82ca9d" />
-            </BarChart>
+              <Legend
+                payload={[
+                  { id: 'pv', type: 'line', color: '#2b6b86', value: 'Employee Count' },
+                  { id: 'uv', type: 'line', color: '#f7c94c', value: 'Challan Count' },
+                ]}
+                verticalAlign="top"
+              />
+              <Bar dataKey="pv" fill="url(#colorPv)">
+                <LabelList dataKey="pv" position="top" />
+              </Bar>
+              <Bar dataKey="uv" fill="url(#colorUv)">
+                <LabelList dataKey="uv" position="top" />
+              </Bar>
+            </BarChart>) : (
+              <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
+                No Data Available
+              </div>
+            )}
           </ResponsiveContainer>
-
           <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart width={730} height={250} data={data}>
+            {data && data.length > 0 ? (<ComposedChart width={730} height={250} data={data}>
+              <defs>
+                <linearGradient id="colorAmt" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style={{ stopColor: '#8884d8', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: '#d4c3e0', stopOpacity: 1 }} />
+                </linearGradient>
+                <linearGradient id="colorPv" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style={{ stopColor: '#fcbdb3', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: '#ff6b6b', stopOpacity: 1 }} />
+                </linearGradient>
+              </defs>
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
               <Legend />
               <CartesianGrid stroke="#f5f5f5" />
-              <Area type="monotone" dataKey="amt" fill="#8884d8" stroke="#8884d8" />
-              <Bar dataKey="pv" barSize={20} fill="#fcbdb3" />
+              <Area type="monotone" dataKey="amt" fill="url(#colorAmt)" stroke="#8884d8" />
+              <Bar dataKey="pv" barSize={20} fill="url(#colorPv)" />
               <Line type="monotone" dataKey="uv" stroke="#ff7300" />
             </ComposedChart>
+            ) : (
+              <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
+                No Data Available
+              </div>
+            )}
           </ResponsiveContainer>
 
         </div>
 
         <div className='charts'>
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart width={730} height={250}>
-              <Pie data={data1} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={50} fill="#8884d8" />
-              <Pie data={data2} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#fb66c2" label />
+            <PieChart>
+              <Pie
+                data={pieChartData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                fill="#8884d8"
+              >
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
             </PieChart>
           </ResponsiveContainer>
 
           <ResponsiveContainer width="100%" height="100%">
+            {chartData.length > 0 ? (
+              <BarChart
+                data={chartData}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <defs>
+                  <linearGradient id="colorTotalBill" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style={{ stopColor: '#2b6b86', stopOpacity: 1 }} />
+                    <stop offset="100%" style={{ stopColor: '#82ca9d', stopOpacity: 1 }} />
+                  </linearGradient>
+                  <linearGradient id="colorAmtReceived" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style={{ stopColor: '#f7c94c', stopOpacity: 1 }} />
+                    <stop offset="100%" style={{ stopColor: '#f76e6e', stopOpacity: 1 }} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend
+                  payload={[
+                    { id: 'totalbill', type: 'line', color: '#2b6b86', value: 'Total Bill' },
+                    { id: 'totalamtreceived', type: 'line', color: '#f7c94c', value: 'Total Amount Received' },
+                  ]}
+                  verticalAlign="top"
+                />
+                <Bar dataKey="totalbill" fill="url(#colorTotalBill)">
+                  <LabelList dataKey="totalbill" position="top" />
+                </Bar>
+                <Bar dataKey="totalamtreceived" fill="url(#colorAmtReceived)">
+                  <LabelList dataKey="totalamtreceived" position="top" />
+                </Bar>
+              </BarChart>
+            ) : (
+              <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
+                No Data Available
+              </div>
+            )}
+          </ResponsiveContainer>
+
+          {/* <ResponsiveContainer width="100%" height="100%">
             <LineChart
               width={500}
               height={300}
@@ -232,7 +414,7 @@ const dashboard = () => {
               <Line type="monotone" dataKey="pv" stroke="#fb66c2" activeDot={{ r: 8 }} />
               <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
             </LineChart>
-          </ResponsiveContainer>
+          </ResponsiveContainer> */}
 
         </div>
 

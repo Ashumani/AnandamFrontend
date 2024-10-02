@@ -15,3 +15,18 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+button {
+  background: 'linear-gradient(135deg, #e7e2e2, #edeaea)';
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}

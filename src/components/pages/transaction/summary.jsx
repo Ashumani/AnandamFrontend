@@ -734,14 +734,14 @@ const summary = () => {
                 </select>
               </div>
               <div className="col-sm-2">
-                <button type="button" className="btn btn-outline-primary btn-block rounded-4" onClick={() => { getReturnByMonth(1) }} >Next
+                <button type="button" className="btn btn-outline-primary btn-block rounded-4 rounded-4" onClick={() => { getReturnByMonth(1) }} >Next
                   {/* <Link to="/auth/dashboard/monthlypf"><span >Next</span></Link> */}
                 </button>
               </div>
               <div className="col-sm-2">
                 <button
                   type="file"
-                  className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#importReturn"
+                  className="btn btn-outline-primary btn-block rounded-4 rounded-4" data-toggle="modal" data-target="#importReturn"
                 >
                   Import
                 </button>
@@ -823,14 +823,14 @@ const summary = () => {
             <br />
             <div className="row">
               <div className="col-sm">
-                <button type="button" className="btn btn-outline-primary btn-block" onClick={openModal}>
+                <button type="button" className="btn btn-outline-primary btn-block rounded-4 " onClick={openModal}>
                   Add ({selectedMonth}-{selectedYear})
                 </button>
               </div>
               <div className="col-sm">
                 <button
                   type="file"
-                  className="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#importReturn"
+                  className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#importReturn"
                 >
                   Import
                 </button>
@@ -838,7 +838,7 @@ const summary = () => {
               <div className="col-sm">
                 <button
                   type="button"
-                  className="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#importReturn"
+                  className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#importReturn"
                 >
                   Export
                 </button>
@@ -846,7 +846,7 @@ const summary = () => {
               <div className="col-sm">
                 <button
                   type="button"
-                  className="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#confirmationModal"
+                  className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#confirmationModal"
                 >
                   Same as Prev
                 </button>
@@ -854,7 +854,7 @@ const summary = () => {
               <div className="col-sm">
                 <button
                   type="button"
-                  className="btn btn-outline-primary btn-block" onClick={genECR}
+                  className="btn btn-outline-primary btn-block rounded-4" onClick={genECR}
                 >
                   ECR
                 </button>
@@ -862,7 +862,7 @@ const summary = () => {
               <div className="col-sm">
                 <button
                   type="button"
-                  className="btn btn-outline-primary btn-block" onClick={monthlyBack}
+                  className="btn btn-outline-primary btn-block rounded-4" onClick={monthlyBack}
                 >
                   BACK
                 </button>
@@ -980,16 +980,16 @@ const summary = () => {
                           </div>
                           {/* <div className="row">
                               <div className="col-sm">
-                                <button type="button" className="btn btn-outline-primary btn-block" onClick={saveReturns}>Save</button>
+                                <button type="button" className="btn btn-outline-primary btn-block rounded-4" onClick={saveReturns}>Save</button>
                               </div>
                               <div className="col-sm">
-                                <button type="button" className="btn btn-outline-primary btn-block">Update</button>
+                                <button type="button" className="btn btn-outline-primary btn-block rounded-4">Update</button>
                               </div>
                               <div className="col-sm">
-                                <button type="button" className="btn btn-outline-primary btn-block">Reset</button>
+                                <button type="button" className="btn btn-outline-primary btn-block rounded-4">Reset</button>
                               </div>
                               <div className="col-sm">
-                                <button type="button" className="btn btn-outline-primary btn-block" data-dismiss="modal" aria-label="Close"  onClick={closeModal} >Close</button>
+                                <button type="button" className="btn btn-outline-primary btn-block rounded-4" data-dismiss="modal" aria-label="Close"  onClick={closeModal} >Close</button>
                               </di  v>
                             </div> */}
                         </form>
@@ -999,16 +999,16 @@ const summary = () => {
                   <div className="modal-footer d-flex">
                     <div className="row">
                       <div className="col-sm">
-                        <button type="button" disabled={isUpdate || isSaveEnable} className="btn btn-outline-primary btn-block" onClick={saveReturns}>Save</button>
+                        <button type="button" disabled={isUpdate || isSaveEnable} className="btn btn-outline-primary btn-block rounded-4" onClick={saveReturns}>Save</button>
                       </div>
                       <div className="col-sm">
-                        <button type="button" disabled={!isUpdate} className="btn btn-outline-primary btn-block" onClick={updateReturns}>Update</button>
+                        <button type="button" disabled={!isUpdate} className="btn btn-outline-primary btn-block rounded-4" onClick={updateReturns}>Update</button>
                       </div>
                       <div className="col-sm">
-                        <button type="button" className="btn btn-outline-primary btn-block">Reset</button>
+                        <button type="button" className="btn btn-outline-primary btn-block rounded-4">Reset</button>
                       </div>
                       <div className="col-sm">
-                        <button type="button" className="btn btn-outline-primary btn-block" data-dismiss="modal" aria-label="Close" onClick={closeModal} >Close</button>
+                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" data-dismiss="modal" aria-label="Close" onClick={closeModal} >Close</button>
                       </div>
                     </div>
 

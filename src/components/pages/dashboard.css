@@ -150,12 +150,18 @@ body {
   } */
   
   .cardprop1 {
-    background-color:#a07fce !important;
-    box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.3)!important;
+    background: linear-gradient(135deg, rgba(255, 0, 0, 0.8), rgba(0, 0, 1, 0.1));
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+    transition: transform 0.2s;
   }
   .cardprop2{
-    background-color: #fcbdb3 !important;
-    box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.3) !important;
+    background: linear-gradient(135deg, rgba(0, 255, 0, 0.8), rgba(0, 0, 0, 0.1));
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+    transition: transform 0.2s;
   }
   
   /* .card:nth-child(3) {
@@ -163,13 +169,21 @@ body {
   } */
   
   .cardprop3 {
-    background-color: #a7b7d6 !important;
-    box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.3) !important;
+    /* background-color: #a7b7d6 !important;
+    box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.3) !important; */
+    background: linear-gradient(135deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 0, 0.1));
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+    transition: transform 0.2s;
   }
   
   .cardprop4 {
-    background-color: #f17cc5 !important;
-    box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.3) !important;
+    background: linear-gradient(135deg, rgba(66, 218, 213, 0.8), rgba(0, 0, 0, 0.1));
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+    transition: transform 0.2s;
   }
 
   .card-inner {

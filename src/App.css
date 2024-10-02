@@ -20,7 +20,9 @@ body {
   height: 100%;
 }
 
-
+label{
+  color: black !important;
+}
 
 .sidebar {
   min-height: 100%;
@@ -150,9 +152,5 @@ body {
   .first-and-last-trash-fix {
     margin-left: 1.2rem;
   }
-}
-
-button{
-  padding: 10px 30px 10px;
 }
 

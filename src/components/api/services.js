@@ -325,6 +325,23 @@ export const getBill = async (id) => {
     }
 }
 
+export const searchBill = async (id) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/bill/searchBill/`+id, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const paymentReceived = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/bill/paymentReceived`, params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 
 export const getCardsCount = async () => {
     try {
@@ -338,6 +355,15 @@ export const getCardsCount = async () => {
 export const getGraph = async (params) => {
     try {
         const response = await axios.post(`${BASE_URL}/dashboard/graphCreate`,params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const getBillGraph = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/dashboard/getBillGraph`,params, { headers: header});
         return response.data;
     } catch (error) {
         throw error.response.data.error;
@@ -371,6 +397,14 @@ export const saveSalaryReturn = async (params) => {
     }
 }
 
+export const getYearsAndMonth = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/dashboard/getYearsAndMonth`, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 export const downlaodFile = async (url) => {
     try {
        

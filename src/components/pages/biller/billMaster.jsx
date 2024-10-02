@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken"
 import { Link } from "react-router-dom";
-import { getAllBill } from "../../api/services";
+import { getAllBill, searchBill } from "../../api/services";
 
 const billMaster = () => {
   // Sample data
@@ -56,6 +56,33 @@ const billMaster = () => {
       // setLoading(false);
     }
   };
+  
+
+  const [searchName, setSearchName] = useState('')
+  const getBillByName = async () => {
+
+    try {
+        // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+        const response = await searchBill(searchName);
+        
+        if (response.status == true) {
+          // setEmployeeData(response.data);
+  
+          set_totalPages(Math.ceil(response.data.length / itemsPerPage));
+  
+          // Get current items based on the current page
+          set_startIndex((currentPage - 1) * itemsPerPage);
+          set_totalPages(Math.ceil(response.count / itemsPerPage));
+          set_currentItems(response.data);
+  
+        }
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        // setError('Error fetching data. Please try again.');
+
+    }
+};
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -76,7 +103,6 @@ const billMaster = () => {
                 <div className="card-body">
                   <h5 className="card-title text-center">Billing</h5>
 
-                  <form>
                     <div className="row">
                       <div className="col-sm-2">
                         <label htmlFor="inputEmail">PF</label>
@@ -84,13 +110,14 @@ const billMaster = () => {
                       </div>
                       <div className="col-sm-2">
                         <label htmlFor="inputPassword">Name</label>
-                        <input type="text" className="form-control rounded-4" />
+                        <input type="text" className="form-control rounded-4"  onChange={(e) => setSearchName(e.target.value)}  />
                       </div>
                       <div className="col-sm-2">
                         <button
                           style={{ "margin": "30px 10px 10px 0px" }}
-                          type="submit"
+                          type="button"
                           className="btn btn-outline-primary btn-block rounded-4"
+                          onClick={getBillByName}
                         >
                           Search
                         </button>
@@ -98,27 +125,29 @@ const billMaster = () => {
                       <div className="col-sm-2">
                         <button
                           style={{ "margin": "30px 10px 10px 0px" }}
-                          type="submit"
+                          type="button"
                           className="btn btn-outline-primary btn-block rounded-4"
                         >
                           <Link to="/auth/dashboard/bill/create"><span>Create Bill</span></Link>
                         </button>
                       </div>
                     </div>
-                  </form>
+         
                   <div className="table-responsive">
                     <table className="table table-sm table-hover">
                       <thead>
                         <tr>
                           <th scope="col">#</th>
-                          <th scope="col">Company Name</th>
+                          <th scope="col">Name</th>
                           <th scope="col">Est Id</th>
                           <th scope="col">Particular</th>
                           <th scope="col">Rate</th>
                           <th scope="col">Amount</th>
-                          <th scope="col">Payment Mode</th>
-                          <th scope="col">Status</th>
+                          <th scope="col">Pay Mode</th>
                           <th scope="col">Discount</th>
+                          <th scope="col">Amt Paid</th>
+                          <th scope="col">Status</th>
+                          
                         </tr>
                       </thead>
                       <tbody>
@@ -142,9 +171,10 @@ const billMaster = () => {
                             </td>
                             <td>{item.rate}</td>
                             <td>{item.amount}</td>
-                            <td>{item.paymentMode}</td>
-                            <td>{item.status}</td>
+                            <td>{item.paymentMode}</td>                           
                             <td>{item.discount}</td>
+                            <td>{item.amount_paid}</td>
+                            <td>{item.status}</td>
                           </tr>
                         ))}
                       </tbody>

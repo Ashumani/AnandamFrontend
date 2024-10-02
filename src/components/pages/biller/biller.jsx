@@ -1,4 +1,4 @@
-import { createBill, getBill, getEmployer, updateBill } from '../../api/services';
+import { createBill, getBill, getEmployer, paymentReceived, updateBill } from '../../api/services';
 import { useState, useEffect } from "react"
 import { getEstId } from "../Auth/authToken";
 import moment from 'moment';
@@ -39,6 +39,13 @@ const ecr = () => {
     const [modalTotal, setModalTotal] = useState(0)
 
     const [IsUpdate, setIsUpdate] = useState(false);
+
+
+    const [receivedAmountDate, set_receivedAmountDate] = useState('')
+    const [receivedAmount, set_receivedAmount] = useState('')
+    const [discountOnReceivedAmount, set_discountOnReceivedAmount] = useState('')
+    const [gstOnReceived, set_gstOnReceived] = useState('')
+    const [paymentMode, set_paymentMode] = useState('')
 
     const biller = async () => {
 
@@ -110,51 +117,51 @@ const ecr = () => {
             const date1 = moment(fromDate, 'YYYY-MM');
             const date2 = moment(toDate, 'YYYY-MM');
             const differenceInMonths = date2.diff(date1, 'months');
-        
+
             let newItems = [];
-        
+
             if (checkedPf) {
-              newItems.push({
-                perticular: "EPF Challan For Period " + fromDate + " To " + toDate,
-                rate: rate,
-                amount: rate * differenceInMonths,
-                billNumber: bill_number
-              });
+                newItems.push({
+                    perticular: "EPF Challan For Period " + fromDate + " To " + toDate,
+                    rate: rate,
+                    amount: rate * differenceInMonths,
+                    billNumber: bill_number
+                });
             }
-        
+
             if (checkedEsic) {
-              newItems.push({
-                perticular: "ESIC Challan For Period " + fromDate + " To " + toDate,
-                rate: rate,
-                amount: rate * differenceInMonths,
-                billNumber: bill_number
-              });
+                newItems.push({
+                    perticular: "ESIC Challan For Period " + fromDate + " To " + toDate,
+                    rate: rate,
+                    amount: rate * differenceInMonths,
+                    billNumber: bill_number
+                });
             }
-        
+
             if (checkedCoverage && coverageAmount > 0) {
-              newItems.push({
-                perticular: "EPF Registration Charge",
-                rate: coverageAmount,
-                amount: coverageAmount,
-                billNumber: bill_number
-              });
+                newItems.push({
+                    perticular: "EPF Registration Charge",
+                    rate: coverageAmount,
+                    amount: coverageAmount,
+                    billNumber: bill_number
+                });
             }
-        
+
             if (checkedOther && otherAmount > 0) {
-              newItems.push({
-                perticular: otherReason,
-                rate: otherAmount,
-                amount: otherAmount,
-                billNumber: bill_number
-              });
+                newItems.push({
+                    perticular: otherReason,
+                    rate: otherAmount,
+                    amount: otherAmount,
+                    billNumber: bill_number
+                });
             }
-        
+
             // Update state with new items and calculate total amount
             setFinalBillArray(prevArray => {
-              const updatedArray = [...prevArray, ...newItems];
-              const newTotalAmount = updatedArray.reduce((total, bill) => parseInt(total) + parseInt(bill.amount), 0);
-              setTotalAmount(newTotalAmount);
-              return updatedArray;
+                const updatedArray = [...prevArray, ...newItems];
+                const newTotalAmount = updatedArray.reduce((total, bill) => parseInt(total) + parseInt(bill.amount), 0);
+                setTotalAmount(newTotalAmount);
+                return updatedArray;
             });
 
         } catch (error) {
@@ -233,7 +240,7 @@ const ecr = () => {
             const newTotalAmount = updatedArray.reduce((total, bill) => parseInt(total) + parseInt(bill.amount), 0);
             setTotalAmount(newTotalAmount);
             return updatedArray;
-          });
+        });
     }
 
     const addBill = async () => {
@@ -314,6 +321,48 @@ const ecr = () => {
             // setError('Error fetching data. Please try again.');
         }
     };
+
+
+    const savePaymentReceived = async () => {
+        let params = {
+            "bill_id": bill_number,
+            "paymentMode":paymentMode,
+            "date": receivedAmountDate,
+            "perticular": "",
+            "amount": receivedAmount,
+            "gst": gstOnReceived,
+            "discount": discountOnReceivedAmount
+        }
+        try {
+            // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+            const data = await paymentReceived(params);
+            if (data.status === true) {
+                Swal.fire({
+                    position: 'top-right',
+                    icon: 'success',
+                    toast: true,
+                    title: data.message,
+                    showConfirmButton: false,
+                    showCloseButton: true,
+                    timer: 1500,
+                });
+            } else {
+                Swal.fire({
+                    position: 'top',
+                    icon: 'error',
+                    toast: true,
+                    title: data.message,
+                    showConfirmButton: true,
+                    showCloseButton: true,
+                    timer: 1500,
+                });
+            }
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            // setError('Error fetching data. Please try again.');
+        }
+    };
     const resetModel = () => {
 
         setFromDate('');
@@ -353,6 +402,10 @@ const ecr = () => {
             pdf.save("invoice.pdf");
         });
     };
+    const handlePaymentModeChange = (e) => {
+        set_paymentMode(e.target.value);
+      };
+
     return (
 
         <div className="main-container">
@@ -428,7 +481,7 @@ const ecr = () => {
                                         <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Print PDF</button>
                                     </div>
                                     <div className="col-sm">
-                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Received</button>
+                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#receivedModal" disabled={!IsUpdate}>Received</button>
                                     </div>
                                 </div>
 
@@ -507,7 +560,7 @@ const ecr = () => {
                                                     <div className='col-sm-4'>
                                                         {checkedOther ? (
                                                             <div className="form-check form-switch">
-                                                                <input style={{ outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4" type="number" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => { setOtherAmount(e.target.value); }}value={otherAmount} />
+                                                                <input style={{ outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4" type="number" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => { setOtherAmount(e.target.value); }} value={otherAmount} />
                                                             </div>
                                                         ) : (
                                                             <div className="form-check form-switch">
@@ -697,6 +750,53 @@ const ecr = () => {
                                             </div>
                                             <div className="modal-footer">
                                                 <button className='btn btn-outline-primary btn-block' onClick={generatePDF}>Download PDF</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="modal fade" id="receivedModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div className="modal-dialog" role="document">
+                                        <div className="modal-content">
+                                            <div className="modal-header">
+                                                <h5 className="modal-title" id="exampleModalLabel">Received Amount</h5>
+                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div className="modal-body">
+                                                <div className="col-sm mb-2">
+                                                    <label>Payment Mode</label>
+                                                    <select
+                                                        className="form-select rounded-4"
+                                                        aria-label="Default select example" value={paymentMode} onChange={handlePaymentModeChange}
+                                                    >
+                                                        <option value="Cash">Cash</option>
+                                                        <option value="Online">Online</option>
+                                                    </select>
+
+                                                </div>
+                                                <div className="col-sm">
+                                                    <label htmlFor="inputText" >Received Date</label>
+                                                    <input type="date" className="form-control rounded-4" required onChange={(e) => set_receivedAmountDate(e.target.value)} value={receivedAmountDate} />
+                                                </div>
+                                                <div className="col-sm">
+                                                    <label htmlFor="inputText" >Amount Received</label>
+                                                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_receivedAmount(e.target.value)} value={receivedAmount} />
+                                                </div>
+                                                <div className="col-sm">
+                                                    <label htmlFor="inputText" >Discount</label>
+                                                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_discountOnReceivedAmount(e.target.value)} value={discountOnReceivedAmount} />
+                                                </div>
+                                                <div className="col-sm">
+                                                    <label htmlFor="inputText" >GST Amount</label>
+                                                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_gstOnReceived(e.target.value)} value={gstOnReceived} />
+                                                </div>
+
+                                            </div>
+                                            <div className="modal-footer">
+                                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="button" className="btn btn-primary" onClick={savePaymentReceived}>Save changes</button>
                                             </div>
                                         </div>
                                     </div>
