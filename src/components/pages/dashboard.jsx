@@ -242,7 +242,7 @@ const dashboard = () => {
         <div className="row">
           <div className="col-sm-2">
             <select
-              className="form-select rounded-4"
+              className="form-select rounded-4 dropdown-content"
               aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
             >
               {returnsYear && returnsYear.yearTo.map((returnYear) => (
@@ -338,6 +338,7 @@ const dashboard = () => {
                 cy="50%"
                 outerRadius={100}
                 fill="#8884d8"
+                label="value"
               >
                 {chartData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />

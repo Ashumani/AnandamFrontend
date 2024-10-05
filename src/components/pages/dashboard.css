@@ -142,7 +142,7 @@ body {
     flex-direction: column;
     justify-content: space-around;
     padding: 8px 15px;
-    border-radius: 5px;
+    border-radius: 15px !important;
   }
   
   /* .card:first-child {
@@ -150,14 +150,15 @@ body {
   } */
   
   .cardprop1 {
-    background: linear-gradient(135deg, rgba(255, 0, 0, 0.8), rgba(0, 0, 1, 0.1));
+    background: linear-gradient(135deg, rgb(218, 113, 8), rgba(0, 0, 1, 0.1));
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     border-radius: 0.5rem;
     transition: transform 0.2s;
+
   }
   .cardprop2{
-    background: linear-gradient(135deg, rgba(0, 255, 0, 0.8), rgba(0, 0, 0, 0.1));
+    background: linear-gradient(135deg, rgba(152, 63, 235, 0.8), rgba(0, 0, 0, 0.1));
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     border-radius: 0.5rem;
@@ -171,7 +172,7 @@ body {
   .cardprop3 {
     /* background-color: #a7b7d6 !important;
     box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.3) !important; */
-    background: linear-gradient(135deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 0, 0.1));
+    background: linear-gradient(135deg, rgba(44, 108, 134, 1 ), rgba(0, 0, 0, 0.1));
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     border-radius: 0.5rem;
@@ -185,6 +186,38 @@ body {
     border-radius: 0.5rem;
     transition: transform 0.2s;
   }
+
+  .dropdown-content {
+    /* Other styles... */
+    top: 40px;  /* Adjust based on your button height */
+    left: 0;   /* Align with the left edge of the dropdown button */
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: fixed; /* Change to fixed positioning */
+  background-color: #f9f9f9;
+  max-width: 160px;
+  margin: 200px 1500px 150px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+
+
+
 
   .card-inner {
     display: flex;
