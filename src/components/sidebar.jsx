@@ -38,6 +38,11 @@ const Sidebar = () => {
                     "item": "EPF Return",
                     "path": "/auth/dashboard/summary",
                     "icon": "bi bi-circle"
+                },
+                {
+                    "item": "Esic Return",
+                    "path": "/auth/dashboard/esic",
+                    "icon": "bi bi-circle"
                 }
             ]
         }, {

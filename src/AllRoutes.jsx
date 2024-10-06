@@ -19,6 +19,7 @@ import download from "./components/pages/download/download"
 import testing from "./components/pages/testing/testing"
 import salary from "./components/pages/transaction/salary"
 import master from "./components/pages/master/master"
+import esic from "./components/pages/transaction/esic"
 
 const AllRoutes = () => {
   return (
@@ -43,6 +44,8 @@ const AllRoutes = () => {
         <Route exact path='/auth/dashboard/master' Component={master}/>
         <Route exact path='/auth/dashboard/testing' Component={testing}/>
         <Route exact path='/auth/dashboard/bill/pdf' Component={bill}/>
+        <Route exact path='/auth/dashboard/esic' Component={esic}/>
+        
     </Routes>
     
   )
