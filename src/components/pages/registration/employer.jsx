@@ -118,7 +118,25 @@ const employer = () => {
         "dsc_status": checkedDSC
       }
 
-      await erUpdate(ErId, params);
+      const data = await erUpdate(ErId, params);
+      if (data.status === true) {
+        Swal.fire({
+          title: data.message,
+          icon: 'success',
+          confirmButtonText: 'Okay'
+        });
+        
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: data.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+      }
 
     } catch (error) {
       console.error('Login error ', error);

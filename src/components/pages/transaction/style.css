@@ -30,17 +30,3 @@ button {
 button:hover {
   transform: scale(1.05); /* Slight zoom effect on hover */
 }
-
-
-
-/* ESIC CSS */
-
-.table-content {
-  width: 450px;
-  margin: 50px auto;
-  text-align: center;
-}
-
-td {
-  width: 100px;
-}

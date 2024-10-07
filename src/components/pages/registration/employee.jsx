@@ -102,12 +102,32 @@ const employee = () => {
         "ee_relation": ee_relation,
         "ee_gross_wages": ee_gross_wages,
         "ee_epf_wages": ee_epf_wages,
-        "ee_sub_id": ee_sub_id,
+        "ee_sub_id": ee_sub_id=="" ? 0 : ee_sub_id,
       }
-      await saveEERegister(params);
-      await getAll(1);
+      const data = await saveEERegister(params);
+      if (data.status === true) {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'success',
+          toast: true,
+          title: data.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+        await getAll(1);
+      closeModal()
       // eslint-disable-next-line react-hooks/exhaustive-deps
       reset();
+        
+      } else {
+        Swal.fire({
+          title: data.message,
+          icon: 'error',
+          confirmButtonText: 'Okay'
+        });
+      }
+      
 
     } catch (error) {
       console.error('Login error ', error);
@@ -186,17 +206,13 @@ const employee = () => {
         });
 
         closeModal()
-        getAll();
+        getAll(1);
         reset();
       } else {
         Swal.fire({
-          position: 'top-right',
-          icon: 'error',
-          toast: true,
           title: data.message,
-          showConfirmButton: false,
-          showCloseButton: true,
-          timer: 1500,
+          icon: 'error',
+          confirmButtonText: 'Okay'
         });
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -318,7 +334,7 @@ const employee = () => {
   };
 
   const handleRelationChange = (e) => {
-    set_ee_father_husband(e.target.value);
+    set_ee_relation(e.target.value);
   };
   const reset = async () => {
     set_ee_id('');
@@ -334,8 +350,8 @@ const employee = () => {
     set_ee_dol('');
     set_ee_gender('Male')
     set_ee_maritial_status('U')
-    set_ee_father_husband('F');
-    set_ee_relation('');
+    set_ee_father_husband('');
+    set_ee_relation('F');
     set_ee_gross_wages('');
     set_ee_epf_wages('');
     set_ee_sub_id('');
@@ -344,22 +360,15 @@ const employee = () => {
 
 
   const closeModal = () => {
-    const modalElement = modalRef.current;
-    if (modalElement) {
-      // eslint-disable-next-line no-undef
-      const modal = new bootstrap.Modal(modalElement);
-      modal.hide();
-    }
+    var modal = document.getElementById('exampleModal');
+    var bootstrapModal = bootstrap.Modal.getInstance(modal);
+    bootstrapModal.hide();
   };
 
   const openModal = () => {
-    const modalElement = modalRef.current;
-    console.log(modalElement)
-    if (modalElement) {
-      // eslint-disable-next-line no-undef
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show();
-    }
+    var modal = document.getElementById('exampleModal');
+    var bootstrapModal = new bootstrap.Modal(modal);
+    bootstrapModal.show();
   };
   return (
     <div>
@@ -510,7 +519,7 @@ const employee = () => {
                 <div className="modal-footer">
 
                   {/* <button type="button" className="btn btn-secondary" data-dismiss="modal" aria-label="Close" onClick={closeModal}>Close</button> */}
-                  <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={closeModal}>Close</button>
+                  <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
                   {!isUpdate ? (
                     <button type="button" className="btn btn-outline-primary" onClick={saveEEDetails}>
                       Save

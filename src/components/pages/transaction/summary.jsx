@@ -244,7 +244,7 @@ const summary = () => {
         });
         getReturnByMonth(1)
 
-        handleClose();
+        closeModal();
 
       } else {
         Swal.fire({
@@ -290,8 +290,6 @@ const summary = () => {
           timer: 1500,
         });
         getReturnByMonth(1)
-
-        handleClose();
 
       } else {
         Swal.fire({
@@ -391,7 +389,7 @@ const summary = () => {
         });
         getReturnByMonth(1)
 
-        handleClose();
+        closeModal();
 
       } else {
         Swal.fire({
@@ -530,8 +528,7 @@ const summary = () => {
     setMonthly(true)
 
   }
-  const handleShow = () => { setShowModal(true) };
-  const handleClose = () => { setShowModal(false), reset(); }
+ 
   const handleSuccessClose = () => setShowSuccessPopup(false);
 
 
@@ -679,24 +676,18 @@ const summary = () => {
     setSelectedMonth(e.target.value);
   };
 
+ 
   const closeModal = () => {
-    const modalElement = modalRef.current;
-    if (modalElement) {
-      // eslint-disable-next-line no-undef
-      const modal = new bootstrap.Modal(modalElement);
-      modal.hide();
-      reset1()
-    }
+    var modal = document.getElementById('exampleModal');
+    var bootstrapModal = bootstrap.Modal.getInstance(modal);
+    bootstrapModal.hide();
+    reset1()
   };
 
   const openModal = () => {
-    const modalElement = modalRef.current;
-    console.log(modalElement)
-    if (modalElement) {
-      // eslint-disable-next-line no-undef
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show();
-    }
+    var modal = document.getElementById('exampleModal');
+    var bootstrapModal = new bootstrap.Modal(modal);
+    bootstrapModal.show();
   };
 
   return (
@@ -884,7 +875,7 @@ const summary = () => {
                 <div className="modal-content">
                   <div className="modal-header bg-primary">
                     <h5 className="modal-title" id="exampleModalLabel">EPF Return Filing For {selectedMonth}-{selectedYear}</h5>
-                    <button type="button" className="close text-white" data-dismiss="modal" aria-label="Close" onClick={closeModal}>
+                    <button type="button" className="close text-white" aria-label="Close" onClick={closeModal}>
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
