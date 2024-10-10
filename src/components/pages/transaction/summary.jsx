@@ -126,7 +126,7 @@ const summary = () => {
         "ee_pf_no": search_pf
       }
       const userData = await getEmployeeByUANandEPFid(params);
-      
+
       if (userData.status === true) {
         set_ee_id(userData.data.id);
         set_ee_name(userData.data.ee_name);
@@ -143,11 +143,11 @@ const summary = () => {
         set_ee_epf_wages(userData.data.ee_epf_wages);
         const currentDate = moment();
         const yearDifference = currentDate.diff(moment(userData.data.ee_dob, 'YYYY-MM-DD'), 'years');
-        set_ee_above58(yearDifference  > 58 ? 'Yes' :'No')
+        set_ee_above58(yearDifference > 58 ? 'Yes' : 'No')
         // alert(moment(userData.data.ee_dob, 'YYYY-MM-DD') + yearDifference)
-        
+
         set_isDisabled(false)
-       
+
 
       } else {
         Swal.fire({
@@ -177,7 +177,7 @@ const summary = () => {
       if (userData.status === true) {
         const currentDate = moment();
         const yearDifference = currentDate.diff(moment(userData.data.ee_dob, 'DD-MM-YYYY'), 'years');
-        set_ee_above58(yearDifference  > 58 ? 'Yes' :'No')
+        set_ee_above58(yearDifference > 58 ? 'Yes' : 'No')
         set_eReturn_id(userData.data.id);
         set_ee_id(userData.data.ee_id);
         set_ee_name(userData.data.ee_name);
@@ -209,53 +209,96 @@ const summary = () => {
     }
   };
 
+
+  const [err, setErrors] = useState({})
+
+  const validate = async () => {
+
+    try {
+
+      let valid = true;
+
+      let t = {}
+
+      if (!ee_uan_no) t.ee_uan_no = "ee_uan_no is required"; valid = false;
+      if (!ee_name) t.ee_name = "ee_uan_no is required"; valid = false;
+      if (!selectedMonth) t.selectedMonth = "ee_uan_no is required"; valid = false;
+      if (!selectedYear) t.selectedYear = "ee_uan_no is required"; valid = false;
+      if (!cal_gross_wages) t.cal_gross_wages = "ee_uan_no is required"; valid = false;
+      if (!cal_epf_wages) t.cal_epf_wages = "ee_uan_no is required"; valid = false;
+      if (!ee_edli_wages) t.ee_edli_wages = "ee_uan_no is required"; valid = false;
+      if (!ee_epf_wages) t.ee_epf_wages = "ee_uan_no is required"; valid = false;
+      if (!ee_epf) t.ee_epf = "ee_uan_no is required"; valid = false;
+      if (!er_epf) t.er_epf = "ee_uan_no is required"; valid = false;
+      if (!er_eps) t.er_eps = "ee_uan_no is required"; valid = false;
+
+
+      setErrors(t)
+      return valid
+    } catch (error) {
+      throw new Error()
+    }
+  }
+
   const saveReturns = async () => {
     // api call
     try {
-      const params = {
-        "est_id": getErId(),
-        "ee_id": ee_id,
-        "ee_uan": ee_uan_no,
-        "est_epf_id": getEstId(),
-        "ee_name": ee_name,
-        "month": selectedMonth,
-        "year": selectedYear,
-        "gross_wages": cal_gross_wages,
-        "epf_wages": cal_epf_wages,
-        "edli_wages": ee_edli_wages,
-        "eps_wages": ee_epf_wages,
-        "ee_share": ee_epf,
-        "diff_share": er_epf,
-        "eps_share": er_eps,
-        "ncp_days": 0
-      }
 
-      const userData = await fillEpfReturn(params);
+      const valid = await validate()
 
-      if (userData.status === true) {
+      if (!valid) {
         Swal.fire({
-          position: 'top-right',
-          icon: 'success',
-          toast: true,
-          title: userData.message,
-          showConfirmButton: false,
-          showCloseButton: true,
-          timer: 1500,
-        });
-        getReturnByMonth(1)
-
-        closeModal();
-
-      } else {
-        Swal.fire({
-          position: 'top-right',
+          title: 'Error',
+          text: 'Mandatory parameters are required : ',
           icon: 'error',
-          toast: true,
-          title: userData.message,
-          showConfirmButton: false,
-          showCloseButton: true,
-          timer: 1500,
+          confirmButtonText: 'Okay'
         });
+      } else {
+        const params = {
+          "est_id": getErId(),
+          "ee_id": ee_id,
+          "ee_uan": ee_uan_no,
+          "est_epf_id": getEstId(),
+          "ee_name": ee_name,
+          "month": selectedMonth,
+          "year": selectedYear,
+          "gross_wages": cal_gross_wages,
+          "epf_wages": cal_epf_wages,
+          "edli_wages": ee_edli_wages,
+          "eps_wages": ee_epf_wages,
+          "ee_share": ee_epf,
+          "diff_share": er_epf,
+          "eps_share": er_eps,
+          "ncp_days": 0
+        }
+
+        const userData = await fillEpfReturn(params);
+
+        if (userData.status === true) {
+          Swal.fire({
+            position: 'top-right',
+            icon: 'success',
+            toast: true,
+            title: userData.message,
+            showConfirmButton: false,
+            showCloseButton: true,
+            timer: 1500,
+          });
+          getReturnByMonth(1)
+
+          closeModal();
+
+        } else {
+          Swal.fire({
+            position: 'top-right',
+            icon: 'error',
+            toast: true,
+            title: userData.message,
+            showConfirmButton: false,
+            showCloseButton: true,
+            timer: 1500,
+          });
+        }
       }
 
       // Show success popup
@@ -316,7 +359,7 @@ const summary = () => {
   const deleteReturn = async (id) => {
     // api call
     try {
-      
+
       const userData = await deleteReturnById(id);
 
       if (userData.status === true) {
@@ -331,7 +374,7 @@ const summary = () => {
         });
         getReturnByMonth(1)
 
-        
+
 
       } else {
         Swal.fire({
@@ -358,53 +401,66 @@ const summary = () => {
   const updateReturns = async () => {
     // api call
     try {
-      const params = {
-        "est_id": getErId(),
-        "ee_id": ee_id,
-        "ee_uan": ee_uan_no,
-        "est_epf_id": getEstId(),
-        "ee_name": ee_name,
-        "month": selectedMonth,
-        "year": selectedYear,
-        "gross_wages": cal_gross_wages,
-        "epf_wages": cal_epf_wages,
-        "edli_wages": ee_edli_wages,
-        "eps_wages": ee_epf_wages,
-        "ee_share": ee_epf,
-        "diff_share": er_epf,
-        "eps_share": er_eps,
-        "ncp_days": 0
-      }
-      const userData = await updateEpfReturn(eReturn_id, params);
 
-      if (userData.status === true) {
+
+      const valid = await validate()
+
+      if (!valid) {
         Swal.fire({
-          position: 'top-right',
-          icon: 'success',
-          toast: true,
-          title: userData.message,
-          showConfirmButton: false,
-          showCloseButton: true,
-          timer: 1500,
-        });
-        getReturnByMonth(1)
-
-        closeModal();
-
-      } else {
-        Swal.fire({
-          position: 'top-right',
+          title: 'Error',
+          text: 'Mandatory parameters are required : ',
           icon: 'error',
-          toast: true,
-          title: userData.message,
-          showConfirmButton: false,
-          showCloseButton: true,
-          timer: 1500,
+          confirmButtonText: 'Okay'
         });
+      } else {
+
+        const params = {
+          "est_id": getErId(),
+          "ee_id": ee_id,
+          "ee_uan": ee_uan_no,
+          "est_epf_id": getEstId(),
+          "ee_name": ee_name,
+          "month": selectedMonth,
+          "year": selectedYear,
+          "gross_wages": cal_gross_wages,
+          "epf_wages": cal_epf_wages,
+          "edli_wages": ee_edli_wages,
+          "eps_wages": ee_epf_wages,
+          "ee_share": ee_epf,
+          "diff_share": er_epf,
+          "eps_share": er_eps,
+          "ncp_days": 0
+        }
+        const userData = await updateEpfReturn(eReturn_id, params);
+
+        if (userData.status === true) {
+          Swal.fire({
+            position: 'top-right',
+            icon: 'success',
+            toast: true,
+            title: userData.message,
+            showConfirmButton: false,
+            showCloseButton: true,
+            timer: 1500,
+          });
+          getReturnByMonth(1)
+
+          closeModal();
+
+        } else {
+          Swal.fire({
+            position: 'top-right',
+            icon: 'error',
+            toast: true,
+            title: userData.message,
+            showConfirmButton: false,
+            showCloseButton: true,
+            timer: 1500,
+          });
+        }
+
+        // Show success popup
       }
-
-      // Show success popup
-
 
 
     } catch (error) {
@@ -528,7 +584,7 @@ const summary = () => {
     setMonthly(true)
 
   }
- 
+
   const handleSuccessClose = () => setShowSuccessPopup(false);
 
 
@@ -676,7 +732,7 @@ const summary = () => {
     setSelectedMonth(e.target.value);
   };
 
- 
+
   const closeModal = () => {
     var modal = document.getElementById('exampleModal');
     var bootstrapModal = bootstrap.Modal.getInstance(modal);
@@ -859,7 +915,7 @@ const summary = () => {
                 </button>
               </div>
               <div className="col-sm">
-                <input type="text" className="form-control rounded-4" placeholder="Search" onChange={(e) => setSearchEE(e.target.value)}  onBlur={searchMonthlyEE} />
+                <input type="text" className="form-control rounded-4" placeholder="Search" onChange={(e) => setSearchEE(e.target.value)} onBlur={searchMonthlyEE} />
               </div>
               {/* <div className="col-md-4">
               <input className="form-control rounded-4" type="file" id="formFile" />
@@ -1125,7 +1181,7 @@ const summary = () => {
                         <button className="btn btn-light mx-1" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
                           <i className="bi bi-pencil-fill text-info"></i>
                         </button>
-                        <button className="btn btn-light"  onClick={() => { deleteReturn(employee.id) }} >
+                        <button className="btn btn-light" onClick={() => { deleteReturn(employee.id) }} >
                           <i className="bi bi-trash text-danger"></i>
                         </button>
                       </div>

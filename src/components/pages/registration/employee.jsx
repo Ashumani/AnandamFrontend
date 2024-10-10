@@ -82,52 +82,97 @@ const employee = () => {
     }
   };
 
+  const [err, setErrors] = useState({})
+
+  const validate = async () => {
+
+    try {
+
+      let valid = true;
+
+      let t = {}
+
+      if (!ee_uan_no) t.ee_uan_no = "Uan Requird" ; valid=false;
+      if (!ee_name) t.ee_name = "ee_name is required" ; valid=false;
+      if (!ee_mobile_number) t.ee_mobile_number = "ee_mobile_number is required" ; valid=false;
+      if (!ee_email_id) t.ee_email_id = "ee_email_id is required" ; valid=false;
+      if (!ee_uan_no) t.ee_uan_no = "ee_uan_no is required" ; valid=false;
+      if (!ee_pf_no) t.ee_pf_no = "ee_pf_no is required" ; valid=false;
+      if (!ee_aadhar_no) t.ee_aadhar_no = "ee_aadhar_no is required" ; valid=false;
+      if (!ee_dob) t.ee_dob = "ee_dob is required" ; valid=false;
+      if (!ee_doj) t.ee_doj = "ee_doj is required" ; valid=false;
+      if (!ee_dol) t.ee_dol = "ee_dol is required" ; valid=false;
+      if (!ee_gender) t.ee_gender = "ee_gender is required" ; valid=false;
+      if (!ee_maritial_status) t.ee_maritial_status = "ee_maritial_status is required" ; valid=false;
+      if (!ee_father_husband) t.ee_father_husband = "ee_father_husband is required" ; valid=false;
+      if (!ee_relation) t.ee_relation = "ee_relation is required" ; valid=false;
+      if (!ee_gross_wages) t.ee_gross_wages = "ee_gross_wages is required" ; valid=false;
+      if (!ee_epf_wages) t.ee_epf_wages = "ee_epf_wages is required" ; valid=false;
+
+      setErrors(t)
+      return valid
+    } catch (error) {
+      throw new Error()
+    }
+  }
+
   const saveEEDetails = async () => {
     // api call
     try {
-      const params = {
-        "est_id": getErId(),
-        "ee_name": ee_name,
-        "ee_mobile_number": ee_mobile_number,
-        "ee_email_id": ee_email_id,
-        "ee_uan_no": ee_uan_no,
-        "ee_pf_no": ee_pf_no,
-        "ee_aadhar_no": ee_aadhar_no,
-        "ee_dob": ee_dob,
-        "ee_doj": ee_doj,
-        "ee_dol": ee_dol,
-        "ee_gender": ee_gender,
-        "ee_maritial_status": ee_maritial_status,
-        "ee_father_husband": ee_father_husband,
-        "ee_relation": ee_relation,
-        "ee_gross_wages": ee_gross_wages,
-        "ee_epf_wages": ee_epf_wages,
-        "ee_sub_id": ee_sub_id=="" ? 0 : ee_sub_id,
-      }
-      const data = await saveEERegister(params);
-      if (data.status === true) {
+      const valid = await validate()
+      if (!valid) {
         Swal.fire({
-          position: 'top-right',
-          icon: 'success',
-          toast: true,
-          title: data.message,
-          showConfirmButton: false,
-          showCloseButton: true,
-          timer: 1500,
-        });
-        await getAll(1);
-      closeModal()
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      reset();
-        
-      } else {
-        Swal.fire({
-          title: data.message,
+          title: 'Error',
+          text: 'Mandatory parameters are required',
           icon: 'error',
           confirmButtonText: 'Okay'
         });
+      } else {
+        const params = {
+          "est_id": getErId(),
+          "ee_name": ee_name,
+          "ee_mobile_number": ee_mobile_number,
+          "ee_email_id": ee_email_id,
+          "ee_uan_no": ee_uan_no,
+          "ee_pf_no": ee_pf_no,
+          "ee_aadhar_no": ee_aadhar_no,
+          "ee_dob": ee_dob,
+          "ee_doj": ee_doj,
+          "ee_dol": ee_dol,
+          "ee_gender": ee_gender,
+          "ee_maritial_status": ee_maritial_status,
+          "ee_father_husband": ee_father_husband,
+          "ee_relation": ee_relation,
+          "ee_gross_wages": ee_gross_wages,
+          "ee_epf_wages": ee_epf_wages,
+          "ee_sub_id": ee_sub_id == "" ? 0 : ee_sub_id,
+        }
+        const data = await saveEERegister(params);
+        if (data.status === true) {
+          Swal.fire({
+            position: 'top-right',
+            icon: 'success',
+            toast: true,
+            title: data.message,
+            showConfirmButton: false,
+            showCloseButton: true,
+            timer: 1500,
+          });
+          await getAll(1);
+          closeModal()
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          reset();
+
+        } else {
+          Swal.fire({
+            title: data.message,
+            icon: 'error',
+            confirmButtonText: 'Okay'
+          });
+        }
       }
-      
+
+
 
     } catch (error) {
       console.error('Login error ', error);
@@ -417,24 +462,29 @@ const employee = () => {
                           <div className="col mb-2">
                             <label htmlFor="inputUAN">UAN</label>
                             <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_uan_no(e.target.value)} value={ee_uan_no} />
+                            {err.ee_uan_no && <p style={{ color: 'red' }}>{err.ee_uan_no}</p>}
                           </div>
                           <div className="col mb-2">
                             <label htmlFor="inputPF">PF</label>
                             <input type="email" className="form-control rounded-4" required onChange={(e) => set_ee_pf_no(e.target.value)} value={ee_pf_no} />
+                            {err.ee_pf_no && <p style={{ color: 'red' }}>{err.ee_pf_no}</p>}
                           </div>
                           <div className="col mb-2">
                             <label htmlFor="inputName">Name</label>
                             <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_name(e.target.value)} value={ee_name} />
+                            {err.ee_name && <p style={{ color: 'red' }}>{err.ee_name}</p>}
                           </div>
                         </div>
                         <div className="row">
                           <div className="col mb-2">
                             <label htmlFor="inputNumber">Date Of Birth</label>
                             <input type="date" className="form-control rounded-4" required onChange={(e) => set_ee_dob(e.target.value)} value={ee_dob} />
+                            {err.ee_dob && <p style={{ color: 'red' }}>{err.ee_dob}</p>}
                           </div>
                           <div className="col mb-2">
                             <label htmlFor="inputTime">Date Of Joining</label>
                             <input type="date" className="form-control rounded-4" required onChange={(e) => set_ee_doj(e.target.value)} value={ee_doj} />
+                            {err.ee_doj && <p style={{ color: 'red' }}>{err.ee_doj}</p>}
                           </div>
                           <div className="col mt-4">
                             <label htmlFor="inputTime" className="form-label">Gender</label>
@@ -446,6 +496,8 @@ const employee = () => {
                               <input className="form-check-input mt-1" type="radio" name="gender" id="Female" value='Female' checked={ee_gender === 'Female'} onChange={(e) => set_ee_gender(e.target.value)} />
                               <label className="form-check-label ml-2" htmlFor="female">Female</label>
                             </div>
+
+                            {err.ee_gender && <p style={{ color: 'red' }}>{err.ee_gender}</p>}
                           </div>
 
                         </div>
@@ -459,11 +511,12 @@ const employee = () => {
                               <option value="M">Married</option>
                               <option value="U">UnMarried</option>
                             </select>
-
+                            {err.ee_maritial_status && <p style={{ color: 'red' }}>{err.ee_maritial_status}</p>}
                           </div>
                           <div className="col-sm mb-2">
                             <label htmlFor="inputText">Father/Husband</label>
                             <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_father_husband(e.target.value)} value={ee_father_husband} />
+                            {err.ee_father_husband && <p style={{ color: 'red' }}>{err.ee_father_husband}</p>}
                           </div>
                           <div className="col-sm mb-2">
                             <label>Relation</label>
@@ -474,7 +527,7 @@ const employee = () => {
                               <option value="F">Father</option>
                               <option value="S">Spouse</option>
                             </select>
-
+                            {err.ee_relation && <p style={{ color: 'red' }}>{err.ee_relation}</p>}
                           </div>
                           {/* <div className="col-sm mb-2">
                             <label htmlFor="inputText">Relation</label>
@@ -489,10 +542,12 @@ const employee = () => {
                           <div className="col-sm mb-2">
                             <label htmlFor="inputColor">EPF Wages</label>
                             <input type="number" className="form-control rounded-4" required onChange={(e) => set_ee_epf_wages(e.target.value)} value={ee_epf_wages} />
+                            {err.ee_epf_wages && <p style={{ color: 'red' }}>{err.ee_epf_wages}</p>}
                           </div>
                           <div className="col-sm mb-2">
                             <label htmlFor="inputPassword">EPS Wages</label>
                             <input type="number" className="form-control rounded-4" required onChange={(e) => set_ee_gross_wages(e.target.value)} value={ee_gross_wages} />
+                            {err.ee_gross_wages && <p style={{ color: 'red' }}>{err.ee_gross_wages}</p>}
                           </div>
                         </div>
                         <div className="row">
@@ -556,39 +611,40 @@ const employee = () => {
                 </tr>
               </thead>
               <tbody>
-                {currentItems.map((employee, index) =>{
+                {currentItems.map((employee, index) => {
                   const globalIndex = currentPage * itemsPerPage - itemsPerPage + index;
-                   return(
-                 
-                  <tr key={employee.id}>
-                    <th >{globalIndex + 1}</th>
-                    <td>{employee.ee_uan_no}</td>
-                    <td>{employee.ee_pf_no}</td>
-                    <td>******</td>
-                    <td >{employee.ee_name}</td>
-                    <td >{moment(employee.ee_dob).format('YYYY-MM-DD')}</td>
-                    <td>{moment(employee.ee_doj).format('YYYY-MM-DD')}</td>
-                    <td>{employee.ee_gender}</td>
-                    <td>{employee.ee_maritial_status}</td>
-                    <td>{employee.ee_father_husband}</td>
-                    <td>{employee.ee_relation}</td>
-                    <td>{employee.ee_gross_wages}</td>
-                    <td>{employee.ee_epf_wages}</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <button className="btn btn-light" onClick={() => { fetchEmployee(employee.id) }}>
-                          <i className="bi bi-eye text-info"></i>
-                        </button>
-                        <button className="btn btn-light mx-1" onClick={() => { fetchEmployee(employee.id) }}>
-                          <i className="bi bi-pencil-fill text-info"></i>
-                        </button>
-                        <button className="btn btn-light" disabled>
-                          <i className="bi bi-trash text-danger"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                )})}
+                  return (
+
+                    <tr key={employee.id}>
+                      <th >{globalIndex + 1}</th>
+                      <td>{employee.ee_uan_no}</td>
+                      <td>{employee.ee_pf_no}</td>
+                      <td>******</td>
+                      <td >{employee.ee_name}</td>
+                      <td >{moment(employee.ee_dob).format('YYYY-MM-DD')}</td>
+                      <td>{moment(employee.ee_doj).format('YYYY-MM-DD')}</td>
+                      <td>{employee.ee_gender}</td>
+                      <td>{employee.ee_maritial_status}</td>
+                      <td>{employee.ee_father_husband}</td>
+                      <td>{employee.ee_relation}</td>
+                      <td>{employee.ee_gross_wages}</td>
+                      <td>{employee.ee_epf_wages}</td>
+                      <td>
+                        <div className="d-flex align-items-center">
+                          <button className="btn btn-light" onClick={() => { fetchEmployee(employee.id) }}>
+                            <i className="bi bi-eye text-info"></i>
+                          </button>
+                          <button className="btn btn-light mx-1" onClick={() => { fetchEmployee(employee.id) }}>
+                            <i className="bi bi-pencil-fill text-info"></i>
+                          </button>
+                          <button className="btn btn-light" disabled>
+                            <i className="bi bi-trash text-danger"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>
