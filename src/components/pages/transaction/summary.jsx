@@ -1055,7 +1055,7 @@ const summary = () => {
                         <button type="button" className="btn btn-outline-primary btn-block rounded-4">Reset</button>
                       </div>
                       <div className="col-sm">
-                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" data-dismiss="modal" aria-label="Close" onClick={closeModal} >Close</button>
+                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" aria-label="Close" onClick={closeModal} >Close</button>
                       </div>
                     </div>
 

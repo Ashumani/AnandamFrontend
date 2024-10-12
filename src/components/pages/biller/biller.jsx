@@ -50,6 +50,9 @@ const ecr = () => {
     const biller = async () => {
 
         if (bill_number) {
+            let billno = bill_number
+            resetPage()
+            setBillNumber(billno)
             await getBillById()
         } else {
             await fetchEmployer()
@@ -57,6 +60,9 @@ const ecr = () => {
     }
 
     const fetchEmployer = async () => {
+        resetModel();
+        resetPage();
+
         const params = {
             "est_epf_id": est_id
         }
@@ -89,20 +95,30 @@ const ecr = () => {
         try {
             // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
             const response = await getBill(bill_number);
-            setEstId(response.data.est_epf_id);
-            setEstName(response.data.est_name)
-            setErName(response.data.er_name)
-            setEmail(response.data.er_email_id)
-            setMobile(response.data.er_mobile_number)
-            setDesignation(response.data.est_designation)
-            setCity(response.data.est_city)
-            setAddress(response.data.est_address)
-            setDate(response.data.date)
-            setDOC(response.data.est_doc)
-            set_rate(response.data.rate)
-            setFinalBillArray(response.data.billData)
-            setTotalAmount(response.data.amount)
-            setIsUpdate(true)
+
+            if (response.status === true) {
+                setEstId(response.data.est_epf_id);
+                setEstName(response.data.est_name)
+                setErName(response.data.er_name)
+                setEmail(response.data.er_email_id)
+                setMobile(response.data.er_mobile_number)
+                setDesignation(response.data.est_designation)
+                setCity(response.data.est_city)
+                setAddress(response.data.est_address)
+                setDate(response.data.date)
+                setDOC(response.data.est_doc)
+                set_rate(response.data.rate)
+                setFinalBillArray(response.data.billData)
+                setTotalAmount(response.data.amount)
+                setIsUpdate(true)
+
+            } else {
+                Swal.fire({
+                    title: response.message,
+                    icon: 'error',
+                    confirmButtonText: 'Okay'
+                });
+            }
 
 
         } catch (error) {
@@ -264,6 +280,7 @@ const ecr = () => {
                     showCloseButton: true,
                     timer: 1500,
                 });
+
             } else {
                 Swal.fire({
                     position: 'top',
@@ -326,7 +343,7 @@ const ecr = () => {
     const savePaymentReceived = async () => {
         let params = {
             "bill_id": bill_number,
-            "paymentMode":paymentMode,
+            "paymentMode": paymentMode,
             "date": receivedAmountDate,
             "perticular": "",
             "amount": receivedAmount,
@@ -363,15 +380,25 @@ const ecr = () => {
             // setError('Error fetching data. Please try again.');
         }
     };
+    const closeModal = () => {
+        var modal = document.getElementById('receivedModal');
+        var bootstrapModal = bootstrap.Modal.getInstance(modal);
+        bootstrapModal.hide();
+        resetModel()
+    };
+
+    const openModal = () => {
+        var modal = document.getElementById('receivedModal');
+        var bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+    };
     const resetModel = () => {
 
-        setFromDate('');
-        setToDate('');
-        setCheckedPf(false);
-        setCheckedEsic(false);
-        setCheckedCoverage(false);
-        setCheckedOther(false);
-        setpfAmount(0);
+        set_paymentMode('Cash')
+        set_receivedAmountDate('')
+        set_receivedAmount('')
+        set_discountOnReceivedAmount('')
+        set_gstOnReceived('')
     };
 
     const resetPage = () => {
@@ -385,11 +412,8 @@ const ecr = () => {
         set_rate('');
         setFromDate('');
         setToDate('');
-        setCheckedPf(false);
-        setCheckedEsic(false);
-        setCheckedCoverage(false);
-        setCheckedOther(false);
-        setpfAmount(0);
+        setFinalBillArray([]);
+
     };
     const generatePDF = () => {
         // Capture the HTML content as a canvas
@@ -404,7 +428,7 @@ const ecr = () => {
     };
     const handlePaymentModeChange = (e) => {
         set_paymentMode(e.target.value);
-      };
+    };
 
     return (
 
@@ -418,7 +442,7 @@ const ecr = () => {
 
                         <div className="card">
                             <div className="card-body">
-                                <h5 className="card-title text-center">Create Bill</h5>
+                                <h5 className="card-title text-center">Generate Bill</h5>
 
                                 <form>
                                     <div className="row">
@@ -431,7 +455,10 @@ const ecr = () => {
                                             <input type="text" className="form-control rounded-4" onChange={(e) => setBillNumber(e.target.value)} value={bill_number} />
                                         </div>
                                         <div className="col-sm-2">
-                                            <button type="button" className="btn btn-outline-primary rounded-4" style={{ "margin": "30px 10px 10px 10px" }} onClick={biller}>Get Details</button>
+                                            <button type="button" className="btn btn-outline-primary rounded-4" style={{ width: "150px", "margin": "30px 10px 10px 0px" }} onClick={biller}>Get Details</button>
+                                        </div>
+                                        <div className="col-sm-1">
+                                            <button type="button" className="btn btn-outline-primary rounded-4" style={{ width: "140px", "margin": "30px 10px 10px -45px" }} onClick={resetPage}>Reset</button>
                                         </div>
                                     </div>
                                 </form>
@@ -481,7 +508,7 @@ const ecr = () => {
                                         <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Print PDF</button>
                                     </div>
                                     <div className="col-sm">
-                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#receivedModal" disabled={!IsUpdate}>Received</button>
+                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" onClick={openModal} disabled={!IsUpdate}>Received</button>
                                     </div>
                                 </div>
 
@@ -634,7 +661,7 @@ const ecr = () => {
                                         <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "2px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Received</button>
                                     </div>
                                 </div> */}
-
+``
 
                                 <div className="modal fade bd-example-modal-xl" tabIndex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                                     <div className="modal-dialog modal-xl">
@@ -760,7 +787,7 @@ const ecr = () => {
                                         <div className="modal-content">
                                             <div className="modal-header">
                                                 <h5 className="modal-title" id="exampleModalLabel">Received Amount</h5>
-                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                <button type="button" className="close" onClick={closeModal} aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
@@ -795,7 +822,7 @@ const ecr = () => {
 
                                             </div>
                                             <div className="modal-footer">
-                                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
                                                 <button type="button" className="btn btn-primary" onClick={savePaymentReceived}>Save changes</button>
                                             </div>
                                         </div>

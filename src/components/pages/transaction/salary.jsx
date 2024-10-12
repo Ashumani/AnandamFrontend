@@ -31,9 +31,8 @@ const salary = () => {
   const [selectedYear, setSelectedYear] = useState(2024);
 
   // xtra
-  const [showModal, setShowModal] = useState(false);
+
   const [summary, IsSummary] = useState(true);
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false); // Success popup state
 
   const [search_uan, set_search_uan] = useState('');
   const [search_pf, set_search_pf] = useState('');
@@ -484,10 +483,6 @@ const salary = () => {
 
   }
 
-  const handleShow = () => { setShowModal(true) };
-  const handleClose = () => { setShowModal(false), reset(); }
-  const handleSuccessClose = () => setShowSuccessPopup(false);
-
 
   const [file, setFile] = useState(null);
 
@@ -543,25 +538,16 @@ const salary = () => {
     }
   }
 
-
   const closeModal = () => {
-    window.location.reload();
-    const modalElement = modalRef.current;
-    if (modalElement) {
-      // eslint-disable-next-line no-undef
-      const modal = new bootstrap.Modal(modalElement);
-      modal.close();
-    }
+    var modal = document.getElementById('exampleModal');
+    var bootstrapModal = bootstrap.Modal.getInstance(modal);
+    bootstrapModal.hide();
   };
 
   const openModal = () => {
-    const modalElement = modalRef.current;
-    // console.log(modalElement)
-    if (modalElement) {
-      // eslint-disable-next-line no-undef
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show();
-    }
+    var modal = document.getElementById('exampleModal');
+    var bootstrapModal = new bootstrap.Modal(modal);
+    bootstrapModal.show();
   };
 
 
@@ -625,26 +611,7 @@ const salary = () => {
             </div>
 
             {/* return success or  failure msg */}
-            {showSuccessPopup && (
-              <div className="modal fade show" style={{ display: 'block' }} role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" id="successModalLabel">Success</h5>
-                      <button type="button" className="close" onClick={handleSuccessClose} aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div className="modal-body">
-                      <p>Data has been saved successfully!</p>
-                    </div>
-                    <div className="modal-footer">
-                      <button type="button" className="btn btn-primary" onClick={handleSuccessClose}>OK</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+          
             {/* Import Salary Return Model */}
             <div className="modal fade" id="importReturn" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div className="modal-dialog" role="document">
@@ -741,7 +708,7 @@ const salary = () => {
             <br />
             <div className="row">
               <div className="col-sm">
-                <button type="button" className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#exampleModal" onClick={handleShow}>
+                <button type="button" className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#exampleModal" onClick={openModal}>
                   Add ({selectedMonth}-{selectedYear})
                 </button>
               </div>
@@ -963,27 +930,7 @@ const salary = () => {
             </div>)}
 
 
-            {/* return success or  failure msg */}
-            {showSuccessPopup && (
-              <div className="modal fade show" style={{ display: 'block' }} role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" id="successModalLabel">Success</h5>
-                      <button type="button" className="close" onClick={handleSuccessClose} aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div className="modal-body">
-                      <p>Data has been saved successfully!</p>
-                    </div>
-                    <div className="modal-footer">
-                      <button type="button" className="btn btn-primary" onClick={handleSuccessClose}>OK</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+            
             {/* Import EPF Return Model */}
             <div className="modal fade" id="importReturn" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div className="modal-dialog" role="document">
