@@ -20,6 +20,7 @@ const employee = () => {
   const [ee_id, set_ee_id] = useState('');
   const [est_id, set_est_id] = useState('');
   const [ee_name, set_ee_name] = useState('');
+  const [ee_esic_no, set_ee_esic_no] = useState('');
   const [ee_mobile_number, set_ee_mobile_number] = useState('');
   const [ee_email_id, set_ee_email_id] = useState('');
   const [ee_uan_no, set_ee_uan_no] = useState('');
@@ -146,6 +147,7 @@ const employee = () => {
           "ee_gross_wages": ee_gross_wages,
           "ee_epf_wages": ee_epf_wages,
           "ee_sub_id": ee_sub_id == "" ? 0 : ee_sub_id,
+          "ee_esic_no":ee_esic_no
         }
         const data = await saveEERegister(params);
         if (data.status === true) {
@@ -205,6 +207,7 @@ const employee = () => {
         set_ee_gross_wages(userData.data.ee_gross_wages);
         set_ee_epf_wages(userData.data.ee_epf_wages);
         set_ee_sub_id(userData.data.ee_sub_id);
+        set_ee_esic_no(userData.data.ee_esic_no);
         setIsUpdate(true)
       }
 
@@ -236,6 +239,7 @@ const employee = () => {
         "ee_gross_wages": ee_gross_wages,
         "ee_epf_wages": ee_epf_wages,
         "ee_sub_id": ee_sub_id,
+        "ee_esic_no": ee_esic_no
       }
 
       const data = await updateEmployee(ee_id, params);
@@ -400,7 +404,7 @@ const employee = () => {
     set_ee_gross_wages('');
     set_ee_epf_wages('');
     set_ee_sub_id('');
-
+    set_ee_esic_no('')
   }
 
 
@@ -470,12 +474,18 @@ const employee = () => {
                             {err.ee_pf_no && <p style={{ color: 'red' }}>{err.ee_pf_no}</p>}
                           </div>
                           <div className="col mb-2">
+                            <label htmlFor="inputName">ESIC</label>
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_esic_no(e.target.value)} value={ee_esic_no} />
+                            {err.ee_name && <p style={{ color: 'red' }}>{err.ee_name}</p>}
+                          </div>
+                          
+                        </div>
+                        <div className="row">
+                        <div className="col mb-2">
                             <label htmlFor="inputName">Name</label>
                             <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_name(e.target.value)} value={ee_name} />
                             {err.ee_name && <p style={{ color: 'red' }}>{err.ee_name}</p>}
                           </div>
-                        </div>
-                        <div className="row">
                           <div className="col mb-2">
                             <label htmlFor="inputNumber">Date Of Birth</label>
                             <input type="date" className="form-control rounded-4" required onChange={(e) => set_ee_dob(e.target.value)} value={ee_dob} />
@@ -486,7 +496,11 @@ const employee = () => {
                             <input type="date" className="form-control rounded-4" required onChange={(e) => set_ee_doj(e.target.value)} value={ee_doj} />
                             {err.ee_doj && <p style={{ color: 'red' }}>{err.ee_doj}</p>}
                           </div>
-                          <div className="col mt-4">
+                        
+
+                        </div>
+                        <div className="row">
+                        <div className="col mt-4">
                             <label htmlFor="inputTime" className="form-label">Gender</label>
                             <div className="form-check form-check-inline">
                               <input className="form-check-input ml-1 mt-1" type="radio" name="gender" value='Male' id="Male" checked={ee_gender === 'Male'} onChange={(e) => set_ee_gender(e.target.value)} />
@@ -499,9 +513,6 @@ const employee = () => {
 
                             {err.ee_gender && <p style={{ color: 'red' }}>{err.ee_gender}</p>}
                           </div>
-
-                        </div>
-                        <div className="row">
                           <div className="col-sm mb-2">
                             <label>Maritial Status</label>
                             <select
@@ -518,7 +529,14 @@ const employee = () => {
                             <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_father_husband(e.target.value)} value={ee_father_husband} />
                             {err.ee_father_husband && <p style={{ color: 'red' }}>{err.ee_father_husband}</p>}
                           </div>
-                          <div className="col-sm mb-2">
+                         
+                          {/* <div className="col-sm mb-2">
+                            <label htmlFor="inputText">Relation</label>
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_relation(e.target.value)} value={ee_relation} />
+                          </div> */}
+                        </div>
+                        <div className="row">
+                        <div className="col-sm mb-2">
                             <label>Relation</label>
                             <select
                               className="form-select rounded-4"
@@ -528,16 +546,6 @@ const employee = () => {
                               <option value="S">Spouse</option>
                             </select>
                             {err.ee_relation && <p style={{ color: 'red' }}>{err.ee_relation}</p>}
-                          </div>
-                          {/* <div className="col-sm mb-2">
-                            <label htmlFor="inputText">Relation</label>
-                            <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_relation(e.target.value)} value={ee_relation} />
-                          </div> */}
-                        </div>
-                        <div className="row">
-                          <div className="col-sm mb-2">
-                            <label htmlFor="inputColor">SubId</label>
-                            <input type="number" className="form-control rounded-4" onChange={(e) => set_ee_sub_id(e.target.value)} value={ee_sub_id} />
                           </div>
                           <div className="col-sm mb-2">
                             <label htmlFor="inputColor">EPF Wages</label>
@@ -551,10 +559,16 @@ const employee = () => {
                           </div>
                         </div>
                         <div className="row">
-                          <div className="col mb-2">
+                          {/* <div className="col mb-2">
                             <label htmlFor="inputNumber">Aadhar No</label>
                             <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_aadhar_no(e.target.value)} value={ee_aadhar_no} />
+                          </div> */}
+
+                          <div className="col-sm mb-2">
+                            <label htmlFor="inputColor">SubId</label>
+                            <input type="number" className="form-control rounded-4" onChange={(e) => set_ee_sub_id(e.target.value)} value={ee_sub_id} />
                           </div>
+                          
                           <div className="col mb-2">
                             <label htmlFor="inputNumber">Date Of Exit</label>
                             <input type="date" className="form-control rounded-4" required onChange={(e) => set_ee_dol(e.target.value)} value={ee_dol} />

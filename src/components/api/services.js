@@ -227,6 +227,42 @@ export const searchMonthlyEmployee = async (params) => {
         throw error.response.data.error;
     }
 }
+
+export const getEsicReturnByMonth = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/esic/getEsicReturnByMonth`,params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const getEsicReturns = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/esic/getEsicReturns`,params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const fillEsicReturn = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/esic/fillEsicReturn`,params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const getEmployeeByEsic = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/employee/getEmployeeByEsic`,params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 export const uploadEmployer = async ( formdata) => {
     try {
         const uplaodHeader = {

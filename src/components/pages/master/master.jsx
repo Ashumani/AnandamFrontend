@@ -403,7 +403,7 @@ const master = () => {
             </button>
           </div>
 
-          <div className="modal fade" id="importReturn" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal fade bd-example-modal-lg" id="importReturn" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog" role="document">
               <div className="modal-content">
                 <div className="modal-header">
@@ -435,10 +435,10 @@ const master = () => {
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div className="modal-body">
+                  <div className="modal-body"  style={{ color:'black'}}>
                     <div className="row mb-3">
                       <div className="form-group col-sm">
-                        <label htmlFor="epfNo text-black">EPF No</label>
+                        <label htmlFor="epfNo" > EPF No</label>
                         <input type="text" className="form-control rounded-4" id="epfNo" required onChange={(e) => setEstEpfId(e.target.value)} value={EstEpfId} />
                       </div>
                       <div className="form-group col-sm">
