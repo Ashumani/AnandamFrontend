@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
-import { fillEsicReturn, getEmployeeByEsic,  getEmployer, getEsicReturns, uploadSalary } from "../../api/services";
+import { fillEsicReturn, getEmployeeByEsic, getEmployer, getEsicReturnByMonth, getEsicReturns, UpdateEsicReturn, uploadSalary } from "../../api/services";
 import React, { useRef } from 'react';
 import "./style.css"
 import Swal from 'sweetalert2';
@@ -11,6 +11,7 @@ import * as XLSX from 'xlsx';
 const esic = () => {
 
   const [employeeData, setEmployeeData] = useState([])
+  const [employeeMonthlyEsicReturn, setEmployeeMonthlyEsicReturn] = useState([])
   const returnsYear = {
     "month": [{ "monthNum": 1, "monthText": "Jan" }, { "monthNum": 2, "monthText": "Feb" }, { "monthNum": 3, "monthText": "Mar" }, { "monthNum": 4, "monthText": "Apr" }, { "monthNum": 5, "monthText": "May" }, { "monthNum": 6, "monthText": "Jun" }, { "monthNum": 7, "monthText": "Jul" }, { "monthNum": 8, "monthText": "Aug" }, { "monthNum": 9, "monthText": "Sep" }, { "monthNum": 10, "monthText": "Oct" }, { "monthNum": 11, "monthText": "Nov" }, { "monthNum": 12, "monthText": "Dec" }],
     "Year": [2020, 2021, 2022, 2023, 2024]
@@ -39,7 +40,7 @@ const esic = () => {
   const [isSaveEnable, set_isSaveEnable] = useState(false)
   const [SearchEE, setSearchEE] = useState('')
   const [ee_id, set_ee_id] = useState('');
-  
+
   const [ee_name, set_ee_name] = useState('');
   // const [ee_esic_no, set_ee_esic_no] = useState('');
   const [ee_dob, set_ee_dob] = useState('');
@@ -53,9 +54,6 @@ const esic = () => {
   const [search_esic, set_search_esic] = useState('');
   const [noOfDays, set_noOfDays] = useState('');
   const [editable, set_editable] = useState(false);
-
-
-
   const [editableIndex, setEditableIndex] = useState(null);
   const [formValues, setFormValues] = useState({});
 
@@ -79,7 +77,7 @@ const esic = () => {
       const esic_wages = value;
 
       set_ee_esic(esic_wages * userData.data.ee_esic / 100)
-      set_er_esic(esic_wages *userData.data. er_esic / 100)
+      set_er_esic(esic_wages * userData.data.er_esic / 100)
 
     } catch (error) {
       console.error('Login error ', error);
@@ -126,7 +124,7 @@ const esic = () => {
       const userData = await getEmployeeByEsic(params);
 
       if (userData.status === true) {
-       
+
         set_ee_id(userData.data.id);
         set_ee_name(userData.data.ee_name);
         set_ee_dob(userData.data.ee_dob);
@@ -176,7 +174,16 @@ const esic = () => {
       }
       const userData = await fillEsicReturn(params);
       if (userData.status === true) {
-        setEmployeeData(userData.data);
+        Swal.fire({
+          position: 'top-right',
+          icon: 'success',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+        closeModal();
 
       } else {
         Swal.fire({
@@ -197,23 +204,59 @@ const esic = () => {
     }
   };
 
-  const updateReturns = async () => {
+  const updateReturns = async (employee) => {
+    // api call
+    console.log(employee)
+    try {
+
+      employee.est_id = getErId()
+      employee.ee_id = ee_id,
+      employee.ee_esic_no = search_esic
+      //   const params = {
+      //   est_id: getErId(),
+      //   ee_id: ee_id,
+      //   ee_esic_no: search_esic,
+      //   month: selectedMonth,
+      //   year: selectedYear,
+      //   dayspresent: noOfDays,
+      //   gross_wages: cal_gross_wages,
+      //   ee_share: ee_esic,
+      //   er_share: er_esic,
+      // }
+      const userData = await UpdateEsicReturn(employee);
+      if (userData.status === true) {
+        await getEsicReturn()
+
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+      }
+
+
+    } catch (error) {
+      console.error('Login error ', error);
+      // setError(error);
+    }
+  };
+
+  const getMonthlyEsicReturn = async () => {
     // api call
     try {
       const params = {
-        est_id: getErId(),
-        ee_id: ee_id,
-        ee_esic_no: search_esic,
-        month: selectedMonth,
-        year: selectedYear,
-        dayspresent: noOfDays,
-        gross_wages: cal_gross_wages,
-        ee_share: ee_esic,
-        er_share: er_esic,
+        "est_id": getErId(),
+        "month": selectedMonth,
+        "year": selectedYear
       }
-      const userData = await getEsicReturns(params);
+      const userData = await getEsicReturnByMonth(params);
       if (userData.status === true) {
-        setEmployeeData(userData.data);
+        setEmployeeMonthlyEsicReturn(userData.data);
 
       } else {
         Swal.fire({
@@ -379,25 +422,8 @@ const esic = () => {
     // api call
     try {
       setShowEsicPage(true);
-      const params = {
-        "id": getErId()
-      }
-      const userData = await getEsicReturns(params);
-      if (userData.status === true) {
-        setEmployeeData(userData.data);
 
-      } else {
-        Swal.fire({
-          position: 'top-right',
-          icon: 'error',
-          toast: true,
-          title: userData.message,
-          showConfirmButton: false,
-          showCloseButton: true,
-          timer: 1500,
-        });
-      }
-
+      await getMonthlyEsicReturn();
 
     } catch (error) {
       console.error('Login error ', error);
@@ -468,6 +494,7 @@ const esic = () => {
     // For now, just reset the editable index
     setEditableIndex(null);
     console.log('Updated Data:', formValues);
+    updateReturns(formValues)
   };
   const uploadSalaryReturn = async () => {
     if (!file) {
@@ -601,100 +628,53 @@ const esic = () => {
           </div>
           <h5 className="mt-4">ESIC Return</h5>
           <table className="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">Sn</th>
-          <th scope="col">MM-YY</th>
-          <th scope="col">ESIC No</th>
-          <th scope="col">Employee Name</th>
-          <th scope="col">Days</th>
-          <th scope="col">Gross</th>
-          <th scope="col">EE Share</th>
-          <th scope="col">ER Share</th>
-          <th scope="col">Reason</th>
-          <th scope="col">Date</th>
-          <th scope="col">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {employeeData.map((employee, index) => (
-          <tr key={index}>
-            <th scope="row">{index + 1}</th>
-            <td>{employee.month}-{employee.year}</td>
-            <td>{employee.esicNo}</td>
-            <td>{employee.employeeName}</td>
-            {editableIndex !== index ? ( <td>{employee.days}     </td>):(
-              <td>  <input 
-                type="number" 
-                className="form-control rounded-4" 
-                disabled={editableIndex !== index} 
-                onChange={(e) => handleInputChange(e, 'days')} 
-                value={editableIndex === index ? formValues.days : employee.days}
-              /> </td>
-            )}
-           
-            {editableIndex !== index ? ( <td>{employee.gross_wages}     </td>):(
-              <td> <input 
-                type="number" 
-                className="form-control rounded-4" 
-                disabled={editableIndex !== index} 
-                onChange={(e) => handleInputChange(e, 'gross')} 
-                value={editableIndex === index ? formValues.gross : employee.gross_wages}
-              />    </td>
-            )}
-              
-        
-            <td>{employee.ee_share}</td>
-            <td>{employee.er_share}</td>
+            <thead>
+              <tr>
+                <th scope="col">Sn</th>
+                <th scope="col">MM-YY</th>
+                <th scope="col">No Of EE</th>
+                <th scope="col">Gross</th>
+                <th scope="col">EE Share</th>
+                <th scope="col">ER Share</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {employeeData.map((employee, index) => (
+                <tr key={index}>
+                  <th scope="row">{index + 1}</th>
+                  <td>{employee.month}-{employee.year}</td>
+                  <td>{employee.numofee}</td>
 
-            {editableIndex !== index ? ( <td>{employee.reason}     </td>):(
-              <td> <input 
-                type="text" 
-                className="form-control rounded-4" 
-                disabled 
-                value={employee.reason}
-              /></td>
-            )}
-            {editableIndex !== index ? ( <td>{employee.date}     </td>):(
-              <td> <input 
-                type="date" 
-                className="form-control rounded-4" 
-                disabled 
-                value={employee.date}
-              /></td>
-            )}
-        
-            <td>
-              <div className="d-flex align-items-center">
-                <button className="btn btn-light" onClick={() => { }}>
-                  <i className="bi bi-eye text-info"></i>
-                </button>
-                <button 
-                  className="btn btn-light mx-1" 
-                  onClick={() => handleEditClick(index)}
-                >
-                  <i className="bi bi-pencil-fill text-info"></i>
-                </button>
-                <button 
-                  className="btn btn-light" 
-                  disabled
-                >
-                  <i className="bi bi-trash text-danger"></i>
-                </button>
-                {editableIndex === index && (
-                  <button 
-                    className="btn btn-light mx-1" 
-                    onClick={() => handleSaveClick(index)}
-                  >
-                    <i className="bi bi-check text-success"></i>
-                  </button>
-                )}
-              </div>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+                  <td>{employee.gross_wages}</td>
+
+                  <td>{employee.ee_share}</td>
+                  <td>{employee.er_share}</td>
+
+                  <td>
+                    <div className="d-flex align-items-center">
+                      <button className="btn btn-light" onClick={() => { showEsicReturnPage() }}>
+                        <i className="bi bi-eye text-info"></i>
+                      </button>
+                      <button
+                        className="btn btn-light mx-1"
+                        onClick={() => showEsicReturnPage()}
+                      >
+                        <i className="bi bi-pencil-fill text-info"></i>
+                      </button>
+                      <button
+                        className="btn btn-light"
+                        disabled
+                      >
+                        <i className="bi bi-trash text-danger"></i>
+                      </button>
+
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </section>
       </div>) : (
       <div className="main-container">
@@ -911,63 +891,97 @@ const esic = () => {
             <thead>
               <tr>
                 <th scope="col">Sn</th>
-                <th scope="col">UAN</th>
-                <th scope="col">Name</th>
-                <th scope="col">Gross Wages</th>
-                <th scope="col">EPF Wages</th>
-                <th scope="col">EDLI Wages</th>
-                <th scope="col">EPS Wages</th>
-                <th scope="col">EE(12%)</th>
-                <th scope="col">ER(3.67%)</th>
-                <th scope="col">EPS(8.33%)</th>
-                <th scope="col">NCP Days</th>
+                <th scope="col">MM-YY</th>
+                <th scope="col">ESIC No</th>
+                <th scope="col">Employee Name</th>
+                <th scope="col">Days</th>
+                <th scope="col">Gross</th>
+                <th scope="col">EE Share</th>
+                <th scope="col">ER Share</th>
+                <th scope="col">Reason</th>
+                <th scope="col">Date</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
-              {currentItems.map((employee, index) => (
+              {employeeMonthlyEsicReturn.map((employee, index) => (
                 <tr key={index}>
-                  <th scope="row">{index}</th>
-                  <th scope="row">{employee.ee_uan}</th>
+                  <th scope="row">{index + 1}</th>
+                  <td>{employee.month}-{employee.year}</td>
+                  <td>{employee.ee_esic_no}</td>
                   <td>{employee.ee_name}</td>
-                  <td>{employee.gross_wages}</td>
-                  <td>{employee.epf_wages}</td>
-                  <td>{employee.edli_wages}</td>
-                  <td>{employee.eps_wages}</td>
+                  {editableIndex !== index ? (<td>{employee.dayspresent}     </td>) : (
+                    <td>  <input
+                      type="number"
+                      className="form-control rounded-4"
+                      disabled={editableIndex !== index}
+                      onChange={(e) => handleInputChange(e, 'days')}
+                      value={editableIndex === index ? formValues.days : employee.dayspresent}
+                    /> </td>
+                  )}
+
+                  {editableIndex !== index ? (<td>{employee.gross_wages}     </td>) : (
+                    <td> <input
+                      type="number"
+                      className="form-control rounded-4"
+                      disabled={editableIndex !== index}
+                      onChange={(e) => handleInputChange(e, 'gross_wages')}
+                      value={editableIndex === index ? formValues.gross_wages : employee.gross_wages}
+                    />    </td>
+                  )}
+
+
                   <td>{employee.ee_share}</td>
-                  <td>{employee.diff_share}</td>
-                  <td>{employee.eps_share}</td>
-                  <td>{employee.ncp_days}</td>
+                  <td>{employee.er_share}</td>
+
+                  {editableIndex !== index ? (<td>{employee.reason}     </td>) : (
+                    <td> <input
+                      type="text"
+                      className="form-control rounded-4"
+                      disabled={editableIndex !== index}
+                      value={employee.reason}
+                    /></td>
+                  )}
+                  {editableIndex !== index ? (<td>{employee.date}     </td>) : (
+                    <td> <input
+                      type="date"
+                      className="form-control rounded-4"
+                      disabled={editableIndex !== index}
+                      value={employee.date}
+                    /></td>
+                  )}
+
                   <td>
                     <div className="d-flex align-items-center">
-                      <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
+                      <button className="btn btn-light" onClick={() => { }}>
                         <i className="bi bi-eye text-info"></i>
                       </button>
-                      <button className="btn btn-light mx-1" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
+                      <button
+                        className="btn btn-light mx-1"
+                        onClick={() => handleEditClick(index)}
+                      >
                         <i className="bi bi-pencil-fill text-info"></i>
                       </button>
-                      <button className="btn btn-light" onClick={() => { deleteReturn(employee.id) }} >
+                      <button
+                        className="btn btn-light"
+                        disabled
+                      >
                         <i className="bi bi-trash text-danger"></i>
                       </button>
+                      {editableIndex === index && (
+                        <button
+                          className="btn btn-light mx-1"
+                          onClick={() => handleSaveClick(index)}
+                          // onClick={() => updateReturns(employee)}
+                        >
+                          <i className="bi bi-check text-success"></i>
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>
               ))}
             </tbody>
-            {/* <tfoot>
-                <tr>
-                  <th id="total" colSpan="3">Total :</th>
-                  <td>{total_gross_wages}</td>
-                  <td>{total_epf_wages}</td>
-                  <td>{total_edli_wages}</td>
-                  <td>{total_eps_wages}</td>
-                  <td>{total_ee_share}</td>
-                  <td>{total_eps_share}</td>
-                  <td>{total_diff_share}</td>
-                  <td>{total_ncp_days}</td>
-                  <td></td>
-                </tr>
-              </tfoot> */}
           </table>
           {/* Pagination Controls */}
           <div className="pagination">

@@ -255,6 +255,15 @@ export const fillEsicReturn = async (params) => {
     }
 }
 
+export const UpdateEsicReturn = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/esic/UpdateEsicReturn`,params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
 export const getEmployeeByEsic = async (params) => {
     try {
         const response = await axios.post(`${BASE_URL}/employee/getEmployeeByEsic`,params, { headers: header});
