@@ -57,6 +57,8 @@ const esic = () => {
   const [editableIndex, setEditableIndex] = useState(null);
   const [formValues, setFormValues] = useState({});
 
+  
+
   useEffect(() => {
     const fetchData = async () => {
       await getEsicReturn()
@@ -206,12 +208,12 @@ const esic = () => {
 
   const updateReturns = async (employee) => {
     // api call
-    console.log(employee)
+  
     try {
 
-      employee.est_id = getErId()
-      employee.ee_id = ee_id,
-      employee.ee_esic_no = search_esic
+      // employee.est_id = getErId()
+      // employee.ee_id = ee_id,
+      // employee.ee_esic_no = search_esic
       //   const params = {
       //   est_id: getErId(),
       //   ee_id: ee_id,
@@ -223,21 +225,45 @@ const esic = () => {
       //   ee_share: ee_esic,
       //   er_share: er_esic,
       // }
-      const userData = await UpdateEsicReturn(employee);
-      if (userData.status === true) {
-        await getEsicReturn()
 
+ 
+      employee.ee_share = ee_esic
+      employee.er_share = er_esic
+      if (employee.rtid == 0 || employee.rtid == '') {
+        const userData = await fillEsicReturn(employee);
+        if (userData.status === true) {
+          await getMonthlyEsicReturn()
+
+        } else {
+          Swal.fire({
+            position: 'top-right',
+            icon: 'error',
+            toast: true,
+            title: userData.message,
+            showConfirmButton: false,
+            showCloseButton: true,
+            timer: 1500,
+          });
+        }
       } else {
-        Swal.fire({
-          position: 'top-right',
-          icon: 'error',
-          toast: true,
-          title: userData.message,
-          showConfirmButton: false,
-          showCloseButton: true,
-          timer: 1500,
-        });
+        employee.id = employee.rtid
+        const userData = await UpdateEsicReturn(employee);
+        if (userData.status === true) {
+          await getMonthlyEsicReturn()
+
+        } else {
+          Swal.fire({
+            position: 'top-right',
+            icon: 'error',
+            toast: true,
+            title: userData.message,
+            showConfirmButton: false,
+            showCloseButton: true,
+            timer: 1500,
+          });
+        }
       }
+
 
 
     } catch (error) {
@@ -246,14 +272,17 @@ const esic = () => {
     }
   };
 
-  const getMonthlyEsicReturn = async () => {
+  const getMonthlyEsicReturn = async (ee_month=selectedMonth, year=selectedYear) => {
     // api call
+    setEmployeeMonthlyEsicReturn([])
     try {
       const params = {
         "est_id": getErId(),
-        "month": selectedMonth,
-        "year": selectedYear
+        "month": ee_month,
+        "year": year
       }
+
+      console.log(params)
       const userData = await getEsicReturnByMonth(params);
       if (userData.status === true) {
         setEmployeeMonthlyEsicReturn(userData.data);
@@ -418,12 +447,11 @@ const esic = () => {
       // setError(error);
     }
   };
-  const showEsicReturnPage = async () => {
+  const showEsicReturnPage = async (month, year) => {
     // api call
     try {
       setShowEsicPage(true);
-
-      await getMonthlyEsicReturn();
+      await getMonthlyEsicReturn(month, year);
 
     } catch (error) {
       console.error('Login error ', error);
@@ -480,12 +508,26 @@ const esic = () => {
   };
 
   const handleEditClick = (index) => {
+
     setEditableIndex(index);
     // Initialize form values with the current row's data
-    setFormValues(employeeData[index]);
+    setFormValues(employeeMonthlyEsicReturn[index]);
   };
 
-  const handleInputChange = (e, field) => {
+  const handleInputChange = async(e, field) => {
+    
+    setFormValues({ ...formValues, [field]: e.target.value });
+  };
+
+  const handleInputChange1 = async(e, field) => {
+    const params = {
+      "est_epf_id": getEstId()
+    }
+    const userData = await getEmployer(params);
+    const esic_wages = e.target.value ;
+
+    set_ee_esic(esic_wages * userData.data.ee_esic / 100)
+    set_er_esic(esic_wages * userData.data.er_esic / 100)
     setFormValues({ ...formValues, [field]: e.target.value });
   };
 
@@ -494,6 +536,8 @@ const esic = () => {
     // For now, just reset the editable index
     setEditableIndex(null);
     console.log('Updated Data:', formValues);
+
+
     updateReturns(formValues)
   };
   const uploadSalaryReturn = async () => {
@@ -590,7 +634,7 @@ const esic = () => {
               </select>
             </div>
             <div className="col-sm-2">
-              <button type="button" className="btn btn-outline-primary btn-block rounded-4" onClick={showEsicReturnPage} >Next
+              <button type="button" className="btn btn-outline-primary btn-block rounded-4"  onClick={() => showEsicReturnPage(selectedMonth, selectedYear)}  >Next
                 {/* <Link to="/auth/dashboard/monthlypf"><span >Next</span></Link> */}
               </button>
             </div>
@@ -653,12 +697,12 @@ const esic = () => {
 
                   <td>
                     <div className="d-flex align-items-center">
-                      <button className="btn btn-light" onClick={() => { showEsicReturnPage() }}>
+                      <button className="btn btn-light" onClick={() => { showEsicReturnPage(employee.month,employee.year) }}>
                         <i className="bi bi-eye text-info"></i>
                       </button>
                       <button
                         className="btn btn-light mx-1"
-                        onClick={() => showEsicReturnPage()}
+                        onClick={() => showEsicReturnPage(employee.month,employee.year) }
                       >
                         <i className="bi bi-pencil-fill text-info"></i>
                       </button>
@@ -915,8 +959,9 @@ const esic = () => {
                       type="number"
                       className="form-control rounded-4"
                       disabled={editableIndex !== index}
-                      onChange={(e) => handleInputChange(e, 'days')}
-                      value={editableIndex === index ? formValues.days : employee.dayspresent}
+                      onChange={(e) => handleInputChange(e, 'dayspresent')}
+                      
+                      value={editableIndex === index ? formValues.dayspresent : employee.dayspresent}
                     /> </td>
                   )}
 
@@ -926,13 +971,14 @@ const esic = () => {
                       className="form-control rounded-4"
                       disabled={editableIndex !== index}
                       onChange={(e) => handleInputChange(e, 'gross_wages')}
+                      onBlur={(e) => handleInputChange1(e, 'gross_wages')}
                       value={editableIndex === index ? formValues.gross_wages : employee.gross_wages}
                     />    </td>
                   )}
 
-
-                  <td>{employee.ee_share}</td>
-                  <td>{employee.er_share}</td>
+                 
+                  <td>{editableIndex !== index ? employee.ee_share : ee_esic}</td>
+                  <td>{editableIndex !== index ? employee.er_share : er_esic}</td>
 
                   {editableIndex !== index ? (<td>{employee.reason}     </td>) : (
                     <td> <input
@@ -972,7 +1018,7 @@ const esic = () => {
                         <button
                           className="btn btn-light mx-1"
                           onClick={() => handleSaveClick(index)}
-                          // onClick={() => updateReturns(employee)}
+                        // onClick={() => updateReturns(employee)}
                         >
                           <i className="bi bi-check text-success"></i>
                         </button>

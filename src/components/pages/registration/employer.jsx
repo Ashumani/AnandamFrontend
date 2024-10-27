@@ -316,7 +316,10 @@ const employer = () => {
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title text-left">
-                  Retruns Parameter
+                  Retruns Parameter 
+                </h5>
+                <h5 className="card-title text-left">
+                 EPF 
                 </h5>
                 <div className="row">
                   <div className="form-group col-sm">
@@ -352,6 +355,35 @@ const employer = () => {
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
                   </div>
                   <div className="form-group col-sm">
+                    <label htmlFor="inputText">Account 22</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
+                  </div>
+                  <hr style={{width:'99%'}} />
+                  <h5 className="card-title text-left">
+                  ESIC
+                </h5>
+                  <div className="form-group col-sm-2">
+                    <label htmlFor="inputText">EE Share</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
+                  </div>
+                  <div className="form-group col-sm-2">
+                    <label htmlFor="inputText">ER Share</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
+                  </div>
+                 <hr  style={{width:'99%'}} />
+                 <h5 className="card-title text-left">
+                  Bill Rate
+                </h5>
+                  <div className="form-group col-sm-2">
+                    <label htmlFor="inputText">Rate</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setRate(e.target.value)} value={rate} />
+                  </div>
+
+                  <hr  style={{width:'99%'}} />
+                 <h5 className="card-title text-left">
+                  Pay Roll Parameter
+                </h5>
+                  <div className="form-group col-sm-2">
                     <label htmlFor="inputText">Rate</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setRate(e.target.value)} value={rate} />
                   </div>
