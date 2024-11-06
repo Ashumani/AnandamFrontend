@@ -92,7 +92,7 @@ const dashboard = () => {
       await getYears();
       await getAll();
       await getGraphDetails(fromMonth, toMonth, fromYear, toYear)
-      await getBillDetailsForGraph()
+      await getBillDetailsForGraph(fromMonth, toMonth, fromYear, toYear)
 
     };
 
@@ -146,7 +146,7 @@ const dashboard = () => {
     }
   };
 
-  const getBillDetailsForGraph = async () => {
+  const getBillDetailsForGraph = async (fromMonth, toMonth, fromYear, toYear) => {
     // api call
 
     try {
@@ -158,14 +158,20 @@ const dashboard = () => {
         "toYear": toYear
       }
       const response = await getBillGraph(params);
-      const Data = response.data.map(item => ({
-        name: item.est_epf_id,
-        totalbill: Number(item.totalbill),
-        totalamtreceived: Number(item.totalamtreceived),
-        
-      }));
-      setChartData(Data);
-      setPieChartData(response.total) 
+      if (response.status == true) {
+        const Data = response.data.map(item => ({
+          name: item.est_epf_id,
+          totalbill: Number(item.totalbill),
+          totalamtreceived: Number(item.totalamtreceived),
+
+        }));
+        setChartData(Data);
+        setPieChartData(response.total)
+
+      }else{
+        setChartData([]);
+        setPieChartData([])
+      }
 
 
 
@@ -196,6 +202,7 @@ const dashboard = () => {
   const handleYearChange = async (e) => {
     setSelectedYear(e.target.value);
     await getGraphDetails(fromMonth, toMonth, parseInt(e.target.value), parseInt(e.target.value) + 1)
+    await getBillDetailsForGraph(fromMonth, toMonth, parseInt(e.target.value), parseInt(e.target.value) + 1)
   };
 
   const colors = ['#2b6b86', '#f76e6e'];
@@ -329,6 +336,7 @@ const dashboard = () => {
 
         <div className='charts'>
           <ResponsiveContainer width="100%" height="100%">
+          {pieChartData && pieChartData.length > 0 ? (
             <PieChart>
               <Pie
                 data={pieChartData}
@@ -347,6 +355,11 @@ const dashboard = () => {
               <Tooltip />
               <Legend />
             </PieChart>
+          ) : (
+              <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
+                No Data Available
+              </div>
+            )}
           </ResponsiveContainer>
 
           <ResponsiveContainer width="100%" height="100%">

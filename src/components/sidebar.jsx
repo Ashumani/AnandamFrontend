@@ -9,7 +9,7 @@ const Sidebar = () => {
     const { showAll } = useSidebar();
     const [side_items] = useState(
         [{
-            "mainItem": "Ragistration",
+            "mainItem": "Membership Ragistration",
             "path": "",
             "icon": "bi bi-menu-button-wide",
             "subItems": [
@@ -25,7 +25,7 @@ const Sidebar = () => {
                 }
             ]
         }, {
-            "mainItem": "Transaction",
+            "mainItem": "Compliance",
             "path": "",
             "icon": "bi bi-journal-text",
             "subItems": [
@@ -72,24 +72,24 @@ const Sidebar = () => {
                 }
             ]
         }, {
-            "mainItem": "Billing",
+            "mainItem": "Invoice Generation",
             "path": "",
             "icon": "bi bi-wallet-fill",
             "subItems": [
                 {
-                    "item": "Create Bill",
+                    "item": "Create Invoice",
                     "path": "/auth/dashboard/bill/create",
                     "icon": "bi bi-circle"
                 },
                 {
-                    "item": "View Bill",
+                    "item": "View Invoice",
                     "path": "/auth/dashboard/bill/billView",
                     "icon": "bi bi-circle"
                 }
             ]
         },
         {
-            "mainItem": "Download",
+            "mainItem": "Downloads",
             "path": "",
             "icon": "bi bi-download",
             "subItems": [
@@ -116,8 +116,8 @@ const Sidebar = () => {
                     </li>
                     <li className="nav-item">
                         <a className="nav-link " href="/auth/dashboard/master">
-                            <i className="bi bi-grid"></i>
-                            <span>Master</span>
+                            <i className="bi bi-file-earmark"></i>
+                            <span>Memberships</span>
                         </a>
                     </li>
                     

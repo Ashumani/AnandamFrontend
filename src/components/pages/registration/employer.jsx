@@ -36,7 +36,8 @@ const employer = () => {
   const [checkedDSC, setCheckedDSC] = useState(false);
   // eslint-disable-next-line react-hooks/rules-of-hooks, no-unused-vars
 
-
+  const [er_esic, set_er_esic] = useState('');
+  const [ee_esic, set_ee_esic] = useState('');
   const [dsc_on_name, set_dsc_on_name] = useState('');
   const [dsc_expire, set_dsc_expire] = useState('');
   const [dsc_mobile, set_dsc_mobile] = useState('');
@@ -180,6 +181,8 @@ const employer = () => {
         setRate(response.data.rate)
         setErId(response.data.id)
         setCheckedDSC(response.data.dsc_status)
+        set_er_esic(response.data.er_esic)
+        set_ee_esic(response.data.ee_esic)
         setLoading(false);
         setIsUpdate(true)
       } catch (error) {
@@ -354,21 +357,21 @@ const employer = () => {
                     <label htmlFor="inputText">Account 22</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
                   </div>
-                  <div className="form-group col-sm">
+                  {/* <div className="form-group col-sm">
                     <label htmlFor="inputText">Account 22</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
-                  </div>
+                  </div> */}
                   <hr style={{width:'99%'}} />
                   <h5 className="card-title text-left">
                   ESIC
                 </h5>
                   <div className="form-group col-sm-2">
-                    <label htmlFor="inputText">EE Share</label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
+                    <label htmlFor="inputText">ER Share</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_er_esic(e.target.value)} value={er_esic} />
                   </div>
                   <div className="form-group col-sm-2">
-                    <label htmlFor="inputText">ER Share</label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
+                    <label htmlFor="inputText">EE Share</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_esic(e.target.value)} value={ee_esic} />
                   </div>
                  <hr  style={{width:'99%'}} />
                  <h5 className="card-title text-left">

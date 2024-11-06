@@ -18,6 +18,11 @@ const billMaster = () => {
   // Get current items based on the current page
   const [startIndex, set_startIndex] = useState('');
   const [currentItems, set_currentItems] = useState([]);
+
+  const [totalAmount, set_totalAmount] = useState('');
+  const [totalDiscount, set_totalDiscount] = useState('');
+  const [totalPaidAmount, set_totalPaidAmount] = useState('');
+
   useEffect(() => {
     const fetchData = async () => {
       await getAll(0);
@@ -46,7 +51,9 @@ const billMaster = () => {
         set_startIndex((currentPage - 1) * itemsPerPage);
         set_totalPages(Math.ceil(response.count / itemsPerPage));
         set_currentItems(response.data);
-
+        set_totalAmount(response.total[0].totalamount)
+        set_totalDiscount(response.total[0].totaldiscount)
+        set_totalPaidAmount(response.total[0].totalpaidamount)
       }
 
 
@@ -178,6 +185,15 @@ const billMaster = () => {
                           </tr>
                         ))}
                       </tbody>
+                      <tfoot>
+                <tr>
+                  <th id="total" colSpan="5">Total :</th>
+                  <td colSpan="2">{totalAmount}</td>
+                  <td>{totalDiscount}</td>
+                  <td>{totalPaidAmount}</td>
+                  <td></td>
+                </tr>
+              </tfoot>
                     </table>
                   </div>
 

@@ -125,7 +125,8 @@ const Header = () => {
             <option value="All">All</option>
             {items.map((item) => (
               <option key={item.id} value={item.est_epf_id}>
-                {item.est_epf_id}
+                {item.est_name} - {item.est_epf_id} 
+                
               </option>
             ))}
           </select>
