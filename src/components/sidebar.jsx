@@ -32,17 +32,17 @@ const Sidebar = () => {
                 {
                     "item": "Salary",
                     "path": "/auth/dashboard/salary",
-                    "icon": "bi bi-circle"
+                    "icon": "bi bi-currency-rupee"
                 },
                 {
                     "item": "EPF Return",
                     "path": "/auth/dashboard/summary",
-                    "icon": "bi bi-circle"
+                    "icon": "bi bi-currency-rupee"
                 },
                 {
                     "item": "Esic Return",
                     "path": "/auth/dashboard/esic",
-                    "icon": "bi bi-circle"
+                    "icon": "bi bi-currency-rupee"
                 }
             ]
         }, {
@@ -59,17 +59,18 @@ const Sidebar = () => {
                     "item": "Form 3A/6A",
                     "path": "/auth/dashboard/form3A6A",
                     "icon": "bi bi-circle"
-                },
-                {
-                    "item": "Form 5A",
-                    "path": "/auth/dashboard/form5A",
-                    "icon": "bi bi-circle"
-                },
-                {
-                    "item": "KYCs",
-                    "path": "/auth/dashboard/kyc",
-                    "icon": "bi bi-circle"
                 }
+                // ,
+                // {
+                //     "item": "Form 5A",
+                //     "path": "/auth/dashboard/form5A",
+                //     "icon": "bi bi-circle"
+                // },
+                // {
+                //     "item": "KYCs",
+                //     "path": "/auth/dashboard/kyc",
+                //     "icon": "bi bi-circle"
+                // }
             ]
         }, {
             "mainItem": "Invoice Generation",

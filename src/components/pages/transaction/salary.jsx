@@ -708,7 +708,7 @@ const salary = () => {
             <br />
             <div className="row">
               <div className="col-sm">
-                <button type="button" className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#exampleModal" onClick={openModal}>
+                <button type="button" className="btn btn-outline-primary btn-block rounded-4" onClick={openModal}>
                   Add ({selectedMonth}-{selectedYear})
                 </button>
               </div>
@@ -752,7 +752,7 @@ const salary = () => {
 
             {/* Add Epf Return Model */}
 
-            {isModalOpen && (<div className="modal fade bd-example-modal-lg" id="exampleModal" ref={modalRef} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade bd-example-modal-lg" id="exampleModal" ref={modalRef} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div className="modal-dialog modal-lg" role="document">
                 <div className="modal-content">
                   <div className="modal-header bg-primary">
@@ -826,6 +826,11 @@ const salary = () => {
                               <input type="number" className="form-control rounded-3" disabled={isDisabled} onChange={(e) => set_ee_rate(e.target.value)} value={ee_rate} />
                             </div>
                             <div className="col-sm">
+                              <label htmlFor="inputPassword">Days</label>
+                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="days" onChange={(e) => set_ee_days(e.target.value)} value={ee_days} />
+                            </div>
+                            
+                            <div className="col-sm">
                               <label htmlFor="inputPassword">Basic</label>
                               <input type="number" className="form-control rounded-3" disabled={isDisabled} id="basic" onBlur={calculation} onChange={(e) => { set_ee_basic(e.target.value) }} value={ee_basic} />
                             </div>
@@ -840,10 +845,6 @@ const salary = () => {
                             <div className="col-sm">
                               <label htmlFor="inputPassword">Others</label>
                               <input type="number" className="form-control rounded-3" disabled={isDisabled} id="others" onBlur={calculation} onChange={(e) => { set_ee_others(e.target.value) }} value={ee_others} />
-                            </div>
-                            <div className="col-sm">
-                              <label htmlFor="inputPassword">Days</label>
-                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="days" onChange={(e) => set_ee_days(e.target.value)} value={ee_days} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">OT</label>
@@ -920,14 +921,14 @@ const salary = () => {
                         <button type="button" className="btn btn-outline-primary btn-block">Reset</button>
                       </div>
                       <div className="col-sm">
-                        <button type="button" className="btn btn-outline-primary btn-block" aria-label="Close" onClick={closeModal} >Close</button>
+                        <button type="button" className="btn btn-outline-primary btn-block" onClick={closeModal} >Close</button>
                       </div>
                     </div>
 
                   </div>
                 </div>
               </div>
-            </div>)}
+            </div>
 
 
             

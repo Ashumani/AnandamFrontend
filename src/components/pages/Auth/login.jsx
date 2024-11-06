@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import {getAuthToken, setAuthToken } from "./authToken"
 import Swal from 'sweetalert2';
 
+import logo from "../../../standalone_assets/images/Anandam.png"
+
 const login = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
@@ -61,32 +63,34 @@ const login = () => {
               <div className="d-flex justify-content-center py-4">
                 <a
                   href="index.html"
-                  className="logo d-flex align-items-center w-auto"
+                  className=" d-flex align-items-center w-auto"
                 >
-                  <img src="assets/img/logo.png" alt="" />
+                  {/* <img style={{width: '100%', height:'100%', marginBottom:'0px' }}  src={logo} alt="" /> */}
                 </a>
               </div>
               <div className="card mb-3">
                 <div className="card-body">
                   <div className="pt-4 pb-2">
-                    <h5 className="card-title text-center pb-0 fs-4">
+                  <h5 className="card-title text-center pb-0 fs-4">
                       Login to Your Account
                     </h5>
+                  <img style={{width: '100%', height:'100%', marginBottom:'0px' }}  src={logo} alt="" />
+                    <hr />
                     <p className="text-center small">
-                      Enter your email & password to login
+                      Enter your Username & password to login
                     </p>
                   </div>
                   <form className="row g-3 needs-validation">
                     <div className="col-12">
-                      <label className="form-label">Email</label>
+                      <label className="form-label">Username</label>
                       <div className="input-group has-validation">
-                        <span className="input-group-text" id="inputGroupPrepend">
+                        {/* <span className="input-group-text rounded-4" id="inputGroupPrepend">
                           @
-                        </span>
+                        </span> */}
                         <input
                           type="text"
                           name="username"
-                          className="form-control"
+                          className="form-control rounded-4"
                           id="yourUsername"
                           required
                           onChange={(e) => setEmail(e.target.value)}
@@ -102,7 +106,7 @@ const login = () => {
                       <input
                         type="password"
                         name="password"
-                        className="form-control"
+                        className="form-control rounded-4"
                         id="yourPassword"
                         required
                         onChange={(e) => setPassword(e.target.value)}
@@ -110,7 +114,7 @@ const login = () => {
                     </div>
                     <div className="col-12">
                       <button
-                        className="btn btn-primary w-100"
+                        className="btn btn-primary w-100 rounded-4"
                         onClick={submitLogin}
                         type="button"
                       >
