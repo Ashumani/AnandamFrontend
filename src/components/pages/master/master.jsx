@@ -39,7 +39,9 @@ const master = () => {
   const [checkedDSC, setCheckedDSC] = useState(false);
   // eslint-disable-next-line react-hooks/rules-of-hooks, no-unused-vars
 
-
+  const [er_esic, set_er_esic] = useState('');
+  const [ee_esic, set_ee_esic] = useState('');
+  
   const [dsc_on_name, set_dsc_on_name] = useState('');
   const [dsc_expire, set_dsc_expire] = useState('');
   const [dsc_mobile, set_dsc_mobile] = useState('');
@@ -161,7 +163,9 @@ const master = () => {
         "acc21_rate": Acc21,
         "acc22_rate": Acc22,
         "rate": rate,
-        "dsc_status": checkedDSC
+        "dsc_status": checkedDSC,
+        "er_esic": er_esic,
+        "ee_esic": ee_esic
       }
 
       await erRegister(params);
@@ -518,45 +522,83 @@ const master = () => {
                       </div>
                     )}
 
-                    <div className="row mb-3">
-                      <h5 className="col-sm-12">Returns Parameters</h5>
-                      <div className="form-group col-sm">
-                        <label htmlFor="epfRate">EPF</label>
-                        <input type="text" className="form-control rounded-4" id="epfRate" required onChange={(e) => setEpfRate(e.target.value)} value={EpfRate} />
-                      </div>
-                      <div className="form-group col-sm">
-                        <label htmlFor="epsRate">EPS</label>
-                        <input type="text" className="form-control rounded-4" id="epsRate" required onChange={(e) => setEpsRate(e.target.value)} value={EpsRate} />
-                      </div>
-                      <div className="form-group col-sm">
-                        <label htmlFor="erRate">ER</label>
-                        <input type="text" className="form-control rounded-4" id="erRate" required onChange={(e) => setErRate(e.target.value)} value={ErRate} />
-                      </div>
-                      <div className="form-group col-sm">
-                        <label htmlFor="acc1">Account 1</label>
-                        <input type="text" className="form-control rounded-4" id="acc1" required onChange={(e) => setAcc1(e.target.value)} value={Acc1} />
-                      </div>
-                      <div className="form-group col-sm">
-                        <label htmlFor="acc2">Account 2</label>
-                        <input type="text" className="form-control rounded-4" id="acc2" required onChange={(e) => setAcc2(e.target.value)} value={Acc2} />
-                      </div>
-                      <div className="form-group col-sm">
-                        <label htmlFor="acc10">Account 10</label>
-                        <input type="text" className="form-control rounded-4" id="acc10" required onChange={(e) => setAcc10(e.target.value)} value={Acc10} />
-                      </div>
-                      <div className="form-group col-sm">
-                        <label htmlFor="acc21">Account 21</label>
-                        <input type="text" className="form-control rounded-4" id="acc21" required onChange={(e) => setAcc21(e.target.value)} value={Acc21} />
-                      </div>
-                      <div className="form-group col-sm">
-                        <label htmlFor="acc22">Account 22</label>
-                        <input type="text" className="form-control rounded-4" id="acc22" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
-                      </div>
-                      <div className="form-group col-sm">
-                        <label htmlFor="rate">Rate</label>
-                        <input type="text" className="form-control rounded-4" id="rate" required onChange={(e) => setRate(e.target.value)} value={rate} />
-                      </div>
-                    </div>
+                    <div className="card">
+              <div className="card-body">
+                <h5 className="card-title text-left">
+                  Retruns Parameter 
+                </h5>
+                <h5 className="card-title text-left">
+                 EPF 
+                </h5>
+                <div className="row">
+                  <div className="form-group col-sm">
+                    <label htmlFor="inputText">EPF </label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setEpfRate(e.target.value)} value={EpfRate} />
+                  </div>
+                  <div className="form-group col-sm">
+                    <label htmlFor="inputEmail">EPS</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setEpsRate(e.target.value)} value={EpsRate} />
+                  </div>
+                  <div className="form-group col-sm">
+                    <label htmlFor="inputEmail">ER</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setErRate(e.target.value)} value={ErRate} />
+                  </div>
+                  <div className="form-group col-sm">
+                    <label htmlFor="inputText">Account 1</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc1(e.target.value)} value={Acc1} />
+                  </div>
+                  <div className="form-group col-sm">
+                    <label htmlFor="inputText">Account 2</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc2(e.target.value)} value={Acc2} />
+                  </div>
+                  <div className="form-group col-sm">
+                    <label htmlFor="inputText">Account 10</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc10(e.target.value)} value={Acc10} />
+                  </div>
+                  <div className="form-group col-sm">
+                    <label htmlFor="inputText">Account 21</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc21(e.target.value)} value={Acc21} />
+                  </div>
+                  <div className="form-group col-sm">
+                    <label htmlFor="inputText">Account 22</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
+                  </div>
+                  {/* <div className="form-group col-sm">
+                    <label htmlFor="inputText">Account 22</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
+                  </div> */}
+                  <hr style={{width:'99%'}} />
+                  <h5 className="card-title text-left">
+                  ESIC
+                </h5>
+                  <div className="form-group col-sm-2">
+                    <label htmlFor="inputText">ER Share</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_er_esic(e.target.value)} value={er_esic} />
+                  </div>
+                  <div className="form-group col-sm-2">
+                    <label htmlFor="inputText">EE Share</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_esic(e.target.value)} value={ee_esic} />
+                  </div>
+                 <hr  style={{width:'99%'}} />
+                 <h5 className="card-title text-left">
+                  Bill Rate
+                </h5>
+                  <div className="form-group col-sm-2">
+                    <label htmlFor="inputText">Rate</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setRate(e.target.value)} value={rate} />
+                  </div>
+
+                  <hr  style={{width:'99%'}} />
+                 <h5 className="card-title text-left">
+                  Pay Roll Parameter
+                </h5>
+                  <div className="form-group col-sm-2">
+                    <label htmlFor="inputText">Rate</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => setRate(e.target.value)} value={rate} />
+                  </div>
+                </div>
+              </div>
+            </div>
                   </div>
                   <div className="modal-footer">
                     {!isUpdate ? (

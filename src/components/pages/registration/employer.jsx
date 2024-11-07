@@ -75,7 +75,9 @@ const employer = () => {
         "acc21_rate": Acc21,
         "acc22_rate": Acc22,
         "rate": rate,
-        "dsc_status": checkedDSC
+        "dsc_status": checkedDSC,
+        "er_esic": er_esic,
+        "ee_esic": ee_esic
       }
 
       await erRegister(params);
@@ -116,7 +118,9 @@ const employer = () => {
         "acc21_rate": Acc21,
         "acc22_rate": Acc22,
         "rate": rate,
-        "dsc_status": checkedDSC
+        "dsc_status": checkedDSC,
+        "er_esic": er_esic,
+        "ee_esic": ee_esic
       }
 
       const data = await erUpdate(ErId, params);
@@ -126,7 +130,7 @@ const employer = () => {
           icon: 'success',
           confirmButtonText: 'Okay'
         });
-        
+
       } else {
         Swal.fire({
           position: 'top-right',
@@ -202,7 +206,7 @@ const employer = () => {
 
     if (event.target.id == "flexSwitchCheckPf") {
       setCheckedDSC(event.target.checked);
-     
+
     }
   };
 
@@ -282,7 +286,7 @@ const employer = () => {
             <div className="card">
               <div className="card-body">
                 <div className='row'>
-                <div className="form-group col-sm">
+                  <div className="form-group col-sm">
                     <h5 className="card-title text-left">
                       Authorized Digital Signature
                     </h5>
@@ -291,38 +295,38 @@ const employer = () => {
                     <div className="form-check form-switch">
                       <input className="form-check-input" type="checkbox" id="flexSwitchCheckPf" checked={checkedDSC} onChange={handleChange} />
                     </div>
-                  </div>                
+                  </div>
                 </div>
                 {checkedDSC && (
-                <div className="row">
+                  <div className="row">
 
-                  <div className="form-group col-sm">
-                    <label htmlFor="inputText">Name On DSC </label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_on_name(e.target.value)} value={dsc_on_name} />
-                  </div>
-                  <div className="form-group col-sm">
-                    <label htmlFor="inputEmail">Designation</label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_designation(e.target.value)} value={dsc_designation} />
-                  </div>
-                  <div className="form-group col-sm">
-                    <label htmlFor="inputEmail">Expire Date</label>
-                    <input type="date" className="form-control rounded-4" required onChange={(e) => set_dsc_expire(e.target.value)} value={dsc_expire} />
-                  </div>
-                  <div className="form-group col-sm">
-                    <label htmlFor="inputText">Mobile</label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_mobile(e.target.value)} value={dsc_mobile} />
-                  </div>
+                    <div className="form-group col-sm">
+                      <label htmlFor="inputText">Name On DSC </label>
+                      <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_on_name(e.target.value)} value={dsc_on_name} />
+                    </div>
+                    <div className="form-group col-sm">
+                      <label htmlFor="inputEmail">Designation</label>
+                      <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_designation(e.target.value)} value={dsc_designation} />
+                    </div>
+                    <div className="form-group col-sm">
+                      <label htmlFor="inputEmail">Expire Date</label>
+                      <input type="date" className="form-control rounded-4" required onChange={(e) => set_dsc_expire(e.target.value)} value={dsc_expire} />
+                    </div>
+                    <div className="form-group col-sm">
+                      <label htmlFor="inputText">Mobile</label>
+                      <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_mobile(e.target.value)} value={dsc_mobile} />
+                    </div>
 
-                </div>)}
+                  </div>)}
               </div>
             </div>
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title text-left">
-                  Retruns Parameter 
+                  Retruns Parameter
                 </h5>
                 <h5 className="card-title text-left">
-                 EPF 
+                  EPF
                 </h5>
                 <div className="row">
                   <div className="form-group col-sm">
@@ -361,10 +365,10 @@ const employer = () => {
                     <label htmlFor="inputText">Account 22</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
                   </div> */}
-                  <hr style={{width:'99%'}} />
+                  <hr style={{ width: '99%' }} />
                   <h5 className="card-title text-left">
-                  ESIC
-                </h5>
+                    ESIC
+                  </h5>
                   <div className="form-group col-sm-2">
                     <label htmlFor="inputText">ER Share</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => set_er_esic(e.target.value)} value={er_esic} />
@@ -373,19 +377,19 @@ const employer = () => {
                     <label htmlFor="inputText">EE Share</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_esic(e.target.value)} value={ee_esic} />
                   </div>
-                 <hr  style={{width:'99%'}} />
-                 <h5 className="card-title text-left">
-                  Bill Rate
-                </h5>
+                  <hr style={{ width: '99%' }} />
+                  <h5 className="card-title text-left">
+                    Bill Rate
+                  </h5>
                   <div className="form-group col-sm-2">
                     <label htmlFor="inputText">Rate</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setRate(e.target.value)} value={rate} />
                   </div>
 
-                  <hr  style={{width:'99%'}} />
-                 <h5 className="card-title text-left">
-                  Pay Roll Parameter
-                </h5>
+                  <hr style={{ width: '99%' }} />
+                  <h5 className="card-title text-left">
+                    Pay Roll Parameter
+                  </h5>
                   <div className="form-group col-sm-2">
                     <label htmlFor="inputText">Rate</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setRate(e.target.value)} value={rate} />
