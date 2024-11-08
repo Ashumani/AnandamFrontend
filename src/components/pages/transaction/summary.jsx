@@ -12,7 +12,7 @@ const summary = () => {
 
   const returnsYear = {
     "month": [{ "monthNum": 1, "monthText": "Jan" }, { "monthNum": 2, "monthText": "Feb" }, { "monthNum": 3, "monthText": "Mar" }, { "monthNum": 4, "monthText": "Apr" }, { "monthNum": 5, "monthText": "May" }, { "monthNum": 6, "monthText": "Jun" }, { "monthNum": 7, "monthText": "Jul" }, { "monthNum": 8, "monthText": "Aug" }, { "monthNum": 9, "monthText": "Sep" }, { "monthNum": 10, "monthText": "Oct" }, { "monthNum": 11, "monthText": "Nov" }, { "monthNum": 12, "monthText": "Dec" }],
-    "Year": [2020, 2021, 2022, 2023, 2024]
+    "Year": [2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020, 2021, 2022, 2023, 2024]
   }
   const [ee_above58, set_ee_above58] = useState('')
   const [isDisabled, set_isDisabled] = useState(true);
@@ -286,7 +286,7 @@ const summary = () => {
           });
           getReturnByMonth(1)
 
-          closeModal();
+          closeModal('exampleModal');
 
         } else {
           Swal.fire({
@@ -445,7 +445,7 @@ const summary = () => {
           });
           getReturnByMonth(1)
 
-          closeModal();
+          closeModal('exampleModal');
 
         } else {
           Swal.fire({
@@ -683,28 +683,24 @@ const summary = () => {
 
       const data = await uploadMonthlyReturn(id, formData);
       if (data.status === true) {
+        closeModal('importReturn')
         Swal.fire({
-          position: 'top-right',
-          icon: 'success',
-          toast: true,
-          title: data.message,
-          showConfirmButton: false,
-          showCloseButton: true,
-          timer: 1500,
+          title: data.message ,
+            icon: 'success',
+            confirmButtonText: 'Okay'
         });
 
         // getAll();
       } else {
-        const uan = data.data.map((x) => x.ee_uan);
+        // const uan = data.data.map((x) => x.ee_uan);
+       
         Swal.fire({
-          position: 'top',
-          icon: 'error',
-          toast: true,
-          title: data.message + " : " + uan,
-          showConfirmButton: true,
-          showCloseButton: true,
-          timer: 10000,
+          title: data.message ,
+            icon: 'error',
+            confirmButtonText: 'Okay'
+        
         });
+        
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
 
@@ -733,15 +729,15 @@ const summary = () => {
   };
 
 
-  const closeModal = () => {
-    var modal = document.getElementById('exampleModal');
+  const closeModal = (modelName) => {
+    var modal = document.getElementById(modelName);
     var bootstrapModal = bootstrap.Modal.getInstance(modal);
     bootstrapModal.hide();
     reset1()
   };
 
-  const openModal = () => {
-    var modal = document.getElementById('exampleModal');
+  const openModal = (modelName) => {
+    var modal = document.getElementById(modelName);
     var bootstrapModal = new bootstrap.Modal(modal);
     bootstrapModal.show();
   };
@@ -788,7 +784,7 @@ const summary = () => {
               <div className="col-sm-2">
                 <button
                   type="file"
-                  className="btn btn-outline-primary btn-block rounded-4 rounded-4" data-toggle="modal" data-target="#importReturn"
+                  className="btn btn-outline-primary btn-block rounded-4 rounded-4" onClick={() => { openModal('importReturn') }}
                 >
                   Import
                 </button>
@@ -810,7 +806,7 @@ const summary = () => {
                     </div>
                   </div>
                   <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" className="btn btn-secondary" onClick={() => { closeModal('importReturn') }}>Close</button>
                     <button type="button" className="btn btn-primary" onClick={uploadMonthly}>Upload</button>
                   </div>
                 </div>
@@ -830,6 +826,7 @@ const summary = () => {
                   <th scope="col">Account 21</th>
                   <th scope="col">Account 22</th>
                   <th scope="col">Total</th>
+                  <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -844,6 +841,17 @@ const summary = () => {
                     <td>{employee.acc21}</td>
                     <td>{employee.acc22}</td>
                     <td>{employee.total}</td>
+                    <td>
+                      <div className="d-flex align-items-center">
+                        <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
+                          <i className="bi bi-eye text-info"></i>
+                        </button>
+                       
+                        <button className="btn btn-light" onClick={() => { deleteReturn(employee.id) }} >
+                          <i className="bi bi-trash text-danger"></i>
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -856,9 +864,35 @@ const summary = () => {
                   <td>{total_acc21}</td>
                   <td>{total_acc22}</td>
                   <td>{total_acc}</td>
+                  <td></td>
                 </tr>
               </tfoot>
             </table>
+                {/* Pagination Controls */}
+                <div className="pagination">
+              <button className="btn btn-primary"
+                disabled={currentPage === 1}
+                onClick={() => handlePageChange(currentPage - 1)}
+              >
+                Previous
+              </button>
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handlePageChange(index + 1)}
+                  style={{ margin: '0 2px', backgroundColor: currentPage === index + 1 ? '#1e60aa' : 'white', border: '0px' }}
+                >
+                  {index + 1}
+                </button>
+              ))}
+              <button className="btn btn-primary"
+                disabled={currentPage === totalPages}
+                onClick={() => handlePageChange(currentPage + 1)}
+              >
+                Next
+              </button>
+            </div>
+
           </section>
         </div>
       ) : (
@@ -870,14 +904,14 @@ const summary = () => {
             <br />
             <div className="row">
               <div className="col-sm">
-                <button type="button" className="btn btn-outline-primary btn-block rounded-4 " onClick={openModal}>
+                <button type="button" className="btn btn-outline-primary btn-block rounded-4 " onClick={() => { openModal('exampleModal') }}>
                   Add ({selectedMonth}-{selectedYear})
                 </button>
               </div>
               <div className="col-sm">
                 <button
                   type="file"
-                  className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#importReturn"
+                  className="btn btn-outline-primary btn-block rounded-4"  onClick={() => { openModal('importReturn') }}
                 >
                   Import
                 </button>
@@ -931,7 +965,7 @@ const summary = () => {
                 <div className="modal-content">
                   <div className="modal-header bg-primary">
                     <h5 className="modal-title" id="exampleModalLabel">EPF Return Filing For {selectedMonth}-{selectedYear}</h5>
-                    <button type="button" className="close text-white" aria-label="Close" onClick={closeModal}>
+                    <button type="button" className="close text-white" aria-label="Close" onClick={() => { closeModal('exampleModal') }}>
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -1036,7 +1070,7 @@ const summary = () => {
                                 <button type="button" className="btn btn-outline-primary btn-block rounded-4">Reset</button>
                               </div>
                               <div className="col-sm">
-                                <button type="button" className="btn btn-outline-primary btn-block rounded-4" data-dismiss="modal" aria-label="Close"  onClick={closeModal} >Close</button>
+                                <button type="button" className="btn btn-outline-primary btn-block rounded-4" data-dismiss="modal" aria-label="Close"  onClick={() => { closeModal('exampleModal') }} >Close</button>
                               </di  v>
                             </div> */}
                         </form>
@@ -1055,7 +1089,7 @@ const summary = () => {
                         <button type="button" className="btn btn-outline-primary btn-block rounded-4">Reset</button>
                       </div>
                       <div className="col-sm">
-                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" aria-label="Close" onClick={closeModal} >Close</button>
+                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" aria-label="Close" onClick={() => { closeModal('exampleModal') }} >Close</button>
                       </div>
                     </div>
 

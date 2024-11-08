@@ -67,7 +67,7 @@ const employer = () => {
         "dsc_mobile_number": dsc_mobile,
         "er_city": city,
         "ee_epf_rate": EpfRate,
-        "ee_eps_rate": EpsRate,
+        "er_eps_rate": EpsRate,
         "er_diff_rate": ErRate,
         "acc1_rate": Acc1,
         "acc2_rate": Acc2,
@@ -79,8 +79,27 @@ const employer = () => {
         "er_esic": er_esic,
         "ee_esic": ee_esic
       }
+  
+      const data = await erRegister(params);
 
-      await erRegister(params);
+      if (data.status === true) {
+        Swal.fire({
+          title: data.message,
+          icon: 'success',
+          confirmButtonText: 'Okay'
+        });
+
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: data.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+      }
 
 
     } catch (error) {
@@ -110,7 +129,7 @@ const employer = () => {
         "dsc_mobile_number": dsc_mobile,
         "er_city": city,
         "ee_epf_rate": EpfRate,
-        "ee_eps_rate": EpsRate,
+        "er_eps_rate": EpsRate,
         "er_diff_rate": ErRate,
         "acc1_rate": Acc1,
         "acc2_rate": Acc2,
@@ -123,25 +142,30 @@ const employer = () => {
         "ee_esic": ee_esic
       }
 
-      const data = await erUpdate(ErId, params);
-      if (data.status === true) {
-        Swal.fire({
-          title: data.message,
-          icon: 'success',
-          confirmButtonText: 'Okay'
-        });
 
-      } else {
-        Swal.fire({
-          position: 'top-right',
-          icon: 'error',
-          toast: true,
-          title: data.message,
-          showConfirmButton: false,
-          showCloseButton: true,
-          timer: 1500,
-        });
-      }
+
+        const data = await erUpdate(ErId, params);
+        if (data.status === true) {
+          Swal.fire({
+            title: data.message,
+            icon: 'success',
+            confirmButtonText: 'Okay'
+          });
+  
+        } else {
+          Swal.fire({
+            position: 'top-right',
+            icon: 'error',
+            toast: true,
+            title: data.message,
+            showConfirmButton: false,
+            showCloseButton: true,
+            timer: 1500,
+          });
+        }
+    
+
+    
 
     } catch (error) {
       console.error('Login error ', error);

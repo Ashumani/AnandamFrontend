@@ -167,9 +167,32 @@ const master = () => {
         "er_esic": er_esic,
         "ee_esic": ee_esic
       }
+    if(!EstName  || !EstEpfId  || !EstEsicId  || !EstType  || !ErName  || !estDoc  || !Mobile  || !Email  || !Address  || !ErDesignation  || !city  || !EpfRate  || !EpsRate  || !ErRate  || !Acc1  || !Acc2  || !Acc10  || !Acc21  || !Acc22  || !rate   || !er_esic  || !ee_esic ){
+    
+      Swal.fire({
+          title: "Fill The All Details",
+          icon: 'error',
+          confirmButtonText: 'Okay'
+        });
+      } else{
+        const data = await erRegister(params);
 
-      await erRegister(params);
-
+        if (data.status === true) {
+          Swal.fire({
+            title: data.message,
+            icon: 'success',
+            confirmButtonText: 'Okay'
+          });
+  
+        } else {
+          Swal.fire({
+            title: data.message,
+            icon: 'error',
+            confirmButtonText: 'Okay'
+          });
+        }
+      }
+   
 
     } catch (error) {
       console.error('Login error ', error);

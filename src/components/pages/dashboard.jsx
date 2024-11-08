@@ -260,6 +260,8 @@ const dashboard = () => {
           </div>
 
         </div>
+
+        <div className="chartView">
         <div className='charts'>
           <ResponsiveContainer width="100%" height="100%">
             {data && data.length > 0 ? (<BarChart
@@ -478,6 +480,8 @@ const dashboard = () => {
           </ResponsiveContainer>
 
         </div>
+        </div>
+        
       </main>
     </div>
   )
