@@ -8,7 +8,7 @@ import moment from 'moment-timezone';
 import React, { useRef } from 'react';
 const master = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const itemsPerPage = 10; // Number of items per page
+  const itemsPerPage = 5; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, set_totalPages] = useState(1);
 
@@ -27,20 +27,20 @@ const master = () => {
   const [Email, setEmail] = useState('');
   const [Mobile, setMobile] = useState('');
   const [Address, setAddress] = useState('');
-  const [EpfRate, setEpfRate] = useState('');
-  const [EpsRate, setEpsRate] = useState('');
-  const [ErRate, setErRate] = useState('');
-  const [Acc1, setAcc1] = useState('');
-  const [Acc2, setAcc2] = useState('');
-  const [Acc10, setAcc10] = useState('');
-  const [Acc21, setAcc21] = useState('');
-  const [Acc22, setAcc22] = useState('');
-  const [rate, setRate] = useState('');
+  const [EpfRate, setEpfRate] = useState(12);
+  const [EpsRate, setEpsRate] = useState(8.33);
+  const [ErRate, setErRate] = useState(3.67);
+  const [Acc1, setAcc1] = useState(15.67);
+  const [Acc2, setAcc2] = useState(0.50);
+  const [Acc10, setAcc10] = useState(8.33);
+  const [Acc21, setAcc21] = useState(0.50);
+  const [Acc22, setAcc22] = useState(0);
+  const [rate, setRate] = useState(1000);
   const [checkedDSC, setCheckedDSC] = useState(false);
   // eslint-disable-next-line react-hooks/rules-of-hooks, no-unused-vars
 
-  const [er_esic, set_er_esic] = useState('');
-  const [ee_esic, set_ee_esic] = useState('');
+  const [er_esic, set_er_esic] = useState(3.25);
+  const [ee_esic, set_ee_esic] = useState(0.75);
   
   const [dsc_on_name, set_dsc_on_name] = useState('');
   const [dsc_expire, set_dsc_expire] = useState('');
@@ -58,18 +58,18 @@ const master = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getAll();
+      await getAll(1);
     };
 
     fetchData();
 
   }, []);
 
-  const getAll = async () => {
+  const getAll = async (pageNumber) => {
     // api call
     const params = {
       "limit": itemsPerPage,
-      "offset": currentPage
+      "offset": pageNumber
     }
     try {
       // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
@@ -83,6 +83,7 @@ const master = () => {
         // set_startIndex((currentPage - 1) * itemsPerPage);
         set_totalPages(Math.ceil(response.count / itemsPerPage));
         set_currentItems(response.data);
+        
 
       }
 
@@ -308,7 +309,7 @@ const master = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    getAll();
+    getAll(pageNumber);
 
   };
 

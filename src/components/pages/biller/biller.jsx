@@ -173,12 +173,14 @@ const ecr = () => {
             }
 
             // Update state with new items and calculate total amount
-            setFinalBillArray(prevArray => {
+             setFinalBillArray(prevArray => {
                 const updatedArray = [...prevArray, ...newItems];
                 const newTotalAmount = updatedArray.reduce((total, bill) => parseInt(total) + parseInt(bill.amount), 0);
                 setTotalAmount(newTotalAmount);
                 return updatedArray;
             });
+
+            resetModel()
 
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -280,6 +282,9 @@ const ecr = () => {
                     showCloseButton: true,
                     timer: 1500,
                 });
+                setFinalBillArray([])
+                setTotalAmount('')
+       
 
             } else {
                 Swal.fire({
@@ -399,6 +404,17 @@ const ecr = () => {
         set_receivedAmount('')
         set_discountOnReceivedAmount('')
         set_gstOnReceived('')
+        setCheckedPf(false)
+        setCheckedEsic(false)
+        setCheckedCoverage(false)
+        setCheckedOther(false)
+        setpfAmount('')
+        setEsicAmount('')
+        setOtherAmount('')
+        setCoverageAmount('')
+        setOtherReason('')
+       
+
     };
 
     const resetPage = () => {
@@ -661,7 +677,7 @@ const ecr = () => {
                                         <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "2px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Received</button>
                                     </div>
                                 </div> */}
-``
+                                ``
 
                                 <div className="modal fade bd-example-modal-xl" tabIndex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                                     <div className="modal-dialog modal-xl">

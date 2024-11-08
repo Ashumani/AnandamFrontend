@@ -211,6 +211,15 @@ export const get3A = async (params) => {
         throw error.response.data.error;
     }
 }
+
+export const getYear = async (id) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/monthly/getYear/`+ id ,{ headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 export const fetchEpfReturn = async (id) => {
     try {
         const response = await axios.get(`${BASE_URL}/monthly/fetchEpfReturn/`+id,{ headers: header});
@@ -326,9 +335,9 @@ export const uploadSalary = async (id, formdata) => {
         throw error.response.data.error;
     }
 }
-export const getSummary = async (id) => {
+export const getSummary = async (id, year) => {
     try {
-        const response = await axios.get(`${BASE_URL}/monthly/getSummary/`+id,{ headers: header});
+        const response = await axios.get(`${BASE_URL}/monthly/getSummary/`+id + '/' + year,{ headers: header});
         return response.data;
     } catch (error) {
         throw error.response.data.error;
@@ -336,7 +345,7 @@ export const getSummary = async (id) => {
 }
 
 export const createBill = async (params) => {
-    try {
+    try { 
         const response = await axios.post(`${BASE_URL}/bill/create`, params, { headers: header});
         return response.data;
     } catch (error) {

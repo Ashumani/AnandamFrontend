@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
-import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary, downlaodFile, fetchEpfReturn, updateEpfReturn, sameAsPrev, deleteReturnById, generateECR, searchMonthlyEmployee } from "../../api/services";
+import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary, downlaodFile, fetchEpfReturn, updateEpfReturn, sameAsPrev, deleteReturnById, generateECR, searchMonthlyEmployee, getYear } from "../../api/services";
 import Swal from 'sweetalert2';
 import React, { useRef } from 'react';
 import moment from "moment";
@@ -12,15 +12,17 @@ const summary = () => {
 
   const returnsYear = {
     "month": [{ "monthNum": 1, "monthText": "Jan" }, { "monthNum": 2, "monthText": "Feb" }, { "monthNum": 3, "monthText": "Mar" }, { "monthNum": 4, "monthText": "Apr" }, { "monthNum": 5, "monthText": "May" }, { "monthNum": 6, "monthText": "Jun" }, { "monthNum": 7, "monthText": "Jul" }, { "monthNum": 8, "monthText": "Aug" }, { "monthNum": 9, "monthText": "Sep" }, { "monthNum": 10, "monthText": "Oct" }, { "monthNum": 11, "monthText": "Nov" }, { "monthNum": 12, "monthText": "Dec" }],
-    "Year": [2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020, 2021, 2022, 2023, 2024]
+    "Year": [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
   }
   const [ee_above58, set_ee_above58] = useState('')
+  const [returnsYearInSystem, set_returnsYearInSystem] = useState([])
   const [isDisabled, set_isDisabled] = useState(true);
   const [isSaveEnable, set_isSaveEnable] = useState(true);
 
   const modalRef = useRef(null);
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [selectedYear, setSelectedYear] = useState(2024);
+  const [selectedReturnYear, setSelectedRturnYear] = useState('');
 
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
@@ -87,6 +89,7 @@ const summary = () => {
   useEffect(() => {
     const fetchData = async () => {
       getAllSummary();
+      getAllYear();
     };
 
     fetchData();
@@ -97,7 +100,7 @@ const summary = () => {
     // api call
     try {
       // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-      const response = await getSummary(getErId());
+      const response = await getSummary(getErId(), selectedYear);
       if (response.status == true) {
         set_totalPages(Math.ceil(response.count / itemsPerPage));
         set_currentItems(response.data);
@@ -111,6 +114,19 @@ const summary = () => {
       }
 
 
+    } catch (error) {
+      console.error('Error fetching data:', error);
+
+    }
+  };
+
+  const getAllYear = async () => {
+    // api call
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await getYear(getErId());
+    
+      set_returnsYearInSystem(response.data)
     } catch (error) {
       console.error('Error fetching data:', error);
 
@@ -469,14 +485,14 @@ const summary = () => {
     }
   };
 
-  const genECR = async () => {
+  const genECR = async (month, year ) => {
     // api call
     try {
       const params = {
         "est_id": getErId(),
         "ee_id": 0,
-        "month": selectedMonth,
-        "year": selectedYear
+        "month": month,
+        "year": year
       }
       const userData = await generateECR(params);
 
@@ -590,14 +606,16 @@ const summary = () => {
 
 
 
-  const getReturnByMonth = async (pageNumber) => {
+  const getReturnByMonth = async (pageNumber, month, year) => {
     // api call
     try {
+      setSelectedMonth(month)
+      setSelectedYear(year)
       const params = {
         "est_id": getErId(),
         "ee_id": 0,
-        "month": selectedMonth,
-        "year": selectedYear,
+        "month": month,
+        "year": year,
         "limit": itemsPerPage,
         "offset": pageNumber
       }
@@ -685,22 +703,22 @@ const summary = () => {
       if (data.status === true) {
         closeModal('importReturn')
         Swal.fire({
-          title: data.message ,
-            icon: 'success',
-            confirmButtonText: 'Okay'
+          title: data.message,
+          icon: 'success',
+          confirmButtonText: 'Okay'
         });
 
         // getAll();
       } else {
         // const uan = data.data.map((x) => x.ee_uan);
-       
+
         Swal.fire({
-          title: data.message ,
-            icon: 'error',
-            confirmButtonText: 'Okay'
-        
+          title: data.message,
+          icon: 'error',
+          confirmButtonText: 'Okay'
+
         });
-        
+
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
 
@@ -726,6 +744,10 @@ const summary = () => {
 
   const handleMonthChange = (e) => {
     setSelectedMonth(e.target.value);
+  };
+
+  const handleReturnYearChange = (e) => {
+    setSelectedRturnYear(e.target.value);
   };
 
 
@@ -777,7 +799,7 @@ const summary = () => {
                 </select>
               </div>
               <div className="col-sm-2">
-                <button type="button" className="btn btn-outline-primary btn-block rounded-4 rounded-4" onClick={() => { getReturnByMonth(1) }} >Next
+                <button type="button" className="btn btn-outline-primary btn-block rounded-4 rounded-4" onClick={() => { getReturnByMonth(1, selectedMonth, selectedYear) }} >Next
                   {/* <Link to="/auth/dashboard/monthlypf"><span >Next</span></Link> */}
                 </button>
               </div>
@@ -812,8 +834,26 @@ const summary = () => {
                 </div>
               </div>
             </div>
-
-            <h5 className="mt-4">EPF Summary </h5>
+            
+            <div className="row mt-4 mb-2">
+              <div className="col-sm">
+               
+              <h5 >EPF Summary </h5>
+              </div>
+              <div className="col-sm-3">
+                <select
+                  className="form-select rounded-4"
+                  aria-label="Default select example" value={selectedYear} onChange={handleReturnYearChange}
+                >
+                  {returnsYearInSystem.map((retYear) => (
+                    // eslint-disable-next-line react/jsx-key
+                    <option value={retYear.start_months}>{retYear.financial_year}</option>
+                  ))}
+                </select>
+              </div>
+          
+            </div>
+           
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -843,12 +883,15 @@ const summary = () => {
                     <td>{employee.total}</td>
                     <td>
                       <div className="d-flex align-items-center">
-                        <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
+                        <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { getReturnByMonth(1, moment(employee.month, 'MMM').month() + 1, employee.year) }}>
                           <i className="bi bi-eye text-info"></i>
                         </button>
-                       
-                        <button className="btn btn-light" onClick={() => { deleteReturn(employee.id) }} >
+
+                        {/* <button className="btn btn-light" onClick={() => { deleteReturn(employee.id) }} >
                           <i className="bi bi-trash text-danger"></i>
+                        </button> */}
+                        <button className="btn btn-light" onClick={() => { genECR(moment(employee.month, 'MMM').month() + 1, employee.year) }} >
+                          <i className="bi bi-download"></i>
                         </button>
                       </div>
                     </td>
@@ -868,31 +911,7 @@ const summary = () => {
                 </tr>
               </tfoot>
             </table>
-                {/* Pagination Controls */}
-                <div className="pagination">
-              <button className="btn btn-primary"
-                disabled={currentPage === 1}
-                onClick={() => handlePageChange(currentPage - 1)}
-              >
-                Previous
-              </button>
-              {Array.from({ length: totalPages }, (_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handlePageChange(index + 1)}
-                  style={{ margin: '0 2px', backgroundColor: currentPage === index + 1 ? '#1e60aa' : 'white', border: '0px' }}
-                >
-                  {index + 1}
-                </button>
-              ))}
-              <button className="btn btn-primary"
-                disabled={currentPage === totalPages}
-                onClick={() => handlePageChange(currentPage + 1)}
-              >
-                Next
-              </button>
-            </div>
-
+           
           </section>
         </div>
       ) : (
@@ -911,7 +930,7 @@ const summary = () => {
               <div className="col-sm">
                 <button
                   type="file"
-                  className="btn btn-outline-primary btn-block rounded-4"  onClick={() => { openModal('importReturn') }}
+                  className="btn btn-outline-primary btn-block rounded-4" onClick={() => { openModal('importReturn') }}
                 >
                   Import
                 </button>
@@ -935,7 +954,7 @@ const summary = () => {
               <div className="col-sm">
                 <button
                   type="button"
-                  className="btn btn-outline-primary btn-block rounded-4" onClick={genECR}
+                  className="btn btn-outline-primary btn-block rounded-4"  onClick={() => { genECR(selectedMonth, selectedYear) }}
                 >
                   ECR
                 </button>

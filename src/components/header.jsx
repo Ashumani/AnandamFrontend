@@ -132,7 +132,7 @@ const Header = () => {
           </select>
           {/* {selectedId && <p>Selected ID: {selectedId} Selected Key: {selectedKey}</p>} */}
         </div>
-        <div className="mt-2 ms-4">{selectedKey && <h5> {selectedKey}</h5>}</div>
+        {/* <div className="mt-2 ms-4">{selectedKey && <h5> {selectedKey}</h5>}</div> */}
         <nav className="header-nav ms-auto">
           <ul className="d-flex align-items-center">
             <li className="nav-item d-block d-lg-none">
