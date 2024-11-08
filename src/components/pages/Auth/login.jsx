@@ -53,14 +53,12 @@ const login = () => {
     }
   };
   return (
-    <div className="main-container">
-      {/* <section className="section register d-flex flex-column align-items-center justify-content-center py-4"> */}
-      <section className="section register flex-column align-items-center justify-content-center py-4">
+    <section className="section register flex-column align-items-center justify-content-center ">
         <div className="main-container">
         {/* <div className="row justify-content-center"> */}
           <div className="row">
-            <div className="col-lg-5 col-md-6 d-flex flex-column align-items-center justify-content-center py-4">
-              <div className="d-flex justify-content-center py-4">
+            <div style={{marginLeft:'18%'}} className="col-lg-5 col-md-5 d-flex flex-column align-items-center justify-content-center ">
+              <div className="d-flex justify-content-center">
                 <a
                   href="index.html"
                   className=" d-flex align-items-center w-auto"
@@ -128,7 +126,6 @@ const login = () => {
           </div>
         </div>
       </section>
-    </div>
   );
 };
 
