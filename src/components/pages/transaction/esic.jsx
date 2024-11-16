@@ -174,31 +174,43 @@ const esic = () => {
         ee_share: ee_esic,
         er_share: er_esic,
       }
-      const userData = await fillEsicReturn(params);
-      if (userData.status === true) {
-        Swal.fire({
-          position: 'top-right',
-          icon: 'success',
-          toast: true,
-          title: userData.message,
-          showConfirmButton: false,
-          showCloseButton: true,
-          timer: 1500,
-        });
-        closeModal();
 
-      } else {
+      if(ee_esic !== ''){
+     
+        const userData = await fillEsicReturn(params);
+        if (userData.status === true) {
+          Swal.fire({
+            position: 'top-right',
+            icon: 'success',
+            toast: true,
+            title: userData.message,
+            showConfirmButton: false,
+            showCloseButton: true,
+            timer: 1500,
+          });
+          closeModal();
+  
+        } else {
+          Swal.fire({
+            position: 'top-right',
+            icon: 'error',
+            toast: true,
+            title: userData.message,
+            showConfirmButton: false,
+            showCloseButton: true,
+            timer: 1500,
+          });
+        }
+  
+      }else{
         Swal.fire({
-          position: 'top-right',
-          icon: 'error',
-          toast: true,
-          title: userData.message,
-          showConfirmButton: false,
-          showCloseButton: true,
-          timer: 1500,
+          title: 'Warning',
+          text: 'Fill the all required fields',
+          icon: 'warning',
+          confirmButtonText: 'Okay'
         });
       }
-
+     
 
     } catch (error) {
       console.error('Login error ', error);

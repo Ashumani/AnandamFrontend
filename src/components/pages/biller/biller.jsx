@@ -69,18 +69,29 @@ const ecr = () => {
         try {
             // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
             const response = await getEmployer(params);
-            setEstId(response.data.est_epf_id);
-            setEstName(response.data.est_name)
-            setErName(response.data.er_name)
-            //   setEmail(response.data.er_email_id)
-            //   setMobile(response.data.er_mobile_number)
-            setAddress(response.data.est_address)
-            setDOC(response.data.est_doc)
-            set_rate(response.data.rate)
-            setEmail(response.data.er_email_id)
-            setMobile(response.data.er_mobile_number)
-            setDesignation(response.data.est_designation)
-            setCity(response.data.est_city)
+           
+            if (response.status === true) {
+                setEstId(response.data.est_epf_id);
+                setEstName(response.data.est_name)
+                setErName(response.data.er_name)
+                //   setEmail(response.data.er_email_id)
+                //   setMobile(response.data.er_mobile_number)
+                setAddress(response.data.est_address)
+                setDOC(response.data.est_doc)
+                set_rate(response.data.rate)
+                setEmail(response.data.er_email_id)
+                setMobile(response.data.er_mobile_number)
+                setDesignation(response.data.est_designation)
+                setCity(response.data.est_city)
+    
+            } else {
+                Swal.fire({
+                    title: response.message,
+                    icon: 'error',
+                    confirmButtonText: 'Okay'
+                });
+            }
+
 
 
 

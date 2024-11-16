@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getEstId, getErId } from "../Auth/authToken";
-import { getMasterList, uploadEmployer, erRegister, erUpdate } from "../../api/services";
+import { getMasterList, uploadEmployer, erRegister, erUpdate, getErRegister } from "../../api/services";
 import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
 import React, { useRef } from 'react';
@@ -242,53 +242,53 @@ const master = () => {
   };
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const params = {
-        "est_epf_id": getEstId()
-      }
-      try {
-        // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-        const response = await getErRegister(params);
-        // console.log(" jvdhvsdckskcsdcv ",JSON.stringify(response));
-        setEstEpfId(response.data.est_epf_id)
-        setEstEsicId(response.data.est_esic_id)
-        setEstType(response.data.est_type)
-        setDoc(response.data.est_doc)
-        setEstName(response.data.est_name)
-        setErName(response.data.er_name)
-        setEmail(response.data.er_email_id)
-        setMobile(response.data.er_mobile_number)
-        setAddress(response.data.est_address)
-        setEpfRate(response.data.ee_epf_rate)
-        setEpsRate(response.data.er_eps_rate)
-        setErRate(response.data.er_diff_rate)
-        set_dsc_on_name(response.data.name_on_dsc)
-        setCity(response.data.er_city)
-        set_dsc_designation(response.data.dsc_designation)
-        set_dsc_expire(response.data.dsc_date)
-        set_dsc_mobile(response.data.dsc_mobile_number)
-        set_designation(response.data.er_designation)
-        setAcc1(response.data.acc1_rate)
-        setAcc2(response.data.acc2_rate)
-        setAcc10(response.data.acc10_rate)
-        setAcc21(response.data.acc21_rate)
-        setAcc22(response.data.acc22_rate)
-        setRate(response.data.rate)
-        setErId(response.data.id)
-        setCheckedDSC(response.data.dsc_status)
-        setLoading(false);
-        setIsUpdate(true)
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setError('Error fetching data. Please try again.');
-        setLoading(false);
-        setIsUpdate(false)
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const params = {
+  //       "est_epf_id": getEstId()
+  //     }
+  //     try {
+  //       // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+  //       const response = await getErRegister(params);
+  //       // console.log(" jvdhvsdckskcsdcv ",JSON.stringify(response));
+  //       setEstEpfId(response.data.est_epf_id)
+  //       setEstEsicId(response.data.est_esic_id)
+  //       setEstType(response.data.est_type)
+  //       setDoc(response.data.est_doc)
+  //       setEstName(response.data.est_name)
+  //       setErName(response.data.er_name)
+  //       setEmail(response.data.er_email_id)
+  //       setMobile(response.data.er_mobile_number)
+  //       setAddress(response.data.est_address)
+  //       setEpfRate(response.data.ee_epf_rate)
+  //       setEpsRate(response.data.er_eps_rate)
+  //       setErRate(response.data.er_diff_rate)
+  //       set_dsc_on_name(response.data.name_on_dsc)
+  //       setCity(response.data.er_city)
+  //       set_dsc_designation(response.data.dsc_designation)
+  //       set_dsc_expire(response.data.dsc_date)
+  //       set_dsc_mobile(response.data.dsc_mobile_number)
+  //       set_designation(response.data.er_designation)
+  //       setAcc1(response.data.acc1_rate)
+  //       setAcc2(response.data.acc2_rate)
+  //       setAcc10(response.data.acc10_rate)
+  //       setAcc21(response.data.acc21_rate)
+  //       setAcc22(response.data.acc22_rate)
+  //       setRate(response.data.rate)
+  //       setErId(response.data.id)
+  //       setCheckedDSC(response.data.dsc_status)
+  //       setLoading(false);
+  //       setIsUpdate(true)
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //       setError('Error fetching data. Please try again.');
+  //       setLoading(false);
+  //       setIsUpdate(false)
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
 
 

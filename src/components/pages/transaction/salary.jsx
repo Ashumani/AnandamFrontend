@@ -480,6 +480,8 @@ const salary = () => {
     set_ee_netpay(0)
     set_ee_pt(0)
     set_ee_mswf(0)
+    search_pf('')
+    set_cal_gross_wages(0)
 
   }
 
@@ -757,7 +759,7 @@ const salary = () => {
                 <div className="modal-content">
                   <div className="modal-header bg-primary">
                     <h5 className="modal-title text-white" id="exampleModalLabel">Salary Return Filing For {selectedMonth}-{selectedYear}</h5>
-                    <button type="button" className="close text-white" data-dismiss="modal" aria-label="Close" onClick={closeModal}>
+                    <button type="button" className="close text-white"  onClick={closeModal}>
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>

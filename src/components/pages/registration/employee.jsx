@@ -611,7 +611,7 @@ const employee = () => {
                   <th>#</th>
                   <th>UAN</th>
                   <th>PFNO</th>
-                  <th>Aadhar</th>
+                  <th>ESIC</th>
                   <th>Name</th>
                   <th>DOB</th>
                   <th>DOJ</th>
@@ -633,7 +633,7 @@ const employee = () => {
                       <th >{globalIndex + 1}</th>
                       <td>{employee.ee_uan_no}</td>
                       <td>{employee.ee_pf_no}</td>
-                      <td>******</td>
+                      <td>{employee.ee_esic_no}</td>
                       <td >{employee.ee_name}</td>
                       <td >{moment(employee.ee_dob).format('YYYY-MM-DD')}</td>
                       <td>{moment(employee.ee_doj).format('YYYY-MM-DD')}</td>
