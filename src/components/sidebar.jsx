@@ -9,7 +9,7 @@ const Sidebar = () => {
     const { showAll } = useSidebar();
     const [side_items] = useState(
         [{
-            "mainItem": "Membership Ragistration",
+            "mainItem": "Ragistration",
             "path": "",
             "icon": "bi bi-menu-button-wide",
             "subItems": [
@@ -100,6 +100,27 @@ const Sidebar = () => {
                     "icon": "bi bi-circle"
                 }
             ]
+        },{
+            "mainItem": "Admin",
+            "path": "",
+            "icon": "bi bi-download",
+            "subItems": [
+                {
+                    "item": "User",
+                    "path": "/auth/dashboard/form/download",
+                    "icon": "bi bi-circle"
+                },
+                {
+                    "item": "Blogs",
+                    "path": "/auth/dashboard/form/download",
+                    "icon": "bi bi-circle"
+                },
+                {
+                    "item": "Inquiries",
+                    "path": "/auth/dashboard/form/download",
+                    "icon": "bi bi-circle"
+                }
+            ]
         }]
     );
     const [isShow] = useState(true);
@@ -118,7 +139,7 @@ const Sidebar = () => {
                     <li className="nav-item">
                         <a className="nav-link " href="/auth/dashboard/master">
                             <i className="bi bi-file-earmark"></i>
-                            <span>Memberships</span>
+                            <span>Master</span>
                         </a>
                     </li>
                     

@@ -540,18 +540,18 @@ const summary = () => {
       }
       const userData = await getEmployer(params);
       const epf_wages = value;
-
+      const epfwages_if_above = epf_wages < 15000 ? epf_wages : 15000
       set_ee_eps_wages(epf_wages < 15000 ? epf_wages : 15000)
       set_ee_edli_wages(epf_wages < 15000 ? epf_wages : 15000)
       set_ee_epf(Math.round(epf_wages * userData.data.ee_epf_rate / 100))
       let years = moment().diff(ee_dob, 'years');
       if (years > 58) {
-        set_er_epf(Math.floor(epf_wages * userData.data.ee_epf_rate / 100))
+        set_er_epf(Math.floor(epfwages_if_above * userData.data.ee_epf_rate / 100))
         set_er_eps(0)
 
       } else {
-        set_er_epf(Math.floor(epf_wages * userData.data.er_diff_rate / 100))
-        set_er_eps(Math.round(epf_wages * userData.data.er_eps_rate / 100))
+        set_er_epf(Math.floor(epfwages_if_above * userData.data.er_diff_rate / 100))
+        set_er_eps(Math.round(epfwages_if_above * userData.data.er_eps_rate / 100))
 
       }
       set_isSaveEnable(false)
@@ -707,8 +707,9 @@ const summary = () => {
           icon: 'success',
           confirmButtonText: 'Okay'
         });
-
-        // getAll();
+        if(monthly){ getAllSummary()}else{ getReturnByMonth(1, selectedMonth, selectedYear)}
+       
+       
       } else {
         // const uan = data.data.map((x) => x.ee_uan);
 
@@ -1206,8 +1207,8 @@ const summary = () => {
                   <th scope="col">EDLI Wages</th>
                   <th scope="col">EPS Wages</th>
                   <th scope="col">EE(12%)</th>
-                  <th scope="col">ER(3.67%)</th>
                   <th scope="col">EPS(8.33%)</th>
+                  <th scope="col">ER(3.67%)</th>
                   <th scope="col">NCP Days</th>
                   <th scope="col">Action</th>
                 </tr>
@@ -1223,8 +1224,8 @@ const summary = () => {
                     <td>{employee.edli_wages}</td>
                     <td>{employee.eps_wages}</td>
                     <td>{employee.ee_share}</td>
-                    <td>{employee.diff_share}</td>
                     <td>{employee.eps_share}</td>
+                    <td>{employee.diff_share}</td>
                     <td>{employee.ncp_days}</td>
                     <td>
                       <div className="d-flex align-items-center">

@@ -346,9 +346,11 @@ const employee = () => {
           showCloseButton: true,
           timer: 1500,
         });
+       
 
         getAll(1);
       } else {
+        
         const uan = data.data.map((x) => x.ee_uan_no);
         Swal.fire({
           position: 'top',

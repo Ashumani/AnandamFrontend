@@ -169,9 +169,36 @@ const master = () => {
         "ee_esic": ee_esic
       }
     if(!EstName  || !EstEpfId  || !EstEsicId  || !EstType  || !ErName  || !estDoc  || !Mobile  || !Email  || !Address  || !ErDesignation  || !city  || !EpfRate  || !EpsRate  || !ErRate  || !Acc1  || !Acc2  || !Acc10  || !Acc21  || !Acc22  || !rate   || !er_esic  || !ee_esic ){
-    
+      let fields ={EstName:EstName,
+        EstEpfId:EstEpfId,
+        EstEsicId:EstEsicId,
+        EstType:EstType,
+        ErName:ErName,
+        estDoc:estDoc,
+        Mobile:Mobile,
+        Email:Email,
+        Address:Address,
+        ErDesignation:ErDesignation,
+        city:city,
+        EpfRate:EpfRate,
+        EpsRate:EpsRate,
+        ErRate:ErRate,
+        Acc1:Acc1,
+        Acc2:Acc2,
+        Acc10:Acc10,
+        Acc21:Acc21,
+        Acc22:Acc22,
+        rate:rate,
+        er_esic:er_esic}
+        let arr = ''
+      for (const field in fields) {
+        if (!fields[field]) {
+           arr += `${field} field is mandatory \n`;
+        }
+    }
+
       Swal.fire({
-          title: "Fill The All Details",
+          title: arr,
           icon: 'error',
           confirmButtonText: 'Okay'
         });
@@ -184,6 +211,9 @@ const master = () => {
             icon: 'success',
             confirmButtonText: 'Okay'
           });
+
+          closeModal()
+          await getAll(1);
   
         } else {
           Swal.fire({
@@ -233,8 +263,64 @@ const master = () => {
         "dsc_status": checkedDSC
       }
 
-      await erUpdate(ErId, params);
+      if(!EstName  || !EstEpfId  || !EstEsicId  || !EstType  || !ErName  || !estDoc  || !Mobile  || !Email  || !Address  || !ErDesignation  || !city  || !EpfRate  || !EpsRate  || !ErRate  || !Acc1  || !Acc2  || !Acc10  || !Acc21  || !Acc22  || !rate   || !er_esic  || !ee_esic ){
+        let fields ={EstName:EstName,
+          EstEpfId:EstEpfId,
+          EstEsicId:EstEsicId,
+          EstType:EstType,
+          ErName:ErName,
+          estDoc:estDoc,
+          Mobile:Mobile,
+          Email:Email,
+          Address:Address,
+          ErDesignation:ErDesignation,
+          city:city,
+          EpfRate:EpfRate,
+          EpsRate:EpsRate,
+          ErRate:ErRate,
+          Acc1:Acc1,
+          Acc2:Acc2,
+          Acc10:Acc10,
+          Acc21:Acc21,
+          Acc22:Acc22,
+          rate:rate,
+          er_esic:er_esic}
+          let arr = ''
+        for (const field in fields) {
+          if (!fields[field]) {
+             arr += `${field} field is mandatory \n`;
+          }
+      }
+  
+        Swal.fire({
+            title: arr,
+            icon: 'error',
+            confirmButtonText: 'Okay'
+          });
+        } else{
+          const data =  await erUpdate(ErId, params);
+  
+          if (data.status === true) {
+            Swal.fire({
+              title: data.message,
+              icon: 'success',
+              confirmButtonText: 'Okay'
+            });
+  
+            closeModal()
+            await getAll(1);
+    
+          } else {
+            Swal.fire({
+              title: data.message,
+              icon: 'error',
+              confirmButtonText: 'Okay'
+            });
+          }
+        }
+     
 
+     
     } catch (error) {
       console.error('Login error ', error);
       setError(error);
@@ -314,24 +400,16 @@ const master = () => {
   };
 
 
-
   const closeModal = () => {
-    const modalElement = modalRef.current;
-    if (modalElement) {
-      // eslint-disable-next-line no-undef
-      const modal = new bootstrap.Modal(modalElement);
-      modal.hide();
-    }
+    var modal = document.getElementById('employerModel');
+    var bootstrapModal = bootstrap.Modal.getInstance(modal);
+    bootstrapModal.hide();
   };
 
   const openModal = () => {
-    const modalElement = modalRef.current;
-    console.log(modalElement)
-    if (modalElement) {
-      // eslint-disable-next-line no-undef
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show();
-    }
+    var modal = document.getElementById('employerModel');
+    var bootstrapModal = new bootstrap.Modal(modal);
+    bootstrapModal.show();
   };
   return (
     <div>
@@ -346,7 +424,7 @@ const master = () => {
             <div className="col-sm-2">
               <button
                 type="file"
-                className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target=".bd-example-modal-xl"> Add Employer</button>
+                className="btn btn-outline-primary btn-block rounded-4" onClick={openModal}> Add Employer</button>
             </div>
             <div className="col-sm-2">
               <button
@@ -453,7 +531,7 @@ const master = () => {
             </div>
           </div>
 
-          <div className="modal fade bd-example-modal-xl" tabIndex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+          <div className="modal fade bd-example-modal-xl" id="employerModel" tabIndex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-xl">
               <div className="modal-content">
                 <form>
@@ -626,14 +704,18 @@ const master = () => {
                   </div>
                   <div className="modal-footer">
                     {!isUpdate ? (
-                      <button type="button" className="btn btn-outline-secondary rounded-4" onClick={saveErDetails}>
+                      <button type="button" className="btn btn-outline-primary rounded-4" onClick={saveErDetails}>
                         Save
                       </button>
                     ) : (
-                      <button type="button" className="btn btn-outline-secondary rounded-4" onClick={updateErDetails}>
+                      <button type="button" className="btn btn-outline-primary rounded-4" onClick={updateErDetails}>
                         Update
                       </button>
                     )}
+
+                    <button type="button" className="btn btn-outline-danger rounded-4" onClick={closeModal}>
+                        Close
+                      </button>
                   </div>
                 </form>
               </div>
