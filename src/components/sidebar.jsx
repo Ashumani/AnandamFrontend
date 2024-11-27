@@ -103,21 +103,21 @@ const Sidebar = () => {
         },{
             "mainItem": "Admin",
             "path": "",
-            "icon": "bi bi-download",
+            "icon": "bi bi-shield-lock",
             "subItems": [
                 {
                     "item": "User",
-                    "path": "/auth/dashboard/form/download",
+                    "path": "/auth/dashboard/user",
                     "icon": "bi bi-circle"
                 },
                 {
                     "item": "Blogs",
-                    "path": "/auth/dashboard/form/download",
+                    "path": "/auth/dashboard/blogs",
                     "icon": "bi bi-circle"
                 },
                 {
                     "item": "Inquiries",
-                    "path": "/auth/dashboard/form/download",
+                    "path": "/auth/dashboard/inquiries",
                     "icon": "bi bi-circle"
                 }
             ]
