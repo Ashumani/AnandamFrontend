@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getEstId, getErId } from "../Auth/authToken";
-import { getMasterList, uploadEmployer, erRegister, erUpdate, getErRegister } from "../../api/services";
+import { getMasterList, uploadEmployer, erRegister, erUpdate, getErRegister, getAllInquiries } from "../../api/services";
 import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
 import React, { useRef } from 'react';
@@ -47,7 +47,7 @@ const inquiry = () => {
     }
     try {
       // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-      const response = await getMasterList(params);
+      const response = await getAllInquiries(params);
       if (response.status == true) {
         // setEmployeeData(response.data);
 
@@ -59,6 +59,12 @@ const inquiry = () => {
         set_currentItems(response.data);
         
 
+      } else {
+        Swal.fire({
+          title: response.message,
+          icon: 'error',
+          confirmButtonText: 'Okay'
+        });
       }
 
 
@@ -109,17 +115,20 @@ const inquiry = () => {
                   <th>message</th>
                   <th>Email</th>
                   <th>mobile</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
                 {currentItems.map((employee, index) => (
                   <tr key={employee.id}>
                     <th >{index + 1}</th>
-                    <td>{employee.est_name}</td>
-                    <td>{employee.est_epf_id}</td>
-                    <td>{employee.dsc_status ? "Active" : "InActive"}</td>
-                    <td >{moment(employee.dsc_date).format('YYYY-MM-DD')}</td>
-                    <td>{employee.empcount}</td>
+                    <td>{employee.name}</td>
+                    <td>{employee.subject}</td>
+                    <td>{employee.email}</td>
+                    <td>{employee.message}</td>
+                    <td >{moment(employee.date).format('YYYY-MM-DD')}</td>
+                    <td>Pending</td>
+                    
                     
                   </tr>
                 ))}

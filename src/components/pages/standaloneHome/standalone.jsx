@@ -39,10 +39,48 @@ import contactdec from "../../../standalone_assets/images/contact-dec.png"
 import phoneicon from "../../../standalone_assets/images/phone-icon.png"
 import emailicon from "../../../standalone_assets/images/email-icon.png"
 import locationicon from "../../../standalone_assets/images/location-icon.png"
+import { inquiryRegister } from '../../api/services';
+import Swal from 'sweetalert2';
 // import "./standalone.css"
 
 const standalone = () => {
+
+const [inquiryname,set_inquiryname] = useState('')
+const [email,set_email] = useState('')
+const [subject,set_subject] = useState('')
+const [message,set_message] = useState('')
   // const items = [{ "image": portfolio01, "title": "Manish", category: "T1" }, { "image": portfolio01, "title": "Manish", category: "T1" }, { "image": portfolio01, "title": "Manish", category: "T1" }];
+  const addInquiry = async () => {
+    // api call
+    const params = {
+      "name": inquiryname,
+      "email":email,
+      "subject":subject,
+      "message":message
+    }
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await inquiryRegister(params);
+      if (response.status == true) {
+        Swal.fire({
+          title: response.message,
+          icon: 'success',
+          confirmButtonText: 'Okay'
+        });
+      } else {
+        Swal.fire({
+          title: response.message,
+          icon: 'error',
+          confirmButtonText: 'Okay'
+        });
+      }
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+     
+    }
+  };
 
 
   return (
@@ -665,23 +703,23 @@ const standalone = () => {
                         </div>
                         <div className="col-lg-6">
                           <fieldset>
-                            <input type="name" name="name" id="name" placeholder="Name" autoComplete="on" required />
+                            <input type="name" name="name" id="name" placeholder="Name" autoComplete="on" required onChange={(e) => set_inquiryname(e.target.value)} />
                           </fieldset>
                           <fieldset>
-                            <input type="text" name="email" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email" required="" />
+                            <input type="text" name="email" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email" required onChange={(e) => set_email(e.target.value)} />
                           </fieldset>
                           <fieldset>
-                            <input type="subject" name="subject" id="subject" placeholder="Subject" autoComplete="on" />
+                            <input type="subject" name="subject" id="subject" placeholder="Subject" autoComplete="on" required onChange={(e) => set_subject(e.target.value)}/>
                           </fieldset>
                         </div>
                         <div className="col-lg-6">
                           <fieldset>
-                            <textarea name="message" type="text" className="form-control" id="message" placeholder="Message" required=""></textarea>
+                            <textarea name="message" type="text" className="form-control" id="message" placeholder="Message" required onChange={(e) => set_message(e.target.value)}></textarea>
                           </fieldset>
                         </div>
                         <div className="col-lg-12">
                           <fieldset>
-                            <button type="submit" id="form-submit" className="main-button ">Send Message Now</button>
+                            <button type="button"  className="main-button " onClick={addInquiry}>Send Message Now</button>
                           </fieldset>
                         </div>
                       </div>

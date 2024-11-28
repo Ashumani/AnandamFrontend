@@ -459,6 +459,50 @@ export const getYearsAndMonth = async () => {
         throw error.response.data.error;
     }
 }
+
+export const getAll = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/users/getAll`, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const register = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/users/register`, params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const getById = async (id) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/users/getById/`+ id, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const getAllInquiries = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/inquiries/getAllInquiries`, params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+export const inquiryRegister = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/inquiries/inquiryRegister`, params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 export const downlaodFile = async (url) => {
     try {
        

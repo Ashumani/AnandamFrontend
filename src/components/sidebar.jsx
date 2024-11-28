@@ -16,18 +16,18 @@ const Sidebar = () => {
                 {
                     "item": "Employer Registration",
                     "path": "/auth/dashboard/employer",
-                    "icon": "bi bi-circle"
+                    "icon": "bi bi-briefcase"
                 },
                 {
                     "item": "Employee Registration",
                     "path": "/auth/dashboard/employee",
-                    "icon": "bi bi-circle"
+                    "icon": "bi bi-person-fill"
                 }
             ]
         }, {
             "mainItem": "Compliance",
             "path": "",
-            "icon": "bi bi-journal-text",
+            "icon": "bi bi-shield-lock",
             "subItems": [
                 {
                     "item": "Salary",
@@ -37,12 +37,12 @@ const Sidebar = () => {
                 {
                     "item": "EPF Return",
                     "path": "/auth/dashboard/summary",
-                    "icon": "bi bi-currency-rupee"
+                    "icon": "bi bi-bank"
                 },
                 {
                     "item": "Esic Return",
                     "path": "/auth/dashboard/esic",
-                    "icon": "bi bi-currency-rupee"
+                    "icon": "bi bi-house-door"
                 }
             ]
         }, {
@@ -53,12 +53,12 @@ const Sidebar = () => {
                 {
                     "item": "ECR",
                     "path": "/auth/dashboard/ecr",
-                    "icon": "bi bi-circle"
+                    "icon": "bi bi-file-earmark-text"
                 },
                 {
                     "item": "Form 3A/6A",
                     "path": "/auth/dashboard/form3A6A",
-                    "icon": "bi bi-circle"
+                    "icon": "bi bi-file-earmark"
                 }
                 // ,
                 // {
@@ -80,12 +80,12 @@ const Sidebar = () => {
                 {
                     "item": "Create Invoice",
                     "path": "/auth/dashboard/bill/create",
-                    "icon": "bi bi-circle"
+                    "icon": "bi bi-pencil-square"
                 },
                 {
                     "item": "View Invoice",
                     "path": "/auth/dashboard/bill/billView",
-                    "icon": "bi bi-circle"
+                    "icon": "bi bi-eye"
                 }
             ]
         },
@@ -97,28 +97,28 @@ const Sidebar = () => {
                 {
                     "item": "Download",
                     "path": "/auth/dashboard/form/download",
-                    "icon": "bi bi-circle"
+                    "icon": "bi bi-download"
                 }
             ]
         },{
             "mainItem": "Admin",
             "path": "",
-            "icon": "bi bi-shield-lock",
+            "icon": "bi bi-person-badge",
             "subItems": [
                 {
                     "item": "User",
                     "path": "/auth/dashboard/user",
-                    "icon": "bi bi-circle"
+                    "icon": "bx bx-user"
                 },
                 {
                     "item": "Blogs",
                     "path": "/auth/dashboard/blogs",
-                    "icon": "bi bi-circle"
+                    "icon": "bx bxl-blogger"
                 },
                 {
                     "item": "Inquiries",
                     "path": "/auth/dashboard/inquiries",
-                    "icon": "bi bi-circle"
+                    "icon": "bi bi-question-circle"
                 }
             ]
         }]
@@ -138,7 +138,7 @@ const Sidebar = () => {
                     </li>
                     <li className="nav-item">
                         <a className="nav-link " href="/auth/dashboard/master">
-                            <i className="bi bi-file-earmark"></i>
+                            <i className="bi bi-archive"></i>
                             <span>Master</span>
                         </a>
                     </li>
@@ -154,7 +154,7 @@ const Sidebar = () => {
                                 <ul key={index1} id={`components-nav-${index}`} className="nav-content collapse " data-bs-parent="#sidebar-nav">
                                     <li>
                                         <Link to={item1.path}>
-                                            <i className={item1.icon}></i><span>{item1.item}</span>
+                                            <i className={item1.icon} style={{ transform: "scale(2.5)" }}></i><span>{item1.item}</span>
                                         </Link>
                                     </li>
                                 </ul>
