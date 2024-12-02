@@ -119,6 +119,11 @@ const Sidebar = () => {
                     "item": "Inquiries",
                     "path": "/auth/dashboard/inquiries",
                     "icon": "bi bi-question-circle"
+                },
+                {
+                    "item": "Form",
+                    "path": "/auth/dashboard/form",
+                    "icon": "bi bi-question-circle"
                 }
             ]
         }]

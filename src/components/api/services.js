@@ -503,6 +503,25 @@ export const inquiryRegister = async (params) => {
         throw error.response.data.error;
     }
 }
+
+export const addBlogs = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/blogs/addBlogs`, params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const getAllBlogs = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/blogs/getAllBlogs`, params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
 export const downlaodFile = async (url) => {
     try {
        

@@ -6,7 +6,7 @@ import { addBlogs, getAllBlogs } from "../../api/services";
 import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
 import React, { useRef } from 'react';
-const blogs = () => {
+const customiza = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const itemsPerPage = 5; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
@@ -344,4 +344,4 @@ const blogs = () => {
   );
 };
 
-export default blogs;
+export default customiza;
