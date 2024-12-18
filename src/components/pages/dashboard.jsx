@@ -292,7 +292,7 @@ const dashboard = () => {
                   { id: 'pv', type: 'line', color: '#2b6b86', value: 'Employee Count' },
                   { id: 'uv', type: 'line', color: '#f7c94c', value: 'Challan Count' },
                 ]}
-                verticalAlign="top"
+                verticalAlign="bottom"
               />
               <Bar dataKey="pv" fill="url(#colorPv)">
                 <LabelList dataKey="pv" position="top" />
@@ -394,7 +394,7 @@ const dashboard = () => {
                     { id: 'totalbill', type: 'line', color: '#2b6b86', value: 'Total Bill' },
                     { id: 'totalamtreceived', type: 'line', color: '#f7c94c', value: 'Total Amount Received' },
                   ]}
-                  verticalAlign="top"
+                  verticalAlign="bottom"
                 />
                 <Bar dataKey="totalbill" fill="url(#colorTotalBill)">
                   <LabelList dataKey="totalbill" position="top" />
@@ -434,7 +434,7 @@ const dashboard = () => {
 
         </div>
 
-        <div className='charts'>
+        {/* <div className='charts'>
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart width={730} height={250} data={data}
               margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
@@ -479,7 +479,7 @@ const dashboard = () => {
             </ScatterChart>
           </ResponsiveContainer>
 
-        </div>
+        </div> */}
         </div>
         
       </main>

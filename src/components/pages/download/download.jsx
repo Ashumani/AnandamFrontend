@@ -76,7 +76,7 @@ const Download = () => {
                     </div>
                 </div>
 
-                <div className="row">
+                {/* <div className="row">
                     <h1>Word to PDF Converter</h1>
                     <div className="col-sm-4">
                         <input className="form-control" type="file" accept=".docx" onChange={handleFileChange} />
@@ -86,9 +86,39 @@ const Download = () => {
                             Convert to PDF
                         </button>
                     </div>
+                </div> */}
+                <div style={{"color": "black"}}>
+                <div className='main-title mt-4'>
+                    <h3>To Do</h3>
+                   
                 </div>
-                
+                <div>
+                    <h6>Salary</h6>
+                    <p>Dynamic Form Creation for Salary Sheet</p>
+                </div>
+                <div >
+                    <h6>Esic</h6>
+                    <p>Esic restriction on 21000</p>
+                    <ul>
+                        <li>Salary below 21000 is exempt</li>
+                        <li>Contribution based on salary</li>
+                        <li>Employee and employer contribution structure</li>
+                    </ul>
+                </div>
+                <div >
+                    <h6>User</h6>
+                    <p>User Remov and Update</p>
+                    <ul>
+                        <li>when USer remove -- all data should be remove</li>
+                        <li>Contribution based on salary</li>
+                        <li>Employee and employer contribution structure</li>
+                    </ul>
+                </div>
+                </div>
+
             </section>
+
+
         </div>
     );
 };

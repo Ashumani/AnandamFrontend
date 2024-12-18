@@ -166,6 +166,13 @@ const Sidebar = () => {
                             ))}
                         </li>
                     ))}
+
+                    <li className="nav-item">
+                        <a className="nav-link " href="/login">
+                            <i className="bi bi-box-arrow-right"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
                 </ul>
             </aside>
         </>

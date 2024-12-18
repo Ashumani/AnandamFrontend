@@ -98,7 +98,7 @@ const inquiry = () => {
     <div>
 
       <div className="main-container">
-        <div className='main-title'>
+        <div className='main-title mt-5'>
           <h3>Inquiries</h3>
         </div>
         <section className="section">
@@ -116,6 +116,8 @@ const inquiry = () => {
                   <th>Email</th>
                   <th>mobile</th>
                   <th>Status</th>
+                  <th>Comment</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -128,7 +130,16 @@ const inquiry = () => {
                     <td>{employee.message}</td>
                     <td >{moment(employee.date).format('YYYY-MM-DD')}</td>
                     <td>Pending</td>
-                    
+                    <td>No Response</td>
+                    <td>
+                        <div className="d-flex align-items-center">
+                          
+                          <button className="btn btn-light" disabled>
+                            <i className="bi bi-check text-success"></i>
+                          </button>
+                        </div>
+                      </td>
+
                     
                   </tr>
                 ))}
