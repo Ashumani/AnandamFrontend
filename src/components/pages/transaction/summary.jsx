@@ -189,6 +189,7 @@ const summary = () => {
     try {
       reset1();
       set_isUpdate(true);
+      openModal('EpfReturnFillingModel')
       const userData = await fetchEpfReturn(id);
       if (userData.status === true) {
         const currentDate = moment();
@@ -197,7 +198,8 @@ const summary = () => {
         set_eReturn_id(userData.data.id);
         set_ee_id(userData.data.ee_id);
         set_ee_name(userData.data.ee_name);
-        set_ee_uan_no(userData.data.ee_uan_no);
+        set_ee_uan_no(userData.data.ee_uan);
+        set_search_uan(userData.data.ee_uan)
         set_ee_pf_no(userData.data.ee_pf_no);
         set_ee_dob(userData.data.ee_dob);
         set_ee_doj(userData.data.ee_doj);
@@ -217,6 +219,7 @@ const summary = () => {
         set_er_epf(userData.data.diff_share);
         set_er_eps(userData.data.eps_share);
         // setIsUpdate(true)
+        set_isDisabled(false)
       }
 
     } catch (error) {
@@ -260,7 +263,7 @@ const summary = () => {
     // api call
     try {
 
-      const valid = await validate()
+      const valid = true // await validate()
 
       if (!valid) {
         Swal.fire({
@@ -281,7 +284,7 @@ const summary = () => {
           "gross_wages": cal_gross_wages,
           "epf_wages": cal_epf_wages,
           "edli_wages": ee_edli_wages,
-          "eps_wages": ee_epf_wages,
+          "eps_wages": ee_eps_wages ,
           "ee_share": ee_epf,
           "diff_share": er_epf,
           "eps_share": er_eps,
@@ -300,9 +303,10 @@ const summary = () => {
             showCloseButton: true,
             timer: 1500,
           });
-          getReturnByMonth(1)
+          getReturnByMonth(1, selectedMonth, selectedYear)
 
-          closeModal('exampleModal');
+          closeModal('EpfReturnFillingModel');
+         
 
         } else {
           Swal.fire({
@@ -348,7 +352,7 @@ const summary = () => {
           showCloseButton: true,
           timer: 1500,
         });
-        getReturnByMonth(1)
+        getReturnByMonth(1, selectedMonth, selectedYear) 
 
       } else {
         Swal.fire({
@@ -388,7 +392,7 @@ const summary = () => {
           showCloseButton: true,
           timer: 1500,
         });
-        getReturnByMonth(1)
+        getReturnByMonth(1, selectedMonth, selectedYear)
 
 
 
@@ -419,7 +423,7 @@ const summary = () => {
     try {
 
 
-      const valid = await validate()
+      const valid = true //await validate()
 
       if (!valid) {
         Swal.fire({
@@ -431,6 +435,7 @@ const summary = () => {
       } else {
 
         const params = {
+          "id":eReturn_id,
           "est_id": getErId(),
           "ee_id": ee_id,
           "ee_uan": ee_uan_no,
@@ -441,7 +446,7 @@ const summary = () => {
           "gross_wages": cal_gross_wages,
           "epf_wages": cal_epf_wages,
           "edli_wages": ee_edli_wages,
-          "eps_wages": ee_epf_wages,
+          "eps_wages": ee_eps_wages,
           "ee_share": ee_epf,
           "diff_share": er_epf,
           "eps_share": er_eps,
@@ -459,9 +464,9 @@ const summary = () => {
             showCloseButton: true,
             timer: 1500,
           });
-          getReturnByMonth(1)
+          getReturnByMonth(1, selectedMonth, selectedYear)
 
-          closeModal('exampleModal');
+          closeModal('EpfReturnFillingModel');
 
         } else {
           Swal.fire({
@@ -541,16 +546,18 @@ const summary = () => {
       const userData = await getEmployer(params);
       const epf_wages = value;
       const epfwages_if_above = epf_wages < 15000 ? epf_wages : 15000
-      set_ee_eps_wages(epf_wages < 15000 ? epf_wages : 15000)
-      set_ee_edli_wages(epf_wages < 15000 ? epf_wages : 15000)
+      set_ee_eps_wages(epf_wages <= 15000 ? epf_wages : 15000)
+      set_ee_edli_wages(epf_wages <= 15000 ? epf_wages : 15000)
       set_ee_epf(Math.round(epf_wages * userData.data.ee_epf_rate / 100))
       let years = moment().diff(ee_dob, 'years');
+   
       if (years > 58) {
-        set_er_epf(Math.floor(epfwages_if_above * userData.data.ee_epf_rate / 100))
+        set_er_epf(Math.round(epfwages_if_above * userData.data.ee_epf_rate / 100))
+        set_ee_eps_wages(0)
         set_er_eps(0)
 
       } else {
-        set_er_epf(Math.floor(epfwages_if_above * userData.data.er_diff_rate / 100))
+        set_er_epf(Math.round(epfwages_if_above * userData.data.er_diff_rate / 100))
         set_er_eps(Math.round(epfwages_if_above * userData.data.er_eps_rate / 100))
 
       }
@@ -924,7 +931,7 @@ const summary = () => {
             <br />
             <div className="row">
               <div className="col-sm">
-                <button type="button" className="btn btn-outline-primary btn-block rounded-4 " onClick={() => { openModal('exampleModal') }}>
+                <button type="button" className="btn btn-outline-primary btn-block rounded-4 " onClick={() => { openModal('EpfReturnFillingModel') }}>
                   Add ({selectedMonth}-{selectedYear})
                 </button>
               </div>
@@ -980,12 +987,12 @@ const summary = () => {
             {/* Add Epf Return Model */}
             {/* {showModal && ( */}
             {/* <div style={{ display: 'block' }} className="modal fade show" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
-            <div className="modal fade bd-example-modal-lg" id="exampleModal" ref={modalRef} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade bd-example-modal-lg" id="EpfReturnFillingModel" ref={modalRef} role="dialog" aria-labelledby="EpfReturnFillingModelLabel" aria-hidden="true">
               <div className="modal-dialog modal-lg" role="document">
                 <div className="modal-content">
                   <div className="modal-header bg-primary">
-                    <h5 className="modal-title" id="exampleModalLabel">EPF Return Filing For {selectedMonth}-{selectedYear}</h5>
-                    <button type="button" className="close text-white" aria-label="Close" onClick={() => { closeModal('exampleModal') }}>
+                    <h5 className="modal-title" id="EpfReturnFillingModelLabel">EPF Return Filing For {selectedMonth}-{selectedYear}</h5>
+                    <button type="button" className="close text-white" aria-label="Close" onClick={() => { closeModal('EpfReturnFillingModel') }}>
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -1070,13 +1077,14 @@ const summary = () => {
                               <label htmlFor="inputPassword">EE</label>
                               <input type="number" className="form-control rounded-4" disabled value={ee_epf} />
                             </div>
-                            <div className="col mb-3">
-                              <label htmlFor="inputPassword">ER</label>
-                              <input type="number" className="form-control rounded-4" disabled value={er_epf} />
-                            </div>
+                            
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">EPS</label>
                               <input type="number" className="form-control rounded-4" disabled value={er_eps} />
+                            </div>
+                            <div className="col mb-3">
+                              <label htmlFor="inputPassword">ER</label>
+                              <input type="number" className="form-control rounded-4" disabled value={er_epf} />
                             </div>
                           </div>
                           {/* <div className="row">
@@ -1109,7 +1117,7 @@ const summary = () => {
                         <button type="button" className="btn btn-outline-primary btn-block rounded-4">Reset</button>
                       </div>
                       <div className="col-sm">
-                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" aria-label="Close" onClick={() => { closeModal('exampleModal') }} >Close</button>
+                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" aria-label="Close" onClick={() => { closeModal('EpfReturnFillingModel') }} >Close</button>
                       </div>
                     </div>
 

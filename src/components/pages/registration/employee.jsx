@@ -93,24 +93,26 @@ const employee = () => {
 
       let t = {}
 
-      if (!ee_uan_no) t.ee_uan_no = "Uan Requird" ; valid=false;
-      if (!ee_name) t.ee_name = "ee_name is required" ; valid=false;
-      if (!ee_mobile_number) t.ee_mobile_number = "ee_mobile_number is required" ; valid=false;
-      if (!ee_email_id) t.ee_email_id = "ee_email_id is required" ; valid=false;
-      if (!ee_uan_no) t.ee_uan_no = "ee_uan_no is required" ; valid=false;
-      if (!ee_pf_no) t.ee_pf_no = "ee_pf_no is required" ; valid=false;
-      if (!ee_aadhar_no) t.ee_aadhar_no = "ee_aadhar_no is required" ; valid=false;
-      if (!ee_dob) t.ee_dob = "ee_dob is required" ; valid=false;
-      if (!ee_doj) t.ee_doj = "ee_doj is required" ; valid=false;
-      if (!ee_dol) t.ee_dol = "ee_dol is required" ; valid=false;
-      if (!ee_gender) t.ee_gender = "ee_gender is required" ; valid=false;
-      if (!ee_maritial_status) t.ee_maritial_status = "ee_maritial_status is required" ; valid=false;
-      if (!ee_father_husband) t.ee_father_husband = "ee_father_husband is required" ; valid=false;
-      if (!ee_relation) t.ee_relation = "ee_relation is required" ; valid=false;
-      if (!ee_gross_wages) t.ee_gross_wages = "ee_gross_wages is required" ; valid=false;
-      if (!ee_epf_wages) t.ee_epf_wages = "ee_epf_wages is required" ; valid=false;
+      if (ee_uan_no == '') t.ee_uan_no = "Uan Requird" ; valid=false ; console.log(1)
+      if (ee_name == '') t.ee_name = "ee_name is required" ; valid=false;console.log(2)
+      // if (ee_mobile_number == '') t.ee_mobile_number = "ee_mobile_number is required" ; valid=false;
+      // if (ee_email_id == '') t.ee_email_id = "ee_email_id is required" ; valid=false;
+      if (ee_uan_no == '') t.ee_uan_no = "ee_uan_no is required" ; valid=false;console.log(3)
+      if (ee_pf_no == '') t.ee_pf_no = "ee_pf_no is required" ; valid=false;console.log(4)
+      // if (ee_aadhar_no == '') t.ee_aadhar_no = "ee_aadhar_no is required" ; valid=false;
+      if (ee_dob == '') t.ee_dob = "ee_dob is required" ; valid=false;console.log(5)
+      if (ee_doj == '') t.ee_doj = "ee_doj is required" ; valid=false;console.log(6)
+      // if (ee_dol == '') t.ee_dol = "ee_dol is required" ; valid=false;
+      if (ee_gender == '') t.ee_gender = "ee_gender is required" ; valid=false;console.log(7)
+      if (ee_maritial_status == '') t.ee_maritial_status = "ee_maritial_status is required" ; valid=false;console.log(8)
+      if (ee_father_husband == '') t.ee_father_husband = "ee_father_husband is required" ; valid=false;console.log(9)
+      if (ee_relation == '') t.ee_relation = "ee_relation is required" ; valid=false;console.log(10)
+      if (ee_gross_wages == '') t.ee_gross_wages = "ee_gross_wages is required" ; valid=false;console.log(11)
+      if (!ee_epf_wages) t.ee_epf_wages = "ee_epf_wages is required" ; valid=false;console.log(12)
 
       setErrors(t)
+      console.log(err)
+      console.log(t)
       return valid
     } catch (error) {
       throw new Error()
@@ -120,7 +122,7 @@ const employee = () => {
   const saveEEDetails = async () => {
     // api call
     try {
-      const valid = await validate()
+      const valid = true // await validate()
       if (!valid) {
         Swal.fire({
           title: 'Error',
