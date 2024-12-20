@@ -8,7 +8,7 @@ import moment from 'moment-timezone';
 import React, { useRef } from 'react';
 const master = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const itemsPerPage = 5; // Number of items per page
+  const itemsPerPage = 20; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, set_totalPages] = useState(1);
 
