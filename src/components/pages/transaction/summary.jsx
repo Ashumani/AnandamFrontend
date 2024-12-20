@@ -777,7 +777,7 @@ const summary = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    getReturnByMonth(pageNumber);
+    getReturnByMonth(pageNumber, selectedMonth, selectedYear);
   };
 
 
@@ -862,7 +862,7 @@ const summary = () => {
                 <div className="modal-content">
                   <div className="modal-header">
                     <h5 className="modal-title" id="exampleModalLabel">Uplaod FIles</h5>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" className="close" onClick={() => {closeModal('importReturn')}} aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -1258,9 +1258,14 @@ const summary = () => {
                 </tr>
               </thead>
               <tbody>
-                {currentItems.map((employee, index) => (
-                  <tr key={index}>
-                    <th scope="row">{index}</th>
+             
+
+                {currentItems.map((employee, index) => {
+                  const globalIndex = currentPage * itemsPerPage - itemsPerPage + index;
+                  return (
+
+                    <tr key={index}>
+                    <th scope="row">{globalIndex + 1}</th>
                     <th scope="row">{employee.ee_uan}</th>
                     <td>{employee.ee_name}</td>
                     <td>{employee.gross_wages}</td>
@@ -1285,7 +1290,8 @@ const summary = () => {
                       </div>
                     </td>
                   </tr>
-                ))}
+                  )
+                })}
               </tbody>
               <tfoot>
                 <tr>
