@@ -235,23 +235,59 @@ const summary = () => {
 
     try {
 
-      let valid = true;
-
-      let t = {}
-
-      if (!ee_uan_no) t.ee_uan_no = "ee_uan_no is required"; valid = false;
-      if (!ee_name) t.ee_name = "ee_uan_no is required"; valid = false;
-      if (!selectedMonth) t.selectedMonth = "ee_uan_no is required"; valid = false;
-      if (!selectedYear) t.selectedYear = "ee_uan_no is required"; valid = false;
-      if (!cal_gross_wages) t.cal_gross_wages = "ee_uan_no is required"; valid = false;
-      if (!cal_epf_wages) t.cal_epf_wages = "ee_uan_no is required"; valid = false;
-      if (!ee_edli_wages) t.ee_edli_wages = "ee_uan_no is required"; valid = false;
-      if (!ee_epf_wages) t.ee_epf_wages = "ee_uan_no is required"; valid = false;
-      if (!ee_epf) t.ee_epf = "ee_uan_no is required"; valid = false;
-      if (!er_epf) t.er_epf = "ee_uan_no is required"; valid = false;
-      if (!er_eps) t.er_eps = "ee_uan_no is required"; valid = false;
-
-
+      var valid = true;
+      var t = {};
+      
+      // Check for required fields
+      if (!ee_uan_no) {
+          t.ee_uan_no = "ee_uan_no is required";
+          valid = false;
+      }
+      
+      if (!ee_name) {
+          t.ee_name = "ee_name is required";
+          valid = false;
+      }
+      
+      if (!selectedMonth) {
+          t.selectedMonth = "selectedMonth is required";
+          valid = false;
+      }
+      
+      if (!selectedYear) {
+          t.selectedYear = "selectedYear is required";
+          valid = false;
+      }
+      
+      if (!cal_gross_wages) {
+          t.cal_gross_wages = "cal_gross_wages is required";
+          valid = false;
+      }
+      
+      if (!cal_epf_wages) {
+          t.cal_epf_wages = "cal_epf_wages is required";
+          valid = false;
+      }
+      
+      if (!ee_edli_wages) {
+          t.ee_edli_wages = "ee_edli_wages is required";
+          valid = false;
+      }
+      
+      if (!ee_epf) {
+          t.ee_epf = "ee_epf is required";
+          valid = false;
+      }
+      
+      if (!er_epf) {
+          t.er_epf = "er_epf is required";
+          valid = false;
+      }
+      
+      if (!er_eps) {
+          t.er_eps = "er_eps is required";
+          valid = false;
+      }
       setErrors(t)
       return valid
     } catch (error) {
@@ -263,7 +299,7 @@ const summary = () => {
     // api call
     try {
 
-      const valid = true // await validate()
+      const valid =  await validate()
 
       if (!valid) {
         Swal.fire({
@@ -741,7 +777,7 @@ const summary = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    getReturnByMonth(pageNumber);
+    getReturnByMonth(pageNumber, selectedMonth, selectedYear);
   };
 
 
@@ -826,7 +862,7 @@ const summary = () => {
                 <div className="modal-content">
                   <div className="modal-header">
                     <h5 className="modal-title" id="exampleModalLabel">Uplaod FIles</h5>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" className="close" onClick={() => {closeModal('importReturn')}} aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -1222,9 +1258,14 @@ const summary = () => {
                 </tr>
               </thead>
               <tbody>
-                {currentItems.map((employee, index) => (
-                  <tr key={index}>
-                    <th scope="row">{index}</th>
+             
+
+                {currentItems.map((employee, index) => {
+                  const globalIndex = currentPage * itemsPerPage - itemsPerPage + index;
+                  return (
+
+                    <tr key={index}>
+                    <th scope="row">{globalIndex + 1}</th>
                     <th scope="row">{employee.ee_uan}</th>
                     <td>{employee.ee_name}</td>
                     <td>{employee.gross_wages}</td>
@@ -1249,7 +1290,8 @@ const summary = () => {
                       </div>
                     </td>
                   </tr>
-                ))}
+                  )
+                })}
               </tbody>
               <tfoot>
                 <tr>
