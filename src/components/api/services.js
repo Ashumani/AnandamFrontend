@@ -29,7 +29,7 @@ export const erRegister = async (params) => {
         return response.data;
     } catch (error) {
         throw error.response.data.error;
-    }
+    }iin
 }
 
 export const getEmployer = async (params) => {
@@ -554,6 +554,16 @@ export const downlaodFile = async (url) => {
 export const NewsData = async () => {
     try {
         const response = await axios.get(`https://newsdata.io/api/1/news?apikey=pub_53971c38bbbb34b05259bb48d72f797e88dc6&q=EPF`);
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+
+export const deleteRecords = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/users/deleteRecords`, params, { headers: header});
         return response.data;
     } catch (error) {
         throw error.response.data.error;

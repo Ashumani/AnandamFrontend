@@ -2,105 +2,44 @@
 
 import { useState, useEffect } from "react"
 import { getEstId, getErId } from "../Auth/authToken";
-import { addBlogs, getAllBlogs } from "../../api/services";
+import { deleteRecords } from "../../api/services";
 import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
 import React, { useRef } from 'react';
 const superUser = () => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const itemsPerPage = 5; // Number of items per page
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, set_totalPages] = useState(1);
 
-  // Get current items based on the current page
-  const [currentItems, set_currentItems] = useState([]);
-  const modalRef = useRef(null);
+  const [isCheckedmonthly, set_isCheckedmonthly] = useState(false)
+  const [isCheckedesic, set_isCheckedesic] = useState(false)
+  const [isCheckedsummary, set_isCheckedsummary] = useState(false)
+  const [isCheckedsalary, set_isCheckedsalary] = useState(false)
+  const [isCheckedemployee, set_isCheckedemployee] = useState(false)
+  const [isCheckedemployer, set_isCheckedemployer] = useState(false)
 
-  const [title, set_title] = useState('');
-  const [category, set_category] = useState('');
-  const [subject, set_subject] = useState('');
-  const [message, set_message] = useState('');
-  const [link, set_link] = useState('');
-  const [produce_by, set_produce_by] = useState('');
-  const [produce_by_image, set_produce_by_image] = useState('');
-  const [blog_image, set_blog_image] = useState('');
-  const [date, set_date] = useState('');
-
-  // const [employeeData, setEmployeeData] = useState([]);
-  const [isUpdate, setIsUpdate] = useState(false);
-
-
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await getAll(1);
-    };
-
-    fetchData();
-
-  }, []);
-
-  const getAll = async (pageNumber) => {
+  const deleterecords = async () => {
     // api call
     const params = {
-      "limit": itemsPerPage,
-      "offset": pageNumber
+      "monthly": isCheckedmonthly,
+      "esic": isCheckedesic,
+      "summary": isCheckedsummary,
+      "salary": isCheckedsalary,
+      "employee": isCheckedemployee,
+      "employer": isCheckedemployer,
     }
     try {
-      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-      const response = await getAllBlogs(params);
+      const response = await deleteRecords(params);
       if (response.status == true) {
-        // setEmployeeData(response.data);
-
-        // set_totalPages(Math.ceil(response.data.length / itemsPerPage));
-
-        // // Get current items based on the current page
-        // set_startIndex((currentPage - 1) * itemsPerPage);
-        set_totalPages(Math.ceil(response.count / itemsPerPage));
-        set_currentItems(response.data);
-
-
-      }
-
-
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      setError('Error fetching data. Please try again.');
-      setLoading(false);
-    }
-  };
-
-  const addBlog = async () => {
-    // api call
-
-    try {
-
-      let params = {
-        "title": title,
-        "category": category,
-        "subject": subject,
-        "message": message,
-        "link": link,
-        "produce_by": produce_by,
-        "produce_by_image": produce_by_image,
-        "blog_image": "blog_image",
-        "date": date
-      }
-      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-      const response = await addBlogs(params);
-      if (response.status == true) {
-
         Swal.fire({
-          title: response.message,
+          title: response.message + " : " + response.data,
           icon: 'success',
           confirmButtonText: 'Okay'
         });
 
-        closeModal()
-        await getAll(1);
-
+        set_isCheckedmonthly(false)
+        set_isCheckedesic(false)
+        set_isCheckedsummary(false)
+        set_isCheckedsalary(false)
+        set_isCheckedemployee(false)
+        set_isCheckedemployer(false)
       } else {
         Swal.fire({
           title: response.message,
@@ -112,73 +51,69 @@ const superUser = () => {
 
     } catch (error) {
       console.error('Error fetching data:', error);
-      setError('Error fetching data. Please try again.');
-      setLoading(false);
+
     }
+
   };
 
-  const getBlog = async (pageNumber) => {
-    // api call
-    const params = {
-      "limit": itemsPerPage,
-      "offset": pageNumber
+  const handleCheckboxChange = (event) => {
+    if (event.target.name === 'monthly') {
+      set_isCheckedmonthly(event.target.checked)
+    } else if (event.target.name === 'esic') {
+      set_isCheckedesic(event.target.checked)
+    } else if (event.target.name === 'summary') {
+      set_isCheckedsummary(event.target.checked)
+    } else if (event.target.name === 'salary') {
+      set_isCheckedsalary(event.target.checked)
+    } else if (event.target.name === 'employee') {
+      set_isCheckedemployee(event.target.checked)
+    } else if (event.target.name === 'employerr') {
+      set_isCheckedemployer(event.target.checked)
     }
-    try {
-      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-      const response = await getAllBlogs(params);
-      if (response.status == true) {
-        // setEmployeeData(response.data);
 
-        // set_totalPages(Math.ceil(response.data.length / itemsPerPage));
-
-        // // Get current items based on the current page
-        // set_startIndex((currentPage - 1) * itemsPerPage);
-        set_totalPages(Math.ceil(response.count / itemsPerPage));
-        set_currentItems(response.data);
-
-
-      }
-
-
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      setError('Error fetching data. Please try again.');
-      setLoading(false);
-    }
-  };
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-    getAll(pageNumber);
 
   };
 
-  const closeModal = () => {
-    var modal = document.getElementById('employerModel');
-    var bootstrapModal = bootstrap.Modal.getInstance(modal);
-    bootstrapModal.hide();
-  };
-
-  const openModal = () => {
-    var modal = document.getElementById('employerModel');
-    var bootstrapModal = new bootstrap.Modal(modal);
-    bootstrapModal.show();
-  };
 
   return (
     <div>
 
       <div className="main-container">
-        <div className='main-title'>
-          <h3>Blogs</h3>
+        <div className='main-title mt-4'>
+          <h3 className='mt-4'> Delete Records</h3>
         </div>
         <section className="section">
           <br />
-          <div className="row">
+
+          <div className="row mt-4">
+            <div className="col-sm-1">
+              <input className="form-check-input" type="checkbox" id="monthly" name="monthly" checked={isCheckedmonthly} onChange={handleCheckboxChange} />
+              <label className="form-check-label text-dark">Monthly</label>
+            </div>
+            <div className="col-sm-1">
+              <input className="form-check-input" type="checkbox" id="esic" name="esic" checked={isCheckedesic} onChange={handleCheckboxChange} />
+              <label className="form-check-label text-dark">Esic</label>
+            </div>
+            <div className="col-sm-1">
+              <input className="form-check-input" type="checkbox" id="summary" name="summary" checked={isCheckedsummary} onChange={handleCheckboxChange} />
+              <label className="form-check-label text-dark">Summary</label>
+            </div>
+            <div className="col-sm-1">
+              <input className="form-check-input" type="checkbox" id="salary" name="salary" checked={isCheckedsalary} onChange={handleCheckboxChange} />
+              <label className="form-check-label text-dark">salary</label>
+            </div>
+            <div className="col-sm-1">
+              <input className="form-check-input" type="checkbox" id="employee" name="employee" checked={isCheckedemployee} onChange={handleCheckboxChange} />
+              <label className="form-check-label text-dark">Employee</label>
+            </div>
+            <div className="col-sm-1">
+              <input className="form-check-input" type="checkbox" id="employer" name="employer" checked={isCheckedemployer} onChange={handleCheckboxChange} />
+              <label className="form-check-label text-dark">Employer</label>
+            </div>
             <div className="col-sm-2">
               <button
                 type="file"
-                className="btn btn-outline-primary btn-block rounded-4" onClick={openModal}> Add Blog</button>
+                className="btn btn-outline-danger  rounded-4" onClick={deleterecords} > Delete</button>
             </div>
 
           </div>
