@@ -79,6 +79,15 @@ export const getMasterList = async (params) => {
     }
 }
 
+export const downloadMaster = async (params) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/upload/downloadMaster`,params,{ headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
 //Empllyee API
 
 export const saveEERegister = async (params) => {

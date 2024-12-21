@@ -23,6 +23,8 @@ const summary = () => {
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [selectedYear, setSelectedYear] = useState(2024);
   const [selectedReturnYear, setSelectedRturnYear] = useState('');
+  const[selectedSubId, set_selectedSubId] = useState(0)
+  const [sub_Ids, set_sub_Ids] = useState([])
 
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
@@ -125,8 +127,9 @@ const summary = () => {
     try {
       // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
       const response = await getYear(getErId());
-    
+
       set_returnsYearInSystem(response.data)
+      set_sub_Ids(response.est_sub_id)
     } catch (error) {
       console.error('Error fetching data:', error);
 
@@ -237,56 +240,56 @@ const summary = () => {
 
       var valid = true;
       var t = {};
-      
+
       // Check for required fields
       if (!ee_uan_no) {
-          t.ee_uan_no = "ee_uan_no is required";
-          valid = false;
+        t.ee_uan_no = "ee_uan_no is required";
+        valid = false;
       }
-      
+
       if (!ee_name) {
-          t.ee_name = "ee_name is required";
-          valid = false;
+        t.ee_name = "ee_name is required";
+        valid = false;
       }
-      
+
       if (!selectedMonth) {
-          t.selectedMonth = "selectedMonth is required";
-          valid = false;
+        t.selectedMonth = "selectedMonth is required";
+        valid = false;
       }
-      
+
       if (!selectedYear) {
-          t.selectedYear = "selectedYear is required";
-          valid = false;
+        t.selectedYear = "selectedYear is required";
+        valid = false;
       }
-      
+
       if (!cal_gross_wages) {
-          t.cal_gross_wages = "cal_gross_wages is required";
-          valid = false;
+        t.cal_gross_wages = "cal_gross_wages is required";
+        valid = false;
       }
-      
+
       if (!cal_epf_wages) {
-          t.cal_epf_wages = "cal_epf_wages is required";
-          valid = false;
+        t.cal_epf_wages = "cal_epf_wages is required";
+        valid = false;
       }
-      
+
       if (!ee_edli_wages) {
-          t.ee_edli_wages = "ee_edli_wages is required";
-          valid = false;
+        t.ee_edli_wages = "ee_edli_wages is required";
+        valid = false;
       }
-      
+
       if (!ee_epf) {
-          t.ee_epf = "ee_epf is required";
-          valid = false;
+        t.ee_epf = "ee_epf is required";
+        valid = false;
       }
-      
+
       if (!er_epf) {
-          t.er_epf = "er_epf is required";
-          valid = false;
+        t.er_epf = "er_epf is required";
+        valid = false;
       }
-      
+
       if (!er_eps) {
-          t.er_eps = "er_eps is required";
-          valid = false;
+        t.er_eps = "er_eps is required";
+        valid = false;
       }
       setErrors(t)
       return valid
@@ -299,7 +302,7 @@ const summary = () => {
     // api call
     try {
 
-      const valid =  await validate()
+      const valid = await validate()
 
       if (!valid) {
         Swal.fire({
@@ -320,7 +323,7 @@ const summary = () => {
           "gross_wages": cal_gross_wages,
           "epf_wages": cal_epf_wages,
           "edli_wages": ee_edli_wages,
-          "eps_wages": ee_eps_wages ,
+          "eps_wages": ee_eps_wages,
           "ee_share": ee_epf,
           "diff_share": er_epf,
           "eps_share": er_eps,
@@ -342,7 +345,7 @@ const summary = () => {
           getReturnByMonth(1, selectedMonth, selectedYear)
 
           closeModal('EpfReturnFillingModel');
-         
+
 
         } else {
           Swal.fire({
@@ -388,7 +391,7 @@ const summary = () => {
           showCloseButton: true,
           timer: 1500,
         });
-        getReturnByMonth(1, selectedMonth, selectedYear) 
+        getReturnByMonth(1, selectedMonth, selectedYear)
 
       } else {
         Swal.fire({
@@ -471,7 +474,7 @@ const summary = () => {
       } else {
 
         const params = {
-          "id":eReturn_id,
+          "id": eReturn_id,
           "est_id": getErId(),
           "ee_id": ee_id,
           "ee_uan": ee_uan_no,
@@ -526,7 +529,7 @@ const summary = () => {
     }
   };
 
-  const genECR = async (month, year ) => {
+  const genECR = async (month, year) => {
     // api call
     try {
       const params = {
@@ -586,7 +589,7 @@ const summary = () => {
       set_ee_edli_wages(epf_wages <= 15000 ? epf_wages : 15000)
       set_ee_epf(Math.round(epf_wages * userData.data.ee_epf_rate / 100))
       let years = moment().diff(ee_dob, 'years');
-   
+
       if (years > 58) {
         set_er_epf(Math.round(epfwages_if_above * userData.data.ee_epf_rate / 100))
         set_ee_eps_wages(0)
@@ -657,6 +660,7 @@ const summary = () => {
       const params = {
         "est_id": getErId(),
         "ee_id": 0,
+        "est_sub_id": 0,
         "month": month,
         "year": year,
         "limit": itemsPerPage,
@@ -750,9 +754,9 @@ const summary = () => {
           icon: 'success',
           confirmButtonText: 'Okay'
         });
-        if(monthly){ getAllSummary()}else{ getReturnByMonth(1, selectedMonth, selectedYear)}
-       
-       
+        if (monthly) { getAllSummary() } else { getReturnByMonth(1, selectedMonth, selectedYear) }
+
+
       } else {
         // const uan = data.data.map((x) => x.ee_uan);
 
@@ -793,6 +797,12 @@ const summary = () => {
   const handleReturnYearChange = (e) => {
     setSelectedRturnYear(e.target.value);
   };
+
+ 
+  const handleSelectSubIdChange = (e) => {
+    set_selectedSubId(e.target.value);
+  };
+
 
 
   const closeModal = (modelName) => {
@@ -862,7 +872,7 @@ const summary = () => {
                 <div className="modal-content">
                   <div className="modal-header">
                     <h5 className="modal-title" id="exampleModalLabel">Uplaod FIles</h5>
-                    <button type="button" className="close" onClick={() => {closeModal('importReturn')}} aria-label="Close">
+                    <button type="button" className="close" onClick={() => { closeModal('importReturn') }} aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -878,11 +888,22 @@ const summary = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="row mt-4 mb-2">
               <div className="col-sm">
-               
-              <h5 >EPF Summary </h5>
+
+                <h5 >EPF Summary </h5>
+              </div>
+              <div className="col-sm-3">
+                <select
+                  className="form-select rounded-4"
+                  aria-label="Default select example" value={selectedSubId} onChange={handleSelectSubIdChange}
+                >
+                  {sub_Ids.map((est_sub_ids) => (
+                    // eslint-disable-next-line react/jsx-key
+                    <option value={est_sub_ids.est_sub_id}>{est_sub_ids.est_sub_id}</option>
+                  ))}
+                </select>
               </div>
               <div className="col-sm-3">
                 <select
@@ -895,9 +916,9 @@ const summary = () => {
                   ))}
                 </select>
               </div>
-          
+
             </div>
-           
+
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -955,7 +976,7 @@ const summary = () => {
                 </tr>
               </tfoot>
             </table>
-           
+
           </section>
         </div>
       ) : (
@@ -998,7 +1019,7 @@ const summary = () => {
               <div className="col-sm">
                 <button
                   type="button"
-                  className="btn btn-outline-primary btn-block rounded-4"  onClick={() => { genECR(selectedMonth, selectedYear) }}
+                  className="btn btn-outline-primary btn-block rounded-4" onClick={() => { genECR(selectedMonth, selectedYear) }}
                 >
                   ECR
                 </button>
@@ -1113,7 +1134,7 @@ const summary = () => {
                               <label htmlFor="inputPassword">EE</label>
                               <input type="number" className="form-control rounded-4" disabled value={ee_epf} />
                             </div>
-                            
+
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">EPS</label>
                               <input type="number" className="form-control rounded-4" disabled value={er_eps} />
@@ -1258,38 +1279,38 @@ const summary = () => {
                 </tr>
               </thead>
               <tbody>
-             
+
 
                 {currentItems.map((employee, index) => {
                   const globalIndex = currentPage * itemsPerPage - itemsPerPage + index;
                   return (
 
                     <tr key={index}>
-                    <th scope="row">{globalIndex + 1}</th>
-                    <th scope="row">{employee.ee_uan}</th>
-                    <td>{employee.ee_name}</td>
-                    <td>{employee.gross_wages}</td>
-                    <td>{employee.epf_wages}</td>
-                    <td>{employee.edli_wages}</td>
-                    <td>{employee.eps_wages}</td>
-                    <td>{employee.ee_share}</td>
-                    <td>{employee.eps_share}</td>
-                    <td>{employee.diff_share}</td>
-                    <td>{employee.ncp_days}</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
-                          <i className="bi bi-eye text-info"></i>
-                        </button>
-                        <button className="btn btn-light mx-1" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
-                          <i className="bi bi-pencil-fill text-info"></i>
-                        </button>
-                        <button className="btn btn-light" onClick={() => { deleteReturn(employee.id) }} >
-                          <i className="bi bi-trash text-danger"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+                      <th scope="row">{globalIndex + 1}</th>
+                      <th scope="row">{employee.ee_uan}</th>
+                      <td>{employee.ee_name}</td>
+                      <td>{employee.gross_wages}</td>
+                      <td>{employee.epf_wages}</td>
+                      <td>{employee.edli_wages}</td>
+                      <td>{employee.eps_wages}</td>
+                      <td>{employee.ee_share}</td>
+                      <td>{employee.eps_share}</td>
+                      <td>{employee.diff_share}</td>
+                      <td>{employee.ncp_days}</td>
+                      <td>
+                        <div className="d-flex align-items-center">
+                          <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
+                            <i className="bi bi-eye text-info"></i>
+                          </button>
+                          <button className="btn btn-light mx-1" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
+                            <i className="bi bi-pencil-fill text-info"></i>
+                          </button>
+                          <button className="btn btn-light" onClick={() => { deleteReturn(employee.id) }} >
+                            <i className="bi bi-trash text-danger"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
                   )
                 })}
               </tbody>

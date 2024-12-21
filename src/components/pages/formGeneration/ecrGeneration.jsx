@@ -11,10 +11,12 @@ const ecrGeneration = () => {
 
   const returnsYear = {
     "month": [{ "monthNum": 1, "monthText": "Jan" }, { "monthNum": 2, "monthText": "Feb" }, { "monthNum": 3, "monthText": "Mar" }, { "monthNum": 4, "monthText": "Apr" }, { "monthNum": 5, "monthText": "May" }, { "monthNum": 6, "monthText": "Jun" }, { "monthNum": 7, "monthText": "Jul" }, { "monthNum": 8, "monthText": "Aug" }, { "monthNum": 9, "monthText": "Sep" }, { "monthNum": 10, "monthText": "Oct" }, { "monthNum": 11, "monthText": "Nov" }, { "monthNum": 12, "monthText": "Dec" }],
-    "Year": [2020, 2021, 2022, 2023, 2024]
+    "Year": [2020, 2021, 2022, 2023, 2024],
+    "subIds":[0]
   }
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [selectedYear, setSelectedYear] = useState(2024);
+  const [selectedSubId, setSelectedSubId] = useState(0);
 
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
@@ -43,6 +45,7 @@ const ecrGeneration = () => {
       const params = {
         "est_id": getErId(),
         "ee_id": 0,
+        "est_sub_id": selectedSubId,
         "month": selectedMonth,
         "year": selectedYear,
         "limit": itemsPerPage,
@@ -133,6 +136,11 @@ const ecrGeneration = () => {
     setSelectedMonth(e.target.value);
   };
 
+  const handleSubIdChange = (e) => {
+    setSelectedSubId(e.target.value);
+  };
+
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     getReturnByMonth(pageNumber);
@@ -174,6 +182,18 @@ const ecrGeneration = () => {
                           aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
                         >
                           {returnsYear.Year.map((retYear) => (
+                            // eslint-disable-next-line react/jsx-key
+                            <option value={retYear}>{retYear}</option>
+                          ))}
+                        </select>
+
+                      </div>
+                      <div className="col mb-4">
+                        <select
+                          className="form-select"
+                          aria-label="Default select example" value={selectedSubId} onChange={handleSubIdChange}
+                        >
+                          {returnsYear.subIds.map((retYear) => (
                             // eslint-disable-next-line react/jsx-key
                             <option value={retYear}>{retYear}</option>
                           ))}

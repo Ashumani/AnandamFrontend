@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getEstId, getErId } from "../Auth/authToken";
-import { getMasterList, uploadEmployer, erRegister, erUpdate, getErRegister } from "../../api/services";
+import { getMasterList, uploadEmployer, erRegister, erUpdate, getErRegister, downloadMaster, downlaodFile } from "../../api/services";
 import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
 import React, { useRef } from 'react';
@@ -327,6 +327,38 @@ const master = () => {
     }
   };
 
+  const downloadMasters = async () => {
+    // api call
+
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await downloadMaster();
+      if (response.status == true) {
+        await downlaodFile(response.url);
+        Swal.fire({
+          title: response.message,
+          icon: 'success',
+          confirmButtonText: 'Okay'
+        });
+
+
+      }else{
+        Swal.fire({
+          title: response.message,
+          icon: 'error',
+          confirmButtonText: 'Okay'
+        });
+
+      }
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Error fetching data. Please try again.');
+      setLoading(false);
+    }
+  };
+
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -437,7 +469,7 @@ const master = () => {
             <div className="col-sm-2">
               <button
                 type="file"
-                className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#importReturn"
+                className="btn btn-outline-primary btn-block rounded-4" onClick={downloadMasters}
               >
                 Export
               </button>
