@@ -344,9 +344,9 @@ export const uploadSalary = async (id, formdata) => {
         throw error.response.data.error;
     }
 }
-export const getSummary = async (id, year) => {
+export const getSummary = async (id, year, sub_id) => {
     try {
-        const response = await axios.get(`${BASE_URL}/monthly/getSummary/`+id + '/' + year,{ headers: header});
+        const response = await axios.get(`${BASE_URL}/monthly/getSummary/`+id + '/' + year  + '/' + sub_id,{ headers: header});
         return response.data;
     } catch (error) {
         throw error.response.data.error;

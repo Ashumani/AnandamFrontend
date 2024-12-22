@@ -42,7 +42,7 @@ const esic = () => {
   const [ee_id, set_ee_id] = useState('');
 
   const [ee_name, set_ee_name] = useState('');
-  // const [ee_esic_no, set_ee_esic_no] = useState('');
+  const [ee_esic_no, set_ee_esic_no] = useState('');
   const [ee_dob, set_ee_dob] = useState('');
   const [ee_doj, set_ee_doj] = useState('');
   const [ee_gender, set_ee_gender] = useState('');
@@ -224,9 +224,6 @@ const esic = () => {
 
     try {
 
-      // employee.est_id = getErId()
-      // employee.ee_id = ee_id,
-      // employee.ee_esic_no = search_esic
       //   const params = {
       //   est_id: getErId(),
       //   ee_id: ee_id,
@@ -238,12 +235,19 @@ const esic = () => {
       //   ee_share: ee_esic,
       //   er_share: er_esic,
       // }
-
-
-      employee.ee_share = ee_esic
+      if (ee_esic == '') {
+        Swal.fire({
+          title: 'Warning',
+          text: 'Esic Share Cannot be null or empty',
+          icon: 'warning',
+          confirmButtonText: 'Okay'
+        });
+        return false
+      }else{
+        employee.ee_share = ee_esic
       employee.er_share = er_esic
       if (employee.rtid == 0 || employee.rtid == '') {
-        const userData = await fillEsicReturn(employee);
+        const userData = await UpdateEsicReturn(employee);
         if (userData.status === true) {
           await getMonthlyEsicReturn()
 
@@ -276,8 +280,11 @@ const esic = () => {
           });
         }
       }
+      setEditableIndex(null);
 
 
+      }
+      
 
     } catch (error) {
       console.error('Login error ', error);
@@ -548,10 +555,6 @@ const esic = () => {
   const handleSaveClick = (index) => {
     // Here you would save the changes, e.g., update the employeeData
     // For now, just reset the editable index
-    setEditableIndex(null);
-    console.log('Updated Data:', formValues);
-
-
     updateReturns(formValues)
   };
   const uploadSalaryReturn = async () => {
