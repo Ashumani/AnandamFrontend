@@ -124,7 +124,7 @@ const [message,set_message] = useState('')
             <div className="col-12">
               <nav className="main-nav">
                 <a href="index.html" className="">
-                  <img style={{width: '25%' }} src={logo} alt="" />
+                  <img style={{width: '25%' }} src={logo} alt="" className="main_logo"/>
                 </a>
                 <ul className="nav">
                   <li className="scroll-to-section"><a href="#top" className="active">Home</a></li>

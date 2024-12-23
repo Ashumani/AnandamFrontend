@@ -23,7 +23,7 @@ const summary = () => {
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [selectedYear, setSelectedYear] = useState(2024);
   const [selectedReturnYear, setSelectedReturnYear] = useState(2024);
-  const[selectedSubId, set_selectedSubId] = useState(0)
+  const [selectedSubId, set_selectedSubId] = useState(0)
   const [sub_Ids, set_sub_Ids] = useState([])
 
   const itemsPerPage = 10; // Number of items per page
@@ -754,7 +754,7 @@ const summary = () => {
           icon: 'success',
           confirmButtonText: 'Okay'
         });
-        if (monthly) {    getAllSummary(getErId(), selectedYear, 0); } else { getReturnByMonth(1, selectedMonth, selectedYear) }
+        if (monthly) { getAllSummary(getErId(), selectedYear, 0); } else { getReturnByMonth(1, selectedMonth, selectedYear) }
 
 
       } else {
@@ -799,7 +799,7 @@ const summary = () => {
     getAllSummary(getErId(), e.target.value, 0);
   };
 
- 
+
   const handleSelectSubIdChange = (e) => {
     set_selectedSubId(e.target.value);
   };
@@ -823,329 +823,437 @@ const summary = () => {
 
     <div>
       {monthly ? (
-        <div className="main-container">
+        <div className="main-container" style={{ "marginTop": "50px", "fontSize": "15px", "color": "black" }}>
           <div className='main-title'>
             <h3>Summary</h3>
           </div>
           <section className="section">
             <br />
             <div className="row">
-              <div className="col-sm">
-                <select
-                  className="form-select rounded-4"
-                  aria-label="Default select example" value={selectedMonth} onChange={handleMonthChange}
-                >
-                  {returnsYear.month.map((returnYear) => (
-                    // eslint-disable-next-line react/jsx-key
-                    <option value={returnYear.monthNum}>{returnYear.monthText}</option>
-                  ))}
-                </select>
+              <div className="card">
+                <div className="card-body">
+                  {/* <h5 className="card-title text-center"><strong>Summary</strong></h5> */}
+                  <div className="row">
+                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                      <select
+                        className="form-select rounded-4"
+                        aria-label="Default select example" value={selectedMonth} onChange={handleMonthChange}
+                      >
+                        {returnsYear.month.map((returnYear) => (
+                          // eslint-disable-next-line react/jsx-key
+                          <option value={returnYear.monthNum}>{returnYear.monthText}</option>
+                        ))}
+                      </select>
 
-              </div>
-              <div className="col-sm">
-                <select
-                  className="form-select rounded-4"
-                  aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
-                >
-                  {returnsYear.Year.map((retYear) => (
-                    // eslint-disable-next-line react/jsx-key
-                    <option value={retYear}>{retYear}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="col-sm-2">
-                <button type="button" className="btn btn-outline-primary btn-block rounded-4 rounded-4" onClick={() => { getReturnByMonth(1, selectedMonth, selectedYear) }} >Next
-                  {/* <Link to="/auth/dashboard/monthlypf"><span >Next</span></Link> */}
-                </button>
-              </div>
-              <div className="col-sm-2">
-                <button
-                  type="file"
-                  className="btn btn-outline-primary btn-block rounded-4 rounded-4" onClick={() => { openModal('importReturn') }}
-                >
-                  Import
-                </button>
-              </div>
+                    </div>
+                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                      <select
+                        className="form-select rounded-4"
+                        aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
+                      >
+                        {returnsYear.Year.map((retYear) => (
+                          // eslint-disable-next-line react/jsx-key
+                          <option value={retYear}>{retYear}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                      <button type="button" className="btn btn-outline-primary btn-block rounded-4 rounded-4" onClick={() => { getReturnByMonth(1, selectedMonth, selectedYear) }} >Next
+                        {/* <Link to="/auth/dashboard/monthlypf"><span >Next</span></Link> */}
+                      </button>
+                    </div>
+                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                      <button
+                        type="file"
+                        className="btn btn-outline-primary btn-block rounded-4 rounded-4" onClick={() => { openModal('importReturn') }}
+                      >
+                        Import
+                      </button>
+                    </div>
 
-            </div>
-            <div className="modal fade" id="importReturn" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">Uplaod FIles</h5>
-                    <button type="button" className="close" onClick={() => { closeModal('importReturn') }} aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
                   </div>
-                  <div className="modal-body">
-                    <div className="col-md-12">
-                      <input className="form-control rounded-4" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
+                  <div className="row mt-2 mb-2">
+                    <div className="col-sm-3 col-md-3 col-lg-3 col-3 mt-1">
+
+                      <h5 >EPF Summary </h5>
+                    </div>
+                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+
+                    </div>
+                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                      <select
+                        className="form-select rounded-4"
+                        aria-label="Default select example" value={selectedSubId} onChange={handleSelectSubIdChange}
+                      >
+                        {sub_Ids.map((est_sub_ids) => (
+                          // eslint-disable-next-line react/jsx-key
+                          <option value={est_sub_ids.est_sub_id}>{est_sub_ids.est_sub_id}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                      <select
+                        className="form-select rounded-4"
+                        aria-label="Default select example" value={selectedReturnYear} onChange={handleReturnYearChange}
+                      >
+                        {returnsYearInSystem.map((retYear) => (
+                          // eslint-disable-next-line react/jsx-key
+                          <option value={retYear.start_months}>{retYear.financial_year}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                  </div>
+
+                  <div className="modal fade" id="importReturn" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div className="modal-dialog" role="document">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h5 className="modal-title" id="exampleModalLabel">Uplaod FIles</h5>
+                          <button type="button" className="close" onClick={() => { closeModal('importReturn') }} aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div className="modal-body">
+                          <div className="col-md-12">
+                            <input className="form-control rounded-4" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
+                          </div>
+                        </div>
+                        <div className="modal-footer">
+                          <button type="button" className="btn btn-secondary" onClick={() => { closeModal('importReturn') }}>Close</button>
+                          <button type="button" className="btn btn-primary" onClick={uploadMonthly}>Upload</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" onClick={() => { closeModal('importReturn') }}>Close</button>
-                    <button type="button" className="btn btn-primary" onClick={uploadMonthly}>Upload</button>
-                  </div>
+
+
+
+                  <table className="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">Number Of EE</th>
+                        <th scope="col">Month</th>
+                        <th scope="col">Year</th>
+                        <th scope="col">Account 1</th>
+                        <th scope="col">Account 2</th>
+                        <th scope="col">Account 10</th>
+                        <th scope="col">Account 21</th>
+                        <th scope="col">Account 22</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {currentItems.map((employee, index) => (
+                        <tr key={index}>
+                          <th scope="row">{employee.NumbersOfEE}</th>
+                          <td>{employee.month}</td>
+                          <td>{employee.year}</td>
+                          <td>{employee.acc1}</td>
+                          <td>{employee.acc2}</td>
+                          <td>{employee.acc10}</td>
+                          <td>{employee.acc21}</td>
+                          <td>{employee.acc22}</td>
+                          <td>{employee.total}</td>
+                          <td>
+                            <div className="d-flex align-items-center">
+                              <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { getReturnByMonth(1, moment(employee.month, 'MMM').month() + 1, employee.year) }}>
+                                <i className="bi bi-eye text-info"></i>
+                              </button>
+
+                              {/* <button className="btn btn-light" onClick={() => { deleteReturn(employee.id) }} >
+                          <i className="bi bi-trash text-danger"></i>
+                        </button> */}
+                              <button className="btn btn-light" onClick={() => { genECR(moment(employee.month, 'MMM').month() + 1, employee.year) }} >
+                                <i className="bi bi-download"></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th id="total" colSpan="3">Total :</th>
+                        <td>{total_acc1}</td>
+                        <td>{total_acc2}</td>
+                        <td>{total_acc10}</td>
+                        <td>{total_acc21}</td>
+                        <td>{total_acc22}</td>
+                        <td>{total_acc}</td>
+                        <td></td>
+                      </tr>
+                    </tfoot>
+                  </table>
                 </div>
               </div>
             </div>
-
-            <div className="row mt-4 mb-2">
-              <div className="col-sm">
-
-                <h5 >EPF Summary </h5>
-              </div>
-              <div className="col-sm-3">
-                <select
-                  className="form-select rounded-4"
-                  aria-label="Default select example" value={selectedSubId} onChange={handleSelectSubIdChange}
-                >
-                  {sub_Ids.map((est_sub_ids) => (
-                    // eslint-disable-next-line react/jsx-key
-                    <option value={est_sub_ids.est_sub_id}>{est_sub_ids.est_sub_id}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="col-sm-3">
-                <select
-                  className="form-select rounded-4"
-                  aria-label="Default select example" value={selectedReturnYear} onChange={handleReturnYearChange}
-                >
-                  {returnsYearInSystem.map((retYear) => (
-                    // eslint-disable-next-line react/jsx-key
-                    <option value={retYear.start_months}>{retYear.financial_year}</option>
-                  ))}
-                </select>
-              </div>
-
-            </div>
-
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">Number Of EE</th>
-                  <th scope="col">Month</th>
-                  <th scope="col">Year</th>
-                  <th scope="col">Account 1</th>
-                  <th scope="col">Account 2</th>
-                  <th scope="col">Account 10</th>
-                  <th scope="col">Account 21</th>
-                  <th scope="col">Account 22</th>
-                  <th scope="col">Total</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentItems.map((employee, index) => (
-                  <tr key={index}>
-                    <th scope="row">{employee.NumbersOfEE}</th>
-                    <td>{employee.month}</td>
-                    <td>{employee.year}</td>
-                    <td>{employee.acc1}</td>
-                    <td>{employee.acc2}</td>
-                    <td>{employee.acc10}</td>
-                    <td>{employee.acc21}</td>
-                    <td>{employee.acc22}</td>
-                    <td>{employee.total}</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { getReturnByMonth(1, moment(employee.month, 'MMM').month() + 1, employee.year) }}>
-                          <i className="bi bi-eye text-info"></i>
-                        </button>
-
-                        {/* <button className="btn btn-light" onClick={() => { deleteReturn(employee.id) }} >
-                          <i className="bi bi-trash text-danger"></i>
-                        </button> */}
-                        <button className="btn btn-light" onClick={() => { genECR(moment(employee.month, 'MMM').month() + 1, employee.year) }} >
-                          <i className="bi bi-download"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th id="total" colSpan="3">Total :</th>
-                  <td>{total_acc1}</td>
-                  <td>{total_acc2}</td>
-                  <td>{total_acc10}</td>
-                  <td>{total_acc21}</td>
-                  <td>{total_acc22}</td>
-                  <td>{total_acc}</td>
-                  <td></td>
-                </tr>
-              </tfoot>
-            </table>
-
           </section>
         </div>
       ) : (
-        <div className="main-container">
+        <div className="main-container" style={{ "marginTop": "50px", "fontSize": "15px", "color": "black" }}>
           <div className='main-title'>
             <h3>Return Filing</h3>
           </div>
           <section className="section">
             <br />
             <div className="row">
-              <div className="col-sm">
-                <button type="button" className="btn btn-outline-primary btn-block rounded-4 " onClick={() => { openModal('EpfReturnFillingModel') }}>
-                  Add ({selectedMonth}-{selectedYear})
-                </button>
-              </div>
-              <div className="col-sm">
-                <button
-                  type="file"
-                  className="btn btn-outline-primary btn-block rounded-4" onClick={() => { openModal('importReturn') }}
-                >
-                  Import
-                </button>
-              </div>
-              <div className="col-sm">
-                <button
-                  type="button"
-                  className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#importReturn"
-                >
-                  Export
-                </button>
-              </div>
-              <div className="col-sm">
-                <button
-                  type="button"
-                  className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#confirmationModal"
-                >
-                  Same as Prev
-                </button>
-              </div>
-              <div className="col-sm">
-                <button
-                  type="button"
-                  className="btn btn-outline-primary btn-block rounded-4" onClick={() => { genECR(selectedMonth, selectedYear) }}
-                >
-                  ECR
-                </button>
-              </div>
-              <div className="col-sm">
-                <button
-                  type="button"
-                  className="btn btn-outline-primary btn-block rounded-4" onClick={monthlyBack}
-                >
-                  BACK
-                </button>
-              </div>
-              <div className="col-sm">
-                <input type="text" className="form-control rounded-4" placeholder="Search" onChange={(e) => setSearchEE(e.target.value)} onBlur={searchMonthlyEE} />
-              </div>
-              {/* <div className="col-md-4">
-              <input className="form-control rounded-4" type="file" id="formFile" />
-
-            </div> */}
-            </div>
-
-            {/* Add Epf Return Model */}
-            {/* {showModal && ( */}
-            {/* <div style={{ display: 'block' }} className="modal fade show" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
-            <div className="modal fade bd-example-modal-lg" id="EpfReturnFillingModel" ref={modalRef} role="dialog" aria-labelledby="EpfReturnFillingModelLabel" aria-hidden="true">
-              <div className="modal-dialog modal-lg" role="document">
-                <div className="modal-content">
-                  <div className="modal-header bg-primary">
-                    <h5 className="modal-title" id="EpfReturnFillingModelLabel">EPF Return Filing For {selectedMonth}-{selectedYear}</h5>
-                    <button type="button" className="close text-white" aria-label="Close" onClick={() => { closeModal('EpfReturnFillingModel') }}>
-                      <span aria-hidden="true">&times;</span>
+              <div className="card">
+                <div className="card-body">
+                </div>
+                <div className="row">
+                  <div className="col-2 col-md-2 col-lg-2 col-2">
+                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 " onClick={() => { openModal('EpfReturnFillingModel') }}>
+                      Add ({selectedMonth}-{selectedYear})
                     </button>
                   </div>
-                  <div className="modal-body text-dark">
-                    <div className="row">
-                      <div className="col-lg-12">
+                  <div className="col-2 col-md-2 col-lg-2 col-2">
+                    <button
+                      type="file"
+                      className="btn btn-outline-primary btn-block rounded-4" onClick={() => { openModal('importReturn') }}
+                    >
+                      Import
+                    </button>
+                  </div>
+                  <div className="col-2 col-md-2 col-lg-2 col-2">
+                    <button
+                      type="button"
+                      className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#importReturn"
+                    >
+                      Export
+                    </button>
+                  </div>
+                  <div className="col-2 col-md-2 col-lg-2 col-2">
+                    <button
+                      type="button"
+                      className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#confirmationModal"
+                    >
+                      Same as Prev
+                    </button>
+                  </div>
+                  <div className="col-2 col-md-2 col-lg-2 col-2">
+                    <button
+                      type="button"
+                      className="btn btn-outline-primary btn-block rounded-4" onClick={() => { genECR(selectedMonth, selectedYear) }}
+                    >
+                      ECR
+                    </button>
+                  </div>
+                  <div className="col-2 col-md-2 col-lg-2 col-2">
+                    <button
+                      type="button"
+                      className="btn btn-outline-primary btn-block rounded-4" onClick={monthlyBack}
+                    >
+                      BACK
+                    </button>
+                  </div>
+                </div>
+                <div className="row mt-4  d-flex justify-content-end">
+                  <div className="col-3">
+                    <input type="text" className="form-control rounded-4" placeholder="Search" onChange={(e) => setSearchEE(e.target.value)} onBlur={searchMonthlyEE} />
+                  </div>
+                </div>
+               
 
-                        <form>
-                          <div className="row">
-                            <div className="col-md-4">
-                              <input type="number" className="form-control rounded-4" placeholder="Enter UAN Number" onChange={(e) => set_search_uan(e.target.value)} value={search_uan} />
-                            </div>
-                            <div className="col-md-4">
-                              <input type="text" className="form-control rounded-4" placeholder="Enter PF Number" onChange={(e) => set_search_pf(e.target.value)} value={search_pf} />
-                            </div>
-                            <div className="col-sm">
-                              <button type="button" className="btn btn-outline-primary" onClick={fetchEmployee}>Search</button>
-                            </div>
+                <h5>EPF Return For Month {selectedMonth}-{selectedYear}</h5>
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">Sn</th>
+                      <th scope="col">UAN</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Gross Wages</th>
+                      <th scope="col">EPF Wages</th>
+                      <th scope="col">EDLI Wages</th>
+                      <th scope="col">EPS Wages</th>
+                      <th scope="col">EE(12%)</th>
+                      <th scope="col">EPS(8.33%)</th>
+                      <th scope="col">ER(3.67%)</th>
+                      <th scope="col">NCP Days</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
 
-                          </div>
-                          <div className="row">
-                            <div className="col mb-2">
-                              <label htmlFor="inputPassword">Name</label>
-                              <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_name(e.target.value)} value={ee_name} />
-                            </div>
-                            <div className="col mb-2">
-                              <label htmlFor="inputNumber">Gender</label>
-                              <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_gender(e.target.value)} value={ee_gender} />
-                            </div>
-                            <div className="col mb-2">
-                              <label htmlFor="inputNumber">Father/husband</label>
-                              <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_father_husband(e.target.value)} value={ee_father_husband} />
-                            </div>
-                            <div className="col mb-2">
-                              <label htmlFor="inputNumber">Maritial Status</label>
-                              <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_maritial_status(e.target.value)} value={ee_maritial_status} />
-                            </div>
-                          </div>
 
-                          <div className="row">
-                            <div className="col mb-3">
-                              <label htmlFor="inputNumber">Date Of Birth</label>
-                              <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_dob(e.target.value)} value={ee_dob} />
-                            </div>
-                            <div className="col mb-3">
-                              <label htmlFor="inputTime">Date Of Joining</label>
-                              <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_doj(e.target.value)} value={ee_doj} />
-                            </div>
-                            <div className="col mb-3">
-                              <label htmlFor="inputDate">Above 58</label>
-                              <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_above58(e.target.value)} value={ee_above58} />
-                            </div>
-                            <div className="col mb-3">
-                              <label htmlFor="inputColor">Gross Wages</label>
-                              <input type="number" className="form-control rounded-4" disabled onChange={(e) => set_ee_gross_wages(e.target.value)} value={ee_gross_wages} />
-                            </div>
-                            <div className="col mb-3">
-                              <label htmlFor="inputPassword">EPF Wages</label>
-                              <input type="number" className="form-control rounded-4" disabled onChange={(e) => set_ee_epf_wages(e.target.value)} value={ee_epf_wages} />
-                            </div>
-                          </div>
+                    {currentItems.map((employee, index) => {
+                      const globalIndex = currentPage * itemsPerPage - itemsPerPage + index;
+                      return (
 
-                          <div className="row">
-                            <div className="col-sm">
-                              <label htmlFor="inputColor">Gross Wages</label>
-                              <input type="number" className="form-control rounded-4" disabled={isDisabled} onChange={(e) => set_cal_gross_wages(e.target.value)} value={cal_gross_wages} />
+                        <tr key={index}>
+                          <th scope="row">{globalIndex + 1}</th>
+                          <th scope="row">{employee.ee_uan}</th>
+                          <td>{employee.ee_name}</td>
+                          <td>{employee.gross_wages}</td>
+                          <td>{employee.epf_wages}</td>
+                          <td>{employee.edli_wages}</td>
+                          <td>{employee.eps_wages}</td>
+                          <td>{employee.ee_share}</td>
+                          <td>{employee.eps_share}</td>
+                          <td>{employee.diff_share}</td>
+                          <td>{employee.ncp_days}</td>
+                          <td>
+                            <div className="d-flex align-items-center">
+                              <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
+                                <i className="bi bi-eye text-info"></i>
+                              </button>
+                              <button className="btn btn-light mx-1" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
+                                <i className="bi bi-pencil-fill text-info"></i>
+                              </button>
+                              <button className="btn btn-light" onClick={() => { deleteReturn(employee.id) }} >
+                                <i className="bi bi-trash text-danger"></i>
+                              </button>
                             </div>
-                            <div className="col-sm">
-                              <label htmlFor="inputEPFWages">EPF Wages</label>
-                              <input type="number" className="form-control rounded-4" disabled={isDisabled} onBlur={(e) => calculation(e.target.value)} onChange={(e) => set_cal_epf_wages(e.target.value)} value={cal_epf_wages} />
-                            </div>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th id="total" colSpan="3">Total :</th>
+                      <td>{total_gross_wages}</td>
+                      <td>{total_epf_wages}</td>
+                      <td>{total_edli_wages}</td>
+                      <td>{total_eps_wages}</td>
+                      <td>{total_ee_share}</td>
+                      <td>{total_eps_share}</td>
+                      <td>{total_diff_share}</td>
+                      <td>{total_ncp_days}</td>
+                      <td></td>
+                    </tr>
+                  </tfoot>
+                </table>
+                {/* Pagination Controls */}
+                <div className="pagination">
+                  <button className="btn btn-primary"
+                    disabled={currentPage === 1}
+                    onClick={() => handlePageChange(currentPage - 1)}
+                  >
+                    Previous
+                  </button>
+                  {Array.from({ length: totalPages }, (_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handlePageChange(index + 1)}
+                      style={{ margin: '0 2px', backgroundColor: currentPage === index + 1 ? '#1e60aa' : 'white', border: '0px', color: currentPage === index + 1 ? 'white' : 'black' }}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                  <button className="btn btn-primary"
+                    disabled={currentPage === totalPages}
+                    onClick={() => handlePageChange(currentPage + 1)}
+                  >
+                    Next
+                  </button>
+                </div>
 
-                            <div className="col-sm">
-                              <label htmlFor="inputPassword">EDLI Wages</label>
-                              <input type="number" className="form-control rounded-4" disabled value={ee_edli_wages} />
-                            </div>
-                            <div className="col-sm">
-                              <label htmlFor="inputPassword">EPS Wages</label>
-                              <input type="number" className="form-control rounded-4" disabled value={ee_eps_wages} />
-                            </div>
-                            <div className="col mb-3">
-                              <label htmlFor="inputPassword">EE</label>
-                              <input type="number" className="form-control rounded-4" disabled value={ee_epf} />
-                            </div>
+                 {/* Add Epf Return Model */}
+                {/* {showModal && ( */}
+                {/* <div style={{ display: 'block' }} className="modal fade show" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+                <div className="modal fade bd-example-modal-lg" id="EpfReturnFillingModel" ref={modalRef} role="dialog" aria-labelledby="EpfReturnFillingModelLabel" aria-hidden="true">
+                  <div className="modal-dialog modal-lg" role="document">
+                    <div className="modal-content">
+                      <div className="modal-header bg-primary">
+                        <h5 className="modal-title" id="EpfReturnFillingModelLabel">EPF Return Filing For {selectedMonth}-{selectedYear}</h5>
+                        <button type="button" className="close text-white" aria-label="Close" onClick={() => { closeModal('EpfReturnFillingModel') }}>
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div className="modal-body text-dark">
+                        <div className="row">
+                          <div className="col-lg-12">
 
-                            <div className="col mb-3">
-                              <label htmlFor="inputPassword">EPS</label>
-                              <input type="number" className="form-control rounded-4" disabled value={er_eps} />
-                            </div>
-                            <div className="col mb-3">
-                              <label htmlFor="inputPassword">ER</label>
-                              <input type="number" className="form-control rounded-4" disabled value={er_epf} />
-                            </div>
-                          </div>
-                          {/* <div className="row">
+                            <form>
+                              <div className="row">
+                                <div className="col-md-4">
+                                  <input type="number" className="form-control rounded-4" placeholder="Enter UAN Number" onChange={(e) => set_search_uan(e.target.value)} value={search_uan} />
+                                </div>
+                                <div className="col-md-4">
+                                  <input type="text" className="form-control rounded-4" placeholder="Enter PF Number" onChange={(e) => set_search_pf(e.target.value)} value={search_pf} />
+                                </div>
+                                <div className="col-sm">
+                                  <button type="button" className="btn btn-outline-primary" onClick={fetchEmployee}>Search</button>
+                                </div>
+
+                              </div>
+                              <div className="row">
+                                <div className="col mb-2">
+                                  <label htmlFor="inputPassword">Name</label>
+                                  <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_name(e.target.value)} value={ee_name} />
+                                </div>
+                                <div className="col mb-2">
+                                  <label htmlFor="inputNumber">Gender</label>
+                                  <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_gender(e.target.value)} value={ee_gender} />
+                                </div>
+                                <div className="col mb-2">
+                                  <label htmlFor="inputNumber">Father/husband</label>
+                                  <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_father_husband(e.target.value)} value={ee_father_husband} />
+                                </div>
+                                <div className="col mb-2">
+                                  <label htmlFor="inputNumber">Maritial Status</label>
+                                  <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_maritial_status(e.target.value)} value={ee_maritial_status} />
+                                </div>
+                              </div>
+
+                              <div className="row">
+                                <div className="col mb-3">
+                                  <label htmlFor="inputNumber">Date Of Birth</label>
+                                  <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_dob(e.target.value)} value={ee_dob} />
+                                </div>
+                                <div className="col mb-3">
+                                  <label htmlFor="inputTime">Date Of Joining</label>
+                                  <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_doj(e.target.value)} value={ee_doj} />
+                                </div>
+                                <div className="col mb-3">
+                                  <label htmlFor="inputDate">Above 58</label>
+                                  <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_above58(e.target.value)} value={ee_above58} />
+                                </div>
+                                <div className="col mb-3">
+                                  <label htmlFor="inputColor">Gross Wages</label>
+                                  <input type="number" className="form-control rounded-4" disabled onChange={(e) => set_ee_gross_wages(e.target.value)} value={ee_gross_wages} />
+                                </div>
+                                <div className="col mb-3">
+                                  <label htmlFor="inputPassword">EPF Wages</label>
+                                  <input type="number" className="form-control rounded-4" disabled onChange={(e) => set_ee_epf_wages(e.target.value)} value={ee_epf_wages} />
+                                </div>
+                              </div>
+
+                              <div className="row">
+                                <div className="col-sm">
+                                  <label htmlFor="inputColor">Gross Wages</label>
+                                  <input type="number" className="form-control rounded-4" disabled={isDisabled} onChange={(e) => set_cal_gross_wages(e.target.value)} value={cal_gross_wages} />
+                                </div>
+                                <div className="col-sm">
+                                  <label htmlFor="inputEPFWages">EPF Wages</label>
+                                  <input type="number" className="form-control rounded-4" disabled={isDisabled} onBlur={(e) => calculation(e.target.value)} onChange={(e) => set_cal_epf_wages(e.target.value)} value={cal_epf_wages} />
+                                </div>
+
+                                <div className="col-sm">
+                                  <label htmlFor="inputPassword">EDLI Wages</label>
+                                  <input type="number" className="form-control rounded-4" disabled value={ee_edli_wages} />
+                                </div>
+                                <div className="col-sm">
+                                  <label htmlFor="inputPassword">EPS Wages</label>
+                                  <input type="number" className="form-control rounded-4" disabled value={ee_eps_wages} />
+                                </div>
+                                <div className="col mb-3">
+                                  <label htmlFor="inputPassword">EE</label>
+                                  <input type="number" className="form-control rounded-4" disabled value={ee_epf} />
+                                </div>
+
+                                <div className="col mb-3">
+                                  <label htmlFor="inputPassword">EPS</label>
+                                  <input type="number" className="form-control rounded-4" disabled value={er_eps} />
+                                </div>
+                                <div className="col mb-3">
+                                  <label htmlFor="inputPassword">ER</label>
+                                  <input type="number" className="form-control rounded-4" disabled value={er_epf} />
+                                </div>
+                              </div>
+                              {/* <div className="row">
                               <div className="col-sm">
                                 <button type="button" className="btn btn-outline-primary btn-block rounded-4" onClick={saveReturns}>Save</button>
                               </div>
@@ -1159,202 +1267,108 @@ const summary = () => {
                                 <button type="button" className="btn btn-outline-primary btn-block rounded-4" data-dismiss="modal" aria-label="Close"  onClick={() => { closeModal('exampleModal') }} >Close</button>
                               </di  v>
                             </div> */}
-                        </form>
+                            </form>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div className="modal-footer d-flex">
-                    <div className="row">
-                      <div className="col-sm">
-                        <button type="button" disabled={isUpdate || isSaveEnable} className="btn btn-outline-primary btn-block rounded-4" onClick={saveReturns}>Save</button>
-                      </div>
-                      <div className="col-sm">
-                        <button type="button" disabled={!isUpdate} className="btn btn-outline-primary btn-block rounded-4" onClick={updateReturns}>Update</button>
-                      </div>
-                      <div className="col-sm">
-                        <button type="button" className="btn btn-outline-primary btn-block rounded-4">Reset</button>
-                      </div>
-                      <div className="col-sm">
-                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" aria-label="Close" onClick={() => { closeModal('EpfReturnFillingModel') }} >Close</button>
-                      </div>
-                    </div>
+                      <div className="modal-footer d-flex">
+                        <div className="row">
+                          <div className="col-sm">
+                            <button type="button" disabled={isUpdate || isSaveEnable} className="btn btn-outline-primary btn-block rounded-4" onClick={saveReturns}>Save</button>
+                          </div>
+                          <div className="col-sm">
+                            <button type="button" disabled={!isUpdate} className="btn btn-outline-primary btn-block rounded-4" onClick={updateReturns}>Update</button>
+                          </div>
+                          <div className="col-sm">
+                            <button type="button" className="btn btn-outline-primary btn-block rounded-4">Reset</button>
+                          </div>
+                          <div className="col-sm">
+                            <button type="button" className="btn btn-outline-primary btn-block rounded-4" aria-label="Close" onClick={() => { closeModal('EpfReturnFillingModel') }} >Close</button>
+                          </div>
+                        </div>
 
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* )} */}
-
-            {/* return success or  failure msg */}
-            {showSuccessPopup && (
-              <div className="modal fade show" style={{ display: 'block' }} role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" id="successModalLabel">
-                        {respStatus === 'true' ? (
-                          <i className="bx bx-check-circle" style={{ color: 'green', marginRight: '10px', fontSize: '24px' }}></i>
-                        ) : (
-                          <i className="bx bx-x-circle" style={{ color: 'red', marginRight: '10px', fontSize: '24px' }}></i>
-                        )}
-                        {respStatus}
-                      </h5>
-                      <button type="button" className="close" onClick={handleSuccessClose} aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div className="modal-body">
-
-                      {respStatus === 'true' ? (
-                        <h5 style={{ color: 'green', marginRight: '10px', fontSize: '24px' }}>Data Save Successfully</h5>
-                      ) : (
-                        <h5 style={{ color: 'red', marginRight: '10px', fontSize: '24px' }}>Data Save Successfully</h5>
-                      )}
-                    </div>
-                    <div className="modal-footer">
-                      <button type="button" className="btn btn-primary" onClick={handleSuccessClose}>OK</button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
-            {/* Import EPF Return Model */}
-            <div className="modal fade" id="importReturn" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">Uplaod FIles</h5>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div className="modal-body">
-                    <div className="col-md-12">
-                      <input className="form-control rounded-4" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
-                    </div>
-                  </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" className="btn btn-primary" onClick={uploadMonthly}>Upload</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div id="confirmationModal" className="modal fade">
-              <div className="modal-dialog modal-confirm">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <div className="icon-box">
-                      <i className="material-icons">&#xE5CD;</i>
-                    </div>
-                    <h4 className="modal-title">Are you sure?</h4>
-                    <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  </div>
-                  <div className="modal-body text-black">
-                    <p>Import Prevoius Month data to selected Month</p>
-                  </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-info" data-dismiss="modal">Cancel</button>
-                    <button type="button" className="btn btn-danger" onClick={addFromPrevious}>Add</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+                {/* )} */}
 
-            <h5 className="mt-4">EPF Return For Month {selectedMonth}-{selectedYear}</h5>
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">Sn</th>
-                  <th scope="col">UAN</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Gross Wages</th>
-                  <th scope="col">EPF Wages</th>
-                  <th scope="col">EDLI Wages</th>
-                  <th scope="col">EPS Wages</th>
-                  <th scope="col">EE(12%)</th>
-                  <th scope="col">EPS(8.33%)</th>
-                  <th scope="col">ER(3.67%)</th>
-                  <th scope="col">NCP Days</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-
-
-                {currentItems.map((employee, index) => {
-                  const globalIndex = currentPage * itemsPerPage - itemsPerPage + index;
-                  return (
-
-                    <tr key={index}>
-                      <th scope="row">{globalIndex + 1}</th>
-                      <th scope="row">{employee.ee_uan}</th>
-                      <td>{employee.ee_name}</td>
-                      <td>{employee.gross_wages}</td>
-                      <td>{employee.epf_wages}</td>
-                      <td>{employee.edli_wages}</td>
-                      <td>{employee.eps_wages}</td>
-                      <td>{employee.ee_share}</td>
-                      <td>{employee.eps_share}</td>
-                      <td>{employee.diff_share}</td>
-                      <td>{employee.ncp_days}</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
-                            <i className="bi bi-eye text-info"></i>
-                          </button>
-                          <button className="btn btn-light mx-1" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
-                            <i className="bi bi-pencil-fill text-info"></i>
-                          </button>
-                          <button className="btn btn-light" onClick={() => { deleteReturn(employee.id) }} >
-                            <i className="bi bi-trash text-danger"></i>
+                {/* return success or  failure msg */}
+                {showSuccessPopup && (
+                  <div className="modal fade show" style={{ display: 'block' }} role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+                    <div className="modal-dialog" role="document">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h5 className="modal-title" id="successModalLabel">
+                            {respStatus === 'true' ? (
+                              <i className="bx bx-check-circle" style={{ color: 'green', marginRight: '10px', fontSize: '24px' }}></i>
+                            ) : (
+                              <i className="bx bx-x-circle" style={{ color: 'red', marginRight: '10px', fontSize: '24px' }}></i>
+                            )}
+                            {respStatus}
+                          </h5>
+                          <button type="button" className="close" onClick={handleSuccessClose} aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th id="total" colSpan="3">Total :</th>
-                  <td>{total_gross_wages}</td>
-                  <td>{total_epf_wages}</td>
-                  <td>{total_edli_wages}</td>
-                  <td>{total_eps_wages}</td>
-                  <td>{total_ee_share}</td>
-                  <td>{total_eps_share}</td>
-                  <td>{total_diff_share}</td>
-                  <td>{total_ncp_days}</td>
-                  <td></td>
-                </tr>
-              </tfoot>
-            </table>
-            {/* Pagination Controls */}
-            <div className="pagination">
-              <button className="btn btn-primary"
-                disabled={currentPage === 1}
-                onClick={() => handlePageChange(currentPage - 1)}
-              >
-                Previous
-              </button>
-              {Array.from({ length: totalPages }, (_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handlePageChange(index + 1)}
-                  style={{ margin: '0 2px', backgroundColor: currentPage === index + 1 ? '#1e60aa' : 'white', border: '0px',  color: currentPage === index + 1 ? 'white' : 'black'}}
-                >
-                  {index + 1}
-                </button>
-              ))}
-              <button className="btn btn-primary"
-                disabled={currentPage === totalPages}
-                onClick={() => handlePageChange(currentPage + 1)}
-              >
-                Next
-              </button>
-            </div>
+                        <div className="modal-body">
 
+                          {respStatus === 'true' ? (
+                            <h5 style={{ color: 'green', marginRight: '10px', fontSize: '24px' }}>Data Save Successfully</h5>
+                          ) : (
+                            <h5 style={{ color: 'red', marginRight: '10px', fontSize: '24px' }}>Data Save Successfully</h5>
+                          )}
+                        </div>
+                        <div className="modal-footer">
+                          <button type="button" className="btn btn-primary" onClick={handleSuccessClose}>OK</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {/* Import EPF Return Model */}
+                <div className="modal fade" id="importReturn" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">Uplaod FIles</h5>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div className="modal-body">
+                        <div className="col-md-12">
+                          <input className="form-control rounded-4" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
+                        </div>
+                      </div>
+                      <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" className="btn btn-primary" onClick={uploadMonthly}>Upload</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="confirmationModal" className="modal fade">
+                  <div className="modal-dialog modal-confirm">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <div className="icon-box">
+                          <i className="material-icons">&#xE5CD;</i>
+                        </div>
+                        <h4 className="modal-title">Are you sure?</h4>
+                        <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      </div>
+                      <div className="modal-body text-black">
+                        <p>Import Prevoius Month data to selected Month</p>
+                      </div>
+                      <div className="modal-footer">
+                        <button type="button" className="btn btn-info" data-dismiss="modal">Cancel</button>
+                        <button type="button" className="btn btn-danger" onClick={addFromPrevious}>Add</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> </div>
           </section>
         </div>
       )}

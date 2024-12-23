@@ -79,7 +79,7 @@ const employer = () => {
         "er_esic": er_esic,
         "ee_esic": ee_esic
       }
-  
+
       const data = await erRegister(params);
 
       if (data.status === true) {
@@ -144,28 +144,28 @@ const employer = () => {
 
 
 
-        const data = await erUpdate(ErId, params);
-        if (data.status === true) {
-          Swal.fire({
-            title: data.message,
-            icon: 'success',
-            confirmButtonText: 'Okay'
-          });
-  
-        } else {
-          Swal.fire({
-            position: 'top-right',
-            icon: 'error',
-            toast: true,
-            title: data.message,
-            showConfirmButton: false,
-            showCloseButton: true,
-            timer: 1500,
-          });
-        }
-    
+      const data = await erUpdate(ErId, params);
+      if (data.status === true) {
+        Swal.fire({
+          title: data.message,
+          icon: 'success',
+          confirmButtonText: 'Okay'
+        });
 
-    
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: data.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+      }
+
+
+
 
     } catch (error) {
       console.error('Login error ', error);
@@ -244,7 +244,7 @@ const employer = () => {
         </div> */}
         <section className="section">
 
-          <form>
+          <div className="row">
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title text-left">
@@ -252,54 +252,54 @@ const employer = () => {
                 </h5>
 
                 <div className="row">
-                  <div className="form-group col-sm  ">
+                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                     <label htmlFor="inputText">EPF No</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setEstEpfId(e.target.value)} value={EstEpfId} />
                   </div>
-                  <div className="form-group col-sm">
+                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                     <label htmlFor="inputEmail">ESIC No</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setEstEsicId(e.target.value)} value={EstEsicId} />
                   </div>
 
-                  <div className="form-group col-sm">
+                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                     <label htmlFor="inputEmail">Establishment Type</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setEstType(e.target.value)} value={EstType} />
                   </div>
-                  <div className="form-group col-sm">
+                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                     <label htmlFor="inputText">Date of Coverage</label>
                     <input type="date" className="form-control rounded-4" required onChange={(e) => setDoc(e.target.value)} value={estDoc} />
                   </div>
                 </div>
 
                 <div className="row">
-                  <div className="form-group col-md">
+                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                     <label htmlFor="inputPassword">Establishment Name</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setEstName(e.target.value)} value={EstName} />
                   </div>
-                  <div className="form-group col-md">
+                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                     <label htmlFor="inputEmail">Employer Namee</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setErName(e.target.value)} value={ErName} />
                   </div>
-                  <div className="form-group col-md">
+                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                     <label htmlFor="inputEmail">Designation</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => set_designation(e.target.value)} value={ErDesignation} />
                   </div>
-                  <div className="form-group col-md">
+                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                     <label htmlFor="inputEmail">City</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setCity(e.target.value)} value={city} />
                   </div>
                 </div>
 
                 <div className="row">
-                  <div className="form-group col-md">
+                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                     <label htmlFor="inputText">Email id</label>
                     <input type="email" className="form-control rounded-4" required onChange={(e) => setEmail(e.target.value)} value={Email} />
                   </div>
-                  <div className="form-group col-md">
+                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                     <label htmlFor="inputPassword">Contact Number</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setMobile(e.target.value)} value={Mobile} />
                   </div>
-                  <div className="form-group col-md">
+                  <div className="col-sm-3 col-md-3 col-lg-6 col-3">
                     <label htmlFor="inputPassword">Address</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setAddress(e.target.value)} value={Address} />
                   </div>
@@ -310,12 +310,12 @@ const employer = () => {
             <div className="card">
               <div className="card-body">
                 <div className='row'>
-                  <div className="form-group col-sm">
+                  <div className="col-sm">
                     <h5 className="card-title text-left">
                       Authorized Digital Signature
                     </h5>
                   </div>
-                  <div className="form-group col-sm-1">
+                  <div className="col-sm-1">
                     <div className="form-check form-switch">
                       <input className="form-check-input" type="checkbox" id="flexSwitchCheckPf" checked={checkedDSC} onChange={handleChange} />
                     </div>
@@ -324,19 +324,19 @@ const employer = () => {
                 {checkedDSC && (
                   <div className="row">
 
-                    <div className="form-group col-sm">
+                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                       <label htmlFor="inputText">Name On DSC </label>
                       <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_on_name(e.target.value)} value={dsc_on_name} />
                     </div>
-                    <div className="form-group col-sm">
+                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                       <label htmlFor="inputEmail">Designation</label>
                       <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_designation(e.target.value)} value={dsc_designation} />
                     </div>
-                    <div className="form-group col-sm">
+                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                       <label htmlFor="inputEmail">Expire Date</label>
                       <input type="date" className="form-control rounded-4" required onChange={(e) => set_dsc_expire(e.target.value)} value={dsc_expire} />
                     </div>
-                    <div className="form-group col-sm">
+                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                       <label htmlFor="inputText">Mobile</label>
                       <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_mobile(e.target.value)} value={dsc_mobile} />
                     </div>
@@ -385,10 +385,6 @@ const employer = () => {
                     <label htmlFor="inputText">Account 22</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
                   </div>
-                  {/* <div className="form-group col-sm">
-                    <label htmlFor="inputText">Account 22</label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
-                  </div> */}
                   <hr style={{ width: '99%' }} />
                   <h5 className="card-title text-left">
                     ESIC
@@ -419,18 +415,24 @@ const employer = () => {
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setRate(e.target.value)} value={rate} />
                   </div>
                 </div>
+
+                <div className="row">
+                <hr style={{ width: '99%' }} />
+                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                    {!isUpdate ? (
+                      <button type="button" className="btn btn-outline-secondary rounded-4" onClick={saveErDetails}>
+                        Save
+                      </button>
+                    ) : (
+                      <button type="button" className="btn btn-outline-secondary rounded-4" onClick={updateErDetails}>
+                        Update
+                      </button>
+                    )}</div>
+                </div>
               </div>
             </div>
-            {!isUpdate ? (
-              <button type="button" className="btn btn-outline-secondary rounded-4" onClick={saveErDetails}>
-                Save
-              </button>
-            ) : (
-              <button type="button" className="btn btn-outline-secondary rounded-4" onClick={updateErDetails}>
-                Update
-              </button>
-            )}
-          </form>
+
+          </div>
 
         </section>
       </div>

@@ -192,6 +192,7 @@ const ecr = () => {
             });
 
             resetModel()
+            closeModal('exampleModal')
 
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -396,15 +397,15 @@ const ecr = () => {
             // setError('Error fetching data. Please try again.');
         }
     };
-    const closeModal = () => {
-        var modal = document.getElementById('receivedModal');
+    const closeModal = (modalOp) => {
+        var modal = document.getElementById(modalOp);
         var bootstrapModal = bootstrap.Modal.getInstance(modal);
         bootstrapModal.hide();
         resetModel()
     };
 
-    const openModal = () => {
-        var modal = document.getElementById('receivedModal');
+    const openModal = (modalOp) => {
+        var modal = document.getElementById(modalOp);
         var bootstrapModal = new bootstrap.Modal(modal);
         bootstrapModal.show();
     };
@@ -459,408 +460,400 @@ const ecr = () => {
 
     return (
 
-        <div className="main-container">
+        <div className="main-container" style={{"marginTop":"50px", "fontSize":"15px", "color":"black"}}>
             <div className='main-title'>
                 <h3>CREATE BILL</h3>
             </div>
             <section className="section">
                 <div className="row">
-                    <div className="col-lg-12">
-
-                        <div className="card">
-                            <div className="card-body">
-                                <h5 className="card-title text-center">Generate Bill</h5>
-
-                                <form>
-                                    <div className="row">
-                                        <div className="col-sm">
-                                            <label htmlFor="inputText" >Est Id</label>
-                                            <input type="text" className="form-control rounded-4" onChange={(e) => setEstId(e.target.value)} value={est_id} />
-                                        </div>
-                                        <div className="col-sm">
-                                            <label htmlFor="inputText" >Bill Number</label>
-                                            <input type="text" className="form-control rounded-4" onChange={(e) => setBillNumber(e.target.value)} value={bill_number} />
-                                        </div>
-                                        <div className="col-sm-2">
-                                            <button type="button" className="btn btn-outline-primary rounded-4" style={{ width: "150px", "margin": "30px 10px 10px 0px" }} onClick={biller}>Get Details</button>
-                                        </div>
-                                        <div className="col-sm-1">
-                                            <button type="button" className="btn btn-outline-primary rounded-4" style={{ width: "140px", "margin": "30px 10px 10px -45px" }} onClick={resetPage}>Reset</button>
-                                        </div>
-                                    </div>
-                                </form>
-
+                    <div className="card">
+                        <div className="card-body">
+                            <h5 className="card-title text-center"><strong>Generate Bill</strong></h5>
+                            <form>
                                 <div className="row">
-                                    <div className="col-sm">
-                                        <label htmlFor="inputText" >Company Name</label>
-                                        <input type="text" className="form-control rounded-4" required onChange={(e) => setEstName(e.target.value)} value={est_name} />
+                                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                        <label htmlFor="inputText" >Est Id</label>
+                                        <input type="text" className="form-control rounded-4" onChange={(e) => setEstId(e.target.value)} value={est_id} />
                                     </div>
-                                    <div className="col-sm">
-                                        <label htmlFor="inputText" >Employer Name</label>
-                                        <input type="text" className="form-control rounded-4" required onChange={(e) => setErName(e.target.value)} value={er_name} />
+                                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                        <label htmlFor="inputText" >Bill Number</label>
+                                        <input type="text" className="form-control rounded-4" onChange={(e) => setBillNumber(e.target.value)} value={bill_number} />
                                     </div>
-                                    <div className="col-sm">
-                                        <label htmlFor="inputText" >Date Of Coverage</label>
-                                        <input type="text" className="form-control rounded-4" required onChange={(e) => setDOC(e.target.value)} value={est_doc} />
+                                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                        <button type="button" className="btn btn-outline-primary rounded-4 w-100" style={{ "margin-top": "20px"}} onClick={biller}>Get Details</button>
                                     </div>
-                                    <div className="col-sm">
-                                        <label htmlFor="inputText" >Address</label>
-                                        <input type="text" className="form-control rounded-4" required onChange={(e) => setAddress(e.target.value)} value={est_address} />
+                                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                        <button type="button" className="btn btn-outline-primary rounded-4 w-100" style={{ "margin-top": "20px"}} onClick={resetPage}>Reset</button>
                                     </div>
                                 </div>
-                                <div className="row">
-                                    <div className="col-sm">
-                                        <label htmlFor="inputText" >From</label>
-                                        <input type="month" className="form-control rounded-4" required onChange={(e) => setFromDate(e.target.value)} value={fromDate} />
-                                    </div>
-                                    <div className="col-sm">
-                                        <label htmlFor="inputText" >To</label>
-                                        <input type="month" className="form-control rounded-4" required onChange={(e) => setToDate(e.target.value)} value={toDate} />
-                                    </div>
-                                    <div className="col-sm">
-                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Next</button>
-                                    </div>
-                                    {!IsUpdate ? (<div className="col-sm">
-                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} onClick={addBill}>Save</button>
-                                    </div>) : (<div className="col-sm">
-                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} onClick={update}>Update</button>
-                                    </div>)}
-                                    <div className="col-sm">
-                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target=".bd-example-modal-xl">Make PDF</button>
-                                    </div>
-                                    <div className="col-sm">
-                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Email PDF</button>
-                                    </div>
-                                    <div className="col-sm">
-                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Print PDF</button>
-                                    </div>
-                                    <div className="col-sm">
-                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4" style={{ "margin": "30px 5px 10px 10px" }} data-toggle="modal" onClick={openModal} disabled={!IsUpdate}>Received</button>
-                                    </div>
-                                </div>
+                            </form>
 
-                                {/* Model */}
-                                <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div className="modal-dialog" role="document">
-                                        <div className="modal-content">
-                                            <div className="modal-header">
-                                                <h5 className="modal-title" id="exampleModalLabel">Bill Parameter</h5>
-                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
+                            <div className="row">
+                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                    <label htmlFor="inputText" >Company Name</label>
+                                    <input type="text" className="form-control rounded-4" required onChange={(e) => setEstName(e.target.value)} value={est_name} />
+                                </div>
+                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                    <label htmlFor="inputText" >Employer Name</label>
+                                    <input type="text" className="form-control rounded-4" required onChange={(e) => setErName(e.target.value)} value={er_name} />
+                                </div>
+                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                    <label htmlFor="inputText" >Date Of Coverage</label>
+                                    <input type="text" className="form-control rounded-4" required onChange={(e) => setDOC(e.target.value)} value={est_doc} />
+                                </div>
+                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                    <label htmlFor="inputText" >Address</label>
+                                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAddress(e.target.value)} value={est_address} />
+                                </div>
+                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                    <label htmlFor="inputText" >From</label>
+                                    <input type="month" className="form-control rounded-4" required onChange={(e) => setFromDate(e.target.value)} value={fromDate} />
+                                </div>
+                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                    <label htmlFor="inputText" >To</label>
+                                    <input type="month" className="form-control rounded-4" required onChange={(e) => setToDate(e.target.value)} value={toDate} />
+                                </div>
+                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-50" style={{ "margin": "22px 5px 10px 10px" }} onClick={() => openModal('exampleModal')}>Next</button>
+                                </div>
+                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+
+                                </div>
+                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                {!IsUpdate ? (
+                                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} onClick={addBill}>Save</button>
+                                ) : (
+                                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} onClick={update}>Update</button>
+                                )}
+                                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} data-toggle="modal" data-target=".bd-example-modal-xl">Make PDF</button>
+                                </div>
+                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} data-toggle="modal" data-target="#exampleModal">Email PDF</button>
+                                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} data-toggle="modal" data-target="#exampleModal">Print PDF</button>
+                                </div>
+                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-50" style={{ "margin": "5px" }} data-toggle="modal" onClick={openModal} disabled={!IsUpdate}>Received</button>
+                                </div>
+                            </div>
+
+                            {/* Model */}
+                            <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div className="modal-dialog" role="document">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h5 className="modal-title" id="exampleModalLabel">Bill Parameter</h5>
+                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div className="modal-body">
+                                            <div className='row'>
+                                                <div className='col-sm'>
+                                                    <div className="form-check form-switch">
+                                                        <input className="form-check-input" type="checkbox" id="flexSwitchCheckPf" checked={checkedPf} onChange={handleChange} />
+                                                        <label className="form-check-label">PF Challan</label>
+                                                    </div>
+                                                </div><div className='col-md'>
+                                                    <div className="form-check form-switch">
+                                                        {/* <input className="form-control rounded-4" type="text" id="flexSwitchCheckDefault" /> */}
+                                                        <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4 float-right" type="text" id="flexSwitchCheckDefault" disabled value={pfAmount} />
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div className="modal-body">
-                                                <div className='row'>
-                                                    <div className='col-sm'>
-                                                        <div className="form-check form-switch">
-                                                            <input className="form-check-input" type="checkbox" id="flexSwitchCheckPf" checked={checkedPf} onChange={handleChange} />
-                                                            <label className="form-check-label">PF Challan</label>
-                                                        </div>
-                                                    </div><div className='col-md'>
-                                                        <div className="form-check form-switch">
-                                                            {/* <input className="form-control rounded-4" type="text" id="flexSwitchCheckDefault" /> */}
-                                                            <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4 float-right" type="text" id="flexSwitchCheckDefault" disabled value={pfAmount} />
-                                                        </div>
+                                            <div className='row'>
+                                                <div className='col-sm'>
+                                                    <div className="form-check form-switch">
+                                                        <input className="form-check-input" type="checkbox" id="flexSwitchCheckEsic" checked={checkedEsic} onChange={handleChange} />
+                                                        <label className="form-check-label">ESIC Challan</label>
+                                                    </div>
+                                                </div><div className='col-md'>
+                                                    <div className="form-check form-switch">
+                                                        {/* <input className="form-control rounded-4" type="text" id="flexSwitchCheckDefault" /> */}
+                                                        {/* <label className="form-check-label float-right">{esicAmount}</label> */}
+                                                        <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4 float-right" type="text" id="flexSwitchCheckDefault" disabled value={esicAmount} />
                                                     </div>
                                                 </div>
-                                                <div className='row'>
-                                                    <div className='col-sm'>
-                                                        <div className="form-check form-switch">
-                                                            <input className="form-check-input" type="checkbox" id="flexSwitchCheckEsic" checked={checkedEsic} onChange={handleChange} />
-                                                            <label className="form-check-label">ESIC Challan</label>
-                                                        </div>
-                                                    </div><div className='col-md'>
-                                                        <div className="form-check form-switch">
-                                                            {/* <input className="form-control rounded-4" type="text" id="flexSwitchCheckDefault" /> */}
-                                                            {/* <label className="form-check-label float-right">{esicAmount}</label> */}
-                                                            <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4 float-right" type="text" id="flexSwitchCheckDefault" disabled value={esicAmount} />
-                                                        </div>
+                                            </div>
+                                            <div className='row'>
+                                                <div className='col-sm'>
+                                                    <div className="form-check form-switch">
+                                                        <input className="form-check-input" type="checkbox" id="flexSwitchCheckCoverage" checked={checkedCoverage} onChange={handleChange} />
+                                                        <label className="form-check-label">Coverage Amount</label>
                                                     </div>
                                                 </div>
-                                                <div className='row'>
-                                                    <div className='col-sm'>
+                                                <div className='col-sm-4'>
+                                                    {checkedCoverage ? (
                                                         <div className="form-check form-switch">
-                                                            <input className="form-check-input" type="checkbox" id="flexSwitchCheckCoverage" checked={checkedCoverage} onChange={handleChange} />
-                                                            <label className="form-check-label">Coverage Amount</label>
+                                                            <input style={{ outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4 float-right" type="number" id="flexSwitchCheckDefault" disabled={!checkedCoverage} onChange={(e) => setCoverageAmount(e.target.value)} value={coverageAmount} />
                                                         </div>
+
+                                                    ) : (
+                                                        <div className="form-check form-switch">
+                                                            <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4 float-right" type="text" id="flexSwitchCheckDefault" disabled={!checkedCoverage} onChange={(e) => { setCoverageAmount(e.target.value); calculate(); }} value={coverageAmount} />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div className='row mt-2'>
+                                                <div className='col-sm-2'>
+                                                    <div className="form-check form-switch">
+                                                        <input className="form-check-input" type="checkbox" id="flexSwitchCheckOther" checked={checkedOther} onChange={handleChange} />
+                                                        <label className="form-check-label">Others</label>
+                                                    </div>
+                                                </div>
+                                                <div className='col-sm-6'>
+                                                    {checkedOther && (
+                                                        <div className="form-check form-switch">
+                                                            <input style={{ outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4 float-right" type="text" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => setOtherReason(e.target.value)} />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div className='col-sm-4'>
+                                                    {checkedOther ? (
+                                                        <div className="form-check form-switch">
+                                                            <input style={{ outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4" type="number" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => { setOtherAmount(e.target.value); }} value={otherAmount} />
+                                                        </div>
+                                                    ) : (
+                                                        <div className="form-check form-switch">
+                                                            <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4" type="number" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => { setOtherAmount(e.target.value); }} value={otherAmount} />
+                                                        </div>
+                                                    )}
+
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            {/* <h5><p className="float-right">Total : {modalTotal}</p></h5> */}
+                                        </div>
+                                        <div className="modal-footer">
+                                            <button type="button" className="btn btn-secondary" onClick={() => closeModal('exampleModal')}>Close</button>
+                                            <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={calculation}>Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            ``
+
+                            <table className="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Particular</th>
+                                        <th scope="col">Rate</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {finalBillArray.map((employee, index) => (
+                                        <tr key={index}>
+                                            <th scope="row">{index}</th>
+                                            <th scope="row">{employee.perticular}</th>
+                                            <td>{employee.rate}</td>
+                                            <td>{employee.amount}</td>
+                                            <td>
+                                                <div className="d-flex align-items-center">
+                                                    <button className="btn btn-light" onClick={() => remove(index)}>
+                                                        <i className="bi bi-trash text-danger"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th id="total" colSpan="3">Total : </th>
+                                        <td>{totalAmount}</td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            {/* <div className="row">
+                                <div className="col-sm-2">
+                                    <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "2px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Save</button>
+                                </div>
+                                <div className="col-sm-2">
+                                    <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "2px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Make PDF</button>
+                                </div>
+                                <div className="col-sm-2">
+                                    <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "2px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Email PDF</button>
+                                </div>
+                                <div className="col-sm-2">
+                                    <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "2px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Print PDF</button>
+                                </div>
+                                <div className="col-sm-2">
+                                    <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "2px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Received</button>
+                                </div>
+                            </div> */}
+                            
+                            <div className="modal fade bd-example-modal-xl" tabIndex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                                <div className="modal-dialog modal-xl">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h5 className="modal-title" id="exampleModalLabel">Bill View</h5>
+                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div className="modal-body">
+                                            <div id="pdf-content">
+                                                <div className="row">
+                                                    <h2 className='float-right'>Invoice</h2>
+
+                                                </div>
+                                                <div className='row'>
+                                                    <div className='col-sm anandamTitle'>
+                                                        <p><strong>Anandam Consultancy</strong></p>
+                                                        <p><strong>101, Anant Appartment, Near Rakshak Bandhu</strong></p>
+                                                        <p><strong>Manewada Road, Nagpur-440024</strong></p>
+                                                        <p><strong>anand.esipf@gmail.com</strong></p>
+                                                        <p><strong>0712-2748370</strong></p>
                                                     </div>
                                                     <div className='col-sm-4'>
-                                                        {checkedCoverage ? (
-                                                            <div className="form-check form-switch">
-                                                                <input style={{ outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4 float-right" type="number" id="flexSwitchCheckDefault" disabled={!checkedCoverage} onChange={(e) => setCoverageAmount(e.target.value)} value={coverageAmount} />
-                                                            </div>
-
-                                                        ) : (
-                                                            <div className="form-check form-switch">
-                                                                <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4 float-right" type="text" id="flexSwitchCheckDefault" disabled={!checkedCoverage} onChange={(e) => { setCoverageAmount(e.target.value); calculate(); }} value={coverageAmount} />
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                                <div className='row mt-2'>
-                                                    <div className='col-sm-2'>
-                                                        <div className="form-check form-switch">
-                                                            <input className="form-check-input" type="checkbox" id="flexSwitchCheckOther" checked={checkedOther} onChange={handleChange} />
-                                                            <label className="form-check-label">Others</label>
-                                                        </div>
-                                                    </div>
-                                                    <div className='col-sm-6'>
-                                                        {checkedOther && (
-                                                            <div className="form-check form-switch">
-                                                                <input style={{ outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4 float-right" type="text" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => setOtherReason(e.target.value)} />
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                    <div className='col-sm-4'>
-                                                        {checkedOther ? (
-                                                            <div className="form-check form-switch">
-                                                                <input style={{ outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4" type="number" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => { setOtherAmount(e.target.value); }} value={otherAmount} />
-                                                            </div>
-                                                        ) : (
-                                                            <div className="form-check form-switch">
-                                                                <input style={{ border: 'none', outline: 'none', backgroundColor: 'transparent', textAlign: 'right' }} className="form-control rounded-4" type="number" id="flexSwitchCheckDefault" disabled={!checkedOther} onChange={(e) => { setOtherAmount(e.target.value); }} value={otherAmount} />
-                                                            </div>
-                                                        )}
-
-                                                    </div>
-                                                </div>
-                                                <hr />
-                                                {/* <h5><p className="float-right">Total : {modalTotal}</p></h5> */}
-                                            </div>
-                                            <div className="modal-footer">
-                                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={calculation}>Add</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <table className="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Perticular</th>
-                                            <th scope="col">Rate</th>
-                                            <th scope="col">Amount</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {finalBillArray.map((employee, index) => (
-                                            <tr key={index}>
-                                                <th scope="row">{index}</th>
-                                                <th scope="row">{employee.perticular}</th>
-                                                <td>{employee.rate}</td>
-                                                <td>{employee.amount}</td>
-                                                <td>
-                                                    <div className="d-flex align-items-center">
-                                                        <button className="btn btn-light" onClick={() => remove(index)}>
-                                                            <i className="bi bi-trash text-danger"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th id="total" colSpan="3">Total : </th>
-                                            <td>{totalAmount}</td>
-                                            <td></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                                {/* <div className="row">
-                                    <div className="col-sm-2">
-                                        <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "2px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Save</button>
-                                    </div>
-                                    <div className="col-sm-2">
-                                        <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "2px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Make PDF</button>
-                                    </div>
-                                    <div className="col-sm-2">
-                                        <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "2px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Email PDF</button>
-                                    </div>
-                                    <div className="col-sm-2">
-                                        <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "2px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Print PDF</button>
-                                    </div>
-                                    <div className="col-sm-2">
-                                        <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "2px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Received</button>
-                                    </div>
-                                </div> */}
-                                ``
-
-                                <div className="modal fade bd-example-modal-xl" tabIndex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-                                    <div className="modal-dialog modal-xl">
-                                        <div className="modal-content">
-                                            <div className="modal-header">
-                                                <h5 className="modal-title" id="exampleModalLabel">Bill View</h5>
-                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div className="modal-body">
-                                                <div id="pdf-content">
-                                                    <div className="row">
-                                                        <h2 className='float-right'>Invoice</h2>
-
-                                                    </div>
-                                                    <div className='row'>
-                                                        <div className='col-sm anandamTitle'>
-                                                            <p><strong>Anandam Consultancy</strong></p>
-                                                            <p><strong>101, Anant Appartment, Near Rakshak Bandhu</strong></p>
-                                                            <p><strong>Manewada Road, Nagpur-440024</strong></p>
-                                                            <p><strong>anand.esipf@gmail.com</strong></p>
-                                                            <p><strong>0712-2748370</strong></p>
-                                                        </div>
-                                                        <div className='col-sm-4'>
-                                                            <table>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <th>Invoice Number</th>
-                                                                        <td>{bill_number}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>Invoice Date</th>
-                                                                        <td>{date}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>Employer ID</th>
-                                                                        <td>{est_id}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <div className='row'>
-                                                        <div className='col-sm'>
-                                                            <h5 className='text-head'>To</h5>
-                                                            <p><strong>{est_name}</strong></p>
-                                                            <p><strong>{estDesignation}</strong></p>
-                                                            <p><strong>{est_address}</strong></p>
-                                                            <p><strong>{estCity}</strong></p>
-                                                            <p><strong>{estMobile}</strong></p>
-                                                            <p><strong>{estEmail}</strong></p>
-                                                        </div>
-                                                        <div className='col-sm-4'></div>
-                                                    </div>
-                                                    <div className="table-responsive">
-                                                        <table className="table table-sm table-hover">
-                                                            <thead>
-                                                                <tr className='text-head'>
-                                                                    <th>S.N.</th>
-                                                                    <th>Descriptions</th>
-                                                                    <th>Rate</th>
-                                                                    <th>Total Amount</th>
-                                                                </tr>
-                                                            </thead>
+                                                        <table>
                                                             <tbody>
-                                                                {finalBillArray.map((employee, index) => (
-                                                                    <tr key={index}>
-                                                                        <th scope="row">{index}</th>
-                                                                        <th scope="row">{employee.perticular}</th>
-                                                                        <td>Rs. {rate}</td>
-                                                                        <td>Rs. {employee.amount}</td>
-
-                                                                    </tr>
-                                                                ))}
                                                                 <tr>
-                                                                    <td colSpan="3">Total</td>
-                                                                    <td>Rs. {totalAmount}</td>
+                                                                    <th>Invoice Number</th>
+                                                                    <td>{bill_number}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Invoice Date</th>
+                                                                    <td>{date}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Employer ID</th>
+                                                                    <td>{est_id}</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                                    <table>
+                                                </div>
+                                                <div className='row'>
+                                                    <div className='col-sm'>
+                                                        <h5 className='text-head'>To</h5>
+                                                        <p><strong>{est_name}</strong></p>
+                                                        <p><strong>{estDesignation}</strong></p>
+                                                        <p><strong>{est_address}</strong></p>
+                                                        <p><strong>{estCity}</strong></p>
+                                                        <p><strong>{estMobile}</strong></p>
+                                                        <p><strong>{estEmail}</strong></p>
+                                                    </div>
+                                                    <div className='col-sm-4'></div>
+                                                </div>
+                                                <div className="table-responsive">
+                                                    <table className="table table-sm table-hover">
+                                                        <thead>
+                                                            <tr className='text-head'>
+                                                                <th>S.N.</th>
+                                                                <th>Descriptions</th>
+                                                                <th>Rate</th>
+                                                                <th>Total Amount</th>
+                                                            </tr>
+                                                        </thead>
                                                         <tbody>
+                                                            {finalBillArray.map((employee, index) => (
+                                                                <tr key={index}>
+                                                                    <th scope="row">{index}</th>
+                                                                    <th scope="row">{employee.perticular}</th>
+                                                                    <td>Rs. {rate}</td>
+                                                                    <td>Rs. {employee.amount}</td>
+
+                                                                </tr>
+                                                            ))}
                                                             <tr>
-                                                                <th><h5 className='text-head'>Bank Details</h5></th>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Bank Name</th>
-                                                                <td>Indian Overseas Bank</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Branch</th>
-                                                                <td>Hudkeshwar (Nagpur)</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Account Number</th>
-                                                                <td>264102000000449</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>IFSC Code</th>
-                                                                <td>IOBA0002641</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>PAN</th>
-                                                                <td>AARPV4479R</td>
+                                                                <td colSpan="3">Total</td>
+                                                                <td>Rs. {totalAmount}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
-                                                    <p>Payment should be made in favor of Anandam Consultancy.</p>
-                                                    <p>For any business enquiry, please contact us at 0712-2748370.</p>
                                                 </div>
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th><h5 className='text-head'>Bank Details</h5></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Bank Name</th>
+                                                            <td>Indian Overseas Bank</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Branch</th>
+                                                            <td>Hudkeshwar (Nagpur)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Account Number</th>
+                                                            <td>264102000000449</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>IFSC Code</th>
+                                                            <td>IOBA0002641</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>PAN</th>
+                                                            <td>AARPV4479R</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <p>Payment should be made in favor of Anandam Consultancy.</p>
+                                                <p>For any business enquiry, please contact us at 0712-2748370.</p>
                                             </div>
-                                            <div className="modal-footer">
-                                                <button className='btn btn-outline-primary btn-block' onClick={generatePDF}>Download PDF</button>
-                                            </div>
+                                        </div>
+                                        <div className="modal-footer">
+                                            <button className='btn btn-outline-primary btn-block' onClick={generatePDF}>Download PDF</button>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div className="modal fade" id="receivedModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div className="modal-dialog" role="document">
-                                        <div className="modal-content">
-                                            <div className="modal-header">
-                                                <h5 className="modal-title" id="exampleModalLabel">Received Amount</h5>
-                                                <button type="button" className="close" onClick={closeModal} aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div className="modal-body">
-                                                <div className="col-sm mb-2">
-                                                    <label>Payment Mode</label>
-                                                    <select
-                                                        className="form-select rounded-4"
-                                                        aria-label="Default select example" value={paymentMode} onChange={handlePaymentModeChange}
-                                                    >
-                                                        <option value="Cash">Cash</option>
-                                                        <option value="Online">Online</option>
-                                                    </select>
-
-                                                </div>
-                                                <div className="col-sm">
-                                                    <label htmlFor="inputText" >Received Date</label>
-                                                    <input type="date" className="form-control rounded-4" required onChange={(e) => set_receivedAmountDate(e.target.value)} value={receivedAmountDate} />
-                                                </div>
-                                                <div className="col-sm">
-                                                    <label htmlFor="inputText" >Amount Received</label>
-                                                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_receivedAmount(e.target.value)} value={receivedAmount} />
-                                                </div>
-                                                <div className="col-sm">
-                                                    <label htmlFor="inputText" >Discount</label>
-                                                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_discountOnReceivedAmount(e.target.value)} value={discountOnReceivedAmount} />
-                                                </div>
-                                                <div className="col-sm">
-                                                    <label htmlFor="inputText" >GST Amount</label>
-                                                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_gstOnReceived(e.target.value)} value={gstOnReceived} />
-                                                </div>
+                            <div className="modal fade" id="receivedModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div className="modal-dialog" role="document">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h5 className="modal-title" id="exampleModalLabel">Received Amount</h5>
+                                            <button type="button" className="close" onClick={closeModal} aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div className="modal-body">
+                                            <div className="col-sm mb-2">
+                                                <label>Payment Mode</label>
+                                                <select
+                                                    className="form-select rounded-4"
+                                                    aria-label="Default select example" value={paymentMode} onChange={handlePaymentModeChange}
+                                                >
+                                                    <option value="Cash">Cash</option>
+                                                    <option value="Online">Online</option>
+                                                </select>
 
                                             </div>
-                                            <div className="modal-footer">
-                                                <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
-                                                <button type="button" className="btn btn-primary" onClick={savePaymentReceived}>Save changes</button>
+                                            <div className="col-sm">
+                                                <label htmlFor="inputText" >Received Date</label>
+                                                <input type="date" className="form-control rounded-4" required onChange={(e) => set_receivedAmountDate(e.target.value)} value={receivedAmountDate} />
                                             </div>
+                                            <div className="col-sm">
+                                                <label htmlFor="inputText" >Amount Received</label>
+                                                <input type="text" className="form-control rounded-4" required onChange={(e) => set_receivedAmount(e.target.value)} value={receivedAmount} />
+                                            </div>
+                                            <div className="col-sm">
+                                                <label htmlFor="inputText" >Discount</label>
+                                                <input type="text" className="form-control rounded-4" required onChange={(e) => set_discountOnReceivedAmount(e.target.value)} value={discountOnReceivedAmount} />
+                                            </div>
+                                            <div className="col-sm">
+                                                <label htmlFor="inputText" >GST Amount</label>
+                                                <input type="text" className="form-control rounded-4" required onChange={(e) => set_gstOnReceived(e.target.value)} value={gstOnReceived} />
+                                            </div>
+
+                                        </div>
+                                        <div className="modal-footer">
+                                            <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
+                                            <button type="button" className="btn btn-primary" onClick={savePaymentReceived}>Save changes</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-
             </section>
 
         </div>

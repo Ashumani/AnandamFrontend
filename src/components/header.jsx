@@ -114,7 +114,7 @@ const Header = () => {
         <div className="d-flex align-items-center justify-content-between">
           <a href="/auth/dashboard" className="logo d-flex align-items-center">
             {/* <img src="assets/img/logo.png" alt="" /> */}
-            <img className="d-none d-lg-block" style={{width: '80%', "max-height":"250px" }} src={logo} alt="" />
+            <img className="d-none d-lg-block main_logo" style={{width: '80%', "max-height":"250px" }} src={logo} alt="" />
             {/* <span className="d-none d-lg-block">AnanDam</span> */}
           </a>
           <i className="bi bi-list toggle-sidebar-btn" onClick={togglesidebar}></i>
