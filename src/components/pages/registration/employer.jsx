@@ -353,35 +353,35 @@ const employer = () => {
                   EPF
                 </h5>
                 <div className="row">
-                  <div className="form-group col-sm">
+                  <div className="col-sm">
                     <label htmlFor="inputText">EPF </label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setEpfRate(e.target.value)} value={EpfRate} />
                   </div>
-                  <div className="form-group col-sm">
+                  <div className="col-sm">
                     <label htmlFor="inputEmail">EPS</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setEpsRate(e.target.value)} value={EpsRate} />
                   </div>
-                  <div className="form-group col-sm">
+                  <div className="col-sm">
                     <label htmlFor="inputEmail">ER</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setErRate(e.target.value)} value={ErRate} />
                   </div>
-                  <div className="form-group col-sm">
+                  <div className="col-sm">
                     <label htmlFor="inputText">Account 1</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc1(e.target.value)} value={Acc1} />
                   </div>
-                  <div className="form-group col-sm">
+                  <div className="col-sm">
                     <label htmlFor="inputText">Account 2</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc2(e.target.value)} value={Acc2} />
                   </div>
-                  <div className="form-group col-sm">
+                  <div className="col-sm">
                     <label htmlFor="inputText">Account 10</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc10(e.target.value)} value={Acc10} />
                   </div>
-                  <div className="form-group col-sm">
+                  <div className="col-sm">
                     <label htmlFor="inputText">Account 21</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc21(e.target.value)} value={Acc21} />
                   </div>
-                  <div className="form-group col-sm">
+                  <div className="col-sm">
                     <label htmlFor="inputText">Account 22</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
                   </div>
@@ -389,11 +389,11 @@ const employer = () => {
                   <h5 className="card-title text-left">
                     ESIC
                   </h5>
-                  <div className="form-group col-sm-2">
+                  <div className="col-sm-2">
                     <label htmlFor="inputText">ER Share</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => set_er_esic(e.target.value)} value={er_esic} />
                   </div>
-                  <div className="form-group col-sm-2">
+                  <div className="col-sm-2">
                     <label htmlFor="inputText">EE Share</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_esic(e.target.value)} value={ee_esic} />
                   </div>
@@ -401,7 +401,7 @@ const employer = () => {
                   <h5 className="card-title text-left">
                     Bill Rate
                   </h5>
-                  <div className="form-group col-sm-2">
+                  <div className="col-sm-2">
                     <label htmlFor="inputText">Rate</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setRate(e.target.value)} value={rate} />
                   </div>
@@ -410,7 +410,7 @@ const employer = () => {
                   <h5 className="card-title text-left">
                     Pay Roll Parameter
                   </h5>
-                  <div className="form-group col-sm-2">
+                  <div className="col-sm-2">
                     <label htmlFor="inputText">Rate</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setRate(e.target.value)} value={rate} />
                   </div>
