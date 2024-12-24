@@ -63,33 +63,33 @@ const billMaster = () => {
       // setLoading(false);
     }
   };
-  
+
 
   const [searchName, setSearchName] = useState('')
   const getBillByName = async () => {
 
     try {
-        // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-        const response = await searchBill(searchName);
-        
-        if (response.status == true) {
-          // setEmployeeData(response.data);
-  
-          set_totalPages(Math.ceil(response.data.length / itemsPerPage));
-  
-          // Get current items based on the current page
-          set_startIndex((currentPage - 1) * itemsPerPage);
-          set_totalPages(Math.ceil(response.count / itemsPerPage));
-          set_currentItems(response.data);
-  
-        }
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await searchBill(searchName);
+
+      if (response.status == true) {
+        // setEmployeeData(response.data);
+
+        set_totalPages(Math.ceil(response.data.length / itemsPerPage));
+
+        // Get current items based on the current page
+        set_startIndex((currentPage - 1) * itemsPerPage);
+        set_totalPages(Math.ceil(response.count / itemsPerPage));
+        set_currentItems(response.data);
+
+      }
 
     } catch (error) {
-        console.error('Error fetching data:', error);
-        // setError('Error fetching data. Please try again.');
+      console.error('Error fetching data:', error);
+      // setError('Error fetching data. Please try again.');
 
     }
-};
+  };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -110,36 +110,38 @@ const billMaster = () => {
                 <div className="card-body">
                   <h5 className="card-title text-center">Billing</h5>
 
-                    <div className="row">
-                      <div className="col-sm-2">
-                        <label htmlFor="inputEmail">PF</label>
-                        <input type="email" className="form-control rounded-4" />
-                      </div>
-                      <div className="col-sm-2">
-                        <label htmlFor="inputPassword">Name</label>
-                        <input type="text" className="form-control rounded-4"  onChange={(e) => setSearchName(e.target.value)}  />
-                      </div>
-                      <div className="col-sm-2">
-                        <button
-                          style={{ "margin": "30px 10px 10px 0px" }}
-                          type="button"
-                          className="btn btn-outline-primary btn-block rounded-4"
-                          onClick={getBillByName}
-                        >
-                          Search
-                        </button>
-                      </div>
-                      <div className="col-sm-2">
-                        <button
-                          style={{ "margin": "30px 10px 10px 0px" }}
-                          type="button"
-                          className="btn btn-outline-primary btn-block rounded-4"
-                        >
-                          <Link to="/auth/dashboard/bill/create"><span>Create Bill</span></Link>
-                        </button>
-                      </div>
+                  <div className="row">
+                    <div className="col-sm-2">
+                      <label htmlFor="inputEmail">PF</label>
+                      <input type="email" className="form-control rounded-4" />
                     </div>
-         
+                    <div className="col-sm-2">
+                      <label htmlFor="inputPassword">Name</label>
+                      <input type="text" className="form-control rounded-4" onChange={(e) => setSearchName(e.target.value)} />
+                    </div>
+                    <div className="col-sm-2">
+                      <button
+                        style={{ "margin": "30px 10px 10px 0px" }}
+                        type="button"
+                        className="btn btn-outline-primary btn-block rounded-4"
+                        onClick={getBillByName}
+                      >
+                        Search
+                      </button>
+                    </div>
+                    <div className="col-sm-2">
+                      <Link to="/auth/dashboard/bill/create">
+                        <button
+                          style={{ "margin": "30px 10px 10px 0px" }}
+                          type="button"
+                          className="btn btn-outline-primary btn-block rounded-4"
+                        >
+                          Create Bill
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+
                   <div className="table-responsive">
                     <table className="table table-sm table-hover">
                       <thead>
@@ -154,7 +156,7 @@ const billMaster = () => {
                           <th scope="col">Discount</th>
                           <th scope="col">Amt Paid</th>
                           <th scope="col">Status</th>
-                          
+
                         </tr>
                       </thead>
                       <tbody>
@@ -178,7 +180,7 @@ const billMaster = () => {
                             </td>
                             <td>{item.rate}</td>
                             <td>{item.amount}</td>
-                            <td>{item.paymentMode}</td>                           
+                            <td>{item.paymentMode}</td>
                             <td>{item.discount}</td>
                             <td>{item.amount_paid}</td>
                             <td>{item.status}</td>
@@ -186,14 +188,14 @@ const billMaster = () => {
                         ))}
                       </tbody>
                       <tfoot>
-                <tr>
-                  <th id="total" colSpan="5">Total :</th>
-                  <td colSpan="2">{totalAmount}</td>
-                  <td>{totalDiscount}</td>
-                  <td>{totalPaidAmount}</td>
-                  <td></td>
-                </tr>
-              </tfoot>
+                        <tr>
+                          <th id="total" colSpan="5">Total :</th>
+                          <td colSpan="2">{totalAmount}</td>
+                          <td>{totalDiscount}</td>
+                          <td>{totalPaidAmount}</td>
+                          <td></td>
+                        </tr>
+                      </tfoot>
                     </table>
                   </div>
 

@@ -243,48 +243,48 @@ const esic = () => {
           confirmButtonText: 'Okay'
         });
         return false
-      }else{
-        employee.ee_share = ee_esic
-      employee.er_share = er_esic
-      if (employee.rtid == 0 || employee.rtid == '') {
-        const userData = await UpdateEsicReturn(employee);
-        if (userData.status === true) {
-          await getMonthlyEsicReturn()
-
-        } else {
-          Swal.fire({
-            position: 'top-right',
-            icon: 'error',
-            toast: true,
-            title: userData.message,
-            showConfirmButton: false,
-            showCloseButton: true,
-            timer: 1500,
-          });
-        }
       } else {
-        employee.id = employee.rtid
-        const userData = await UpdateEsicReturn(employee);
-        if (userData.status === true) {
-          await getMonthlyEsicReturn()
+        employee.ee_share = ee_esic
+        employee.er_share = er_esic
+        if (employee.rtid == 0 || employee.rtid == '') {
+          const userData = await UpdateEsicReturn(employee);
+          if (userData.status === true) {
+            await getMonthlyEsicReturn()
 
+          } else {
+            Swal.fire({
+              position: 'top-right',
+              icon: 'error',
+              toast: true,
+              title: userData.message,
+              showConfirmButton: false,
+              showCloseButton: true,
+              timer: 1500,
+            });
+          }
         } else {
-          Swal.fire({
-            position: 'top-right',
-            icon: 'error',
-            toast: true,
-            title: userData.message,
-            showConfirmButton: false,
-            showCloseButton: true,
-            timer: 1500,
-          });
+          employee.id = employee.rtid
+          const userData = await UpdateEsicReturn(employee);
+          if (userData.status === true) {
+            await getMonthlyEsicReturn()
+
+          } else {
+            Swal.fire({
+              position: 'top-right',
+              icon: 'error',
+              toast: true,
+              title: userData.message,
+              showConfirmButton: false,
+              showCloseButton: true,
+              timer: 1500,
+            });
+          }
         }
-      }
-      setEditableIndex(null);
+        setEditableIndex(null);
 
 
       }
-      
+
 
     } catch (error) {
       console.error('Login error ', error);
@@ -635,72 +635,55 @@ const esic = () => {
   return (
 
     <div>{!showEsicPage ? (
-      <div className="main-container">
+      <div className="main-container" style={{"marginTop":"50px", "fontSize":"15px", "color":"black"}}>
         <div className='main-title'>
           <h3>ESIC Return Filing</h3>
         </div>
         <section className="section">
           <br />
           <div className="row">
-            <div className="col-sm">
-              <select
-                className="form-select rounded-4"
-                aria-label="Default select example" value={selectedMonth} onChange={handleMonthChange}
-              >
-                {returnsYear.month.map((returnYear) => (
-                  // eslint-disable-next-line react/jsx-key
-                  <option value={returnYear.monthNum}>{returnYear.monthText}</option>
-                ))}
-              </select>
-            </div>
-            <div className="col-sm">
-              <select
-                className="form-select rounded-4"
-                aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
-              >
-                {returnsYear.Year.map((retYear) => (
-                  // eslint-disable-next-line react/jsx-key
-                  <option value={retYear}>{retYear}</option>
-                ))}
-              </select>
-            </div>
-            <div className="col-sm-2">
-              <button type="button" className="btn btn-outline-primary btn-block rounded-4" onClick={() => showEsicReturnPage(selectedMonth, selectedYear)}  >Next
-                {/* <Link to="/auth/dashboard/monthlypf"><span >Next</span></Link> */}
-              </button>
-            </div>
-            <div className="col-sm-2">
-              <button
-                type="file"
-                className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#importReturn"
-              >
-                Import
-              </button>
-            </div>
-
-          </div>
-
-
-          {/* Import Salary Return Model */}
-          <div className="modal fade bd-example-modal-lg" id="importReturn" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
-                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div className="modal-body">
-                  ...
-                </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" className="btn btn-primary">Save changes</button>
+            <div className="card">
+              <div className="card-body">
+                <div className="row">
+                  <div className="col-sm-3 col-md-3 col-lg-4 col-3">
+                    <select
+                      className="form-select rounded-4"
+                      aria-label="Default select example" value={selectedMonth} onChange={handleMonthChange}
+                    >
+                      {returnsYear.month.map((returnYear) => (
+                        // eslint-disable-next-line react/jsx-key
+                        <option value={returnYear.monthNum}>{returnYear.monthText}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="col-sm-3 col-md-3 col-lg-4 col-3">
+                    <select
+                      className="form-select rounded-4"
+                      aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
+                    >
+                      {returnsYear.Year.map((retYear) => (
+                        // eslint-disable-next-line react/jsx-key
+                        <option value={retYear}>{retYear}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="col-sm-2 col-md-3 col-lg-2 col-2">
+                    <button type="button" className="btn btn-outline-primary btn-block rounded-4" onClick={() => showEsicReturnPage(selectedMonth, selectedYear)}  >Next
+                      {/* <Link to="/auth/dashboard/monthlypf"><span >Next</span></Link> */}
+                    </button>
+                  </div>
+                  <div className="col-sm-2 col-md-3 col-lg-2 col-2">
+                    <button
+                      type="file"
+                      className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#importReturn"
+                    >
+                      Import
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+           
+
           <h5 className="mt-4">ESIC Return</h5>
           <table className="table table-striped">
             <thead>
@@ -750,21 +733,47 @@ const esic = () => {
               ))}
             </tbody>
           </table>
+          </div>
+          </div>
+
+          {/* Import Salary Return Model */}
+          <div className="modal fade bd-example-modal-lg" id="importReturn" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  ...
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" className="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
       </div>) : (
-      <div className="main-container">
+      <div className="main-container" style={{"marginTop":"50px", "fontSize":"15px", "color":"black"}}>
         <div className='main-title'>
-          <h3>Esic Return Filing</h3>
+          <h3>Esic Return Filing for ({selectedMonth}-{selectedYear})</h3>
         </div>
         <section className="section">
           <br />
           <div className="row">
-            <div className="col-sm">
+          <div className="card">
+          <div className="card-body">
+          <div className="row">
+            <div className="col-sm-2 col-md-2 col-lg-2 col-2">
               <button type="button" className="btn btn-outline-primary btn-block rounded-4 " onClick={openModal}>
                 Add ({selectedMonth}-{selectedYear})
               </button>
             </div>
-            <div className="col-sm">
+            <div className="col-sm-2 col-md-2 col-lg-2 col-2">
               <button
                 type="file"
                 className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#importReturn"
@@ -772,7 +781,7 @@ const esic = () => {
                 Import
               </button>
             </div>
-            <div className="col-sm">
+            <div className="col-sm-2 col-md-2 col-lg-2 col-2">
               <button
                 type="button"
                 className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#importReturn"
@@ -780,23 +789,7 @@ const esic = () => {
                 Export
               </button>
             </div>
-            <div className="col-sm">
-              <button
-                type="button"
-                className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#confirmationModal"
-              >
-                Same as Prev
-              </button>
-            </div>
-            <div className="col-sm">
-              <button
-                type="button"
-                className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#confirmationModal"
-              >
-                Add From PF
-              </button>
-            </div>
-            <div className="col-sm">
+            <div className="col-sm-2 col-md-2 col-lg-2 col-2">
               <button
                 type="button"
                 className="btn btn-outline-primary btn-block rounded-4" onClick={showEsicSummary}
@@ -804,15 +797,139 @@ const esic = () => {
                 BACK
               </button>
             </div>
-            <div className="col-sm">
+            <div className="col-sm-4 col-md-4 col-lg-4 col-4">
               <input type="text" className="form-control rounded-4" placeholder="Search" onChange={(e) => setSearchEE(e.target.value)} onBlur={searchMonthlyEE} />
             </div>
-            {/* <div className="col-md-4">
-              <input className="form-control rounded-4" type="file" id="formFile" />
+          </div>
+           </div>
+            </div>
+            </div>
 
-            </div> */}
+          <h5 className="mt-4">EPF Return For Month {selectedMonth}-{selectedYear}</h5>
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Sn</th>
+                <th scope="col">MM-YY</th>
+                <th scope="col">ESIC No</th>
+                <th scope="col">Employee Name</th>
+                <th scope="col">Days</th>
+                <th scope="col">Gross</th>
+                <th scope="col">EE Share</th>
+                <th scope="col">ER Share</th>
+                <th scope="col">Reason</th>
+                <th scope="col">Date</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {employeeMonthlyEsicReturn.map((employee, index) => (
+                <tr key={index}>
+                  <th scope="row">{index + 1}</th>
+                  <td>{employee.month}-{employee.year}</td>
+                  <td>{employee.ee_esic_no}</td>
+                  <td>{employee.ee_name}</td>
+                  {editableIndex !== index ? (<td>{employee.dayspresent}     </td>) : (
+                    <td>  <input
+                      type="number"
+                      className="form-control rounded-4"
+                      disabled={editableIndex !== index}
+                      onChange={(e) => handleInputChange(e, 'dayspresent')}
+
+                      value={editableIndex === index ? formValues.dayspresent : employee.dayspresent}
+                    /> </td>
+                  )}
+
+                  {editableIndex !== index ? (<td>{employee.gross_wages}     </td>) : (
+                    <td> <input
+                      type="number"
+                      className="form-control rounded-4"
+                      disabled={editableIndex !== index}
+                      onChange={(e) => handleInputChange(e, 'gross_wages')}
+                      onBlur={(e) => handleInputChange1(e, 'gross_wages')}
+                      value={editableIndex === index ? formValues.gross_wages : employee.gross_wages}
+                    />    </td>
+                  )}
+
+
+                  <td>{editableIndex !== index ? employee.ee_share : ee_esic}</td>
+                  <td>{editableIndex !== index ? employee.er_share : er_esic}</td>
+
+                  {editableIndex !== index ? (<td>{employee.reason}     </td>) : (
+                    <td> <input
+                      type="text"
+                      className="form-control rounded-4"
+                      disabled={editableIndex !== index}
+                      value={employee.reason}
+                    /></td>
+                  )}
+                  {editableIndex !== index ? (<td>{employee.date}     </td>) : (
+                    <td> <input
+                      type="date"
+                      className="form-control rounded-4"
+                      disabled={editableIndex !== index}
+                      value={employee.date}
+                    /></td>
+                  )}
+
+                  <td>
+                    <div className="d-flex align-items-center">
+                      <button className="btn btn-light" onClick={() => { }}>
+                        <i className="bi bi-eye text-info"></i>
+                      </button>
+                      <button
+                        className="btn btn-light mx-1"
+                        onClick={() => handleEditClick(index)}
+                      >
+                        <i className="bi bi-pencil-fill text-info"></i>
+                      </button>
+                      <button
+                        className="btn btn-light"
+                        disabled
+                      >
+                        <i className="bi bi-trash text-danger"></i>
+                      </button>
+                      {editableIndex === index && (
+                        <button
+                          className="btn btn-light mx-1"
+                          onClick={() => handleSaveClick(index)}
+                        // onClick={() => updateReturns(employee)}
+                        >
+                          <i className="bi bi-check text-success"></i>
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {/* Pagination Controls */}
+          <div className="pagination">
+            <button className="btn btn-primary"
+              disabled={currentPage === 1}
+              onClick={() => handlePageChange(currentPage - 1)}
+            >
+              Previous
+            </button>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index}
+                onClick={() => handlePageChange(index + 1)}
+                style={{ margin: '0 2px', backgroundColor: currentPage === index + 1 ? '#1e60aa' : 'white', border: '0px' }}
+              >
+                {index + 1}
+              </button>
+            ))}
+            <button className="btn btn-primary"
+              disabled={currentPage === totalPages}
+              onClick={() => handlePageChange(currentPage + 1)}
+            >
+              Next
+            </button>
           </div>
 
+          
           {/* Add Epf Return Model */}
           {/* {showModal && ( */}
           {/* <div style={{ display: 'block' }} className="modal fade show" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
@@ -961,129 +1078,6 @@ const esic = () => {
             </div>
           </div>
 
-          <h5 className="mt-4">EPF Return For Month {selectedMonth}-{selectedYear}</h5>
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">Sn</th>
-                <th scope="col">MM-YY</th>
-                <th scope="col">ESIC No</th>
-                <th scope="col">Employee Name</th>
-                <th scope="col">Days</th>
-                <th scope="col">Gross</th>
-                <th scope="col">EE Share</th>
-                <th scope="col">ER Share</th>
-                <th scope="col">Reason</th>
-                <th scope="col">Date</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {employeeMonthlyEsicReturn.map((employee, index) => (
-                <tr key={index}>
-                  <th scope="row">{index + 1}</th>
-                  <td>{employee.month}-{employee.year}</td>
-                  <td>{employee.ee_esic_no}</td>
-                  <td>{employee.ee_name}</td>
-                  {editableIndex !== index ? (<td>{employee.dayspresent}     </td>) : (
-                    <td>  <input
-                      type="number"
-                      className="form-control rounded-4"
-                      disabled={editableIndex !== index}
-                      onChange={(e) => handleInputChange(e, 'dayspresent')}
-
-                      value={editableIndex === index ? formValues.dayspresent : employee.dayspresent}
-                    /> </td>
-                  )}
-
-                  {editableIndex !== index ? (<td>{employee.gross_wages}     </td>) : (
-                    <td> <input
-                      type="number"
-                      className="form-control rounded-4"
-                      disabled={editableIndex !== index}
-                      onChange={(e) => handleInputChange(e, 'gross_wages')}
-                      onBlur={(e) => handleInputChange1(e, 'gross_wages')}
-                      value={editableIndex === index ? formValues.gross_wages : employee.gross_wages}
-                    />    </td>
-                  )}
-
-
-                  <td>{editableIndex !== index ? employee.ee_share : ee_esic}</td>
-                  <td>{editableIndex !== index ? employee.er_share : er_esic}</td>
-
-                  {editableIndex !== index ? (<td>{employee.reason}     </td>) : (
-                    <td> <input
-                      type="text"
-                      className="form-control rounded-4"
-                      disabled={editableIndex !== index}
-                      value={employee.reason}
-                    /></td>
-                  )}
-                  {editableIndex !== index ? (<td>{employee.date}     </td>) : (
-                    <td> <input
-                      type="date"
-                      className="form-control rounded-4"
-                      disabled={editableIndex !== index}
-                      value={employee.date}
-                    /></td>
-                  )}
-
-                  <td>
-                    <div className="d-flex align-items-center">
-                      <button className="btn btn-light" onClick={() => { }}>
-                        <i className="bi bi-eye text-info"></i>
-                      </button>
-                      <button
-                        className="btn btn-light mx-1"
-                        onClick={() => handleEditClick(index)}
-                      >
-                        <i className="bi bi-pencil-fill text-info"></i>
-                      </button>
-                      <button
-                        className="btn btn-light"
-                        disabled
-                      >
-                        <i className="bi bi-trash text-danger"></i>
-                      </button>
-                      {editableIndex === index && (
-                        <button
-                          className="btn btn-light mx-1"
-                          onClick={() => handleSaveClick(index)}
-                        // onClick={() => updateReturns(employee)}
-                        >
-                          <i className="bi bi-check text-success"></i>
-                        </button>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {/* Pagination Controls */}
-          <div className="pagination">
-            <button className="btn btn-primary"
-              disabled={currentPage === 1}
-              onClick={() => handlePageChange(currentPage - 1)}
-            >
-              Previous
-            </button>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <button
-                key={index}
-                onClick={() => handlePageChange(index + 1)}
-                style={{ margin: '0 2px', backgroundColor: currentPage === index + 1 ? '#1e60aa' : 'white', border: '0px' }}
-              >
-                {index + 1}
-              </button>
-            ))}
-            <button className="btn btn-primary"
-              disabled={currentPage === totalPages}
-              onClick={() => handlePageChange(currentPage + 1)}
-            >
-              Next
-            </button>
-          </div>
 
         </section>
       </div>

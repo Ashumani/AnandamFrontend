@@ -385,7 +385,10 @@ const employer = () => {
                     <label htmlFor="inputText">Account 22</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
                   </div>
-                  <hr style={{ width: '99%' }} />
+                  <hr className="mt-3" style={{ width: '98%' }} />
+
+                </div>
+                <div className="row">
                   <h5 className="card-title text-left">
                     ESIC
                   </h5>
@@ -397,7 +400,9 @@ const employer = () => {
                     <label htmlFor="inputText">EE Share</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_esic(e.target.value)} value={ee_esic} />
                   </div>
-                  <hr style={{ width: '99%' }} />
+                  <hr className="mt-3" style={{ width: '98%' }} />
+                </div>
+                <div className="row">
                   <h5 className="card-title text-left">
                     Bill Rate
                   </h5>
@@ -406,7 +411,9 @@ const employer = () => {
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setRate(e.target.value)} value={rate} />
                   </div>
 
-                  <hr style={{ width: '99%' }} />
+                  <hr className="mt-3" style={{ width: '98%' }} />
+                </div>
+                <div className="row">
                   <h5 className="card-title text-left">
                     Pay Roll Parameter
                   </h5>
@@ -417,7 +424,7 @@ const employer = () => {
                 </div>
 
                 <div className="row">
-                <hr style={{ width: '99%' }} />
+                  <hr className="mt-3" style={{ width: '98%' }} />
                   <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                     {!isUpdate ? (
                       <button type="button" className="btn btn-outline-secondary rounded-4" onClick={saveErDetails}>

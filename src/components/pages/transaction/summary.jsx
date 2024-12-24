@@ -1076,7 +1076,6 @@ const summary = () => {
                   </thead>
                   <tbody>
 
-
                     {currentItems.map((employee, index) => {
                       const globalIndex = currentPage * itemsPerPage - itemsPerPage + index;
                       return (

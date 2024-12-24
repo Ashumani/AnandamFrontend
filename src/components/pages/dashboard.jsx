@@ -168,7 +168,7 @@ const dashboard = () => {
         setChartData(Data);
         setPieChartData(response.total)
 
-      }else{
+      } else {
         setChartData([]);
         setPieChartData([])
       }
@@ -211,40 +211,41 @@ const dashboard = () => {
 
 
 
-      <main className='main-container'>
+      <main className='main-container' style={{ "marginTop": "50px", "fontSize": "15px", "color": "black" }}>
         <div className='main-title'>
           <h3>DASHBOARD</h3>
         </div>
-
+        <div className="row">
         <div className='main-cards'>
-          <div className='card cardprop1'>
+          <div className='cardCustom cardprop1'>
             <div className='card-inner'>
-              <h3>Clients</h3>
+              <h5>Clients</h5>
               <BsFillArchiveFill className='card_icon' />
             </div>
             <h1>{totalclient}</h1>
           </div>
-          <div className='card cardprop2'>
+          <div className='cardCustom cardprop2'>
             <div className='card-inner'>
-              <h3>EPF</h3>
+              <h5>EPF</h5>
               <BsFillGrid3X3GapFill className='card_icon' />
             </div>
             <h1>{totalepf}/{epfchallancreated}</h1>
           </div>
-          <div className='card cardprop3'>
+          <div className='cardCustom cardprop3'>
             <div className='card-inner'>
-              <h3>ESIC</h3>
+              <h5>ESIC</h5>
               <BsPeopleFill className='card_icon' />
             </div>
             <h1>{totalesic}/{esicchallancreated}</h1>
           </div>
-          <div className='card cardprop4'>
+          <div className='cardCustom cardprop4'>
             <div className='card-inner'>
-              <h3>DSC</h3>
+              <h5>DSC</h5>
               <BsFillBellFill className='card_icon' />
             </div>
             <h1>{totaldsc}/{expiredsc}</h1>
           </div>
+        </div>
         </div>
         <div className="row">
           <div className="col-sm-2">
@@ -262,112 +263,10 @@ const dashboard = () => {
         </div>
 
         <div className="chartView">
-        <div className='charts'>
-          <ResponsiveContainer width="100%" height="100%">
-            {data && data.length > 0 ? (<BarChart
-              data={data}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <defs>
-                <linearGradient id="colorPv" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" style={{ stopColor: '#2b6b86', stopOpacity: 1 }} />
-                  <stop offset="100%" style={{ stopColor: '#82ca9d', stopOpacity: 1 }} />
-                </linearGradient>
-                <linearGradient id="colorUv" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" style={{ stopColor: '#f7c94c', stopOpacity: 1 }} />
-                  <stop offset="100%" style={{ stopColor: '#f76e6e', stopOpacity: 1 }} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend
-                payload={[
-                  { id: 'pv', type: 'line', color: '#2b6b86', value: 'Employee Count' },
-                  { id: 'uv', type: 'line', color: '#f7c94c', value: 'Challan Count' },
-                ]}
-                verticalAlign="bottom"
-              />
-              <Bar dataKey="pv" fill="url(#colorPv)">
-                <LabelList dataKey="pv" position="top" />
-              </Bar>
-              <Bar dataKey="uv" fill="url(#colorUv)">
-                <LabelList dataKey="uv" position="top" />
-              </Bar>
-            </BarChart>) : (
-              <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
-                No Data Available
-              </div>
-            )}
-          </ResponsiveContainer>
-          <ResponsiveContainer width="100%" height="100%">
-            {data && data.length > 0 ? (<ComposedChart width={730} height={250} data={data}>
-              <defs>
-                <linearGradient id="colorAmt" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" style={{ stopColor: '#8884d8', stopOpacity: 1 }} />
-                  <stop offset="100%" style={{ stopColor: '#d4c3e0', stopOpacity: 1 }} />
-                </linearGradient>
-                <linearGradient id="colorPv" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" style={{ stopColor: '#fcbdb3', stopOpacity: 1 }} />
-                  <stop offset="100%" style={{ stopColor: '#ff6b6b', stopOpacity: 1 }} />
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <CartesianGrid stroke="#f5f5f5" />
-              <Area type="monotone" dataKey="amt" fill="url(#colorAmt)" stroke="#8884d8" />
-              <Bar dataKey="pv" barSize={20} fill="url(#colorPv)" />
-              <Line type="monotone" dataKey="uv" stroke="#ff7300" />
-            </ComposedChart>
-            ) : (
-              <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
-                No Data Available
-              </div>
-            )}
-          </ResponsiveContainer>
-
-        </div>
-
-        <div className='charts'>
-          <ResponsiveContainer width="100%" height="100%">
-          {pieChartData && pieChartData.length > 0 ? (
-            <PieChart>
-              <Pie
-                data={pieChartData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius={100}
-                fill="#8884d8"
-                label="value"
-              >
-                {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          ) : (
-              <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
-                No Data Available
-              </div>
-            )}
-          </ResponsiveContainer>
-
-          <ResponsiveContainer width="100%" height="100%">
-            {chartData.length > 0 ? (
-              <BarChart
-                data={chartData}
+          <div className='charts'>
+            <ResponsiveContainer width="100%" height="75%">
+              {data && data.length > 0 ? (<BarChart
+                data={data}
                 margin={{
                   top: 5,
                   right: 30,
@@ -376,11 +275,11 @@ const dashboard = () => {
                 }}
               >
                 <defs>
-                  <linearGradient id="colorTotalBill" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <linearGradient id="colorPv" x1="0%" y1="0%" x2="0%" y2="100%">
                     <stop offset="0%" style={{ stopColor: '#2b6b86', stopOpacity: 1 }} />
                     <stop offset="100%" style={{ stopColor: '#82ca9d', stopOpacity: 1 }} />
                   </linearGradient>
-                  <linearGradient id="colorAmtReceived" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <linearGradient id="colorUv" x1="0%" y1="0%" x2="0%" y2="100%">
                     <stop offset="0%" style={{ stopColor: '#f7c94c', stopOpacity: 1 }} />
                     <stop offset="100%" style={{ stopColor: '#f76e6e', stopOpacity: 1 }} />
                   </linearGradient>
@@ -391,26 +290,128 @@ const dashboard = () => {
                 <Tooltip />
                 <Legend
                   payload={[
-                    { id: 'totalbill', type: 'line', color: '#2b6b86', value: 'Total Bill' },
-                    { id: 'totalamtreceived', type: 'line', color: '#f7c94c', value: 'Total Amount Received' },
+                    { id: 'pv', type: 'line', color: '#2b6b86', value: 'Employee Count' },
+                    { id: 'uv', type: 'line', color: '#f7c94c', value: 'Challan Count' },
                   ]}
                   verticalAlign="bottom"
                 />
-                <Bar dataKey="totalbill" fill="url(#colorTotalBill)">
-                  <LabelList dataKey="totalbill" position="top" />
+                <Bar dataKey="pv" fill="url(#colorPv)">
+                  <LabelList dataKey="pv" position="top" />
                 </Bar>
-                <Bar dataKey="totalamtreceived" fill="url(#colorAmtReceived)">
-                  <LabelList dataKey="totalamtreceived" position="top" />
+                <Bar dataKey="uv" fill="url(#colorUv)">
+                  <LabelList dataKey="uv" position="top" />
                 </Bar>
-              </BarChart>
-            ) : (
-              <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
-                No Data Available
-              </div>
-            )}
-          </ResponsiveContainer>
+              </BarChart>) : (
+                <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
+                  No Data Available
+                </div>
+              )}
+            </ResponsiveContainer>
+          <ResponsiveContainer width="100%" height="75%">
+              {data && data.length > 0 ? (<ComposedChart width={730} height={250} data={data}>
+                <defs>
+                  <linearGradient id="colorAmt" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style={{ stopColor: '#8884d8', stopOpacity: 1 }} />
+                    <stop offset="100%" style={{ stopColor: '#d4c3e0', stopOpacity: 1 }} />
+                  </linearGradient>
+                  <linearGradient id="colorPv" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style={{ stopColor: '#fcbdb3', stopOpacity: 1 }} />
+                    <stop offset="100%" style={{ stopColor: '#ff6b6b', stopOpacity: 1 }} />
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <CartesianGrid stroke="#f5f5f5" />
+                <Area type="monotone" dataKey="amt" fill="url(#colorAmt)" stroke="#8884d8" />
+                <Bar dataKey="pv" barSize={20} fill="url(#colorPv)" />
+                <Line type="monotone" dataKey="uv" stroke="#ff7300" />
+              </ComposedChart>
+              ) : (
+                <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
+                  No Data Available
+                </div>
+              )}
+            </ResponsiveContainer>
 
-          {/* <ResponsiveContainer width="100%" height="100%">
+          </div>
+
+          <div className='charts'>
+            <ResponsiveContainer width="100%" height="75%">
+              {pieChartData && pieChartData.length > 0 ? (
+                <PieChart>
+                  <Pie
+                    data={pieChartData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    fill="#8884d8"
+                    label="value"
+                  >
+                    {chartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              ) : (
+                <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
+                  No Data Available
+                </div>
+              )}
+            </ResponsiveContainer>
+
+            <ResponsiveContainer width="100%" height="75%">
+              {chartData.length > 0 ? (
+                <BarChart
+                  data={chartData}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <defs>
+                    <linearGradient id="colorTotalBill" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: '#2b6b86', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: '#82ca9d', stopOpacity: 1 }} />
+                    </linearGradient>
+                    <linearGradient id="colorAmtReceived" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: '#f7c94c', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: '#f76e6e', stopOpacity: 1 }} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend
+                    payload={[
+                      { id: 'totalbill', type: 'line', color: '#2b6b86', value: 'Total Bill' },
+                      { id: 'totalamtreceived', type: 'line', color: '#f7c94c', value: 'Total Amount Received' },
+                    ]}
+                    verticalAlign="bottom"
+                  />
+                  <Bar dataKey="totalbill" fill="url(#colorTotalBill)">
+                    <LabelList dataKey="totalbill" position="top" />
+                  </Bar>
+                  <Bar dataKey="totalamtreceived" fill="url(#colorAmtReceived)">
+                    <LabelList dataKey="totalamtreceived" position="top" />
+                  </Bar>
+                </BarChart>
+              ) : (
+                <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
+                  No Data Available
+                </div>
+              )}
+            </ResponsiveContainer>
+
+            {/* <ResponsiveContainer width="100%" height="100%">
             <LineChart
               width={500}
               height={300}
@@ -432,9 +433,9 @@ const dashboard = () => {
             </LineChart>
           </ResponsiveContainer> */}
 
-        </div>
+          </div>
 
-        {/* <div className='charts'>
+          {/* <div className='charts'>
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart width={730} height={250} data={data}
               margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
@@ -481,7 +482,7 @@ const dashboard = () => {
 
         </div> */}
         </div>
-        
+
       </main>
     </div>
   )
