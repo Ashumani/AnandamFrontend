@@ -14,6 +14,7 @@ const superUser = () => {
   const [isCheckedsalary, set_isCheckedsalary] = useState(false)
   const [isCheckedemployee, set_isCheckedemployee] = useState(false)
   const [isCheckedemployer, set_isCheckedemployer] = useState(false)
+  const [isCheckedbill, set_isCheckedbill] = useState(false)
 
   const deleterecords = async () => {
     // api call
@@ -24,6 +25,7 @@ const superUser = () => {
       "salary": isCheckedsalary,
       "employee": isCheckedemployee,
       "employer": isCheckedemployer,
+      "bill": isCheckedbill,
     }
     try {
       const response = await deleteRecords(params);
@@ -67,8 +69,11 @@ const superUser = () => {
       set_isCheckedsalary(event.target.checked)
     } else if (event.target.name === 'employee') {
       set_isCheckedemployee(event.target.checked)
-    } else if (event.target.name === 'employerr') {
+    } else if (event.target.name === 'employer') {
       set_isCheckedemployer(event.target.checked)
+    }
+    else if (event.target.name === 'bill') {
+      set_isCheckedbill(event.target.checked)
     }
 
 
@@ -109,6 +114,10 @@ const superUser = () => {
             <div className="col-sm-1">
               <input className="form-check-input" type="checkbox" id="employer" name="employer" checked={isCheckedemployer} onChange={handleCheckboxChange} />
               <label className="form-check-label text-dark">Employer</label>
+            </div>
+            <div className="col-sm-1">
+              <input className="form-check-input" type="checkbox" id="bill" name="bill" checked={isCheckedbill} onChange={handleCheckboxChange} />
+              <label className="form-check-label text-dark">Bill</label>
             </div>
             <div className="col-sm-2">
               <button

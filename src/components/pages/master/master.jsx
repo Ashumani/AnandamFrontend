@@ -116,7 +116,8 @@ const master = () => {
           showCloseButton: true,
           timer: 1500,
         });
-
+        await getAll(1)
+        closeModal('importReturn')
 
       } else {
         Swal.fire({
@@ -212,7 +213,7 @@ const master = () => {
             confirmButtonText: 'Okay'
           });
 
-          closeModal()
+          closeModal('employerModel')
           await getAll(1);
   
         } else {
@@ -307,7 +308,7 @@ const master = () => {
               confirmButtonText: 'Okay'
             });
   
-            closeModal()
+            closeModal('employerModel')
             await getAll(1);
     
           } else {
@@ -432,14 +433,14 @@ const master = () => {
   };
 
 
-  const closeModal = () => {
-    var modal = document.getElementById('employerModel');
+  const closeModal = (exModal) => {
+    var modal = document.getElementById(exModal);
     var bootstrapModal = bootstrap.Modal.getInstance(modal);
     bootstrapModal.hide();
   };
 
-  const openModal = () => {
-    var modal = document.getElementById('employerModel');
+  const openModal = (exModal) => {
+    var modal = document.getElementById(exModal);
     var bootstrapModal = new bootstrap.Modal(modal);
     bootstrapModal.show();
   };
@@ -456,12 +457,12 @@ const master = () => {
             <div className="col-sm-2">
               <button
                 type="file"
-                className="btn btn-outline-primary btn-block rounded-4" onClick={openModal}> Add Employer</button>
+                className="btn btn-outline-primary btn-block rounded-4" onClick={() => openModal('employerModel')}> Add Employer</button>
             </div>
             <div className="col-sm-2">
               <button
                 type="file"
-                className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#importReturn"
+                className="btn btn-outline-primary btn-block rounded-4" onClick={() => openModal('importReturn')}
               >
                 Import
               </button>
@@ -546,7 +547,7 @@ const master = () => {
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title" id="exampleModalLabel">Uplaod FIles</h5>
-                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <button type="button" className="close" onClick={() => closeModal('importReturn')} aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
@@ -556,7 +557,7 @@ const master = () => {
                   </div>
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" className="btn btn-secondary" onClick={() => closeModal('importReturn')}>Close</button>
                   <button type="button" className="btn btn-primary" onClick={uplaodBulkEmployer}>Upload</button>
                 </div>
               </div>
@@ -569,7 +570,7 @@ const master = () => {
                 <form>
                   <div className="modal-header">
                     <h5 className="modal-title">Employer Registration</h5>
-                    <button type="button" className="close" onClick={closeModal} aria-label="Close">
+                    <button type="button" className="close" onClick={() => closeModal('employerModel')} aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -745,7 +746,7 @@ const master = () => {
                       </button>
                     )}
 
-                    <button type="button" className="btn btn-outline-danger rounded-4" onClick={closeModal}>
+                    <button type="button" className="btn btn-outline-danger rounded-4" onClick={() => closeModal('employerModel')}>
                         Close
                       </button>
                   </div>

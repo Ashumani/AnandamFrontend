@@ -303,7 +303,8 @@ const salary = () => {
           timer: 1500,
         });
 
-        // getAll();
+        GetSalaryByMonth(1)
+        closeModal();
       } else {
         const uan = data.data.map((x) => x.ee_uan);
         Swal.fire({
@@ -403,7 +404,10 @@ const salary = () => {
     setSelectedMonth(e.target.value);
   };
 
-  const calculation = async () => {
+  const calculation = async (param) => {
+    if(param == 'rate'){
+      set_ee_basic(ee_rate * ee_days)
+    }
     const pf = (parseInt(ee_basic) + parseInt(ee_da)) * 12 / 100
     const gross = parseInt(ee_basic) + parseInt(ee_da) + parseInt(ee_hra) + parseInt(ee_others) + parseInt(ee_ot)
     const esic = Math.round(gross * 0.75 / 100)
@@ -482,7 +486,6 @@ const salary = () => {
     set_ee_mswf(0)
     search_pf('')
     set_cal_gross_wages(0)
-
   }
 
 
@@ -544,6 +547,7 @@ const salary = () => {
     var modal = document.getElementById('exampleModal');
     var bootstrapModal = bootstrap.Modal.getInstance(modal);
     bootstrapModal.hide();
+    reset()
   };
 
   const openModal = () => {
@@ -823,34 +827,35 @@ const salary = () => {
                           </div>
 
                           <div className="row">
-                            <div className="col-sm">
-                              <label htmlFor="inputPassword">Rate</label>
-                              <input type="number" className="form-control rounded-3" disabled={isDisabled} onChange={(e) => set_ee_rate(e.target.value)} value={ee_rate} />
-                            </div>
-                            <div className="col-sm">
+                          <div className="col-sm">
                               <label htmlFor="inputPassword">Days</label>
                               <input type="number" className="form-control rounded-3" disabled={isDisabled} id="days" onChange={(e) => set_ee_days(e.target.value)} value={ee_days} />
                             </div>
                             
                             <div className="col-sm">
+                              <label htmlFor="inputPassword">Rate</label>
+                              <input type="number" className="form-control rounded-3" disabled={isDisabled} onChange={(e) => set_ee_rate(e.target.value)} onBlur={ () => calculation('rate')} value={ee_rate} />
+                            </div>
+                            
+                            <div className="col-sm">
                               <label htmlFor="inputPassword">Basic</label>
-                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="basic" onBlur={calculation} onChange={(e) => { set_ee_basic(e.target.value) }} value={ee_basic} />
+                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="basic" onBlur={ () => calculation('basic')} onChange={(e) => { set_ee_basic(e.target.value) }} value={ee_basic} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">DA</label>
-                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="da" onBlur={calculation} onChange={(e) => { set_ee_da(e.target.value) }} value={ee_da} />
+                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="da" onBlur={ () => calculation('da')} onChange={(e) => { set_ee_da(e.target.value) }} value={ee_da} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">HRA</label>
-                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="hra" onBlur={calculation} onChange={(e) => { set_ee_hra(e.target.value) }} value={ee_hra} />
+                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="hra" onBlur={ () => calculation('hra')} onChange={(e) => { set_ee_hra(e.target.value) }} value={ee_hra} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">Others</label>
-                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="others" onBlur={calculation} onChange={(e) => { set_ee_others(e.target.value) }} value={ee_others} />
+                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="others" onBlur={ () => calculation('others')} onChange={(e) => { set_ee_others(e.target.value) }} value={ee_others} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">OT</label>
-                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="ot" onBlur={calculation} onChange={(e) => { set_ee_ot(e.target.value); }} value={ee_ot} />
+                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="ot" onBlur={ () => calculation('ot')} onChange={(e) => { set_ee_ot(e.target.value); }} value={ee_ot} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputColor">Gross Wages</label>

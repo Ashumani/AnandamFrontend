@@ -73,6 +73,16 @@ const employee = () => {
         set_totalPages(Math.ceil(response.count / itemsPerPage));
         set_currentItems(response.data);
 
+      }else{
+          Swal.fire({
+                  position: 'top-right',
+                  icon: 'error',
+                  toast: true,
+                  title: response.message,
+                  showConfirmButton: false,
+                  showCloseButton: true,
+                  timer: 1500,
+                });
       }
 
 
