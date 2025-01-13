@@ -44,6 +44,7 @@ const employer = () => {
   const [dsc_designation, set_dsc_designation] = useState('');
   const [ErDesignation, set_designation] = useState('');
   const [city, setCity] = useState('');
+  const [is_exampted, set_is_exampted] = useState(0);
 
 
   const saveErDetails = async () => {
@@ -77,7 +78,8 @@ const employer = () => {
         "rate": rate,
         "dsc_status": checkedDSC,
         "er_esic": er_esic,
-        "ee_esic": ee_esic
+        "ee_esic": ee_esic,
+        "is_exampted":is_exampted
       }
 
       const data = await erRegister(params);
@@ -139,7 +141,8 @@ const employer = () => {
         "rate": rate,
         "dsc_status": checkedDSC,
         "er_esic": er_esic,
-        "ee_esic": ee_esic
+        "ee_esic": ee_esic,
+        "is_exampted":is_exampted
       }
 
 
@@ -213,6 +216,7 @@ const employer = () => {
         set_ee_esic(response.data.ee_esic)
         setLoading(false);
         setIsUpdate(true)
+        set_is_exampted(response.data.is_exampted)
       } catch (error) {
         console.error('Error fetching data:', error);
         setError('Error fetching data. Please try again.');
@@ -302,6 +306,10 @@ const employer = () => {
                   <div className="col-sm-3 col-md-3 col-lg-6 col-3">
                     <label htmlFor="inputPassword">Address</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setAddress(e.target.value)} value={Address} />
+                  </div>
+                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                    <label htmlFor="inputPassword">Exampted</label>
+                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_is_exampted(e.target.value)} value={is_exampted} />
                   </div>
                 </div>
               </div>
