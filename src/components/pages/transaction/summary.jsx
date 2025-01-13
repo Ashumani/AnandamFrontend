@@ -86,12 +86,14 @@ const summary = () => {
   const [total_diff_share, set_total_diff_share] = useState(0)
   const [total_ncp_days, set_total_ncp_days] = useState(0)
   const [total_refund, set_total_refund] = useState(0)
+  const [selected_sub_id, set_selected_sub_id] = useState(0)
 
 
   useEffect(() => {
     const fetchData = async () => {
-      getAllSummary(getErId(), selectedYear, 0);
-      getAllYear();
+      await getAllYear();
+     
+    
     };
 
     fetchData();
@@ -112,10 +114,7 @@ const summary = () => {
         set_total_acc21(response.total.total_acc21);
         set_total_acc22(response.total.total_acc22);
         set_total_acc(response.total.total_acc);
-
       }
-
-
     } catch (error) {
       console.error('Error fetching data:', error);
 
@@ -130,6 +129,8 @@ const summary = () => {
 
       set_returnsYearInSystem(response.data)
       set_sub_Ids(response.est_sub_id)
+      set_selected_sub_id( response.est_sub_id[0].est_sub_id)
+      await getAllSummary(getErId(), selectedYear, response.est_sub_id[0].est_sub_id);
     } catch (error) {
       console.error('Error fetching data:', error);
 
@@ -642,7 +643,7 @@ const summary = () => {
   }
 
   const monthlyBack = async () => {
-    getAllSummary(getErId(), selectedYear, 0);
+    getAllSummary(getErId(), selectedYear, 2);
     setMonthly(true)
 
   }
@@ -660,7 +661,7 @@ const summary = () => {
       const params = {
         "est_id": getErId(),
         "ee_id": 0,
-        "est_sub_id": 0,
+        "est_sub_id": selected_sub_id,
         "month": month,
         "year": year,
         "limit": itemsPerPage,
@@ -802,6 +803,7 @@ const summary = () => {
 
   const handleSelectSubIdChange = (e) => {
     set_selectedSubId(e.target.value);
+    getReturnByMonth(1, selectedMonth, e.target.value)
   };
 
 
@@ -819,6 +821,38 @@ const summary = () => {
     bootstrapModal.show();
   };
 
+  const getDisplayedPages = () => {
+    const pages = [];
+  
+    // Add first 3 pages
+    for (let i = 1; i <= Math.min(3, totalPages); i++) {
+      pages.push(i);
+    }
+
+    // Add a gap if needed
+    if (currentPage > 3 || currentPage < totalPages - 3) {
+      pages.push('...');
+    }
+
+    // Add the range around the current page (3 pages before and after)
+    if (currentPage > 3) {
+      for (let i = currentPage - 1; i <= currentPage + 1 && i < totalPages - 3; i++) {
+        if (i > 3 && i < totalPages - 3) {
+          pages.push(i);
+        }
+      }
+    }
+
+    // Add last 3 pages
+    for (let i = Math.max(totalPages - 2, currentPage + 1); i <= totalPages; i++) {
+      if (i > currentPage + 1) {
+        pages.push(i);
+      }
+    }
+
+    return pages;
+  };
+  const displayedPages = getDisplayedPages();
   return (
 
     <div>
@@ -1019,7 +1053,7 @@ const summary = () => {
                   <div className="col-2 col-md-2 col-lg-2 col-2">
                     <button
                       type="button"
-                      className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#importReturn"
+                      className="btn btn-outline-primary btn-block rounded-4" onClick={() => { openModal('importReturn') }}
                     >
                       Export
                     </button>
@@ -1125,7 +1159,7 @@ const summary = () => {
                   </tfoot>
                 </table>
                 {/* Pagination Controls */}
-                <div className="pagination">
+                {/* <div className="pagination">
                   <button className="btn btn-primary"
                     disabled={currentPage === 1}
                     onClick={() => handlePageChange(currentPage - 1)}
@@ -1147,7 +1181,51 @@ const summary = () => {
                   >
                     Next
                   </button>
-                </div>
+                </div> */}
+                <div className="pagination">
+                <button
+                  className="btn btn-primary rounded-4"
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  aria-label="Previous page"
+                >
+                  Previous
+                </button>
+
+                {totalPages > 0 && (
+                  <>
+                    {displayedPages.map((page, index) =>
+                      page === '...' ? (
+                        <span key={index} style={{ margin: '0 5px' }}>...</span>
+                      ) : (
+                        <button
+                          key={index}
+                          onClick={() => handlePageChange(page)}
+                          style={{
+                            margin: '0 2px',
+                            backgroundColor: currentPage === page ? '#1e60aa' : 'white',
+                            border: '0px',
+                            color: currentPage === page ? 'white' : 'black'
+                          }}
+                          aria-label={`Page ${page}`}
+                        >
+                          {page}
+                        </button>
+                      )
+                    )}
+                  </>
+                )}
+
+                <button
+                  className="btn btn-primary rounded-4"
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  aria-label="Next page"
+                >
+                  Next
+                </button>
+              </div>
+
 
                  {/* Add Epf Return Model */}
                 {/* {showModal && ( */}
@@ -1331,7 +1409,7 @@ const summary = () => {
                     <div className="modal-content">
                       <div className="modal-header">
                         <h5 className="modal-title" id="exampleModalLabel">Uplaod FIles</h5>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" className="close" onClick={() => { closeModal('importReturn') }}>
                           <span aria-hidden="true">&times;</span>
                         </button>
                       </div>
@@ -1341,7 +1419,7 @@ const summary = () => {
                         </div>
                       </div>
                       <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" className="btn btn-secondary" onClick={() => { closeModal('importReturn') }}>Close</button>
                         <button type="button" className="btn btn-primary" onClick={uploadMonthly}>Upload</button>
                       </div>
                     </div>

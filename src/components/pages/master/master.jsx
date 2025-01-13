@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { useState, useEffect } from "react"
-import { getEstId, getErId } from "../Auth/authToken";
-import { getMasterList, uploadEmployer, erRegister, erUpdate, getErRegister, downloadMaster, downlaodFile } from "../../api/services";
+import { getEstId, getErId, setEstId } from "../Auth/authToken";
+import { getMasterList, uploadEmployer, erRegister, erUpdate, getErRegister, downloadMaster, downlaodFile, fetchAllEmployer } from "../../api/services";
 import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
 import React, { useRef } from 'react';
+import { useNavigate } from "react-router-dom";
 const master = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const itemsPerPage = 20; // Number of items per page
@@ -15,7 +16,10 @@ const master = () => {
   // Get current items based on the current page
   const [currentItems, set_currentItems] = useState([]);
   const modalRef = useRef(null);
-
+  const [selectedId, setSelectedId] = useState('');
+   const [selectedKey, setSelectedKey] = useState('');
+   const [items, setItems] = useState([]);
+   const navigate = useNavigate();
 
   const [ErId, setErId] = useState('');
   const [EstEpfId, setEstEpfId] = useState('');
@@ -95,6 +99,50 @@ const master = () => {
     }
   };
 
+  const getEst = async () => {
+    
+          try {
+            // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+            const response = await fetchAllEmployer();
+            setItems(response.data)
+            const selectedItem = response.data.find(item => item.est_epf_id === getEstId());
+            setSelectedKey(selectedItem.est_name);
+         
+    
+          } catch (error) {
+            console.error('Error fetching data:', error);
+            setError('Error fetching data. Please try again.');
+        
+          }
+        ;
+    
+        if (getEstId() != "All" && getEstId() != null) {
+    
+          handleChange2({ "target": { "value": getEstId() } })
+    
+        } 
+      }
+
+  const handleChange2 = (e) => {
+      const value = e.target.value;
+      setSelectedId(value);
+      if (value === "All") {
+        deleteEstId();
+        setSelectedKey(null)
+
+      } else {
+  
+        const selectedItem = items.find(item => item.est_epf_id === value);
+        // window.location.reload();
+        if (selectedItem) {
+          setSelectedKey(selectedItem.est_name);// Update selectedKey with item's key
+          setEstId(value, selectedItem.id);
+  
+        }
+  
+       
+      }
+    };
 
   const uplaodBulkEmployer = async () => {
     if (!file) {
@@ -117,6 +165,7 @@ const master = () => {
           timer: 1500,
         });
         await getAll(1)
+        await getEst()
         closeModal('importReturn')
 
       } else {

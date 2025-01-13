@@ -73,16 +73,16 @@ const employee = () => {
         set_totalPages(Math.ceil(response.count / itemsPerPage));
         set_currentItems(response.data);
 
-      }else{
-          Swal.fire({
-                  position: 'top-right',
-                  icon: 'error',
-                  toast: true,
-                  title: response.message,
-                  showConfirmButton: false,
-                  showCloseButton: true,
-                  timer: 1500,
-                });
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: response.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
       }
 
 
@@ -407,7 +407,14 @@ const employee = () => {
 
         getAll(1);
       } else {
-
+        if (data.code != 200) {
+          Swal.fire({
+            title: 'Error',
+            text: data.message,
+            icon: 'error',
+            confirmButtonText: 'Okay'
+          });
+        }
         const uan = data.data.map((x) => x.ee_uan_no);
         Swal.fire({
           position: 'top',
@@ -478,6 +485,39 @@ const employee = () => {
     var bootstrapModal = new bootstrap.Modal(modal);
     bootstrapModal.show();
   };
+
+  const getDisplayedPages = () => {
+    const pages = [];
+  
+    // Add first 3 pages
+    for (let i = 1; i <= Math.min(3, totalPages); i++) {
+      pages.push(i);
+    }
+
+    // Add a gap if needed
+    if (currentPage > 3 || currentPage < totalPages - 3) {
+      pages.push('...');
+    }
+
+    // Add the range around the current page (3 pages before and after)
+    if (currentPage > 3) {
+      for (let i = currentPage - 1; i <= currentPage + 1 && i < totalPages - 3; i++) {
+        if (i > 3 && i < totalPages - 3) {
+          pages.push(i);
+        }
+      }
+    }
+
+    // Add last 3 pages
+    for (let i = Math.max(totalPages - 2, currentPage + 1); i <= totalPages; i++) {
+      if (i > currentPage + 1) {
+        pages.push(i);
+      }
+    }
+
+    return pages;
+  };
+  const displayedPages = getDisplayedPages();
   return (
     <div>
 
@@ -581,6 +621,52 @@ const employee = () => {
                 >
                   Previous
                 </button>
+
+                {totalPages > 0 && (
+                  <>
+                    {displayedPages.map((page, index) =>
+                      page === '...' ? (
+                        <span key={index} style={{ margin: '0 5px' }}>...</span>
+                      ) : (
+                        <button
+                          key={index}
+                          onClick={() => handlePageChange(page)}
+                          style={{
+                            margin: '0 2px',
+                            backgroundColor: currentPage === page ? '#1e60aa' : 'white',
+                            border: '0px',
+                            color: currentPage === page ? 'white' : 'black'
+                          }}
+                          aria-label={`Page ${page}`}
+                        >
+                          {page}
+                        </button>
+                      )
+                    )}
+                  </>
+                )}
+
+                <button
+                  className="btn btn-primary rounded-4"
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  aria-label="Next page"
+                >
+                  Next
+                </button>
+              </div>
+
+
+              {/* Old Pagination code */}
+               {/* <div className="pagination">
+                <button
+                  className="btn btn-primary rounded-4"
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  aria-label="Previous page"
+                >
+                  Previous
+                </button>
                 {totalPages > 0 && (
                   Array.from({ length: totalPages }, (_, index) => (
                     <button
@@ -606,8 +692,9 @@ const employee = () => {
                 >
                   Next
                 </button>
-              </div>
-            </div> </div>
+              </div> */}
+            </div>
+          </div>
           <div className="modal fade bd-example-modal-lg" id="exampleModal" ref={modalRef} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-lg" role="document">
               <div className="modal-content">

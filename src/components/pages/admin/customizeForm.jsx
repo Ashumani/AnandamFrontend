@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getEstId, getErId } from "../Auth/authToken";
-import { addBlogs, getAllBlogs } from "../../api/services";
+import { addBlogs, addCustomFields, getAllBlogs, getAllCustomFields, getCustomFields } from "../../api/services";
 import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
 import React, { useRef } from 'react';
@@ -16,16 +16,14 @@ const customiza = () => {
   const [currentItems, set_currentItems] = useState([]);
   const modalRef = useRef(null);
 
-  const [title, set_title] = useState('');
-  const [category, set_category] = useState('');
-  const [subject, set_subject] = useState('');
-  const [message, set_message] = useState('');
-  const [link, set_link] = useState('');
-  const [produce_by, set_produce_by] = useState('');
-  const [produce_by_image, set_produce_by_image] = useState('');
-  const [blog_image, set_blog_image] = useState('');
-  const [date, set_date] = useState('');
 
+  const [form_type, set_form_type] = useState('');
+  const [field_name, set_field_name] = useState('');
+  const [field_id, set_field_id] = useState('');
+  const [field_type, set_field_type] = useState('');
+  const [field_position, set_field_position] = useState('');
+  const [field_status, set_field_status] = useState('');
+  const [field_class, set_field_class] = useState('');
   // const [employeeData, setEmployeeData] = useState([]);
   const [isUpdate, setIsUpdate] = useState(false);
 
@@ -36,6 +34,7 @@ const customiza = () => {
   useEffect(() => {
     const fetchData = async () => {
       await getAll(1);
+      await getFields();
     };
 
     fetchData();
@@ -50,7 +49,7 @@ const customiza = () => {
     }
     try {
       // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-      const response = await getAllBlogs(params);
+      const response = await getAllCustomFields(params);
       if (response.status == true) {
         // setEmployeeData(response.data);
 
@@ -72,24 +71,38 @@ const customiza = () => {
     }
   };
 
-  const addBlog = async () => {
+  const getFields = async () => {
+    // api call
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await getCustomFields('salary');
+  
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Error fetching data. Please try again.');
+      setLoading(false);
+    }
+  };
+
+  const addCUstomFields = async () => {
     // api call
 
     try {
 
       let params = {
-        "title": title,
-        "category": category,
-        "subject": subject,
-        "message": message,
-        "link": link,
-        "produce_by": produce_by,
-        "produce_by_image": produce_by_image,
-        "blog_image": "blog_image",
-        "date": date
+        form_type: form_type,
+        field_name: field_name,
+        field_id: field_id,
+        field_type: field_type,
+        field_position: field_position,
+        field_status: field_status,
+        field_class: field_class
       }
+
+     
       // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-      const response = await addBlogs(params);
+      const response = await addCustomFields(params);
       if (response.status == true) {
 
         Swal.fire({
@@ -178,7 +191,7 @@ const customiza = () => {
             <div className="col-sm-2">
               <button
                 type="file"
-                className="btn btn-outline-primary btn-block rounded-4" onClick={openModal}> Add Blog</button>
+                className="btn btn-outline-primary btn-block rounded-4" onClick={openModal}> Add Fields</button>
             </div>
 
           </div>
@@ -188,16 +201,13 @@ const customiza = () => {
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Catgory</th>
-                  <th>Title</th>
-                  <th>Subject</th>
-                  <th>message</th>
-                  <th>link</th>
-                  <th>Produce By</th>
-                  <th>Produce Image</th>
-                  <th>Blog Image</th>
-                  <th>Date</th>
+                  <th>Form Type</th>
+                  <th>id</th>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Position</th>
                   <th>Status</th>
+                  <th>class</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -205,29 +215,29 @@ const customiza = () => {
                 {currentItems.map((blog, index) => (
                   <tr key={blog.id}>
                     <th >{index + 1}</th>
-                    <td>{blog.title}</td>
-                    <td>{blog.category}</td>
-                    <td>{blog.subject}</td>
-                    <td>{blog.message}</td>
-                    <td>{blog.link}</td>
-                    <td>{blog.produce_by}</td>
-                    <td>{blog.produce_by_image}</td>
-                    <td>{blog.blog_image}</td>
+                    <td>{blog.form_type}</td>
+                    <td>{blog.field_id}</td>
+                    <td>{blog.field_name}</td>
+                    <td>{blog.field_type}</td>
+                    <td>{blog.field_position}</td>
+                    <td>{blog.field_status}</td>
+                    <td>{blog.field_class}</td>
+                    {/* <td>{blog.blog_image}</td>
                     <td >{moment(blog.date).format('YYYY-MM-DD')}</td>
-                    <td>{blog.status ? "Active" : "InActive"}</td>
+                    <td>{blog.status ? "Active" : "InActive"}</td> */}
                     <td>
-                        <div className="d-flex align-items-center">
-                          <button className="btn btn-light" onClick={() => { getBlog(blog.id) }}>
-                            <i className="bi bi-eye text-info"></i>
-                          </button>
-                          <button className="btn btn-light mx-1" onClick={() => { getBlog(blog.id) }}>
-                            <i className="bi bi-pencil-fill text-info"></i>
-                          </button>
-                          <button className="btn btn-light" disabled>
-                            <i className="bi bi-trash text-danger"></i>
-                          </button>
-                        </div>
-                      </td>
+                      <div className="d-flex align-items-center">
+                        <button className="btn btn-light" onClick={() => { getBlog(blog.id) }}>
+                          <i className="bi bi-eye text-info"></i>
+                        </button>
+                        <button className="btn btn-light mx-1" onClick={() => { getBlog(blog.id) }}>
+                          <i className="bi bi-pencil-fill text-info"></i>
+                        </button>
+                        <button className="btn btn-light" disabled>
+                          <i className="bi bi-trash text-danger"></i>
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -273,54 +283,54 @@ const customiza = () => {
                   <div className="modal-body" style={{ color: 'black' }}>
                     <div className="row mb-3">
                       <div className="form-group col-sm">
-                        <label htmlFor="epfNo" > Category</label>
-                        <input type="text" className="form-control rounded-4" id="epfNo" required onChange={(e) => set_category(e.target.value)} value={category} />
+                        <label htmlFor="epfNo" > Field Name</label>
+                        <input type="text" className="form-control rounded-4" id="epfNo" required onChange={(e) => set_field_name(e.target.value)} value={field_name} />
                       </div>
                       <div className="form-group col-sm">
-                        <label htmlFor="esicNo">Title</label>
-                        <input type="text" className="form-control rounded-4" id="esicNo" required onChange={(e) => set_title(e.target.value)} value={title} />
+                        <label htmlFor="esicNo">Field Id</label>
+                        <input type="text" className="form-control rounded-4" id="esicNo" required onChange={(e) => set_field_id(e.target.value)} value={field_id} />
                       </div>
                       <div className="form-group col-sm">
-                        <label htmlFor="estType">Subject</label>
-                        <input type="text" className="form-control rounded-4" id="estType" required onChange={(e) => set_subject(e.target.value)} value={subject} />
+                        <label htmlFor="estType">Field Type</label>
+                        <input type="text" className="form-control rounded-4" id="estType" required onChange={(e) => set_field_type(e.target.value)} value={field_type} />
                       </div>
 
                     </div>
 
                     <div className="row mb-3">
                       <div className="form-group col-md">
-                        <label htmlFor="estName">Message</label>
-                        <input type="text" className="form-control rounded-4" id="estName" required onChange={(e) => set_message(e.target.value)} value={message} />
+                        <label htmlFor="estName">Field Position</label>
+                        <input type="text" className="form-control rounded-4" id="estName" required onChange={(e) => set_field_position(e.target.value)} value={field_position} />
                       </div>
                       <div className="form-group col-md">
-                        <label htmlFor="employerName">Blog Link</label>
-                        <input type="text" className="form-control rounded-4" id="employerName" required onChange={(e) => set_link(e.target.value)} value={link} />
+                        <label htmlFor="employerName">Field Status</label>
+                        <input type="text" className="form-control rounded-4" id="employerName" required onChange={(e) => set_field_status(e.target.value)} value={field_status} />
                       </div>
                       <div className="form-group col-sm">
-                        <label htmlFor="coverageDate">Blog Image</label>
-                        <input type="file" className="form-control rounded-4" id="coverageDate" required onChange={(e) => set_blog_image(e.target.value)} value={blog_image} />
+                        <label htmlFor="coverageDate">Field Class</label>
+                        <input type="text" className="form-control rounded-4" id="coverageDate" required onChange={(e) => set_field_class(e.target.value)} value={field_class} />
                       </div>
                     </div>
                     <div className="row mb-3">
                       <div className="form-group col-md">
-                        <label htmlFor="estName">Produce By Name</label>
-                        <input type="text" className="form-control rounded-4" id="estName" required onChange={(e) => set_produce_by(e.target.value)} value={produce_by_image} />
+                        <label htmlFor="estName">Form Type</label>
+                        <input type="text" className="form-control rounded-4" id="estName" required onChange={(e) => set_form_type(e.target.value)} value={form_type} />
                       </div>
-                      <div className="form-group col-md">
+                      {/* <div className="form-group col-md">
                         <label htmlFor="employerName">Produce By Image</label>
                         <input type="text" className="form-control rounded-4" id="employerName" required onChange={(e) => set_produce_by_image(e.target.value)} value={produce_by_image} />
                       </div>
                       <div className="form-group col-sm">
                         <label htmlFor="coverageDate">Date</label>
                         <input type="date" className="form-control rounded-4" id="coverageDate" required onChange={(e) => set_date(e.target.value)} value={date} />
-                      </div>
+                      </div> */}
                     </div>
 
 
                   </div>
                   <div className="modal-footer">
                     {!isUpdate ? (
-                      <button type="button" className="btn btn-outline-primary rounded-4" onClick={addBlog}>
+                      <button type="button" className="btn btn-outline-primary rounded-4" onClick={addCUstomFields}>
                         Save
                       </button>
                     ) : (

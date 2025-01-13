@@ -62,6 +62,7 @@ const Header = () => {
       deleteEstId();
       setSelectedKey(null)
       setShowAll(false);
+  
       navigate('/auth/dashboard');
     } else {
 

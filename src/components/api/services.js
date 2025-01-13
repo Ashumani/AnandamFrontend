@@ -578,3 +578,35 @@ export const deleteRecords = async (params) => {
         throw error.response.data.error;
     }
 }
+
+
+
+
+//---------------------------------------------------------------- CUstom Fileds --------------------------------
+
+
+export const getAllCustomFields = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/custom/getAll`, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const getCustomFields = async (param) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/custom/getFields/`+param, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+export const addCustomFields = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/custom/add`,params, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
