@@ -961,8 +961,6 @@ const summary = () => {
                     </div>
                   </div>
 
-
-
                   <table className="table table-striped">
                     <thead>
                       <tr>
@@ -1099,8 +1097,8 @@ const summary = () => {
                       <th scope="col">Name</th>
                       <th scope="col">Gross Wages</th>
                       <th scope="col">EPF Wages</th>
-                      <th scope="col">EDLI Wages</th>
                       <th scope="col">EPS Wages</th>
+                      <th scope="col">EDLI Wages</th>
                       <th scope="col">EE(12%)</th>
                       <th scope="col">EPS(8.33%)</th>
                       <th scope="col">ER(3.67%)</th>
@@ -1120,8 +1118,8 @@ const summary = () => {
                           <td>{employee.ee_name}</td>
                           <td>{employee.gross_wages}</td>
                           <td>{employee.epf_wages}</td>
-                          <td>{employee.edli_wages}</td>
                           <td>{employee.eps_wages}</td>
+                          <td>{employee.edli_wages}</td>
                           <td>{employee.ee_share}</td>
                           <td>{employee.eps_share}</td>
                           <td>{employee.diff_share}</td>

@@ -290,6 +290,15 @@ export const getEmployeeByEsic = async (params) => {
         throw error.response.data.error;
     }
 }
+
+export const deletEsicReturnById = async (id) => {
+    try {
+        const response = await axios.delete(`${BASE_URL}/esic/deleteReturnById/`+id,{ headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 export const uploadEmployer = async ( formdata) => {
     try {
         const uplaodHeader = {
@@ -325,6 +334,19 @@ export const uploadMonthlyReturn = async (id, formdata) => {
           }
        
         const response = await axios.post(`${BASE_URL}/upload/monthly/`+id,formdata,{ headers: uplaodHeader});
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+export const uploadMonthlyEsicReturn = async (id, formdata) => {
+    try {
+        const uplaodHeader = {
+            Authorization: `Bearer ${authToken}`,
+            'Content-Type': 'multipart/form-data'
+          }
+       
+        const response = await axios.post(`${BASE_URL}/upload/esic/`+id,formdata,{ headers: uplaodHeader});
         return response.data;
     } catch (error) {
         throw error.response.data.error;
