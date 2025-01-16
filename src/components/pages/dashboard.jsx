@@ -77,8 +77,8 @@ const dashboard = () => {
 
   const fromMonth = 3
   const toMonth = 4
-  const fromYear = moment().year()
-  const toYear = moment().year() + 1
+  const fromYear = moment().year() - 1
+  const toYear = moment().year() 
   const [selectedYear, setSelectedYear] = useState(fromYear);
 
   const [chartData, setChartData] = useState([]);
@@ -190,6 +190,8 @@ const dashboard = () => {
 
       const response = await getYearsAndMonth();
       setReturnsYear(response.data);
+      // await getGraphDetails(fromMonth, toMonth, parseInt(response.data.yearTo[0].startYear), parseInt(response.data.yearTo[0].startYear) + 1)
+      // await getBillDetailsForGraph(fromMonth, toMonth, parseInt(response.data.yearTo[0].startYear), parseInt(response.data.yearTo[0].startYear) + 1)
 
 
     } catch (error) {
