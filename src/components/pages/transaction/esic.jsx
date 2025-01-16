@@ -502,6 +502,8 @@ const esic = () => {
     // api call
     try {
       setShowEsicPage(true);
+      setSelectedMonth(month); 
+      setSelectedYear(year);
       await getMonthlyEsicReturn(month, year);
 
     } catch (error) {
