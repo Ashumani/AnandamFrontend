@@ -498,12 +498,12 @@ const [message,set_message] = useState('')
           <div className="owl-stage">
             {/* Loop through items for better maintainability */}
             {[portfolio01, portfolio02, portfolio03,portfolio04,portfolio05,portfolio06].map((portfolioItem, index) => (
-              <div className="owl-item" key={index} style={{ width: '263.8px' }}>
+              <div className="owl-item" key={index} style={{ width: '210px' }}>
                 <div className="item">
                   <a href="#">
                     <div className="portfolio-item">
                       <div className="thumb">
-                        <img style={{ height: '320px', objectFit: 'cover' }} src={portfolioItem} alt="" />
+                        <img style={{ height: '220px' }} src={portfolioItem} alt="" />
                       </div>
                       <div className="down-content">
                         <h4>Manish Kirnapure</h4>
@@ -679,7 +679,7 @@ const [message,set_message] = useState('')
                             <div className="icon">
                               <img src={phoneicon} alt="" />
 
-                              <a href="#">010-020-0340</a>
+                              <a href="#">+91-8793143976</a>
                             </div>
                           </div>
                         </div>
@@ -688,7 +688,7 @@ const [message,set_message] = useState('')
                             <div className="icon">
                               <img src={emailicon} alt="" />
 
-                              <a href="#">our@email.com</a>
+                              <a href="#" style={{"font-size":"13px"}}>anand.esipf@gmail.com</a>
                             </div>
                           </div>
                         </div>
@@ -697,7 +697,7 @@ const [message,set_message] = useState('')
                             <div className="icon">
                               <img src={locationicon} alt="" />
 
-                              <a href="#">123 Rio de Janeiro</a>
+                              <a href="#" style={{"font-size":"13px"}}>Tokdoji Square, Nagpur</a>
                             </div>
                           </div>
                         </div>

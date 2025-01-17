@@ -16,6 +16,7 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+     
       if (urlSplit[3] === "auth") {
         showMenu(true)
       }
