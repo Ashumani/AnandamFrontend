@@ -166,7 +166,7 @@ const ecrGeneration = () => {
                     <div className="row">
                       <div className="col mb-4">
                         <select
-                          className="form-select"
+                          className="form-select rounded-4"
                           aria-label="Default select example" value={selectedMonth} onChange={handleMonthChange}
                         >
                           {returnsYear.month.map((returnYear) => (
@@ -178,7 +178,7 @@ const ecrGeneration = () => {
                       </div>
                       <div className="col mb-4">
                         <select
-                          className="form-select"
+                          className="form-select rounded-4"
                           aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
                         >
                           {returnsYear.Year.map((retYear) => (
@@ -190,7 +190,7 @@ const ecrGeneration = () => {
                       </div>
                       <div className="col mb-4">
                         <select
-                          className="form-select"
+                          className="form-select rounded-4"
                           aria-label="Default select example" value={selectedSubId} onChange={handleSubIdChange}
                         >
                           {returnsYear.subIds.map((retYear) => (
@@ -201,7 +201,7 @@ const ecrGeneration = () => {
 
                       </div>
                       <div className="col-md-2">
-                        <button type="button" className="btn btn-primary btn-block" onClick={() => { getReturnByMonth(1) }} >
+                        <button type="button" className="btn btn-primary btn-block rounded-4" onClick={() => { getReturnByMonth(1) }} >
                           Next
                         </button>
                       </div>
@@ -216,7 +216,7 @@ const ecrGeneration = () => {
                       <h5 className="mt-4">EPF Return For Month {selectedMonth}-{selectedYear}</h5>
                     </div>
                     <div className="col-md-2">
-                      <button type="button" className="btn btn-primary btn-block" onClick={download} disabled={!isDownload} >
+                      <button type="button" className="btn btn-primary btn-block rounded-4" onClick={download} disabled={!isDownload} >
                         Download
                       </button>
                     </div>

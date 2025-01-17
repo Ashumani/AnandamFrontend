@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { get3A } from "../../api/services";
 import { getErId, getEstId } from "../Auth/authToken";
+import Swal from "sweetalert2";
 
 const form3A6AGeneration = () => {
 
   const [fromDate, set_from_date] = useState('2023');
   const [toDate, set_to_date] = useState('');
   const [uan, set_uan] = useState('');
-  const [currentItems, set_currentItems] =useState([]);
+  const [currentItems, set_currentItems] = useState([]);
   const getForm3A = async () => {
     // api call
     try {
@@ -17,7 +18,17 @@ const form3A6AGeneration = () => {
         "year": fromDate
       }
       const userData = await get3A(params);
-      set_currentItems(userData.data)
+
+      if (userData.status === true) {
+        set_currentItems(userData.data)
+
+      } else {
+        Swal.fire({
+          title: userData.message,
+          icon: 'error',
+          confirmButtonText: 'Okay'
+        });
+      }
 
     } catch (error) {
       console.error('Login error ', error);
@@ -53,25 +64,25 @@ const form3A6AGeneration = () => {
                         <label htmlFor="inputEmail">To</label>
                         <input type="date" className="form-control" onChange={(e) => set_to_date(e.target.value)} value={toDate} />
                       </div> */}
-                      <div className="col-sm mb-2">
-                            <label>Maritial Status</label>
-                            <select
-                              className="form-select"
-                              aria-label="Default select example" value={fromDate} onChange={handleChange}
-                            >
-                              <option value="2023">2023-24</option>
-                              <option value="2024">2024-25</option>
-                            </select>
+                      <div className="col-sm mb-2 rounded-4">
+                        <label>Select Year</label>
+                        <select
+                          className="form-select rounded-4"
+                          aria-label="Default select example" value={fromDate} onChange={handleChange}
+                        >
+                          <option value="2023">2023-24</option>
+                          <option value="2024">2024-25</option>
+                        </select>
 
-                          </div>
-                      <div className="col-sm">
+                      </div>
+                      <div className="col-sm rounded-4">
                         <label htmlFor="inputEmail">UAN</label>
-                        <input type="number" className="form-control" onChange={(e) => set_uan(e.target.value)} value={uan} />
+                        <input type="number" className="form-control rounded-4" onChange={(e) => set_uan(e.target.value)} value={uan} />
                       </div>
                       <div className="col-sm">
-                        <button style={{ "margin": "30px 10px 10px 10px" }}
+                        <button style={{ "margin": "24px 10px 10px 1px" }}
                           type="button"
-                          className="btn btn-outline-primary btn-block"
+                          className="btn btn-outline-primary btn-block rounded-4"
                           onClick={getForm3A}
                         >
                           Get
@@ -100,9 +111,9 @@ const form3A6AGeneration = () => {
                     <tbody>
                       {currentItems.map((employee, index) => (
                         <tr key={index}>
-                          <th scope="row">{index+1}</th>
+                          <th scope="row">{index + 1}</th>
                           <th scope="row">{employee.ee_uan}</th>
-                          <td>{employee.er_name}</td>
+                          <td>{employee.ee_name}</td>
                           <td>{employee.month}-{employee.year}</td>
                           <td>{employee.gross_wages}</td>
                           <td>{employee.epf_wages}</td>
@@ -115,12 +126,12 @@ const form3A6AGeneration = () => {
                           <td>{employee.ncp_days}</td>
                           <td>{employee.ncp_days}</td>
                           <td>{employee.ncp_days}</td>
-                         
+
                         </tr>
                       ))}
                     </tbody>
                   </table>
-                  
+
                 </div>
               </div>
             </div>

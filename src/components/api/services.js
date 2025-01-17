@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { getAuthToken } from '../pages/Auth/authToken';
 import { handleDecryption, handleEncryption } from './masking';
+import { Navigate } from 'react-router-dom';
 
 const BASE_URL = 'http://localhost:4001';
 const authToken = getAuthToken()
@@ -514,7 +515,17 @@ export const getById = async (id) => {
         const response = await axios.get(`${BASE_URL}/users/getById/`+ id, { headers: header});
         return response.data;
     } catch (error) {
+       
         throw error.response.data.error;
+    }
+}
+
+export const getUser = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/users/current`, { headers: header});
+        return response.data;
+    } catch (error) {
+        throw error.response.data;
     }
 }
 

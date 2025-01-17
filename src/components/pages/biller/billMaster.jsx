@@ -121,7 +121,7 @@ const billMaster = () => {
                     </div>
                     <div className="col-sm-2">
                       <button
-                        style={{ "margin": "30px 10px 10px 0px" }}
+                        style={{ "margin": "23px 10px 10px 0px" }}
                         type="button"
                         className="btn btn-outline-primary btn-block rounded-4"
                         onClick={getBillByName}
@@ -132,7 +132,7 @@ const billMaster = () => {
                     <div className="col-sm-2">
                       <Link to="/auth/dashboard/bill/create">
                         <button
-                          style={{ "margin": "30px 10px 10px 0px" }}
+                          style={{ "margin": "23px 10px 10px 0px" }}
                           type="button"
                           className="btn btn-outline-primary btn-block rounded-4"
                         >

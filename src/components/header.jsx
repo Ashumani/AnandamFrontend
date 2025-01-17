@@ -6,11 +6,12 @@ import profileImg from "../assets/img/3.jpg";
 import logo from "../standalone_assets/images/Anandam.png"
 import { useState, useEffect } from "react"
 // import { Link } from "react-router-dom";
-import { fetchAllEmployer } from "./api/services.js";
+import { fetchAllEmployer, getUser } from "./api/services.js";
 import { setEstId, getEstId, deleteEstId, getErId } from "./pages/Auth/authToken.js";
 import Sidebar from "./sidebar.jsx";
 import { useSidebar } from './SidebarContext';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
 
 
 const Header = () => {
@@ -21,6 +22,7 @@ const Header = () => {
   const [selectedId, setSelectedId] = useState('');
   const [selectedKey, setSelectedKey] = useState('');
   const [items, setItems] = useState([]);
+  const [currentUser, setCurrentUser] = useState({})
   const navigate = useNavigate();
   // const [reload, setReload] = useState(true);
   useEffect(() => {
@@ -28,6 +30,10 @@ const Header = () => {
 
       try {
         // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+
+        const user = await getUser();
+        if (user.status === true) {
+          setCurrentUser(user)
         const response = await fetchAllEmployer();
         setItems(response.data)
         const selectedItem = response.data.find(item => item.est_epf_id === getEstId());
@@ -35,11 +41,30 @@ const Header = () => {
         setLoading(false);
 
 
+        } else {
+          Swal.fire({
+            title: user.message,
+            icon: 'error',
+            confirmButtonText: 'Okay'
+          });
+          Navigate('/login')
+        }
+
       } catch (error) {
         console.error('Error fetching data:', error);
         setError('Error fetching data. Please try again.');
         setLoading(false);
-
+        Swal.fire({
+          title: error.message,
+          icon: 'error',
+          confirmButtonText: 'Okay',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/login'); // Redirect to the home page
+            location.reload();  
+          }
+        });
+        
       }
     };
 
@@ -62,7 +87,7 @@ const Header = () => {
       deleteEstId();
       setSelectedKey(null)
       setShowAll(false);
-  
+
       navigate('/auth/dashboard');
     } else {
 
@@ -115,7 +140,7 @@ const Header = () => {
         <div className="d-flex align-items-center justify-content-between">
           <a href="/auth/dashboard" className="logo d-flex align-items-center">
             {/* <img src="assets/img/logo.png" alt="" /> */}
-            <img className="d-none d-lg-block main_logo" style={{width: '80%', "max-height":"250px" }} src={logo} alt="" />
+            <img className="d-none d-lg-block main_logo" style={{ width: '80%', "max-height": "250px" }} src={logo} alt="" />
             {/* <span className="d-none d-lg-block">AnanDam</span> */}
           </a>
           <i className="bi bi-list toggle-sidebar-btn" onClick={togglesidebar}></i>
@@ -126,8 +151,8 @@ const Header = () => {
             <option value="All">All</option>
             {items.map((item) => (
               <option key={item.id} value={item.est_epf_id}>
-                {item.est_name} - {item.est_epf_id} 
-                
+                {item.est_name} - {item.est_epf_id}
+
               </option>
             ))}
           </select>
@@ -326,13 +351,13 @@ const Header = () => {
                   className="rounded-circle"
                 />
                 <span className="d-none d-md-block dropdown-toggle ps-2">
-                  Manish Kirnapure
+                  {currentUser.name}
                 </span>
               </a>
 
               <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                 <li className="dropdown-header">
-                  <h6>Manish Kirnapure</h6>
+                  <h6> {currentUser.name}</h6>
                   <span>Web Designer</span>
                 </li>
                 <li>
