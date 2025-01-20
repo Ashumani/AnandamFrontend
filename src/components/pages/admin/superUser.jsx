@@ -83,7 +83,7 @@ const superUser = () => {
   return (
     <div>
 
-      <div className="main-container">
+      <div className="main-container"  style={{ "marginTop": "50px", "fontSize": "15px", "color": "black" }}>
         <div className='main-title mt-4'>
           <h3 className='mt-4'> Delete Records</h3>
         </div>

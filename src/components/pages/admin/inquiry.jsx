@@ -97,7 +97,7 @@ const inquiry = () => {
   return (
     <div>
 
-      <div className="main-container">
+      <div className="main-container"  style={{ "marginTop": "50px", "fontSize": "15px", "color": "black" }}>
         <div className='main-title mt-5'>
           <h3>Inquiries</h3>
         </div>

@@ -168,7 +168,7 @@ const blogs = () => {
   return (
     <div>
 
-      <div className="main-container">
+      <div className="main-container"  style={{ "marginTop": "50px", "fontSize": "15px", "color": "black" }}>
         <div className='main-title'>
           <h3>Blogs</h3>
         </div>

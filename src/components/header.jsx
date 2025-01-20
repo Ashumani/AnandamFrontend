@@ -4,9 +4,9 @@ import { togglesidebar } from "../assets/js/custome.js";
 import profileImg from "../assets/img/3.jpg";
 
 import logo from "../standalone_assets/images/Anandam.png"
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 // import { Link } from "react-router-dom";
-import { fetchAllEmployer, getUser } from "./api/services.js";
+import { fetchAllEmployer, getAllNotification, getUnreadNotification, getUser } from "./api/services.js";
 import { setEstId, getEstId, deleteEstId, getErId } from "./pages/Auth/authToken.js";
 import Sidebar from "./sidebar.jsx";
 import { useSidebar } from './SidebarContext';
@@ -23,6 +23,9 @@ const Header = () => {
   const [selectedKey, setSelectedKey] = useState('');
   const [items, setItems] = useState([]);
   const [currentUser, setCurrentUser] = useState({})
+  const [notifications, setNotifications] = useState([])
+  const [notificationCnt, setNotificationCnt] = useState(0)
+  
   const navigate = useNavigate();
   // const [reload, setReload] = useState(true);
   useEffect(() => {
@@ -34,11 +37,16 @@ const Header = () => {
         const user = await getUser();
         if (user.status === true) {
           setCurrentUser(user)
-        const response = await fetchAllEmployer();
-        setItems(response.data)
-        const selectedItem = response.data.find(item => item.est_epf_id === getEstId());
-        setSelectedKey(selectedItem.est_name);
-        setLoading(false);
+          const response = await fetchAllEmployer();
+          setItems(response.data)
+          const selectedItem = response.data.find(item => item.est_epf_id === getEstId());
+          setSelectedKey(selectedItem.est_name);
+          setLoading(false);
+          let notification = await getUnreadNotification();
+          setNotifications(notification.data)
+          setNotificationCnt(notification.count)
+
+
 
 
         } else {
@@ -61,10 +69,10 @@ const Header = () => {
         }).then((result) => {
           if (result.isConfirmed) {
             navigate('/login'); // Redirect to the home page
-            location.reload();  
+            location.reload();
           }
         });
-        
+
       }
     };
 
@@ -170,17 +178,17 @@ const Header = () => {
             <li className="nav-item dropdown">
               <a
                 className="nav-link nav-icon"
-                href="#"
+                href="/auth/dashboard/notification"
                 data-bs-toggle="dropdown"
               >
                 <i className="bi bi-bell"></i>
-                <span className="badge bg-primary badge-number">4</span>
+                <span className="badge bg-primary badge-number">{notificationCnt}</span>
               </a>
 
               <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
                 <li className="dropdown-header">
-                  You have 4 new notifications
-                  <a href="#">
+                  You have {notificationCnt} new notifications
+                  <a href="/auth/dashboard/notification">
                     <span className="badge rounded-pill bg-primary p-2 ms-2">
                       View all
                     </span>
@@ -190,20 +198,24 @@ const Header = () => {
                   <hr className="dropdown-divider" />
                 </li>
 
+                {notifications.map((notification, index) => (
+              <React.Fragment key={index}>
                 <li className="notification-item">
+                  {/* <i className={notification.iconClass}></i> */}
                   <i className="bi bi-exclamation-circle text-warning"></i>
                   <div>
-                    <h4>Lorem Ipsum</h4>
-                    <p>Quae dolorem earum veritatis oditseno</p>
-                    <p>30 min. ago</p>
+                    <h4>{notification.category}</h4>
+                    <p>{notification.message}</p>
+                    <p>{notification.date}</p>
                   </div>
                 </li>
-
                 <li>
                   <hr className="dropdown-divider" />
                 </li>
+              </React.Fragment>
+            ))}
 
-                <li className="notification-item">
+                {/* <li className="notification-item">
                   <i className="bi bi-x-circle text-danger"></i>
                   <div>
                     <h4>Atque rerum nesciunt</h4>
@@ -240,9 +252,9 @@ const Header = () => {
 
                 <li>
                   <hr className="dropdown-divider" />
-                </li>
+                </li> */}
                 <li className="dropdown-footer">
-                  <a href="#">Show all notifications</a>
+                  <a href="/auth/dashboard/notification">Show all notifications</a>
                 </li>
               </ul>
             </li>

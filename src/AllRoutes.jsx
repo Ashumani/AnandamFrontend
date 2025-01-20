@@ -25,6 +25,7 @@ import inquiries from "./components/pages/admin/inquiry"
 import user from "./components/pages/admin/user"
 import customiza from "./components/pages/admin/customizeForm"
 import superUser from "./components/pages/admin/superUser"
+import notification from "./components/pages/admin/notification"
 
 const AllRoutes = () => {
   return (
@@ -55,6 +56,7 @@ const AllRoutes = () => {
         <Route exact path='/auth/dashboard/user' Component={user}/>
         <Route exact path='/auth/dashboard/form' Component={customiza}/>
         <Route exact path='/auth/dashboard/superUser' Component={superUser}/>
+        <Route exact path='/auth/dashboard/notification' Component={notification}/>
         
     </Routes>
     
