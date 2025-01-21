@@ -75,10 +75,11 @@ const notification = () => {
     }
   };
 
-  const setReadNotification = async (id) => {
+  const setReadNotification = async (id, reason, status) => {
     // api call
     const params = {
-      "status": 1
+      "status": status,
+      "remark":reason
     }
     try {
       // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
@@ -141,11 +142,13 @@ const notification = () => {
               <thead>
                 <tr>
                   <th>#</th>
+                  <th>Name</th>
                   <th>Title</th>
                   <th>Description</th>
-                  <th>date</th>
+                  <th>Date</th>
                   <th>Created By</th>
                   <th>Checked By</th>
+                  <th>Remark</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
@@ -155,17 +158,21 @@ const notification = () => {
                   <tr key={employee.id}>
                     <th >{index + 1}</th>
                     <td>{employee.category}</td>
+                    <td>{employee.category}</td>
                     <td>{employee.message}</td>
                     <td >{moment(employee.date).format('YYYY-MM-DD')}</td>
                     <td>{employee.created_by}</td>
                     <td>Manish</td>
                     <td>{employee.status}</td>
-                   
+                    <td>{employee.status}</td>
                     <td>
                         <div className="d-flex align-items-center">
                           
-                          <button className="btn btn-light" onClick={() => setReadNotification(employee.id)}>
+                          <button className="btn btn-light" onClick={() => setReadNotification(employee.id, 1, "ok")}>
                             <i className="bi bi-check text-success"></i>
+                          </button>
+                          <button className="btn btn-light" onClick={() => setReadNotification(employee.id, 2, "Not Ok")}>
+                            <i className="bi bi-x text-danger"></i>
                           </button>
                         </div>
                       </td>
