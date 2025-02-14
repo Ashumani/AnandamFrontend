@@ -3,12 +3,15 @@ import { getAuthToken } from '../pages/Auth/authToken';
 import { handleDecryption, handleEncryption } from './masking';
 import { Navigate } from 'react-router-dom';
 
-const BASE_URL = 'http://localhost:4001';
+// const BASE_URL = 'http://localhost:4001';
+const BASE_URL = "https://anandam-bckend.vercel.app/"
 const authToken = getAuthToken()
+axios.defaults.withCredentials = true;
 const header = {
-    Authorization: `Bearer ${authToken}`,
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    
 }
+
 
 export const loginData = async (username, password) => {
     try {
@@ -30,7 +33,7 @@ export const erRegister = async (params) => {
         return response.data;
     } catch (error) {
         throw error.response.data.error;
-    } iin
+    }
 }
 
 export const getEmployer = async (params) => {
@@ -54,6 +57,7 @@ export const erUpdate = async (id, params) => {
 }
 
 export const getErRegister = async (params) => {
+    
     try {
         const response = await axios.post(`${BASE_URL}/employer/getEmployer`, params, { headers: header });
         return response.data;

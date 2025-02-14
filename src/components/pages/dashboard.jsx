@@ -292,16 +292,16 @@ const dashboard = () => {
                 <Tooltip />
                 <Legend
                   payload={[
-                    { id: 'pv', type: 'line', color: '#2b6b86', value: 'Employee Count' },
-                    { id: 'uv', type: 'line', color: '#f7c94c', value: 'Challan Count' },
+                    { id: 'employerCont', type: 'line', color: '#2b6b86', value: 'Employee Count' },
+                    { id: 'challanCount', type: 'line', color: '#f7c94c', value: 'Challan Count' },
                   ]}
                   verticalAlign="bottom"
                 />
-                <Bar dataKey="pv" fill="url(#colorPv)">
-                  <LabelList dataKey="pv" position="top" />
+                <Bar dataKey="employerCont" fill="url(#colorPv)">
+                  <LabelList dataKey="employerCont" position="top" />
                 </Bar>
-                <Bar dataKey="uv" fill="url(#colorUv)">
-                  <LabelList dataKey="uv" position="top" />
+                <Bar dataKey="challanCount" fill="url(#colorUv)">
+                  <LabelList dataKey="challanCount" position="top" />
                 </Bar>
               </BarChart>) : (
                 <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
@@ -327,8 +327,9 @@ const dashboard = () => {
                 <Legend />
                 <CartesianGrid stroke="#f5f5f5" />
                 <Area type="monotone" dataKey="amt" fill="url(#colorAmt)" stroke="#8884d8" />
-                <Bar dataKey="pv" barSize={20} fill="url(#colorPv)" />
-                <Line type="monotone" dataKey="uv" stroke="#ff7300" />
+                <Bar dataKey="" barSize={20} fill="url(#colorPv)" />
+                <Bar dataKey="employerCont" barSize={20} fill="url(#colorPv)" />
+                <Line type="monotone" dataKey="challanCount" stroke="#ff7300" />
               </ComposedChart>
               ) : (
                 <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
