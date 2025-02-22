@@ -3,13 +3,13 @@ import { getAuthToken } from '../pages/Auth/authToken';
 import { handleDecryption, handleEncryption } from './masking';
 import { Navigate } from 'react-router-dom';
 
-// const BASE_URL = 'http://localhost:4001';
-const BASE_URL = "https://anandam-bckend.vercel.app/"
+const BASE_URL = 'http://localhost:4001';
+// const BASE_URL = "https://anandam-bckend.vercel.app"
 const authToken = getAuthToken()
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 const header = {
     'Content-Type': 'application/json',
-    
+    Authorization: `Bearer ${authToken}`,
 }
 
 

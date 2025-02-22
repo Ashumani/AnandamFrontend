@@ -40,7 +40,12 @@ const Header = () => {
           const response = await fetchAllEmployer();
           setItems(response.data)
           const selectedItem = response.data.find(item => item.est_epf_id === getEstId());
-          setSelectedKey(selectedItem.est_name);
+          if(selectedItem === undefined || selectedItem == ""){
+            setSelectedKey("All");
+          }else{
+            setSelectedKey(selectedItem.est_name);
+          }
+        
           setLoading(false);
           let notification = await getUnreadNotification();
           setNotifications(notification.data)
