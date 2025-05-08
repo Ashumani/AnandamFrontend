@@ -617,6 +617,15 @@ export const deleteRecords = async (params) => {
 }
 
 
+export const deleteRecordsByMonthYear = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/monthly/deleteReturnByMonthYear`, params, { headers: header });
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
 
 
 //---------------------------------------------------------------- CUstom Fileds --------------------------------

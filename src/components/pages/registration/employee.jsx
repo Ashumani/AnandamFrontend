@@ -36,6 +36,7 @@ const employee = () => {
   const [ee_gross_wages, set_ee_gross_wages] = useState('');
   const [ee_epf_wages, set_ee_epf_wages] = useState('');
   const [ee_sub_id, set_ee_sub_id] = useState('');
+  const [ee_high_salaried, set_ee_high_salaried] = useState('0');
 
   // const [employeeData, setEmployeeData] = useState([]);
   const [isUpdate, setIsUpdate] = useState(false);
@@ -204,7 +205,8 @@ const employee = () => {
           "ee_gross_wages": ee_gross_wages,
           "ee_epf_wages": ee_epf_wages,
           "ee_sub_id": ee_sub_id == "" ? 0 : ee_sub_id,
-          "ee_esic_no": ee_esic_no
+          "ee_esic_no": ee_esic_no,
+          "is_high_salaried": ee_high_salaried
         }
         const data = await saveEERegister(params);
         if (data.status === true) {
@@ -265,6 +267,7 @@ const employee = () => {
         set_ee_epf_wages(userData.data.ee_epf_wages);
         set_ee_sub_id(userData.data.ee_sub_id);
         set_ee_esic_no(userData.data.ee_esic_no);
+        set_ee_high_salaried(String(userData.data.is_high_salaried));
         setIsUpdate(true)
       }
 
@@ -296,7 +299,8 @@ const employee = () => {
         "ee_gross_wages": ee_gross_wages,
         "ee_epf_wages": ee_epf_wages,
         "ee_sub_id": ee_sub_id,
-        "ee_esic_no": ee_esic_no
+        "ee_esic_no": ee_esic_no,
+        "is_high_salaried": ee_high_salaried
       }
 
       const data = await updateEmployee(ee_id, params);
@@ -471,6 +475,7 @@ const employee = () => {
     set_ee_epf_wages('');
     set_ee_sub_id('');
     set_ee_esic_no('')
+    set_ee_high_salaried(0);
   }
 
 
@@ -488,7 +493,7 @@ const employee = () => {
 
   const getDisplayedPages = () => {
     const pages = [];
-  
+
     // Add first 3 pages
     for (let i = 1; i <= Math.min(3, totalPages); i++) {
       pages.push(i);
@@ -658,7 +663,7 @@ const employee = () => {
 
 
               {/* Old Pagination code */}
-               {/* <div className="pagination">
+              {/* <div className="pagination">
                 <button
                   className="btn btn-primary rounded-4"
                   disabled={currentPage === 1}
@@ -700,7 +705,7 @@ const employee = () => {
               <div className="modal-content">
                 <div className="modal-header bg-primary">
                   <h5 className="modal-title text-white" id="exampleModalLabel">Employee Registration</h5>
-                  <button type="button" className="close text-white" data-dismiss="modal" aria-label="Close" onClick={reset}>
+                  <button type="button" className="close text-white" data-dismiss="modal" aria-label="Close" onClick={closeModal}>
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
@@ -826,7 +831,22 @@ const employee = () => {
                           <input type="number" className="form-control rounded-4" onChange={(e) => set_ee_sub_id(e.target.value)} value={ee_sub_id} />
                         </div>
                       </div>
+                      <div className="row">
+                        <div className="col mt-4">
+                          <label htmlFor="inputTime" className="form-label">High Salaried</label>
+                          <div className="form-check form-check-inline">
+                            <input className="form-check-input ml-1 mt-1" type="radio" name="highSalaried" value="1" id="highSal" checked={ee_high_salaried === "1"} onChange={(e) => set_ee_high_salaried(e.target.value)} />
+                            <label className="form-check-label ml-2" htmlFor="male">Yes</label>
+                          </div>
+                          <div className="form-check form-check-inline">
+                            <input className="form-check-input mt-1" type="radio" name="highSalaried" id="lowSal" value="0" checked={ee_high_salaried === "0"} onChange={(e) => set_ee_high_salaried(e.target.value)} />
+                            <label className="form-check-label ml-2" htmlFor="female">No</label>
+                          </div>
 
+                          {err.ee_high_salaried && <p style={{ color: 'red' }}>{err.ee_high_salaried}</p>}
+                        </div>
+
+                      </div>
 
 
                     </div>

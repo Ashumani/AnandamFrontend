@@ -15,6 +15,30 @@ const Download = () => {
     const [file, setFile] = useState(null);
     const [htmlContent, setHtmlContent] = useState('');
     const htmlRef = useRef();
+    const [currentItems] = useState([
+        {
+            "catagory":"EPF",
+            "page":"Registration",
+            "subPage":"employer",
+            "message":"import functionality",
+            "test":"import tested",
+            "status":"Done",
+            "date":"12-12-2025",
+
+        },
+        {
+            "catagory":"EPF",
+            "page":"Registration",
+            "subPage":"employee",
+            "message":"import functionality",
+            "test":"import tested",
+            "status":"Done",
+            "date":"12-12-2025",
+
+        }
+        
+    ])
+      
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
@@ -87,10 +111,14 @@ const Download = () => {
                         </button>
                     </div>
                 </div> */}
-                <div style={{"color": "black"}}>
+                {/* <div style={{"color": "black"}}>
                 <div className='main-title mt-4'>
-                    <h3>To Do</h3>
-                   
+                    <h3>To Do and CHecklist</h3>
+                </div>
+                <div>
+                    <h6>Registration</h6>
+                    <p>Employer -- import</p>
+                    <p>Employee</p>
                 </div>
                 <div>
                     <h6>Salary</h6>
@@ -114,7 +142,38 @@ const Download = () => {
                         <li>Employee and employer contribution structure</li>
                     </ul>
                 </div>
-                </div>
+                </div> */}
+
+                  <div className="table-responsive mt-2">
+                            <table className="table table-striped table-sm table-hover text-center">
+                              <thead>
+                                <tr>
+                                  <th>#</th>
+                                  <th>Catgory</th>
+                                  <th>Page</th>
+                                  <th>Sub-Page</th>
+                                  <th>message</th>
+                                  <th>test</th>
+                                  <th>Date</th>
+                                  <th>status</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {currentItems.map((blog, index) => (
+                                  <tr key={blog.id}>
+                                    <th >{index + 1}</th>
+                                    <td>{blog.catagory}</td>
+                                    <td>{blog.page}</td>
+                                    <td>{blog.subPage}</td>
+                                    <td>{blog.message}</td>
+                                    <td>{blog.test}</td>
+                                    <td>{blog.date}</td>
+                                    <td>{blog.status}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
 
             </section>
 

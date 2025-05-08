@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
-import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary, downlaodFile, fetchEpfReturn, updateEpfReturn, sameAsPrev, deleteReturnById, generateECR, searchMonthlyEmployee, getYear } from "../../api/services";
+import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary, downlaodFile, fetchEpfReturn, updateEpfReturn, sameAsPrev, deleteReturnById, generateECR, searchMonthlyEmployee, getYear, deleteRecordsByMonthYear } from "../../api/services";
 import Swal from 'sweetalert2';
 import React, { useRef } from 'react';
 import moment from "moment";
@@ -87,13 +87,14 @@ const summary = () => {
   const [total_ncp_days, set_total_ncp_days] = useState(0)
   const [total_refund, set_total_refund] = useState(0)
   const [selected_sub_id, set_selected_sub_id] = useState(0)
+  const [is_high_salaried, set_is_high_salaried] = useState(0)
 
 
   useEffect(() => {
     const fetchData = async () => {
       await getAllYear();
-     
-    
+
+
     };
 
     fetchData();
@@ -129,7 +130,7 @@ const summary = () => {
 
       set_returnsYearInSystem(response.data)
       set_sub_Ids(response.est_sub_id)
-      set_selected_sub_id( response.est_sub_id[0].est_sub_id)
+      set_selected_sub_id(response.est_sub_id[0].est_sub_id)
       await getAllSummary(getErId(), selectedYear, response.est_sub_id[0].est_sub_id);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -164,6 +165,7 @@ const summary = () => {
         const currentDate = moment();
         const yearDifference = currentDate.diff(moment(userData.data.ee_dob, 'YYYY-MM-DD'), 'years');
         set_ee_above58(yearDifference > 58 ? 'Yes' : 'No')
+        set_is_high_salaried(userData.data.is_high_salaried)
         // alert(moment(userData.data.ee_dob, 'YYYY-MM-DD') + yearDifference)
 
         set_isDisabled(false)
@@ -458,6 +460,54 @@ const summary = () => {
     }
   };
 
+  const deleteReturnByMonth = async (month, year, est_sub_id, est_id) => {
+    // api call
+    try {
+
+      const params = {
+        "month": month,
+        "year": year,
+        "est_sub_id": est_sub_id,
+        "est_id":est_id
+      }
+
+      const userData = await deleteRecordsByMonthYear(params);
+
+      if (userData.status === true) {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'success',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+       
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: userData.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+      }
+
+      // Show success popup
+      getAllYear()
+
+
+
+    } catch (error) {
+      console.error('Login error ', error);
+      // setError(error);
+    }
+  };
+
+
   const updateReturns = async () => {
     // api call
     try {
@@ -586,10 +636,15 @@ const summary = () => {
       const userData = await getEmployer(params);
       const epf_wages = value;
       const epfwages_if_above = epf_wages < 15000 ? epf_wages : 15000
-      set_ee_eps_wages(epf_wages <= 15000 ? epf_wages : 15000)
-      set_ee_edli_wages(epf_wages <= 15000 ? epf_wages : 15000)
-      set_ee_epf(Math.round(epf_wages * userData.data.ee_epf_rate / 100))
+      const eps_wag = 15000 //epf_wages <= 15000 ? epf_wages : 15000
+      const edli = 15000 // epf_wages <= 15000 ? epf_wages : 15000
+      const epf = Math.round(epf_wages * userData.data.ee_epf_rate / 100)
+      set_ee_eps_wages(eps_wag)
+      set_ee_edli_wages(edli)
+      set_ee_epf(epf)
       let years = moment().diff(ee_dob, 'years');
+      let eps = 0
+
 
       if (years > 58) {
         set_er_epf(Math.round(epfwages_if_above * userData.data.ee_epf_rate / 100))
@@ -598,9 +653,14 @@ const summary = () => {
 
       } else {
         set_er_epf(Math.round(epfwages_if_above * userData.data.er_diff_rate / 100))
-        set_er_eps(Math.round(epfwages_if_above * userData.data.er_eps_rate / 100))
+        eps = Math.round(epfwages_if_above * userData.data.er_eps_rate / 100)
+        set_er_eps(eps)
+        if (is_high_salaried == 1) {
+          set_er_epf(epf - eps)
+        }
 
       }
+
       set_isSaveEnable(false)
 
     } catch (error) {
@@ -643,7 +703,7 @@ const summary = () => {
   }
 
   const monthlyBack = async () => {
-    getAllSummary(getErId(), selectedYear, 2);
+    getAllSummary(getErId(), selectedYear, 0);
     setMonthly(true)
 
   }
@@ -823,7 +883,7 @@ const summary = () => {
 
   const getDisplayedPages = () => {
     const pages = [];
-  
+
     // Add first 3 pages
     for (let i = 1; i <= Math.min(3, totalPages); i++) {
       pages.push(i);
@@ -993,12 +1053,11 @@ const summary = () => {
                               <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { getReturnByMonth(1, moment(employee.month, 'MMM').month() + 1, employee.year) }}>
                                 <i className="bi bi-eye text-info"></i>
                               </button>
-
-                              {/* <button className="btn btn-light" onClick={() => { deleteReturn(employee.id) }} >
-                          <i className="bi bi-trash text-danger"></i>
-                        </button> */}
                               <button className="btn btn-light" onClick={() => { genECR(moment(employee.month, 'MMM').month() + 1, employee.year) }} >
                                 <i className="bi bi-download"></i>
+                              </button>
+                              <button className="btn btn-light" onClick={() => { deleteReturnByMonth(moment(employee.month, 'MMM').month() + 1, employee.year, employee.est_sub_id, employee.est_id) }} >
+                                <i className="bi bi-trash text-danger"></i>
                               </button>
                             </div>
                           </td>
@@ -1086,7 +1145,7 @@ const summary = () => {
                     <input type="text" className="form-control rounded-4" placeholder="Search" onChange={(e) => setSearchEE(e.target.value)} onBlur={searchMonthlyEE} />
                   </div>
                 </div>
-               
+
 
                 <h5>EPF Return For Month {selectedMonth}-{selectedYear}</h5>
                 <table className="table table-striped">
@@ -1181,51 +1240,51 @@ const summary = () => {
                   </button>
                 </div> */}
                 <div className="pagination">
-                <button
-                  className="btn btn-primary rounded-4"
-                  disabled={currentPage === 1}
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  aria-label="Previous page"
-                >
-                  Previous
-                </button>
+                  <button
+                    className="btn btn-primary rounded-4"
+                    disabled={currentPage === 1}
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    aria-label="Previous page"
+                  >
+                    Previous
+                  </button>
 
-                {totalPages > 0 && (
-                  <>
-                    {displayedPages.map((page, index) =>
-                      page === '...' ? (
-                        <span key={index} style={{ margin: '0 5px' }}>...</span>
-                      ) : (
-                        <button
-                          key={index}
-                          onClick={() => handlePageChange(page)}
-                          style={{
-                            margin: '0 2px',
-                            backgroundColor: currentPage === page ? '#1e60aa' : 'white',
-                            border: '0px',
-                            color: currentPage === page ? 'white' : 'black'
-                          }}
-                          aria-label={`Page ${page}`}
-                        >
-                          {page}
-                        </button>
-                      )
-                    )}
-                  </>
-                )}
+                  {totalPages > 0 && (
+                    <>
+                      {displayedPages.map((page, index) =>
+                        page === '...' ? (
+                          <span key={index} style={{ margin: '0 5px' }}>...</span>
+                        ) : (
+                          <button
+                            key={index}
+                            onClick={() => handlePageChange(page)}
+                            style={{
+                              margin: '0 2px',
+                              backgroundColor: currentPage === page ? '#1e60aa' : 'white',
+                              border: '0px',
+                              color: currentPage === page ? 'white' : 'black'
+                            }}
+                            aria-label={`Page ${page}`}
+                          >
+                            {page}
+                          </button>
+                        )
+                      )}
+                    </>
+                  )}
 
-                <button
-                  className="btn btn-primary rounded-4"
-                  disabled={currentPage === totalPages}
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  aria-label="Next page"
-                >
-                  Next
-                </button>
-              </div>
+                  <button
+                    className="btn btn-primary rounded-4"
+                    disabled={currentPage === totalPages}
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    aria-label="Next page"
+                  >
+                    Next
+                  </button>
+                </div>
 
 
-                 {/* Add Epf Return Model */}
+                {/* Add Epf Return Model */}
                 {/* {showModal && ( */}
                 {/* <div style={{ display: 'block' }} className="modal fade show" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
                 <div className="modal fade bd-example-modal-lg" id="EpfReturnFillingModel" ref={modalRef} role="dialog" aria-labelledby="EpfReturnFillingModelLabel" aria-hidden="true">

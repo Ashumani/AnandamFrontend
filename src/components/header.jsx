@@ -12,6 +12,7 @@ import Sidebar from "./sidebar.jsx";
 import { useSidebar } from './SidebarContext';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
+import Select from 'react-select';
 
 
 const Header = () => {
@@ -25,7 +26,15 @@ const Header = () => {
   const [currentUser, setCurrentUser] = useState({})
   const [notifications, setNotifications] = useState([])
   const [notificationCnt, setNotificationCnt] = useState(0)
-  
+
+  const options = [
+    { value: 'All', label: 'All' },
+    ...items.map((item) => ({
+      value: item.est_epf_id,
+      label: `${item.est_name} - ${item.est_epf_id}`,
+    })),
+  ];
+
   const navigate = useNavigate();
   // const [reload, setReload] = useState(true);
   useEffect(() => {
@@ -40,12 +49,12 @@ const Header = () => {
           const response = await fetchAllEmployer();
           setItems(response.data)
           const selectedItem = response.data.find(item => item.est_epf_id === getEstId());
-          if(selectedItem === undefined || selectedItem == ""){
+          if (selectedItem === undefined || selectedItem == "") {
             setSelectedKey("All");
-          }else{
+          } else {
             setSelectedKey(selectedItem.est_name);
           }
-        
+
           setLoading(false);
           let notification = await getUnreadNotification();
           setNotifications(notification.data)
@@ -94,7 +103,9 @@ const Header = () => {
   }, []);
 
   const handleChange = (e) => {
-    const value = e.target.value;
+    
+    const value = e.value;
+    
     setSelectedId(value);
     if (value === "All") {
       deleteEstId();
@@ -158,7 +169,7 @@ const Header = () => {
           </a>
           <i className="bi bi-list toggle-sidebar-btn" onClick={togglesidebar}></i>
         </div>
-        <div className="dropdown">
+        {/* <div className="dropdown">
 
           <select className="btn btn-sm btn-light dropdown-toggle dropdown-toggle-split ml-4 " onChange={handleChange} id={selectedKey} value={selectedId}>
             <option value="All">All</option>
@@ -169,7 +180,17 @@ const Header = () => {
               </option>
             ))}
           </select>
-          {/* {selectedId && <p>Selected ID: {selectedId} Selected Key: {selectedKey}</p>} */}
+          {selectedId && <p>Selected ID: {selectedId} Selected Key: {selectedKey}</p>}
+        </div> */}
+
+        <div className="dropdown ml-4" style={{ minWidth: '250px' }}>
+          <Select
+            options={options}
+            value={options.find((opt) => opt.value === selectedId)}
+            onChange={handleChange}
+            isSearchable
+            classNamePrefix="react-select"
+          />
         </div>
         {/* <div className="mt-2 ms-4">{selectedKey && <h5> {selectedKey}</h5>}</div> */}
         <nav className="header-nav ms-auto">
@@ -204,21 +225,21 @@ const Header = () => {
                 </li>
 
                 {notifications.map((notification, index) => (
-              <React.Fragment key={index}>
-                <li className="notification-item">
-                  {/* <i className={notification.iconClass}></i> */}
-                  <i className="bi bi-exclamation-circle text-warning"></i>
-                  <div>
-                    <h4>{notification.category}</h4>
-                    <p>{notification.message}</p>
-                    <p>{notification.date}</p>
-                  </div>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-              </React.Fragment>
-            ))}
+                  <React.Fragment key={index}>
+                    <li className="notification-item">
+                      {/* <i className={notification.iconClass}></i> */}
+                      <i className="bi bi-exclamation-circle text-warning"></i>
+                      <div>
+                        <h4>{notification.category}</h4>
+                        <p>{notification.message}</p>
+                        <p>{notification.date}</p>
+                      </div>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                  </React.Fragment>
+                ))}
 
                 {/* <li className="notification-item">
                   <i className="bi bi-x-circle text-danger"></i>

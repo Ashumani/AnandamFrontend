@@ -79,7 +79,7 @@ const employer = () => {
         "dsc_status": checkedDSC,
         "er_esic": er_esic,
         "ee_esic": ee_esic,
-        "is_exampted":is_exampted
+        "is_exampted": is_exampted
       }
 
       const data = await erRegister(params);
@@ -142,7 +142,7 @@ const employer = () => {
         "dsc_status": checkedDSC,
         "er_esic": er_esic,
         "ee_esic": ee_esic,
-        "is_exampted":is_exampted
+        "is_exampted": is_exampted
       }
 
 
@@ -307,11 +307,26 @@ const employer = () => {
                     <label htmlFor="inputPassword">Address</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setAddress(e.target.value)} value={Address} />
                   </div>
-                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  {/* <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                     <label htmlFor="inputPassword">Exampted</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => set_is_exampted(e.target.value)} value={is_exampted} />
-                  </div>
+                  </div> */}
                 </div>
+                <div className="row">
+                  <div className="col mt-4">
+                    <label htmlFor="inputTime" className="form-label">Exampted</label>
+                    <div className="form-check form-check-inline">
+                      <input className="form-check-input ml-1 mt-1" type="radio" name="highSalaried" value="1" id="highSal" checked={is_exampted === "1"} onChange={(e) => set_is_exampted(e.target.value)} />
+                      <label className="form-check-label ml-2" htmlFor="male">Yes</label>
+                    </div>
+                    <div className="form-check form-check-inline">
+                      <input className="form-check-input mt-1" type="radio" name="highSalaried" id="lowSal" value="0" checked={is_exampted === "0"} onChange={(e) => set_is_exampted(e.target.value)} />
+                      <label className="form-check-label ml-2" htmlFor="female">No</label>
+                    </div>
+                  </div>
+
+                </div>
+
               </div>
             </div>
 
