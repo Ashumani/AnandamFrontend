@@ -242,17 +242,17 @@ const employer = () => {
     <div>
 
 
-      <div className="main-container">
-        {/* <div className='main-title'>
-          <h3>EMPLOYEER REGISTRATION</h3>
-        </div> */}
+      <div className="main-container" style={{ "marginTop": "50px", "fontSize": "15px", "color": "black" }}>
+        <div className='main-title'>
+          <h3>Employer Registration</h3>
+        </div>
         <section className="section">
 
           <div className="row">
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title text-left">
-                  Employer Registration
+                  Employer Details
                 </h5>
 
                 <div className="row">

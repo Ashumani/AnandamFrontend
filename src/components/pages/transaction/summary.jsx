@@ -655,7 +655,9 @@ const summary = () => {
         set_er_epf(Math.round(epfwages_if_above * userData.data.er_diff_rate / 100))
         eps = Math.round(epfwages_if_above * userData.data.er_eps_rate / 100)
         set_er_eps(eps)
-        if (is_high_salaried == 1) {
+        if (is_high_salaried == 1 && epf_wages > 15000 ) {
+          set_er_epf(550)
+        }else{
           set_er_epf(epf - eps)
         }
 
