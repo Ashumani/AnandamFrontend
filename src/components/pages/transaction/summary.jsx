@@ -636,8 +636,8 @@ const summary = () => {
       const userData = await getEmployer(params);
       const epf_wages = value;
       const epfwages_if_above = epf_wages < 15000 ? epf_wages : 15000
-      const eps_wag = 15000 //epf_wages <= 15000 ? epf_wages : 15000
-      const edli = 15000 // epf_wages <= 15000 ? epf_wages : 15000
+      const eps_wag = epf_wages <= 15000 ? epf_wages : 15000
+      const edli = epf_wages <= 15000 ? epf_wages : 15000
       const epf = Math.round(epf_wages * userData.data.ee_epf_rate / 100)
       set_ee_eps_wages(eps_wag)
       set_ee_edli_wages(edli)
