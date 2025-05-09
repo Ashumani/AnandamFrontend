@@ -644,8 +644,6 @@ const summary = () => {
       set_ee_epf(epf)
       let years = moment().diff(ee_dob, 'years');
       let eps = 0
-
-
       if (years > 58) {
         set_er_epf(Math.round(epfwages_if_above * userData.data.ee_epf_rate / 100))
         set_ee_eps_wages(0)

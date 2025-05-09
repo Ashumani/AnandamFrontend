@@ -292,13 +292,13 @@ const dashboard = () => {
                 <Tooltip />
                 <Legend
                   payload={[
-                    { id: 'employerCont', type: 'line', color: '#2b6b86', value: 'Employee Count' },
+                    { id: 'employerCount', type: 'line', color: '#2b6b86', value: 'Employee Count' },
                     { id: 'challanCount', type: 'line', color: '#f7c94c', value: 'Challan Count' },
                   ]}
                   verticalAlign="bottom"
                 />
-                <Bar dataKey="employerCont" fill="url(#colorPv)">
-                  <LabelList dataKey="employerCont" position="top" />
+                <Bar dataKey="employerCount" fill="url(#colorPv)">
+                  <LabelList dataKey="employerCount" position="top" />
                 </Bar>
                 <Bar dataKey="challanCount" fill="url(#colorUv)">
                   <LabelList dataKey="challanCount" position="top" />
