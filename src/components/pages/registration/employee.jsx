@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getEstId, getErId } from "../Auth/authToken";
-import { getAllEmployee, saveEERegister, getEmployee, updateEmployee, uploadEmployee, searchEmployee } from "../../api/services";
+import { getAllEmployee, saveEERegister, getEmployee, updateEmployee, uploadEmployee, searchEmployee, deleteEmployeeById } from "../../api/services";
 import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
 import React, { useRef } from 'react';
@@ -491,6 +491,37 @@ const employee = () => {
     bootstrapModal.show();
   };
 
+  
+      const deleteEmployee = async (id) => {
+        try {
+          // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+          const response = await deleteEmployeeById(id);
+          if (response.status == true) {
+    
+            Swal.fire({
+              title: response.message,
+              icon: 'success',
+              confirmButtonText: 'Okay'
+            });
+    
+          } else {
+            Swal.fire({
+              title: response.message,
+              icon: 'error',
+              confirmButtonText: 'Okay'
+            });
+          }
+    
+          await getAll(1);
+    
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          setError('Error fetching data. Please try again.');
+          setLoading(false);
+        }
+      };
+    
+
   const getDisplayedPages = () => {
     const pages = [];
 
@@ -604,7 +635,7 @@ const employee = () => {
                               <button className="btn btn-light mx-1" onClick={() => { fetchEmployee(employee.id) }}>
                                 <i className="bi bi-pencil-fill text-info"></i>
                               </button>
-                              <button className="btn btn-light" disabled>
+                              <button className="btn btn-light" onClick={() => deleteEmployee(employee.id)}>
                                 <i className="bi bi-trash text-danger"></i>
                               </button>
                             </div>

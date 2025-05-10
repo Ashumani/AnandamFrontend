@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getEstId, getErId } from "../Auth/authToken";
-import { addBlogs, addCustomFields, getAllBlogs, getAllCustomFields, getCustomFields } from "../../api/services";
+import { addBlogs, addCustomFields, deleteCustomFieldsById, getAllBlogs, getAllCustomFields, getCustomFields } from "../../api/services";
 import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
 import React, { useRef } from 'react';
@@ -160,6 +160,36 @@ const customiza = () => {
     }
   };
 
+  const deleteCustomFields = async (id) => {
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await deleteCustomFieldsById(id);
+      if (response.status == true) {
+
+        Swal.fire({
+          title: response.message,
+          icon: 'success',
+          confirmButtonText: 'Okay'
+        });
+        await getAll(1);
+        await getFields();
+
+      } else {
+        Swal.fire({
+          title: response.message,
+          icon: 'error',
+          confirmButtonText: 'Okay'
+        });
+      }
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Error fetching data. Please try again.');
+      setLoading(false);
+    }
+  };
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     getAll(pageNumber);
@@ -233,7 +263,7 @@ const customiza = () => {
                         <button className="btn btn-light mx-1" onClick={() => { getBlog(blog.id) }}>
                           <i className="bi bi-pencil-fill text-info"></i>
                         </button>
-                        <button className="btn btn-light" disabled>
+                        <button className="btn btn-light" onClick={() => deleteCustomFields(blog.id)}>
                           <i className="bi bi-trash text-danger"></i>
                         </button>
                       </div>

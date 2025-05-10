@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { erRegister, erUpdate, getErRegister, uploadEmployer } from '../../api/services';
+import { deleteEmployeeById, erRegister, erUpdate, getErRegister, uploadEmployer } from '../../api/services';
 import { useState, useEffect } from "react"
 import { getEstId } from "../Auth/authToken";
 import Swal from 'sweetalert2';

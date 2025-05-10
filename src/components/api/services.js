@@ -616,7 +616,22 @@ export const deleteRecords = async (params) => {
     }
 }
 
-
+export const deleteEmployeeById = async (id) => {
+    try {
+        const response = await axios.delete(`${BASE_URL}/employee/delete/`+id , { headers: header });
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+export const deleteCustomFieldsById = async (id) => {
+    try {
+        const response = await axios.delete(`${BASE_URL}/custom/delete/`+ id, { headers: header });
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 export const deleteRecordsByMonthYear = async (params) => {
     try {
         const response = await axios.post(`${BASE_URL}/monthly/deleteReturnByMonthYear`, params, { headers: header });

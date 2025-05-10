@@ -75,7 +75,7 @@ const notification = () => {
     }
   };
 
-  const setReadNotification = async (id, reason, status) => {
+  const setReadNotification = async (id,  status, reason) => {
     // api call
     const params = {
       "status": status,
@@ -136,7 +136,6 @@ const notification = () => {
         <section className="section">
           <br />
    
-
           <div className="table-responsive mt-2">
             <table className="table table-striped table-sm table-hover text-center">
               <thead>
@@ -163,8 +162,8 @@ const notification = () => {
                     <td >{moment(employee.date).format('YYYY-MM-DD')}</td>
                     <td>{employee.created_by}</td>
                     <td>Manish</td>
-                    <td>{employee.status}</td>
-                    <td>{employee.status}</td>
+                    <td>{employee.remark}</td>
+                    <td>{employee.status = 1 ? "Read": "Pending"}</td>
                     <td>
                         <div className="d-flex align-items-center">
                           
