@@ -358,6 +358,16 @@ export const uploadMonthlyEsicReturn = async (id, formdata) => {
     }
 }
 
+export const generateTemplates = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/esic/generateTemplates` , params , { headers: header });
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+
 export const uploadSalary = async (id, formdata) => {
     try {
         const uplaodHeader = {

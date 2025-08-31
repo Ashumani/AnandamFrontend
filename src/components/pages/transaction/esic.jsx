@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
-import { deletEsicReturnById, fillEsicReturn, getEmployeeByEsic, getEmployer, getEsicReturnByMonth, getEsicReturns, UpdateEsicReturn, uploadMonthlyEsicReturn, uploadSalary } from "../../api/services";
+import { deletEsicReturnById, downlaodFile, fillEsicReturn, generateTemplates, getEmployeeByEsic, getEmployer, getEsicReturnByMonth, getEsicReturns, UpdateEsicReturn, uploadMonthlyEsicReturn, uploadSalary } from "../../api/services";
 import React, { useRef } from 'react';
 import "./style.css"
 import Swal from 'sweetalert2';
@@ -660,6 +660,44 @@ const esic = () => {
     XLSX.writeFile(wb, 'table.xlsx');
   };
 
+    const downloadTemplates = async () => {
+      // api call
+  
+      try {
+        // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+        const params = {
+          "est_id": "36",
+          "month": 10,
+          "year": 2024
+      }
+        const response = await generateTemplates(params);
+        if (response.status == true) {
+          await downlaodFile(response.url);
+          Swal.fire({
+            title: response.message,
+            icon: 'success',
+            confirmButtonText: 'Okay'
+          });
+  
+  
+        }else{
+          Swal.fire({
+            title: response.message,
+            icon: 'error',
+            confirmButtonText: 'Okay'
+          });
+  
+        }
+  
+  
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setError('Error fetching data. Please try again.');
+        setLoading(false);
+      }
+    };
+  
+
   const reset = () => {
     set_ee_name('');
     set_ee_gender('');
@@ -837,7 +875,7 @@ const esic = () => {
                   <div className="col-sm-2 col-md-2 col-lg-2 col-2">
                     <button
                       type="button"
-                      className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#importReturn"
+                      className="btn btn-outline-primary btn-block rounded-4" onClick={() => downloadTemplates()}
                     >
                       Export
                     </button>

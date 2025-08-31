@@ -163,7 +163,7 @@ const notification = () => {
                     <td>{employee.created_by}</td>
                     <td>Manish</td>
                     <td>{employee.remark}</td>
-                    <td>{employee.status = 1 ? "Read": "Pending"}</td>
+                    <td>{employee.status ? "Read": "Pending"}</td>
                     <td>
                         <div className="d-flex align-items-center">
                           
