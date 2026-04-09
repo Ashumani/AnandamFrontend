@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
-import { deletEsicReturnById, downlaodFile, fillEsicReturn, generateTemplates, getEmployeeByEsic, getEmployer, getEsicReturnByMonth, getEsicReturns, UpdateEsicReturn, uploadMonthlyEsicReturn, uploadSalary } from "../../api/services";
+import { deleteRecordsByMonthYear, deleteReturnByMonthYear, deletEsicReturnById, downlaodFile, fillEsicReturn, generateTemplates, getEmployeeByEsic, getEmployer, getEsicReturnByMonth, getEsicReturns, UpdateEsicReturn, uploadMonthlyEsicReturn, uploadSalary } from "../../api/services";
 import React, { useRef } from 'react';
 import "./style.css"
 import Swal from 'sweetalert2';
@@ -64,8 +64,11 @@ const esic = () => {
 
   const [showReport, setShowReport] = useState(false);
 
-  const [ee_reason , set_ee_reason] = useState('')
-  const [ee_dol , set_ee_dol] = useState('')
+  const [ee_reason, set_ee_reason] = useState('')
+  const [ee_dol, set_ee_dol] = useState('')
+  const [reportMonth, setReportMonth] = useState(0)
+  const [reportYear, setReportYear] = useState(0)
+  const [esic_no, set_esic_no] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,7 +79,11 @@ const esic = () => {
 
   }, []);
 
-
+  const setMonthYearForReports = async (month, year) => {
+    setReportMonth(month)
+    setReportYear(year)
+    setShowReport(true)
+  }
   const calculation = async (value) => {
     // api call
     try {
@@ -106,6 +113,7 @@ const esic = () => {
         set_totalgross(userData.total.totalgross)
         set_totalEEShare(userData.total.totalEEShare)
         set_totalERShare(userData.total.totalERShare)
+        set_esic_no(userData.total.esic_no)
 
       } else {
         Swal.fire({
@@ -186,7 +194,7 @@ const esic = () => {
         gross_wages: cal_gross_wages,
         ee_share: ee_esic,
         er_share: er_esic,
-        ee_dol : ee_dol,
+        ee_dol: ee_dol,
         ee_reason: ee_reason
       }
 
@@ -236,7 +244,7 @@ const esic = () => {
   const updateReturns = async (employee) => {
     // api call
 
-    
+
 
     try {
 
@@ -263,10 +271,10 @@ const esic = () => {
         employee.ee_share = ee_esic
         employee.er_share = er_esic
         if (employee.rtid == 0 || employee.rtid == '') {
-          const userData = await UpdateEsicReturn(employee,employee.rtid);
+          const userData = await UpdateEsicReturn(employee, employee.rtid);
           if (userData.status == true) {
             await getMonthlyEsicReturn()
-            
+
 
           } else {
             Swal.fire({
@@ -281,7 +289,7 @@ const esic = () => {
           }
         } else {
           employee.id = employee.rtid
-          const userData = await UpdateEsicReturn(employee,employee.rtid);
+          const userData = await UpdateEsicReturn(employee, employee.rtid);
           if (userData.status === true) {
             await getMonthlyEsicReturn()
 
@@ -583,7 +591,7 @@ const esic = () => {
     // getReturnByMonth(pageNumber);
   };
 
-  const handleEditClick = (index,employee) => {
+  const handleEditClick = (index, employee) => {
 
     setEditableIndex(index);
     set_ee_esic(employee.ee_share)
@@ -714,6 +722,36 @@ const esic = () => {
     }
   };
 
+  const deleteReturnByMonthAndYear = async (month, year) => {
+    // api call
+
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await deleteReturnByMonthYear(getErId(), month, year);
+      if (response.status == true) {
+        Swal.fire({
+          title: response.message,
+          icon: 'success',
+          confirmButtonText: 'Okay'
+        });
+
+        await getEsicReturn()
+      } else {
+        Swal.fire({
+          title: response.message,
+          icon: 'error',
+          confirmButtonText: 'Okay'
+        });
+
+      }
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Error fetching data. Please try again.');
+      setLoading(false);
+    }
+  };
 
   const reset = () => {
     set_ee_name('');
@@ -808,7 +846,7 @@ const esic = () => {
 
                       <td>
                         <div className="d-flex align-items-center">
-                          <button className="btn btn-light" onClick={() => { setShowReport(true) }}>
+                          <button className="btn btn-light" onClick={() => { setMonthYearForReports(employee.month, employee.year) }}>
                             <i className="bi bi-eye text-info"></i>
 
                           </button>
@@ -820,9 +858,9 @@ const esic = () => {
                           </button>
                           <button
                             className="btn btn-light"
-                            disabled
+
                           >
-                            <i className="bi bi-trash text-danger"></i>
+                            <i className="bi bi-trash text-danger" onClick={() => deleteReturnByMonthAndYear( employee.month, employee.year)}></i>
                           </button>
 
                         </div>
@@ -841,7 +879,7 @@ const esic = () => {
                 </tfoot>
               </table>
               {showReport && (
-                <Report onClose={() => setShowReport(false)} />
+                <Report month={reportMonth} year={reportYear} onClose={() => setShowReport(false)} />
               )}
             </div>
           </div>
@@ -1132,7 +1170,7 @@ const esic = () => {
                             <input type="number" className="form-control rounded-4" disabled value={er_esic} />
                           </div>
                         </div>
-  <div className="row">
+                        <div className="row">
                           <div className="col mb-3">
                             <label htmlFor="inputNumber">Date Of Exit</label>
                             <input type="date" className="form-control rounded-4" onChange={(e) => set_ee_dol(e.target.value)} value={ee_dol} />

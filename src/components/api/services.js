@@ -304,6 +304,15 @@ export const deletEsicReturnById = async (id) => {
         throw error.response.data.error;
     }
 }
+
+export const deleteReturnByMonthYear = async (esicid, month, year) => {
+    try {
+        const response = await axios.delete(`${BASE_URL}/esic/deleteReturnByMonthYear/` + esicid + '/' + month + "/" + year, { headers: header });
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 export const uploadEmployer = async (formdata) => {
     try {
         const uplaodHeader = {

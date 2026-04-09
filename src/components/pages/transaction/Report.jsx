@@ -5,7 +5,7 @@ import { getErId, getEstId } from "../Auth/authToken";
 import { getEsicReturnByMonth } from "../../api/services";
 
 
-const Report = ({ onClose }) => {
+const Report = ({ onClose, month , year }) => {
     const reportRef = useRef();
     const [reportData, setReportData] = useState([])
     const [reportTotal, setReportTotal] = useState({})
@@ -21,7 +21,7 @@ const Report = ({ onClose }) => {
         
         const fetchData = async () => {
          
-            await showEsicReport(10,2024)
+            await showEsicReport(month,year)
         };
 
         fetchData();
@@ -71,50 +71,50 @@ const Report = ({ onClose }) => {
                 </p>
 
                 {/* SUMMARY TABLE */}
-                <table border="1" width="100%" style={{ marginBottom: "20px", textAlign: "center" }}>
+                <table border="1" width="100%" style={{ marginBottom: "20px", textAlign: "right" }}>
                     <thead>
                         <tr>
-                            <th>Total IP Contribution</th>
-                            <th>Total Employer Contribution</th>
-                            <th>Total Contribution</th>
-                            <th>Total Government Contribution</th>
-                            <th>Total Monthly Wages</th>
+                            <th className="text-end">Total IP Contribution</th>
+                            <th className="text-end">Total Employer Contribution</th>
+                            <th className="text-end">Total Contribution</th>
+                            <th className="text-end">Total Government Contribution</th>
+                            <th className="text-end">Total Monthly Wages</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{reportTotal.totalEEShare}</td>
-                            <td>{reportTotal.totalERShare}</td>
-                             <td>{reportTotal.totalEEShare + reportTotal.totalERShare}</td>
-                            <td>{reportTotal.totalEEShare}</td>
-                            <td>{reportTotal.totalgross}</td>
+                            <td className="text-end">{reportTotal.totalEEShare}</td>
+                            <td className="text-end">{reportTotal.totalERShare}</td>
+                            <td className="text-end">{reportTotal.totalContribution}</td>
+                            <td className="text-end">{reportTotal.totalGovContribution}</td>
+                            <td className="text-end">{reportTotal.totalgross}</td>
                         </tr>
-                    </tbody>
+                    </tbody> 
                 </table>
 
                 {/* MAIN TABLE */}
-                <table border="1" width="100%" style={{ textAlign: "center" }}>
+                <table border="1" width="100%" style={{ textAlign: "right" }}>
                     <thead>
                         <tr>
-                            <th>SNo</th>
-                            <th>IP Number</th>
-                            <th>IP Name</th>
-                            <th>No. Of Days</th>
-                            <th>Total Wages</th>
-                            <th>IP Contribution</th>
-                            <th>Reason</th>
+                            <th className="text-end">SNo</th>
+                            <th className="text-end">IP Number</th>
+                            <th className="text-end">IP Name</th>
+                            <th className="text-end">No. Of Days</th>
+                            <th className="text-end">Total Wages</th>
+                            <th className="text-end">IP Contribution</th>
+                            <th className="text-end">Reason</th>
                         </tr>
                     </thead>
                     <tbody>
                         {reportData.map((row) => (
                             <tr key={row.ee_esic_no}>
-                             <td>{row.ee_esic_no}</td>
-                                <td>{row.ee_esic_no}</td>
-                                <td>{row.ee_name}</td>
-                                <td>{row.dayspresent}</td>
-                                <td>{row.gross_wages}</td>
-                                <td>{row.ee_share}</td>
-                                <td>{row.reason}</td>
+                             <td className="text-end">{row.ee_esic_no}</td>
+                                <td className="text-end">{row.ee_esic_no}</td>
+                                <td className="text-end">{row.ee_name}</td>
+                                <td className="text-end">{row.dayspresent}</td>
+                                <td className="text-end">{row.gross_wages}</td>
+                                <td className="text-end">{row.ee_share}</td>
+                                <td className="text-end">{row.reason}</td>
                             </tr>
                         ))}
                     </tbody>
