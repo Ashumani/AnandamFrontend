@@ -243,6 +243,10 @@ const monthlyPf = () => {
                               <label htmlFor="inputPassword">EPF Wages</label>
                               <input type="number" className="form-control" disabled onChange={(e) => set_ee_epf_wages(e.target.value)} value={ee_epf_wages} />
                             </div>
+                             <div className="col mb-3">
+                              <label htmlFor="inputPassword">High Salary</label>
+                              <input type="number" className="form-control" disabled onChange={(e) => set_ee_epf_wages(e.target.value)} value={ee_epf_wages} />
+                            </div>
                           </div>
 
                           <div className="row">
