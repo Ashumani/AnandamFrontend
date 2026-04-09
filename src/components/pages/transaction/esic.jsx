@@ -6,6 +6,7 @@ import React, { useRef } from 'react';
 import "./style.css"
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
+import Report from "./Report";
 
 
 const esic = () => {
@@ -61,7 +62,7 @@ const esic = () => {
   const [totalEEShare, set_totalEEShare] = useState(0);
   const [totalERShare, set_totalERShare] = useState(0);
 
-
+  const [showReport, setShowReport] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -521,6 +522,8 @@ const esic = () => {
     }
   };
 
+
+
   const showEsicSummary = async () => {
     // api call
     try {
@@ -660,43 +663,43 @@ const esic = () => {
     XLSX.writeFile(wb, 'table.xlsx');
   };
 
-    const downloadTemplates = async () => {
-      // api call
-  
-      try {
-        // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-        const params = {
-          "est_id": "36",
-          "month": 10,
-          "year": 2024
+  const downloadTemplates = async () => {
+    // api call
+
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const params = {
+        "est_id": "36",
+        "month": 10,
+        "year": 2024
       }
-        const response = await generateTemplates(params);
-        if (response.status == true) {
-          await downlaodFile(response.url);
-          Swal.fire({
-            title: response.message,
-            icon: 'success',
-            confirmButtonText: 'Okay'
-          });
-  
-  
-        }else{
-          Swal.fire({
-            title: response.message,
-            icon: 'error',
-            confirmButtonText: 'Okay'
-          });
-  
-        }
-  
-  
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setError('Error fetching data. Please try again.');
-        setLoading(false);
+      const response = await generateTemplates(params);
+      if (response.status == true) {
+        await downlaodFile(response.url);
+        Swal.fire({
+          title: response.message,
+          icon: 'success',
+          confirmButtonText: 'Okay'
+        });
+
+
+      } else {
+        Swal.fire({
+          title: response.message,
+          icon: 'error',
+          confirmButtonText: 'Okay'
+        });
+
       }
-    };
-  
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Error fetching data. Please try again.');
+      setLoading(false);
+    }
+  };
+
 
   const reset = () => {
     set_ee_name('');
@@ -791,8 +794,9 @@ const esic = () => {
 
                       <td>
                         <div className="d-flex align-items-center">
-                          <button className="btn btn-light" onClick={() => { showEsicReturnPage(employee.month, employee.year) }}>
+                          <button className="btn btn-light" onClick={() => { setShowReport(true) }}>
                             <i className="bi bi-eye text-info"></i>
+
                           </button>
                           <button
                             className="btn btn-light mx-1"
@@ -822,6 +826,9 @@ const esic = () => {
                   </tr>
                 </tfoot>
               </table>
+              {showReport && (
+                <Report onClose={() => setShowReport(false)} />
+              )}
             </div>
           </div>
 
