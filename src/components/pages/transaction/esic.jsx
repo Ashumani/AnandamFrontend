@@ -64,6 +64,9 @@ const esic = () => {
 
   const [showReport, setShowReport] = useState(false);
 
+  const [ee_reason , set_ee_reason] = useState('')
+  const [ee_dol , set_ee_dol] = useState('')
+
   useEffect(() => {
     const fetchData = async () => {
       await getEsicReturn()
@@ -136,6 +139,7 @@ const esic = () => {
 
       if (userData.status === true) {
 
+        set_search_esic(userData.data.ee_esic_no)
         set_ee_id(userData.data.id);
         set_ee_name(userData.data.ee_name);
         set_ee_dob(userData.data.ee_dob);
@@ -182,6 +186,8 @@ const esic = () => {
         gross_wages: cal_gross_wages,
         ee_share: ee_esic,
         er_share: er_esic,
+        ee_dol : ee_dol,
+        ee_reason: ee_reason
       }
 
       if (ee_esic !== '') {
@@ -230,6 +236,8 @@ const esic = () => {
   const updateReturns = async (employee) => {
     // api call
 
+    
+
     try {
 
       //   const params = {
@@ -255,9 +263,10 @@ const esic = () => {
         employee.ee_share = ee_esic
         employee.er_share = er_esic
         if (employee.rtid == 0 || employee.rtid == '') {
-          const userData = await UpdateEsicReturn(employee);
-          if (userData.status === true) {
+          const userData = await UpdateEsicReturn(employee,employee.rtid);
+          if (userData.status == true) {
             await getMonthlyEsicReturn()
+            
 
           } else {
             Swal.fire({
@@ -272,7 +281,7 @@ const esic = () => {
           }
         } else {
           employee.id = employee.rtid
-          const userData = await UpdateEsicReturn(employee);
+          const userData = await UpdateEsicReturn(employee,employee.rtid);
           if (userData.status === true) {
             await getMonthlyEsicReturn()
 
@@ -455,6 +464,7 @@ const esic = () => {
           showCloseButton: true,
           timer: 1500,
         });
+        await getMonthlyEsicReturn()
         await getEsicReturn()
 
 
@@ -573,9 +583,13 @@ const esic = () => {
     // getReturnByMonth(pageNumber);
   };
 
-  const handleEditClick = (index) => {
+  const handleEditClick = (index,employee) => {
 
     setEditableIndex(index);
+    set_ee_esic(employee.ee_share)
+    set_er_esic(employee.er_share)
+    set_ee_reason(employee.reason)
+    set_ee_dol(employee.ee_dol)
     // Initialize form values with the current row's data
     setFormValues(employeeMonthlyEsicReturn[index]);
   };
@@ -903,7 +917,7 @@ const esic = () => {
             </div>
           </div>
 
-          <h5 className="mt-4">EPF Return For Month {selectedMonth}-{selectedYear}</h5>
+          <h5 className="mt-4">ESIC Return For Month {selectedMonth}-{selectedYear}</h5>
           <table className="table table-striped">
             <thead>
               <tr>
@@ -958,7 +972,8 @@ const esic = () => {
                       type="text"
                       className="form-control rounded-4"
                       disabled={editableIndex !== index}
-                      value={employee.reason}
+                      onChange={(e) => handleInputChange(e, 'esic_reason')}
+                      value={editableIndex === index ? formValues.esic_reason : ee_reason}
                     /></td>
                   )}
                   {editableIndex !== index ? (<td>{employee.date}     </td>) : (
@@ -966,7 +981,8 @@ const esic = () => {
                       type="date"
                       className="form-control rounded-4"
                       disabled={editableIndex !== index}
-                      value={employee.date}
+                      onChange={(e) => handleInputChange(e, 'esic_dol')}
+                      value={editableIndex === index ? formValues.esic_dol : ee_dol}
                     /></td>
                   )}
 
@@ -977,7 +993,7 @@ const esic = () => {
                       </button>
                       <button
                         className="btn btn-light mx-1"
-                        onClick={() => handleEditClick(index)}
+                        onClick={() => handleEditClick(index, employee)}
                       >
                         <i className="bi bi-pencil-fill text-info"></i>
                       </button>
@@ -1115,6 +1131,17 @@ const esic = () => {
                             <label htmlFor="inputPassword">ER(4.75%)</label>
                             <input type="number" className="form-control rounded-4" disabled value={er_esic} />
                           </div>
+                        </div>
+  <div className="row">
+                          <div className="col mb-3">
+                            <label htmlFor="inputNumber">Date Of Exit</label>
+                            <input type="date" className="form-control rounded-4" onChange={(e) => set_ee_dol(e.target.value)} value={ee_dol} />
+                          </div>
+                          <div className="col mb-3">
+                            <label htmlFor="inputTime">Reason Of Exit</label>
+                            <input type="text" className="form-control rounded-4" onChange={(e) => set_ee_reason(e.target.value)} value={ee_reason} />
+                          </div>
+
                         </div>
 
                       </form>

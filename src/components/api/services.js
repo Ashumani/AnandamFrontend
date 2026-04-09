@@ -278,9 +278,9 @@ export const fillEsicReturn = async (params) => {
     }
 }
 
-export const UpdateEsicReturn = async (params) => {
+export const UpdateEsicReturn = async (params, id) => {
     try {
-        const response = await axios.post(`${BASE_URL}/esic/UpdateEsicReturn`, params, { headers: header });
+        const response = await axios.put(`${BASE_URL}/esic/UpdateEsicReturn/`+id, params, { headers: header });
         return response.data;
     } catch (error) {
         throw error.response.data.error;
