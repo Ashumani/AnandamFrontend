@@ -28,3 +28,7 @@ body {
     font-style: italic;
     font-family: 'Bradley Hand ITC';
   }
+
+  .font-size-bill{
+    font-size: 15px;
+  }

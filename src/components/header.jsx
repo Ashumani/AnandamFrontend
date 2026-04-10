@@ -403,9 +403,10 @@ const Header = () => {
                 </li>
 
                 <li>
+                
                   <a
                     className="dropdown-item d-flex align-items-center"
-                    href="users-profile.html"
+                    href="/auth/dashboard/userProfile"
                   >
                     <i className="bi bi-person"></i>
                     <span>My Profile</span>

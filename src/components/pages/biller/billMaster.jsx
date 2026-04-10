@@ -215,7 +215,7 @@ const billMaster = () => {
                   </div>
 
                   <div className="table-responsive">
-                    <table className="table table-sm table-hover">
+                    <table className="table table-sm table-hover font-size-bill">
                       <thead>
                         <tr>
                           <th scope="col">#</th>
@@ -256,7 +256,7 @@ const billMaster = () => {
                             <td>{item.discount}</td>
                             <td>{item.amount_paid}</td>
                             <td>{item.status}</td>
-                            <td><button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} data-toggle="modal" data-target=".bd-example-modal-xl" onClick={() => getBillById(item.id)}>PDF</button></td>
+                            <td><button type="button" className="btn btn-outline-primary" style={{ "margin": "5px" }} data-toggle="modal" data-target=".bd-example-modal-xl" onClick={() => getBillById(item.id)}><i className="bi bi-file-pdf-fill"></i></button></td>
                           </tr>
                         ))}
                       </tbody>
