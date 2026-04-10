@@ -30,3 +30,12 @@ button {
 button:hover {
   transform: scale(1.05); /* Slight zoom effect on hover */
 }
+
+table {
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+th, td {
+  padding: 6px;
+}

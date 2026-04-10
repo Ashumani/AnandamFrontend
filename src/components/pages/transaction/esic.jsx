@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
-import { deletEsicReturnById, downlaodFile, fillEsicReturn, generateTemplates, getEmployeeByEsic, getEmployer, getEsicReturnByMonth, getEsicReturns, UpdateEsicReturn, uploadMonthlyEsicReturn, uploadSalary } from "../../api/services";
+import { deleteRecordsByMonthYear, deleteReturnByMonthYear, deletEsicReturnById, downlaodFile, fillEsicReturn, generateTemplates, getEmployeeByEsic, getEmployer, getEsicReturnByMonth, getEsicReturns, UpdateEsicReturn, uploadMonthlyEsicReturn, uploadSalary } from "../../api/services";
 import React, { useRef } from 'react';
 import "./style.css"
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
+import Report from "./Report";
 
 
 const esic = () => {
@@ -61,7 +62,13 @@ const esic = () => {
   const [totalEEShare, set_totalEEShare] = useState(0);
   const [totalERShare, set_totalERShare] = useState(0);
 
+  const [showReport, setShowReport] = useState(false);
 
+  const [ee_reason, set_ee_reason] = useState('')
+  const [ee_dol, set_ee_dol] = useState('')
+  const [reportMonth, setReportMonth] = useState(0)
+  const [reportYear, setReportYear] = useState(0)
+  const [esic_no, set_esic_no] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,7 +79,11 @@ const esic = () => {
 
   }, []);
 
-
+  const setMonthYearForReports = async (month, year) => {
+    setReportMonth(month)
+    setReportYear(year)
+    setShowReport(true)
+  }
   const calculation = async (value) => {
     // api call
     try {
@@ -102,6 +113,7 @@ const esic = () => {
         set_totalgross(userData.total.totalgross)
         set_totalEEShare(userData.total.totalEEShare)
         set_totalERShare(userData.total.totalERShare)
+        set_esic_no(userData.total.esic_no)
 
       } else {
         Swal.fire({
@@ -135,6 +147,7 @@ const esic = () => {
 
       if (userData.status === true) {
 
+        set_search_esic(userData.data.ee_esic_no)
         set_ee_id(userData.data.id);
         set_ee_name(userData.data.ee_name);
         set_ee_dob(userData.data.ee_dob);
@@ -181,6 +194,8 @@ const esic = () => {
         gross_wages: cal_gross_wages,
         ee_share: ee_esic,
         er_share: er_esic,
+        ee_dol: ee_dol,
+        ee_reason: ee_reason
       }
 
       if (ee_esic !== '') {
@@ -229,6 +244,8 @@ const esic = () => {
   const updateReturns = async (employee) => {
     // api call
 
+
+
     try {
 
       //   const params = {
@@ -254,9 +271,10 @@ const esic = () => {
         employee.ee_share = ee_esic
         employee.er_share = er_esic
         if (employee.rtid == 0 || employee.rtid == '') {
-          const userData = await UpdateEsicReturn(employee);
-          if (userData.status === true) {
+          const userData = await UpdateEsicReturn(employee, employee.rtid);
+          if (userData.status == true) {
             await getMonthlyEsicReturn()
+
 
           } else {
             Swal.fire({
@@ -271,7 +289,7 @@ const esic = () => {
           }
         } else {
           employee.id = employee.rtid
-          const userData = await UpdateEsicReturn(employee);
+          const userData = await UpdateEsicReturn(employee, employee.rtid);
           if (userData.status === true) {
             await getMonthlyEsicReturn()
 
@@ -454,6 +472,7 @@ const esic = () => {
           showCloseButton: true,
           timer: 1500,
         });
+        await getMonthlyEsicReturn()
         await getEsicReturn()
 
 
@@ -521,6 +540,8 @@ const esic = () => {
     }
   };
 
+
+
   const showEsicSummary = async () => {
     // api call
     try {
@@ -570,9 +591,13 @@ const esic = () => {
     // getReturnByMonth(pageNumber);
   };
 
-  const handleEditClick = (index) => {
+  const handleEditClick = (index, employee) => {
 
     setEditableIndex(index);
+    set_ee_esic(employee.ee_share)
+    set_er_esic(employee.er_share)
+    set_ee_reason(employee.reason)
+    set_ee_dol(employee.ee_dol)
     // Initialize form values with the current row's data
     setFormValues(employeeMonthlyEsicReturn[index]);
   };
@@ -660,43 +685,73 @@ const esic = () => {
     XLSX.writeFile(wb, 'table.xlsx');
   };
 
-    const downloadTemplates = async () => {
-      // api call
-  
-      try {
-        // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-        const params = {
-          "est_id": "36",
-          "month": 10,
-          "year": 2024
+  const downloadTemplates = async () => {
+    // api call
+
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const params = {
+        "est_id": "36",
+        "month": 10,
+        "year": 2024
       }
-        const response = await generateTemplates(params);
-        if (response.status == true) {
-          await downlaodFile(response.url);
-          Swal.fire({
-            title: response.message,
-            icon: 'success',
-            confirmButtonText: 'Okay'
-          });
-  
-  
-        }else{
-          Swal.fire({
-            title: response.message,
-            icon: 'error',
-            confirmButtonText: 'Okay'
-          });
-  
-        }
-  
-  
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setError('Error fetching data. Please try again.');
-        setLoading(false);
+      const response = await generateTemplates(params);
+      if (response.status == true) {
+        await downlaodFile(response.url);
+        Swal.fire({
+          title: response.message,
+          icon: 'success',
+          confirmButtonText: 'Okay'
+        });
+
+
+      } else {
+        Swal.fire({
+          title: response.message,
+          icon: 'error',
+          confirmButtonText: 'Okay'
+        });
+
       }
-    };
-  
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Error fetching data. Please try again.');
+      setLoading(false);
+    }
+  };
+
+  const deleteReturnByMonthAndYear = async (month, year) => {
+    // api call
+
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await deleteReturnByMonthYear(getErId(), month, year);
+      if (response.status == true) {
+        Swal.fire({
+          title: response.message,
+          icon: 'success',
+          confirmButtonText: 'Okay'
+        });
+
+        await getEsicReturn()
+      } else {
+        Swal.fire({
+          title: response.message,
+          icon: 'error',
+          confirmButtonText: 'Okay'
+        });
+
+      }
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Error fetching data. Please try again.');
+      setLoading(false);
+    }
+  };
 
   const reset = () => {
     set_ee_name('');
@@ -791,8 +846,9 @@ const esic = () => {
 
                       <td>
                         <div className="d-flex align-items-center">
-                          <button className="btn btn-light" onClick={() => { showEsicReturnPage(employee.month, employee.year) }}>
+                          <button className="btn btn-light" onClick={() => { setMonthYearForReports(employee.month, employee.year) }}>
                             <i className="bi bi-eye text-info"></i>
+
                           </button>
                           <button
                             className="btn btn-light mx-1"
@@ -802,9 +858,9 @@ const esic = () => {
                           </button>
                           <button
                             className="btn btn-light"
-                            disabled
+
                           >
-                            <i className="bi bi-trash text-danger"></i>
+                            <i className="bi bi-trash text-danger" onClick={() => deleteReturnByMonthAndYear( employee.month, employee.year)}></i>
                           </button>
 
                         </div>
@@ -822,6 +878,9 @@ const esic = () => {
                   </tr>
                 </tfoot>
               </table>
+              {showReport && (
+                <Report month={reportMonth} year={reportYear} onClose={() => setShowReport(false)} />
+              )}
             </div>
           </div>
 
@@ -896,7 +955,7 @@ const esic = () => {
             </div>
           </div>
 
-          <h5 className="mt-4">EPF Return For Month {selectedMonth}-{selectedYear}</h5>
+          <h5 className="mt-4">ESIC Return For Month {selectedMonth}-{selectedYear}</h5>
           <table className="table table-striped">
             <thead>
               <tr>
@@ -951,7 +1010,8 @@ const esic = () => {
                       type="text"
                       className="form-control rounded-4"
                       disabled={editableIndex !== index}
-                      value={employee.reason}
+                      onChange={(e) => handleInputChange(e, 'esic_reason')}
+                      value={editableIndex === index ? formValues.esic_reason : ee_reason}
                     /></td>
                   )}
                   {editableIndex !== index ? (<td>{employee.date}     </td>) : (
@@ -959,7 +1019,8 @@ const esic = () => {
                       type="date"
                       className="form-control rounded-4"
                       disabled={editableIndex !== index}
-                      value={employee.date}
+                      onChange={(e) => handleInputChange(e, 'esic_dol')}
+                      value={editableIndex === index ? formValues.esic_dol : ee_dol}
                     /></td>
                   )}
 
@@ -970,7 +1031,7 @@ const esic = () => {
                       </button>
                       <button
                         className="btn btn-light mx-1"
-                        onClick={() => handleEditClick(index)}
+                        onClick={() => handleEditClick(index, employee)}
                       >
                         <i className="bi bi-pencil-fill text-info"></i>
                       </button>
@@ -1108,6 +1169,17 @@ const esic = () => {
                             <label htmlFor="inputPassword">ER(4.75%)</label>
                             <input type="number" className="form-control rounded-4" disabled value={er_esic} />
                           </div>
+                        </div>
+                        <div className="row">
+                          <div className="col mb-3">
+                            <label htmlFor="inputNumber">Date Of Exit</label>
+                            <input type="date" className="form-control rounded-4" onChange={(e) => set_ee_dol(e.target.value)} value={ee_dol} />
+                          </div>
+                          <div className="col mb-3">
+                            <label htmlFor="inputTime">Reason Of Exit</label>
+                            <input type="text" className="form-control rounded-4" onChange={(e) => set_ee_reason(e.target.value)} value={ee_reason} />
+                          </div>
+
                         </div>
 
                       </form>

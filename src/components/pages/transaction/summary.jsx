@@ -68,7 +68,6 @@ const summary = () => {
   const [ee_epf, set_ee_epf] = useState('');
   const [er_epf, set_er_epf] = useState('');
   const [er_eps, set_er_eps] = useState('');
-
   const [eReturn_id, set_eReturn_id] = useState('');
   const [total_acc1, set_total_acc1] = useState('');
   const [total_acc2, set_total_acc2] = useState('');
@@ -703,7 +702,7 @@ const summary = () => {
   }
 
   const monthlyBack = async () => {
-    getAllSummary(getErId(), selectedYear, 0);
+    getAllSummary(getErId(), selectedYear, 1);
     setMonthly(true)
 
   }
@@ -1352,6 +1351,10 @@ const summary = () => {
                                 <div className="col mb-3">
                                   <label htmlFor="inputPassword">EPF Wages</label>
                                   <input type="number" className="form-control rounded-4" disabled onChange={(e) => set_ee_epf_wages(e.target.value)} value={ee_epf_wages} />
+                                </div>
+                                <div className="col mb-3">
+                                  <label htmlFor="inputPassword">High Salary</label>
+                                  <input type="text" className="form-control rounded-4" disabled  value={is_high_salaried === 0 ? "No" : "Yes"} />
                                 </div>
                               </div>
 

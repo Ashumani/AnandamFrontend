@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken"
 import { Link } from "react-router-dom";
-import { getAllBill, searchBill } from "../../api/services";
+import { getAllBill, getBill, searchBill } from "../../api/services";
+import Swal from "sweetalert2";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import "./bill.css"
 
 const billMaster = () => {
   // Sample data
@@ -22,6 +26,22 @@ const billMaster = () => {
   const [totalAmount, set_totalAmount] = useState('');
   const [totalDiscount, set_totalDiscount] = useState('');
   const [totalPaidAmount, set_totalPaidAmount] = useState('');
+
+  const [est_name, setEstName] = useState('');
+  const [est_id, setEstId] = useState('');
+  const [er_name, setErName] = useState('');
+  const [est_doc, setDOC] = useState('');
+  const [est_address, setAddress] = useState('');
+  const [bill_number, setBillNumber] = useState('');
+  const [rate, set_rate] = useState('');
+  const [estEmail, setEmail] = useState('')
+  const [estMobile, setMobile] = useState('')
+  const [estDesignation, setDesignation] = useState('')
+  const [estCity, setCity] = useState('')
+  const [date, setDate] = useState('');
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
+  const [finalBillArray, setFinalBillArray] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,6 +111,58 @@ const billMaster = () => {
     }
   };
 
+  const getBillById = async (id) => {
+
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await getBill(id);
+
+      if (response.status === true) {
+        setBillNumber(id)
+        setEstId(response.data.est_epf_id);
+        setEstName(response.data.est_name)
+        setErName(response.data.er_name)
+        setEmail(response.data.er_email_id)
+        setMobile(response.data.er_mobile_number)
+        setDesignation(response.data.est_designation)
+        setCity(response.data.est_city)
+        setAddress(response.data.est_address)
+        setDate(response.data.date)
+        setDOC(response.data.est_doc)
+        set_rate(response.data.rate)
+        setFinalBillArray(response.data.billData)
+        setTotalAmount(response.data.amount)
+        setIsUpdate(true)
+
+      } else {
+        Swal.fire({
+          title: response.message,
+          icon: 'error',
+          confirmButtonText: 'Okay'
+        });
+      }
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // setError('Error fetching data. Please try again.');
+
+    }
+  };
+
+  const generatePDF = async () => {
+    await getBillById()
+    // Capture the HTML content as a canvas
+    html2canvas(document.querySelector("#pdf-content")).then(canvas => {
+      const pdf = new jsPDF('p', 'mm', 'a4'); // 'p' for portrait, 'mm' for millimeters, 'a4' for page size
+      const imgData = canvas.toDataURL("image/png");
+
+      // Add the image to the PDF
+      pdf.addImage(imgData, 'PNG', 10, 10, 190, 0);
+      pdf.save("invoice.pdf");
+    });
+  };
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -156,7 +228,7 @@ const billMaster = () => {
                           <th scope="col">Discount</th>
                           <th scope="col">Amt Paid</th>
                           <th scope="col">Status</th>
-
+                          <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -184,6 +256,7 @@ const billMaster = () => {
                             <td>{item.discount}</td>
                             <td>{item.amount_paid}</td>
                             <td>{item.status}</td>
+                            <td><button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} data-toggle="modal" data-target=".bd-example-modal-xl" onClick={() => getBillById(item.id)}>PDF</button></td>
                           </tr>
                         ))}
                       </tbody>
@@ -193,6 +266,7 @@ const billMaster = () => {
                           <td colSpan="2">{totalAmount}</td>
                           <td>{totalDiscount}</td>
                           <td>{totalPaidAmount}</td>
+                          <td></td>
                           <td></td>
                         </tr>
                       </tfoot>
@@ -224,6 +298,124 @@ const billMaster = () => {
                     </button>
                   </div>
 
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="modal fade bd-example-modal-xl" tabIndex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+            <div className="modal-dialog modal-xl">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">Bill View</h5>
+                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <div id="pdf-content">
+                    <div className="row">
+                      <h2 className='float-right'>Invoice</h2>
+
+                    </div>
+                    <div className='row'>
+                      <div className='col-sm anandamTitle'>
+                        <p><strong>Anandam Consultancy</strong></p>
+                        <p><strong>101, Anant Appartment, Near Rakshak Bandhu</strong></p>
+                        <p><strong>Manewada Road, Nagpur-440024</strong></p>
+                        <p><strong>anand.esipf@gmail.com</strong></p>
+                        <p><strong>0712-2748370</strong></p>
+                      </div>
+                      <div className='col-sm-4'>
+                        <table>
+                          <tbody className="text-black">
+                            <tr>
+                              <th>Invoice Number</th>
+                              <td>{bill_number}</td>
+                            </tr>
+                            <tr>
+                              <th>Invoice Date</th>
+                              <td>{date}</td>
+                            </tr>
+                            <tr>
+                              <th>Employer ID</th>
+                              <td>{est_id}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div className='row'>
+                      <div className='col-sm'>
+                        <h5 className='text-head'>To</h5>
+                        <p><strong>{est_name}</strong></p>
+                        <p><strong>{estDesignation}</strong></p>
+                        <p><strong>{est_address}</strong></p>
+                        <p><strong>{estCity}</strong></p>
+                        <p><strong>{estMobile}</strong></p>
+                        <p><strong>{estEmail}</strong></p>
+                      </div>
+                      <div className='col-sm-4'></div>
+                    </div>
+                    <div className="table-responsive">
+                      <table className="table table-sm table-hover">
+                        <thead>
+                          <tr className='text-head'>
+                            <th>S.N.</th>
+                            <th>Descriptions</th>
+                            <th>Rate</th>
+                            <th>Total Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {finalBillArray.map((employee, index) => (
+                            <tr key={index}>
+                              <th scope="row">{index}</th>
+                              <th scope="row">{employee.perticular}</th>
+                              <td>Rs. {rate}</td>
+                              <td>Rs. {employee.amount}</td>
+
+                            </tr>
+                          ))}
+                          <tr>
+                            <td colSpan="3">Total</td>
+                            <td>Rs. {totalAmount}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <table>
+                      <tbody className="text-black">
+                        <tr>
+                          <th><h5 className='text-head'>Bank Details</h5></th>
+                        </tr>
+                        <tr>
+                          <th>Bank Name</th>
+                          <td>Indian Overseas Bank</td>
+                        </tr>
+                        <tr>
+                          <th>Branch</th>
+                          <td>Hudkeshwar (Nagpur)</td>
+                        </tr>
+                        <tr>
+                          <th>Account Number</th>
+                          <td>264102000000449</td>
+                        </tr>
+                        <tr>
+                          <th>IFSC Code</th>
+                          <td>IOBA0002641</td>
+                        </tr>
+                        <tr>
+                          <th>PAN</th>
+                          <td>AARPV4479R</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p>Payment should be made in favor of Anandam Consultancy.</p>
+                    <p>For any business enquiry, please contact us at 0712-2748370.</p>
+                  </div>
+                </div>
+                <div className="modal-footer">
+                  <button className='btn btn-outline-primary btn-block' onClick={generatePDF}>Download PDF</button>
                 </div>
               </div>
             </div>

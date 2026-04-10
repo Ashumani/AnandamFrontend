@@ -278,9 +278,9 @@ export const fillEsicReturn = async (params) => {
     }
 }
 
-export const UpdateEsicReturn = async (params) => {
+export const UpdateEsicReturn = async (params, id) => {
     try {
-        const response = await axios.post(`${BASE_URL}/esic/UpdateEsicReturn`, params, { headers: header });
+        const response = await axios.put(`${BASE_URL}/esic/UpdateEsicReturn/`+id, params, { headers: header });
         return response.data;
     } catch (error) {
         throw error.response.data.error;
@@ -299,6 +299,15 @@ export const getEmployeeByEsic = async (params) => {
 export const deletEsicReturnById = async (id) => {
     try {
         const response = await axios.delete(`${BASE_URL}/esic/deleteReturnById/` + id, { headers: header });
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const deleteReturnByMonthYear = async (esicid, month, year) => {
+    try {
+        const response = await axios.delete(`${BASE_URL}/esic/deleteReturnByMonthYear/` + esicid + '/' + month + "/" + year, { headers: header });
         return response.data;
     } catch (error) {
         throw error.response.data.error;
