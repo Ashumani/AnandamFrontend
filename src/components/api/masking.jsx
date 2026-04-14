@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import CryptoJS from 'crypto-js';
 import forge from 'node-forge';
 
-// let originalText = '';
-// let encryptedData = '';
-let decryptedData = '';
 let publicKeyPem = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAznA3zS86ou4lbWJc6kQa
 3vCFv4TnJV8usD84RnIWYIS3bYET604Z6Ntswv3MPOdCga9ZhqtJnPHD3y6rs7oM
@@ -50,52 +47,57 @@ const generateKeyPair = () => {
     // console.log(privateKeyPem)
 };
 
-// Encrypt data with AES
-const encryptData = (text, key) => {
-    const iv = forge.random.getBytesSync(16);
-    const cipher = forge.cipher.createCipher('AES-CBC', key);
-    cipher.start({ iv });
-    cipher.update(forge.util.createBuffer(text, 'utf8'));
-    cipher.finish();
-    const encrypted = cipher.output.toHex();
-    return { encryptedData: encrypted, iv };
-};
 
-// Decrypt data with AES
-const decryptData = (encryptedData, key, iv) => {
-    const decipher = forge.cipher.createDecipher('AES-CBC', key);
-    decipher.start({ iv });
-    decipher.update(forge.util.createBuffer(forge.util.hexToBytes(encryptedData)));
-    decipher.finish();
-    return decipher.output.toString('utf8');
-};
-
-// Encrypt AES key with RSA public key
-const encryptKey = (aesKey, publicKeyPem) => {
+// 🔐 ENCRYPT
+export function encryptData(plainText) {
     const publicKey = forge.pki.publicKeyFromPem(publicKeyPem);
-    return forge.util.encode64(publicKey.encrypt(aesKey));
-};
 
-// Decrypt AES key with RSA private key
-const decryptKey = (encryptedAesKey, privateKeyPem) => {
+    // AES key
+    const aesKey = forge.random.getBytesSync(32);
+    const iv = forge.random.getBytesSync(16);
+
+    // AES encrypt
+    const cipher = forge.cipher.createCipher("AES-CBC", aesKey);
+    cipher.start({ iv });
+    cipher.update(forge.util.createBuffer(plainText, "utf8"));
+    cipher.finish();
+
+    // RSA encrypt AES key (SAFE)
+    const encryptedKey = forge.util.encode64(
+        publicKey.encrypt(aesKey, "RSA-OAEP", {
+            md: forge.md.sha256.create()
+        })
+    );
+
+    return {
+        encryptedData: cipher.output.toHex(),
+        encryptedKey,
+        iv: forge.util.encode64(iv)
+    };
+}
+
+// 🔓 DECRYPT
+export function decryptData(payload) {
     const privateKey = forge.pki.privateKeyFromPem(privateKeyPem);
-    return privateKey.decrypt(forge.util.decode64(encryptedAesKey));
-};
 
-export const handleEncryption =  async (originalText) => {
-    generateKeyPair();
-    const aesKey = forge.random.getBytesSync(32); // Generate AES key
-    const { encryptedData: encryptedText, iv } = encryptData(originalText, aesKey);
-    const encryptedAesKey = encryptKey(aesKey, publicKeyPem);
-    // setEncryptedData({ encryptedText, encryptedAesKey, iv });
-    return  { encryptedText, encryptedAesKey, iv }
-};
+    const { encryptedData, encryptedKey, iv } = payload;
 
-export const handleDecryption = async (encryptedData) => {
-    const { encryptedText, encryptedAesKey, iv } = encryptedData;
-    const aesKey = decryptKey(encryptedAesKey, privateKeyPem);
-    const decryptedText = decryptData(encryptedText, aesKey, iv);
-    // setDecryptedData(decryptedText);
-    console.log({ decryptedText })
-};
+    // RSA decrypt AES key
+    const aesKey = privateKey.decrypt(
+        forge.util.decode64(encryptedKey),
+        "RSA-OAEP",
+        {
+            md: forge.md.sha256.create()
+        }
+    );
 
+    // AES decrypt
+    const decipher = forge.cipher.createDecipher("AES-CBC", aesKey);
+    decipher.start({ iv: forge.util.decode64(iv) });
+    decipher.update(
+        forge.util.createBuffer(forge.util.hexToBytes(encryptedData))
+    );
+    decipher.finish();
+
+    return decipher.output.toString("utf8");
+}

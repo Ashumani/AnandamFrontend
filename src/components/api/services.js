@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { getAuthToken } from '../pages/Auth/authToken';
-import { handleDecryption, handleEncryption } from './masking';
+import { encryptData } from './masking';
 import { Navigate } from 'react-router-dom';
 
 const BASE_URL = 'http://localhost:4001';
@@ -115,7 +115,7 @@ export const updateEmployee = async (id, params) => {
 
 export const getAllEmployee = async (params) => {
     try {
-        // await handleEncryption(params)
+        params = await encryptData(params)
         const response = await axios.post(`${BASE_URL}/employee/getAllEmployee`, params, { headers: header });
         return response.data;
     } catch (error) {
