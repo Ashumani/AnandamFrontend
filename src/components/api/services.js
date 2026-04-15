@@ -13,6 +13,47 @@ const header = {
 }
 
 
+let publicKeyPem = `-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2ZrMEFqXYff0C9aT6qrW
+Y4rMFgQ2H7hy2qqewC96+UWUXHAkmZNZ6YgT52Y14RTILOGnJqq/aKEYZsD5eMKw
+qT/wlMsYePIJcoEx4FUIWxNVLHwLJvqZyet2I1k2GXu4y6JlqIOduPNlEJZ8Twda
+9u+r5vTdJ9sd7kTh6hVyOxE40CwZs3e2cbrkiSSPGK/RyGLlMyfURmSWnlT2TUMG
+sQRazNkJbuOJj7cyFbf64vXcRCxKAdEA7klNenkqDzbbVnjeazkQ3DYK11ipoRwF
+0WVxXiUCMPeLf3QdOjbR/nczaR+N/ueXRktaifS8D//XVBAi5rI/IQoWfAOHjGur
+nwIDAQAB
+-----END PUBLIC KEY-----
+`;
+
+let privateKeyPem = `-----BEGIN PRIVATE KEY-----
+MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDZmswQWpdh9/QL
+1pPqqtZjiswWBDYfuHLaqp7AL3r5RZRccCSZk1npiBPnZjXhFMgs4acmqr9ooRhm
+wPl4wrCpP/CUyxh48glygTHgVQhbE1UsfAsm+pnJ63YjWTYZe7jLomWog52482UQ
+lnxPB1r276vm9N0n2x3uROHqFXI7ETjQLBmzd7ZxuuSJJI8Yr9HIYuUzJ9RGZJae
+VPZNQwaxBFrM2Qlu44mPtzIVt/ri9dxELEoB0QDuSU16eSoPNttWeN5rORDcNgrX
+WKmhHAXRZXFeJQIw94t/dB06NtH+dzNpH43+55dGS1qJ9LwP/9dUECLmsj8hChZ8
+A4eMa6ufAgMBAAECggEAC/n4F0JVKKAz/17M/1JtwEbIWsHalL5bG+veFufGFegd
+dUT6zrUMcsz5g3fdqUiyh73XrEojhMexBx7B3EKi5H3PaPEQpL91g6bWrukfL5wN
+yQf+uSN7yWA7PVDQqHBlyFdkzvSHfsFuo44Uw2i9OfAQ/wIlFed6az3BTVfm1JdR
+FQGZ0WcS3F4j/4JfAjgVArd/frzG3zl8RlhAYeieaNNGH062ApC/ePeBoqS81SAg
+YIomKpQv0kvRPcKSygDq8mhtarXkaTAPdg9U/f9LpA+XLeMuLGiXG9T7qs7LG9Uv
+dEpZ60xLslp4zQSWyMoihaNAOk/BgwcfbVj328Rh6QKBgQDtahSvhWiBjchEqEJk
+7gXwcQ2ARByJpcTEELNmM5f4e8y5qjQrQcZuOJ7B5mc++Xj8ZtrMRSt/Q+ut/wbF
+xr2FffilXBXl9V7B4lOCBsC5pm7Yz+AZ8+pcqX2vSZ9gX1lT/e5YR3trIyCpWCtF
+QUQ5eqFUIPPpn9IFZo54bBExCwKBgQDqo7f36bhRGzxW8WTcRGue2obY9UU7uRWs
+Ybt8yMI9unTP3Yctt6uePCCOsU/HEIaiEhXArxDKGEH57pQQosXG4fwVWZD0UVaQ
+j3jofAfb3PKIjYiuozLVPN36sb9oWcFNrVpb/vK84F592J34u4FBLLNOacN04+XG
+0AR7Ko50PQKBgQCoMZf4BR5VcfmoUj+/OzVv8teqwBYrmgm9EUvXIsQOIL6X5jHR
+V2bZnTkziyQn5BtHTSLCxlobbiXgfaTxpmuL0APAOm21HVEFMG8S1e/hVjx/Uz2j
+hT7KaLUG4rSLVOF29JXPaszPyPIRpsn45VUNF4iFjlbecwAaHV7fh0fiowKBgAwx
+wgfiX6/naHVkSkegTq+Mz+FKrfRypAu3cJUFogKvRA7hhnr7xrGMkmyYDntcAoM9
+yV+gOZEnPZaNrahHrVuutvktFHl+GK+epTv/5jCpBPnP0UCyPpwSc77pqfb0YzV0
+QvPxBhCG4KJNtbgNlqQafJ8gpAXZKkHw4aq9BXZJAoGANbDbTNTliwk6MlKZR4Nz
+Tozh2pPA0dSlCH1UNdZxlk3J1Y08m55UDJjh61oTjb0nG/wVB4zGuySbf+h0UxNk
+OMVVDP4vPuquQj12CthZZ98AHbCPz8XamrfvkXWh1NGblciXhlytYmEVuWLxAHVz
+QriRksIKPpJc7/vz526xSI4=
+-----END PRIVATE KEY-----
+`;
+
 export const loginData = async (username, password) => {
     try {
         const response = await axios.post(`${BASE_URL}/users/authenticate`, {
@@ -115,7 +156,7 @@ export const updateEmployee = async (id, params) => {
 
 export const getAllEmployee = async (params) => {
     try {
-        params = await encryptData(params)
+        // params = await encryptData(params,publicKeyPem)
         const response = await axios.post(`${BASE_URL}/employee/getAllEmployee`, params, { headers: header });
         return response.data;
     } catch (error) {
