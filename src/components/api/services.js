@@ -3,7 +3,8 @@ import { getAuthToken } from '../pages/Auth/authToken';
 import { encryptData } from './masking';
 import { Navigate } from 'react-router-dom';
 
-const BASE_URL = 'http://localhost:4001';
+// const BASE_URL = 'http://localhost:4001';
+const BASE_URL = "http://192.168.1.14:4001"
 // const BASE_URL = "https://anandam-bckend.vercel.app"
 const authToken = getAuthToken()
 // axios.defaults.withCredentials = true;
