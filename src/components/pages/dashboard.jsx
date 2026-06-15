@@ -252,6 +252,7 @@ const dashboard = () => {
         <div className="row">
           <div className="col-sm-2">
             <select
+              // className="form-select rounded-4 dropdown-content"
               className="form-select rounded-4 dropdown-content"
               aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
             >
