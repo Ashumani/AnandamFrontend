@@ -27,6 +27,7 @@ import customiza from "./components/pages/admin/customizeForm"
 import superUser from "./components/pages/admin/superUser"
 import notification from "./components/pages/admin/notification"
 import userProfile from "./components/pages/user/userProfile"
+import React from "react"
 
 const AllRoutes = () => {
   return (
@@ -59,6 +60,7 @@ const AllRoutes = () => {
         <Route exact path='/auth/dashboard/superUser' Component={superUser}/>
         <Route exact path='/auth/dashboard/notification' Component={notification}/>
         <Route exact path='/auth/dashboard/userProfile' Component={userProfile}/>
+        <Route path="/auth/dashboard/bill/create/:id" element={React.createElement(billing)} />
         
     </Routes>
     

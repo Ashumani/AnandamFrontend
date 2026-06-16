@@ -253,7 +253,7 @@ const dashboard = () => {
           <div className="col-sm-2">
             <select
               // className="form-select rounded-4 dropdown-content"
-              className="form-select rounded-4 dropdown-content"
+              className="form-select rounded-4"
               aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
             >
               {returnsYear && returnsYear.yearTo.map((returnYear) => (

@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import "./bill.css"
+import { useParams } from 'react-router-dom';
 
 
 const ecr = () => {
@@ -47,19 +48,32 @@ const ecr = () => {
     const [gstOnReceived, set_gstOnReceived] = useState('')
     const [paymentMode, set_paymentMode] = useState('')
 
-    const biller = async () => {
+    const { id } = useParams();
+
+    
+    useEffect(() => {
+        if (id) {
+            biller(id)
+        }else if(getEstId()) {
+            fetchEmployer(getEstId())
+        }
+
+
+    }, [id]);
+
+    const biller = async (bill_number) => {
 
         if (bill_number) {
             let billno = bill_number
             resetPage()
             setBillNumber(billno)
-            await getBillById()
+            await getBillById(billno)
         } else {
             await fetchEmployer()
         }
     }
 
-    const fetchEmployer = async () => {
+    const fetchEmployer = async (est_id) => {
         resetModel();
         resetPage();
 
@@ -69,7 +83,7 @@ const ecr = () => {
         try {
             // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
             const response = await getEmployer(params);
-           
+
             if (response.status === true) {
                 setEstId(response.data.est_epf_id);
                 setEstName(response.data.est_name)
@@ -83,7 +97,7 @@ const ecr = () => {
                 setMobile(response.data.er_mobile_number)
                 setDesignation(response.data.est_designation)
                 setCity(response.data.est_city)
-    
+
             } else {
                 Swal.fire({
                     title: response.message,
@@ -101,7 +115,7 @@ const ecr = () => {
 
         }
     };
-    const getBillById = async () => {
+    const getBillById = async (bill_number) => {
 
         try {
             // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
@@ -184,7 +198,7 @@ const ecr = () => {
             }
 
             // Update state with new items and calculate total amount
-             setFinalBillArray(prevArray => {
+            setFinalBillArray(prevArray => {
                 const updatedArray = [...prevArray, ...newItems];
                 const newTotalAmount = updatedArray.reduce((total, bill) => parseInt(total) + parseInt(bill.amount), 0);
                 setTotalAmount(newTotalAmount);
@@ -296,7 +310,7 @@ const ecr = () => {
                 });
                 setFinalBillArray([])
                 setTotalAmount('')
-       
+
 
             } else {
                 Swal.fire({
@@ -425,7 +439,7 @@ const ecr = () => {
         setOtherAmount('')
         setCoverageAmount('')
         setOtherReason('')
-       
+
 
     };
 
@@ -460,7 +474,7 @@ const ecr = () => {
 
     return (
 
-        <div className="main-container" style={{"marginTop":"50px", "fontSize":"15px", "color":"black"}}>
+        <div className="main-container" style={{ "marginTop": "50px", "fontSize": "15px", "color": "black" }}>
             <div className='main-title'>
                 <h3>CREATE BILL</h3>
             </div>
@@ -480,10 +494,10 @@ const ecr = () => {
                                         <input type="text" className="form-control rounded-4" onChange={(e) => setBillNumber(e.target.value)} value={bill_number} />
                                     </div>
                                     <div className="col-sm-3 col-md-3 col-lg-3 col-3">
-                                        <button type="button" className="btn btn-outline-primary rounded-4 w-100" style={{ "margin-top": "20px"}} onClick={biller}>Get Details</button>
+                                        <button type="button" className="btn btn-outline-primary rounded-4 w-100" style={{ "margin-top": "20px" }} onClick={() => biller(est_id ? est_id : bill_number)}>Get Details</button>
                                     </div>
                                     <div className="col-sm-3 col-md-3 col-lg-3 col-3">
-                                        <button type="button" className="btn btn-outline-primary rounded-4 w-100" style={{ "margin-top": "20px"}} onClick={resetPage}>Reset</button>
+                                        <button type="button" className="btn btn-outline-primary rounded-4 w-100" style={{ "margin-top": "20px" }} onClick={resetPage}>Reset</button>
                                     </div>
                                 </div>
                             </form>
@@ -514,17 +528,17 @@ const ecr = () => {
                                     <input type="month" className="form-control rounded-4" required onChange={(e) => setToDate(e.target.value)} value={toDate} />
                                 </div>
                                 <div className="col-sm-3 col-md-3 col-lg-3 col-3">
-                                <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-50" style={{ "margin": "22px 5px 10px 10px" }} onClick={() => openModal('exampleModal')}>Next</button>
+                                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-50" style={{ "margin": "22px 5px 10px 10px" }} onClick={() => openModal('exampleModal')}>Next</button>
                                 </div>
                                 <div className="col-sm-3 col-md-3 col-lg-3 col-3">
 
                                 </div>
                                 <div className="col-sm-3 col-md-3 col-lg-3 col-3">
-                                {!IsUpdate ? (
-                                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} onClick={addBill}>Save</button>
-                                ) : (
-                                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} onClick={update}>Update</button>
-                                )}
+                                    {!IsUpdate ? (
+                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} onClick={addBill}>Save</button>
+                                    ) : (
+                                        <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} onClick={update}>Update</button>
+                                    )}
                                     <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} data-toggle="modal" data-target=".bd-example-modal-xl">Make PDF</button>
                                 </div>
                                 <div className="col-sm-3 col-md-3 col-lg-3 col-3">
@@ -685,7 +699,7 @@ const ecr = () => {
                                     <button type="button" className="btn btn-outline-primary btn-block" style={{ "margin": "2px 5px 10px 10px" }} data-toggle="modal" data-target="#exampleModal">Received</button>
                                 </div>
                             </div> */}
-                            
+
                             <div className="modal fade bd-example-modal-xl" tabIndex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                                 <div className="modal-dialog modal-xl">
                                     <div className="modal-content">

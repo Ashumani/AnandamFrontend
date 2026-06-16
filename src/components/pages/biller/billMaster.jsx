@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken"
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 import { getAllBill, getBill, searchBill } from "../../api/services";
 import Swal from "sweetalert2";
 import html2canvas from "html2canvas";
@@ -42,6 +42,7 @@ const billMaster = () => {
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
   const [finalBillArray, setFinalBillArray] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -167,7 +168,12 @@ const billMaster = () => {
     setCurrentPage(pageNumber);
   };
 
+ 
+const handleEdit = (billId) => {
+  
+ navigate(`/auth/dashboard/bill/create/${billId}`);
 
+};
   return (
     <div>
 
@@ -257,6 +263,7 @@ const billMaster = () => {
                             <td>{item.amount_paid}</td>
                             <td>{item.status}</td>
                             <td><button type="button" className="btn btn-outline-primary" style={{ "margin": "5px" }} data-toggle="modal" data-target=".bd-example-modal-xl" onClick={() => getBillById(item.id)}><i className="bi bi-file-pdf-fill"></i></button></td>
+                            <td><button type="button" className="btn btn-outline-primary" style={{ "margin": "5px" }}  onClick={() => handleEdit(item.id)}><i className="bi bi-pencil"></i></button></td>
                           </tr>
                         ))}
                       </tbody>
