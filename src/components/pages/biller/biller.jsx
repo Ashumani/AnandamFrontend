@@ -50,11 +50,11 @@ const ecr = () => {
 
     const { id } = useParams();
 
-    
+
     useEffect(() => {
         if (id) {
             biller(id)
-        }else if(getEstId()) {
+        } else if (getEstId()) {
             fetchEmployer(getEstId())
         }
 
@@ -166,7 +166,11 @@ const ecr = () => {
                     perticular: "EPF Challan For Period " + fromDate + " To " + toDate,
                     rate: rate,
                     amount: rate * differenceInMonths,
-                    billNumber: bill_number
+                    billNumber: bill_number,
+                    toMonth: moment(toDate, "YYYY-MM").month() + 1,
+                    fromMonth: moment(fromDate, "YYYY-MM").month() + 1,
+                    toYear: moment(toDate, "YYYY-MM").year(),
+                    fromYear: moment(fromDate, "YYYY-MM").year()
                 });
             }
 
@@ -175,7 +179,11 @@ const ecr = () => {
                     perticular: "ESIC Challan For Period " + fromDate + " To " + toDate,
                     rate: rate,
                     amount: rate * differenceInMonths,
-                    billNumber: bill_number
+                    billNumber: bill_number,
+                    toMonth: moment(toDate, "YYYY-MM").month() + 1,
+                    fromMonth: moment(fromDate, "YYYY-MM").month() + 1,
+                    toYear: moment(toDate, "YYYY-MM").year(),
+                    fromYear: moment(fromDate, "YYYY-MM").year()
                 });
             }
 
@@ -184,7 +192,11 @@ const ecr = () => {
                     perticular: "EPF Registration Charge",
                     rate: coverageAmount,
                     amount: coverageAmount,
-                    billNumber: bill_number
+                    billNumber: bill_number,
+                    toMonth: moment(toDate, "YYYY-MM").month() + 1,
+                    fromMonth: moment(fromDate, "YYYY-MM").month() + 1,
+                    toYear: moment(toDate, "YYYY-MM").year(),
+                    fromYear: moment(fromDate, "YYYY-MM").year()
                 });
             }
 
@@ -193,7 +205,11 @@ const ecr = () => {
                     perticular: otherReason,
                     rate: otherAmount,
                     amount: otherAmount,
-                    billNumber: bill_number
+                    billNumber: bill_number,
+                    toMonth: moment(toDate, "YYYY-MM").month() + 1,
+                    fromMonth: moment(fromDate, "YYYY-MM").month() + 1,
+                    toYear: moment(toDate, "YYYY-MM").year(),
+                    fromYear: moment(fromDate, "YYYY-MM").year()
                 });
             }
 
@@ -230,7 +246,9 @@ const ecr = () => {
                 "perticular": "EPF Challan For Period " + fromDate + " To " + toDate,
                 "rate": rate,
                 "amount": rate * differenceInMonths,
-                "billNumber": bill_number
+                "billNumber": bill_number,
+                "fromDate": fromDate,
+                "toDate": toDate
             }
             // setFinalBillArray(prevArray => [...prevArray, item]);
         } else if (event.target.id == "flexSwitchCheckPf" && !event.target.checked) {
@@ -246,7 +264,11 @@ const ecr = () => {
                 "perticular": "ESIC Challan For Period " + fromDate + " To " + toDate,
                 "rate": rate,
                 "amount": rate * differenceInMonths,
-                "billNumber": bill_number
+                "billNumber": bill_number,
+                toMonth: moment(toDate, "YYYY-MM").month() + 1,
+                fromMonth: moment(fromDate, "YYYY-MM").month() + 1,
+                toYear: moment(toDate, "YYYY-MM").year(),
+                fromYear: moment(fromDate, "YYYY-MM").year()
             }
             // setFinalBillArray(prevArray => [...prevArray, item]);
         } else if (event.target.id == "flexSwitchCheckEsic" && !event.target.checked) {
@@ -293,7 +315,11 @@ const ecr = () => {
             "est_esic_id": "12345678",
             "rate": rate,
             "amount": totalAmount,
-            "billData": finalBillArray
+            "billData": finalBillArray,
+            toMonth: moment(toDate, "YYYY-MM").month() + 1,
+            fromMonth: moment(fromDate, "YYYY-MM").month() + 1,
+            toYear: moment(toDate, "YYYY-MM").year(),
+            fromYear: moment(fromDate, "YYYY-MM").year()
         }
         try {
             // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
@@ -546,7 +572,7 @@ const ecr = () => {
                                     <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} data-toggle="modal" data-target="#exampleModal">Print PDF</button>
                                 </div>
                                 <div className="col-sm-3 col-md-3 col-lg-3 col-3">
-                                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-50" style={{ "margin": "5px" }} data-toggle="modal" onClick={openModal} disabled={!IsUpdate}>Received</button>
+                                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-50" style={{ "margin": "5px" }} data-toggle="modal" data-target="receivedModal" onClick={openModal} disabled={!IsUpdate}>Received</button>
                                 </div>
                             </div>
 
@@ -645,7 +671,7 @@ const ecr = () => {
                                     </div>
                                 </div>
                             </div>
-                            ``
+
 
                             <table className="table table-striped">
                                 <thead>
@@ -865,6 +891,8 @@ const ecr = () => {
                                     </div>
                                 </div>
                             </div>
+
+
                         </div>
                     </div>
                 </div>

@@ -8,6 +8,7 @@ import { BarChart, PieChart, Pie, AreaChart, Area, Bar, ComposedChart, ScatterCh
 import { getBillGraph, getCardsCount, getGraph, getYearsAndMonth } from "../api/services";
 import { useState, useEffect } from "react"
 import moment from "moment";
+import { getErId, getEstId } from "./Auth/authToken";
 
 
 const dashboard = () => {
@@ -75,8 +76,8 @@ const dashboard = () => {
   const [totaldsc, settotaldsc] = useState('')
   const [expiredsc, setexpiredsc] = useState('')
 
-  const fromMonth = 3
-  const toMonth = 4
+  const fromMonth = 4
+  const toMonth = 3
   const fromYear = moment().year() - 1
   const toYear = moment().year() 
   const [selectedYear, setSelectedYear] = useState(fromYear);
@@ -133,7 +134,8 @@ const dashboard = () => {
         "fromMonth": fromMonth,
         "toMonth": toMonth,
         "fromYear": fromYear,
-        "toYear": toYear
+        "toYear": toYear,
+        "est_id": getEstId()
       }
       const response = await getGraph(params);
       setData(response.data)
@@ -155,7 +157,8 @@ const dashboard = () => {
         "fromMonth": fromMonth,
         "toMonth": toMonth,
         "fromYear": fromYear,
-        "toYear": toYear
+        "toYear": toYear,
+        "est_id":getEstId()
       }
       const response = await getBillGraph(params);
       if (response.status == true) {
@@ -293,16 +296,17 @@ const dashboard = () => {
                 <Tooltip />
                 <Legend
                   payload={[
-                    { id: 'employerCount', type: 'line', color: '#2b6b86', value: 'Employee Count' },
-                    { id: 'challanCount', type: 'line', color: '#f7c94c', value: 'Challan Count' },
+                    { id: 'employerCount', type: 'line', color: '#2b6b86', value: 'Employer Count' },
+                    // { id: 'challanCount', type: 'line', color: '#f7c94c', value: 'Challan Count' },
+                    { id: 'employeeCount', type: 'line', color: '#f7c94c', value: 'Employee Count' },
                   ]}
                   verticalAlign="bottom"
                 />
                 <Bar dataKey="employerCount" fill="url(#colorPv)">
                   <LabelList dataKey="employerCount" position="top" />
                 </Bar>
-                <Bar dataKey="challanCount" fill="url(#colorUv)">
-                  <LabelList dataKey="challanCount" position="top" />
+                <Bar dataKey="employeeCount" fill="url(#colorUv)">
+                  <LabelList dataKey="employeeCount" position="top" />
                 </Bar>
               </BarChart>) : (
                 <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
@@ -328,7 +332,7 @@ const dashboard = () => {
                 <Legend />
                 <CartesianGrid stroke="#f5f5f5" />
                 <Area type="monotone" dataKey="amt" fill="url(#colorAmt)" stroke="#8884d8" />
-                <Bar dataKey="" barSize={20} fill="url(#colorPv)" />
+                <Bar dataKey="amt" barSize={20} fill="url(#colorPv)" />
                 <Bar dataKey="employerCont" barSize={20} fill="url(#colorPv)" />
                 <Line type="monotone" dataKey="challanCount" stroke="#ff7300" />
               </ComposedChart>
