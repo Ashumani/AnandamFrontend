@@ -572,7 +572,7 @@ const ecr = () => {
                                     <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} data-toggle="modal" data-target="#exampleModal">Print PDF</button>
                                 </div>
                                 <div className="col-sm-3 col-md-3 col-lg-3 col-3">
-                                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-50" style={{ "margin": "5px" }} data-toggle="modal" data-target="receivedModal" onClick={openModal} disabled={!IsUpdate}>Received</button>
+                                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-50" style={{ "margin": "5px" }} data-toggle="modal" data-target="receivedModal" onClick={() => openModal("receivedModal")} disabled={!IsUpdate}>Received</button>
                                 </div>
                             </div>
 
@@ -850,7 +850,7 @@ const ecr = () => {
                                     <div className="modal-content">
                                         <div className="modal-header">
                                             <h5 className="modal-title" id="exampleModalLabel">Received Amount</h5>
-                                            <button type="button" className="close" onClick={closeModal} aria-label="Close">
+                                            <button type="button" className="close" onClick={() => closeModal("receivedModal")} aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
@@ -885,7 +885,7 @@ const ecr = () => {
 
                                         </div>
                                         <div className="modal-footer">
-                                            <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
+                                            <button type="button" className="btn btn-secondary" onClick={() => closeModal("receivedModal")}>Close</button>
                                             <button type="button" className="btn btn-primary" onClick={savePaymentReceived}>Save changes</button>
                                         </div>
                                     </div>
