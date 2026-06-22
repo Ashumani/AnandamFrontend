@@ -79,13 +79,19 @@ const dashboard = () => {
   const fromMonth = 4
   const toMonth = 3
   const fromYear = moment().year() - 1
-  const toYear = moment().year() 
+  const toYear = moment().year()
   const [selectedYear, setSelectedYear] = useState(fromYear);
 
   const [chartData, setChartData] = useState([]);
   const [pieChartData, setPieChartData] = useState([]);
+  const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042"];
 
-
+  const data3 = [
+    { name: "User A", value: 400 },
+    { name: "User B", value: 300 },
+    { name: "User C", value: 200 },
+    { name: "User D", value: 100 }
+  ];
 
 
   useEffect(() => {
@@ -158,7 +164,7 @@ const dashboard = () => {
         "toMonth": toMonth,
         "fromYear": fromYear,
         "toYear": toYear,
-        "est_id":getEstId()
+        "est_id": getEstId()
       }
       const response = await getBillGraph(params);
       if (response.status == true) {
@@ -221,36 +227,36 @@ const dashboard = () => {
           <h3>DASHBOARD</h3>
         </div>
         <div className="row">
-        <div className='main-cards'>
-          <div className='cardCustom cardprop1'>
-            <div className='card-inner'>
-              <h5>Clients</h5>
-              <BsFillArchiveFill className='card_icon' />
+          <div className='main-cards'>
+            <div className='cardCustom cardprop1'>
+              <div className='card-inner'>
+                <h5>Clients</h5>
+                <BsFillArchiveFill className='card_icon' />
+              </div>
+              <h1>{totalclient}</h1>
             </div>
-            <h1>{totalclient}</h1>
-          </div>
-          <div className='cardCustom cardprop2'>
-            <div className='card-inner'>
-              <h5>EPF</h5>
-              <BsFillGrid3X3GapFill className='card_icon' />
+            <div className='cardCustom cardprop2'>
+              <div className='card-inner'>
+                <h5>EPF</h5>
+                <BsFillGrid3X3GapFill className='card_icon' />
+              </div>
+              <h1>{totalepf}/{epfchallancreated}</h1>
             </div>
-            <h1>{totalepf}/{epfchallancreated}</h1>
-          </div>
-          <div className='cardCustom cardprop3'>
-            <div className='card-inner'>
-              <h5>ESIC</h5>
-              <BsPeopleFill className='card_icon' />
+            <div className='cardCustom cardprop3'>
+              <div className='card-inner'>
+                <h5>ESIC</h5>
+                <BsPeopleFill className='card_icon' />
+              </div>
+              <h1>{totalesic}/{esicchallancreated}</h1>
             </div>
-            <h1>{totalesic}/{esicchallancreated}</h1>
-          </div>
-          <div className='cardCustom cardprop4'>
-            <div className='card-inner'>
-              <h5>DSC</h5>
-              <BsFillBellFill className='card_icon' />
+            <div className='cardCustom cardprop4'>
+              <div className='card-inner'>
+                <h5>DSC</h5>
+                <BsFillBellFill className='card_icon' />
+              </div>
+              <h1>{totaldsc}/{expiredsc}</h1>
             </div>
-            <h1>{totaldsc}/{expiredsc}</h1>
           </div>
-        </div>
         </div>
         <div className="row">
           <div className="col-sm-2">
@@ -314,7 +320,7 @@ const dashboard = () => {
                 </div>
               )}
             </ResponsiveContainer>
-          <ResponsiveContainer width="100%" height="75%">
+            <ResponsiveContainer width="100%" height="75%">
               {data && data.length > 0 ? (<ComposedChart width={730} height={250} data={data}>
                 <defs>
                   <linearGradient id="colorAmt" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -443,52 +449,55 @@ const dashboard = () => {
 
           </div>
 
-          {/* <div className='charts'>
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart width={730} height={250} data={data}
-              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-              <defs>
-                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#fb66c2" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#fb66c2" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <CartesianGrid strokeDasharray="3 3" />
-              <Tooltip />
-              <Area type="monotone" dataKey="uv" stroke="#fb66c2" fillOpacity={1} fill="url(#colorUv)" />
-              <Area type="monotone" dataKey="pv" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
-            </AreaChart>
-          </ResponsiveContainer>
+          <div className='charts'>
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart width={730} height={250} data={data}
+                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#fb66c2" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#fb66c2" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <CartesianGrid strokeDasharray="3 3" />
+                <Tooltip />
+                <Area type="monotone" dataKey="uv" stroke="#fb66c2" fillOpacity={1} fill="url(#colorUv)" />
+                <Area type="monotone" dataKey="pv" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
+              </AreaChart>
+            </ResponsiveContainer>
 
-          <ResponsiveContainer width="100%" height="100%">
-            <ScatterChart
-              width={730}
-              height={250}
-              margin={{
-                top: 20,
-                right: 20,
-                bottom: 10,
-                left: 10,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="value" type="number" name="stature" unit="cm" />
-              <YAxis dataKey="value" type="number" name="weight" unit="kg" />
-              <ZAxis dataKey="z" type="number" range={[64, 144]} name="score" unit="km" />
-              <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-              <Legend />
-              <Scatter name="A school" data={data1} fill="#8884d8" />
-              <Scatter name="B school" data={data2} fill="#82ca9d" />
-            </ScatterChart>
-          </ResponsiveContainer>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={data3}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
+                  fill="#52525dff"
+                  label
+                >
+                  {data1.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
 
-        </div> */}
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
       </main>
