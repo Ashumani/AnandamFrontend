@@ -227,7 +227,7 @@ const Sidebar = () => {
     const { showAll } = useSidebar();
     const [side_items] = useState(
         [{
-            "mainItem": "Ragistration",
+            "mainItem": "Registration",
             "path": "",
             "icon": "bi bi-menu-button-wide",
             "subItems": [

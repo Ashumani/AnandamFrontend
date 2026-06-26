@@ -862,7 +862,8 @@ const summary = () => {
 
   const handleSelectSubIdChange = (e) => {
     set_selectedSubId(e.target.value);
-    getReturnByMonth(1, selectedMonth, e.target.value)
+     getAllSummary(getErId(), selectedReturnYear, e.target.value);
+    // getReturnByMonth(1, selectedMonth, e.target.value)
   };
 
 

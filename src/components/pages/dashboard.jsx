@@ -5,65 +5,20 @@ import { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill }
   from 'react-icons/bs'
 import { BarChart, PieChart, Pie, AreaChart, Area, Bar, ComposedChart, ScatterChart, Scatter, ZAxis, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, LabelList, Cell }
   from 'recharts';
-import { getBillGraph, getCardsCount, getGraph, getYearsAndMonth } from "../api/services";
+import { getBillGraph, getCardsCount, getGraph, getUser, getUserGraph, getYearsAndMonth } from "../api/services";
 import { useState, useEffect } from "react"
 import moment from "moment";
 import { getErId, getEstId } from "./Auth/authToken";
 
-
 const dashboard = () => {
 
-  // const data = [
-  //   {
-  //     name: 'Page A',
-  //     uv: 4000,
-  //     pv: 2400,
-  //     amt: 2000,
-  //   },
-  //   {
-  //     'name': 'Page B',
-  //     uv: 3000,
-  //     pv: 1398,
-  //     amt: 2210,
-  //   },
-  //   {
-  //     name: 'Page C',
-  //     uv: 2000,
-  //     pv: 9800,
-  //     amt: 2290,
-  //   },
-  //   {
-  //     name: 'Page D',
-  //     uv: 2780,
-  //     pv: 3908,
-  //     amt: 2000,
-  //   },
-  //   {
-  //     name: 'Page E',
-  //     uv: 1890,
-  //     pv: 4800,
-  //     amt: 2181,
-  //   },
-  //   {
-  //     name: 'Page F',
-  //     uv: 2390,
-  //     pv: 3800,
-  //     amt: 2500,
-  //   },
-  //   {
-  //     name: 'Page G',
-  //     uv: 3490,
-  //     pv: 4300,
-  //     amt: 2100,
-  //   }
-  // ];
+  
+const [selectedCard, setSelectedCard] = useState("");
+
+
 
   const [data, setData] = useState([])
   const [data1, setData1] = useState([])
-  // const data1 = [{ name: "A", value: 100 }, { name: "B", value: 200 }, { name: "C", value: 300 }, { name: "D", value: 400 }]
-  const data2 = [{ name: "A", value: 200 }, { name: "B", value: 300 }, { name: "C", value: 400 }, { name: "D", value: 500 }]
-
-
 
   const [returnsYear, setReturnsYear] = useState('')
   const [cardResponse, setCardResponse] = useState('')
@@ -82,17 +37,34 @@ const dashboard = () => {
   const toYear = moment().year()
   const [selectedYear, setSelectedYear] = useState(fromYear);
 
+  const [userGraphData, setUserGraphData] = useState([]);
   const [chartData, setChartData] = useState([]);
   const [pieChartData, setPieChartData] = useState([]);
   const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042"];
 
-  const data3 = [
-    { name: "User A", value: 400 },
-    { name: "User B", value: 300 },
-    { name: "User C", value: 200 },
-    { name: "User D", value: 100 }
-  ];
-
+  const employeeList = [
+  {
+    name: "Rahul Sharma",
+    epfId: "NGNAG0064576",
+    month: "May",
+    year: 2026,
+    status: "SUCCESS",
+  },
+  {
+    name: "Amit Verma",
+    epfId: "NGNAG0064577",
+    month: "May",
+    year: 2026,
+    status: "FAILED",
+  },
+  {
+    name: "Priya Singh",
+    epfId: "NGNAG0064578",
+    month: "May",
+    year: 2026,
+    status: "PENDING",
+  },
+];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -100,6 +72,7 @@ const dashboard = () => {
       await getAll();
       await getGraphDetails(fromMonth, toMonth, fromYear, toYear)
       await getBillDetailsForGraph(fromMonth, toMonth, fromYear, toYear)
+      await getUserGraphDetails(fromMonth, toMonth, fromYear, toYear)
 
     };
 
@@ -145,6 +118,29 @@ const dashboard = () => {
       }
       const response = await getGraph(params);
       setData(response.data)
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // setError('Error fetching data. Please try again.');
+      // setLoading(false);
+    }
+  };
+
+  const getUserGraphDetails = async (fromMonth, toMonth, fromYear, toYear) => {
+    // api call
+
+    try {
+
+      const params = {
+        "fromMonth": fromMonth,
+        "toMonth": toMonth,
+        "fromYear": fromYear,
+        "toYear": toYear,
+        "est_id": getEstId()
+      }
+      const response = await getUserGraph(params);
+      setUserGraphData(response.total)
 
 
     } catch (error) {
@@ -216,7 +212,13 @@ const dashboard = () => {
     await getBillDetailsForGraph(fromMonth, toMonth, parseInt(e.target.value), parseInt(e.target.value) + 1)
   };
 
-  const colors = ['#2b6b86', '#f76e6e'];
+  // const colors = ['#2b6b86', '#f76e6e'];
+  const handleCardClick = (cardName) => {
+    setSelectedCard(cardName);
+
+    // Call API here if required
+    // getEsicDetails();
+};
   return (
     <div>
 
@@ -235,12 +237,20 @@ const dashboard = () => {
               </div>
               <h1>{totalclient}</h1>
             </div>
-            <div className='cardCustom cardprop2'>
-              <div className='card-inner'>
+            
+            <div
+              className='cardCustom cardprop2'
+              style={{ cursor: "pointer" }}
+              data-toggle="modal"
+              data-target="#employeeStatusModal"
+              onClick={() => handleCardClick("epf")}
+            >
+              <div className="card-inner">
                 <h5>EPF</h5>
-                <BsFillGrid3X3GapFill className='card_icon' />
+                <BsPeopleFill className="card_icon" />
               </div>
-              <h1>{totalepf}/{epfchallancreated}</h1>
+
+               <h1>{totalepf}/{epfchallancreated}</h1>
             </div>
             <div className='cardCustom cardprop3'>
               <div className='card-inner'>
@@ -248,6 +258,7 @@ const dashboard = () => {
                 <BsPeopleFill className='card_icon' />
               </div>
               <h1>{totalesic}/{esicchallancreated}</h1>
+
             </div>
             <div className='cardCustom cardprop4'>
               <div className='card-inner'>
@@ -451,7 +462,7 @@ const dashboard = () => {
 
           <div className='charts'>
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart width={730} height={250} data={data}
+              <AreaChart width={730} height={250} data={userGraphData}
                 margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
@@ -475,7 +486,7 @@ const dashboard = () => {
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
-                  data={data3}
+                  data={userGraphData}
                   dataKey="value"
                   nameKey="name"
                   cx="50%"
@@ -485,7 +496,7 @@ const dashboard = () => {
                   fill="#52525dff"
                   label
                 >
-                  {data1.map((entry, index) => (
+                  {userGraphData.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={COLORS[index % COLORS.length]}
@@ -501,6 +512,108 @@ const dashboard = () => {
         </div>
 
       </main>
+
+      <div
+  className="modal fade"
+  id="employeeStatusModal"
+  tabIndex="-1"
+  role="dialog"
+  aria-labelledby="employeeStatusModalLabel"
+  aria-hidden="true"
+>
+  <div className="modal-dialog modal-lg" role="document">
+    <div className="modal-content">
+
+      <div className="modal-header text-white">
+        <h5 className="modal-title" id="employeeStatusModalLabel">
+          Employer Chalan Status
+        </h5>
+
+        <button
+          type="button"
+          className="close text-black"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div className="modal-body">
+
+        <div className="table-responsive">
+
+          <table className="table table-bordered table-hover table-striped">
+
+            <thead className="thead-light">
+
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>EPF ID</th>
+                <th>Month</th>
+                <th>Year</th>
+                <th>Status</th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              {employeeList && employeeList.length > 0 ? (
+                employeeList.map((emp, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{emp.name}</td>
+                    <td>{emp.epfId}</td>
+                    <td>{emp.month}</td>
+                    <td>{emp.year}</td>
+                    <td>
+                      {emp.status === "SUCCESS" ? (
+                        <span className="badge badge-success">
+                          SUCCESS
+                        </span>
+                      ) : emp.status === "PENDING" ? (
+                        <span className="badge badge-warning">
+                          PENDING
+                        </span>
+                      ) : (
+                        <span className="badge badge-danger">
+                          FAILED
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="text-center">
+                    No Records Found
+                  </td>
+                </tr>
+              )}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+      <div className="modal-footer">
+        <button
+          type="button"
+          className="btn btn-secondary"
+          data-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
     </div>
   )
 }

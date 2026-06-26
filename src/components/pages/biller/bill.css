@@ -32,3 +32,50 @@ body {
   .font-size-bill{
     font-size: 15px;
   }
+
+  .invoice-template{
+    background:#fff;
+    padding:30px;
+}
+
+.invoice-header{
+    background:#155c79;
+    color:#fff;
+    padding:20px;
+    align-items:center;
+}
+
+.invoice-logo{
+    border:3px solid #fff;
+    padding:12px 25px;
+}
+
+.invoice-logo h1{
+    margin:0;
+    font-size:42px;
+    font-weight:bold;
+}
+
+.invoice-total{
+    border-top:3px solid #8c2c62;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.invoice-footer{
+    margin-top:40px;
+    background:#155c79;
+    color:#fff;
+    text-align:center;
+    padding:15px;
+    font-weight:bold;
+}
+
+.table-bordered thead th{
+    background:#f2f2f2;
+}
+
+.table td,
+.table th{
+    vertical-align:middle;
+}

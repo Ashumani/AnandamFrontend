@@ -3,7 +3,8 @@ import { getAuthToken } from '../pages/Auth/authToken';
 import { encryptData } from './masking';
 import { Navigate } from 'react-router-dom';
 
-const BASE_URL = 'http://localhost:4001';
+// alert(window.location.host)
+const BASE_URL = window.location.host == 'localhost:5173' ? 'http://localhost:4001' : 'http://192.168.1.200:4001';
 // const BASE_URL = "http://192.168.1.14:4001"
 // const BASE_URL = "https://anandam-bckend.vercel.app"
 const authToken = getAuthToken()
@@ -512,6 +513,14 @@ export const getGraph = async (params) => {
     }
 }
 
+export const getUserGraph = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/dashboard/getUserGraph`, params, { headers: header });
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 export const getBillGraph = async (params) => {
     try {
         const response = await axios.post(`${BASE_URL}/dashboard/getBillGraph`, params, { headers: header });

@@ -2,18 +2,15 @@
 
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
-import { downlaodFile, generateECR, getEpfReturnByMonth } from "../../api/services";
+import { downlaodFile, generateECR, getEpfReturnByMonth, getYearsAndMonth } from "../../api/services";
 import Swal from 'sweetalert2';
 
 
 
 const ecrGeneration = () => {
 
-  const returnsYear = {
-    "month": [{ "monthNum": 1, "monthText": "Jan" }, { "monthNum": 2, "monthText": "Feb" }, { "monthNum": 3, "monthText": "Mar" }, { "monthNum": 4, "monthText": "Apr" }, { "monthNum": 5, "monthText": "May" }, { "monthNum": 6, "monthText": "Jun" }, { "monthNum": 7, "monthText": "Jul" }, { "monthNum": 8, "monthText": "Aug" }, { "monthNum": 9, "monthText": "Sep" }, { "monthNum": 10, "monthText": "Oct" }, { "monthNum": 11, "monthText": "Nov" }, { "monthNum": 12, "monthText": "Dec" }],
-    "Year": [2020, 2021, 2022, 2023, 2024],
-    "subIds":[0]
-  }
+  const [returnsYear, setReturnsYear] = useState('')
+  
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [selectedYear, setSelectedYear] = useState(2024);
   const [selectedSubId, setSelectedSubId] = useState(0);
@@ -39,6 +36,19 @@ const ecrGeneration = () => {
   const [total_ncp_days, set_total_ncp_days] = useState(0)
   const [total_refund, set_total_refund] = useState(0)
 
+
+
+
+    useEffect(() => {
+      const fetchData = async () => {
+        await getYears();
+      
+  
+      };
+  
+      fetchData();
+  
+    }, []);
   const getReturnByMonth = async (pageNumber) => {
     // api call
     try {
@@ -80,6 +90,22 @@ const ecrGeneration = () => {
     }
   };
 
+    const getYears = async () => {
+      // api call
+  
+      try {
+  
+        const response = await getYearsAndMonth();
+        setReturnsYear(response.data);
+     
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        // setError('Error fetching data. Please try again.');
+        // setLoading(false);
+      }
+    };
+  
+  
 
   const download = async () => {
     // api call
