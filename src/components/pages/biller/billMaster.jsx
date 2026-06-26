@@ -309,124 +309,266 @@ const handleEdit = (billId) => {
               </div>
             </div>
           </div>
-          <div className="modal fade bd-example-modal-xl" tabIndex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-            <div className="modal-dialog modal-xl">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title" id="exampleModalLabel">Bill View</h5>
-                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div className="modal-body">
-                  <div id="pdf-content">
-                    <div className="row">
-                      <h2 className='float-right'>Invoice</h2>
+            <div className="modal fade bd-example-modal-xl" tabIndex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                                <div className="modal-dialog modal-xl">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h5 className="modal-title" id="exampleModalLabel">Bill View</h5>
+                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div className="modal-body">
+                                            <div id="pdf-content" className="invoice-template">
 
-                    </div>
-                    <div className='row'>
-                      <div className='col-sm anandamTitle'>
-                        <p><strong>Anandam Consultancy</strong></p>
-                        <p><strong>101, Anant Appartment, Near Rakshak Bandhu</strong></p>
-                        <p><strong>Manewada Road, Nagpur-440024</strong></p>
-                        <p><strong>anand.esipf@gmail.com</strong></p>
-                        <p><strong>0712-2748370</strong></p>
-                      </div>
-                      <div className='col-sm-4'>
-                        <table>
-                          <tbody className="text-black">
-                            <tr>
-                              <th>Invoice Number</th>
-                              <td>{bill_number}</td>
-                            </tr>
-                            <tr>
-                              <th>Invoice Date</th>
-                              <td>{date}</td>
-                            </tr>
-                            <tr>
-                              <th>Employer ID</th>
-                              <td>{est_id}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                    <div className='row'>
-                      <div className='col-sm'>
-                        <h5 className='text-head'>To</h5>
-                        <p><strong>{est_name}</strong></p>
-                        <p><strong>{estDesignation}</strong></p>
-                        <p><strong>{est_address}</strong></p>
-                        <p><strong>{estCity}</strong></p>
-                        <p><strong>{estMobile}</strong></p>
-                        <p><strong>{estEmail}</strong></p>
-                      </div>
-                      <div className='col-sm-4'></div>
-                    </div>
-                    <div className="table-responsive">
-                      <table className="table table-sm table-hover">
-                        <thead>
-                          <tr className='text-head'>
-                            <th>S.N.</th>
-                            <th>Descriptions</th>
-                            <th>Rate</th>
-                            <th>Total Amount</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {finalBillArray.map((employee, index) => (
-                            <tr key={index}>
-                              <th scope="row">{index}</th>
-                              <th scope="row">{employee.perticular}</th>
-                              <td>Rs. {rate}</td>
-                              <td>Rs. {employee.amount}</td>
+                                                {/* Header */}
+                                                <div className="invoice-header d-flex justify-content-between">
 
-                            </tr>
-                          ))}
-                          <tr>
-                            <td colSpan="3">Total</td>
-                            <td>Rs. {totalAmount}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <table>
-                      <tbody className="text-black">
-                        <tr>
-                          <th><h5 className='text-head'>Bank Details</h5></th>
-                        </tr>
-                        <tr>
-                          <th>Bank Name</th>
-                          <td>Indian Overseas Bank</td>
-                        </tr>
-                        <tr>
-                          <th>Branch</th>
-                          <td>Hudkeshwar (Nagpur)</td>
-                        </tr>
-                        <tr>
-                          <th>Account Number</th>
-                          <td>264102000000449</td>
-                        </tr>
-                        <tr>
-                          <th>IFSC Code</th>
-                          <td>IOBA0002641</td>
-                        </tr>
-                        <tr>
-                          <th>PAN</th>
-                          <td>AARPV4479R</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <p>Payment should be made in favor of Anandam Consultancy.</p>
-                    <p>For any business enquiry, please contact us at 0712-2748370.</p>
-                  </div>
-                </div>
-                <div className="modal-footer">
-                  <button className='btn btn-outline-primary btn-block' onClick={generatePDF}>Download PDF</button>
-                </div>
-              </div>
-            </div>
-          </div>
+                                                    <div className="invoice-logo">
+                                                        <h1>INVOICE</h1>
+                                                    </div>
+
+                                                    <div className="text-right">
+                                                        <h5><b>Anandam Consultancy</b></h5>
+
+                                                        <div>101, Anant Apartment</div>
+                                                        <div>Near Rakshak Bandhu</div>
+                                                        <div>Manewada Road, Nagpur-440024</div>
+                                                        <div>0712-2748370</div>
+                                                        <div>anand.esipf@gmail.com</div>
+                                                    </div>
+
+                                                </div>
+
+                                                {/* Details */}
+
+                                                <div className="row mt-4">
+
+                                                    <div className="col-md-6">
+                                                        <h5><b>To</b></h5>
+
+                                                        <p><b>{est_name}</b></p>
+
+                                                        <p>{estDesignation}</p>
+
+                                                        <p>{est_address}</p>
+
+                                                        <p>{estCity}</p>
+
+                                                        <p>{estMobile}</p>
+
+                                                        <p>{estEmail}</p>
+                                                    </div>
+
+                                                    <div className="col-md-6 text-right">
+
+
+                                                        <table className="table table-borderless table-sm">
+
+                                                            <tbody>
+
+                                                                <tr>
+                                                                    <th>Invoice No.</th>
+                                                                    <td>{bill_number}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>Date of Issue</th>
+                                                                    <td>{date}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>Employer ID</th>
+                                                                    <td>{est_id}</td>
+                                                                </tr>
+
+                                                            </tbody>
+
+                                                        </table>
+
+
+                                                    </div>
+
+                                                </div>
+
+                                                {/* Item Table */}
+
+                                                <table className="table table-bordered mt-3">
+
+                                                    <thead>
+
+                                                        <tr>
+
+                                                            <th width="8%">Item</th>
+
+                                                            <th>Description</th>
+
+                                                            <th width="15%">Rate</th>
+
+                                                            <th width="18%">Amount</th>
+
+                                                        </tr>
+
+                                                    </thead>
+
+                                                    <tbody>
+
+                                                        {finalBillArray.map((employee, index) => (
+
+                                                            <tr key={index}>
+                                                            
+                                                                <td>{index + 1}</td>
+
+                                                                <td>{employee.perticular}</td>
+
+                                                                <td>₹ {rate}</td>
+
+                                                                <td>₹ {employee.amount}</td>
+
+                                                            </tr>
+
+                                                        ))}
+
+                                                        {/* Blank rows */}
+
+                                                        {[...Array(Math.max(0, 1 - finalBillArray.length))].map((_, i) => (
+
+                                                            <tr key={i}>
+
+                                                                <td>&nbsp;</td>
+
+                                                               
+                                                            </tr>
+
+                                                        ))}
+
+                                                    </tbody>
+
+                                                </table>
+
+                                                {/* Bottom */}
+
+                                                <div className="row mt-4">
+
+                                                    <div className="col-md-6">
+
+                                                        <h5>Bank Details</h5>
+
+                                                        <table className="table table-borderless table-sm">
+
+                                                            <tbody>
+
+                                                                <tr>
+
+                                                                    <th>Bank</th>
+
+                                                                    <td>Indian Overseas Bank</td>
+
+                                                                </tr>
+
+                                                                <tr>
+
+                                                                    <th>Branch</th>
+
+                                                                    <td>Hudkeshwar (Nagpur)</td>
+
+                                                                </tr>
+
+                                                                <tr>
+
+                                                                    <th>Account No.</th>
+
+                                                                    <td>264102000000449</td>
+
+                                                                </tr>
+
+                                                                <tr>
+
+                                                                    <th>IFSC</th>
+
+                                                                    <td>IOBA0002641</td>
+
+                                                                </tr>
+
+                                                                <tr>
+
+                                                                    <th>PAN</th>
+
+                                                                    <td>AARPV4479R</td>
+
+                                                                </tr>
+
+                                                            </tbody>
+
+                                                        </table>
+
+                                                    </div>
+
+                                                    <div className="col-md-6">
+<br></br>
+                                                        <table className="table table-borderless">
+
+                                                            <tbody>
+
+                                                                <tr>
+
+                                                                    <th>Subtotal</th>
+
+                                                                    <td className="text-right">
+                                                                        ₹ {totalAmount}
+                                                                    </td>
+
+                                                                </tr>
+
+                                                                <tr>
+
+                                                                    <th>Discount</th>
+
+                                                                    <td className="text-right">
+                                                                        ₹ 0.00
+                                                                    </td>
+
+                                                                </tr>
+
+                                                                
+
+                                                                <tr className="invoice-total">
+
+                                                                    <th>Total</th>
+
+                                                                    <th className="text-right">
+                                                                        ₹ {totalAmount}
+                                                                    </th>
+
+                                                                </tr>
+
+                                                            </tbody>
+
+                                                        </table>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div className="invoice-footer">
+
+                                                   
+                                                   <p>Payment Should make in favor of Anandam Solution And Services</p> 
+                                                    <p>For any Busniess enquiry please contact us Manewada Road, Nagpur-440024</p>
+                                                    <p>Thank you for your business!</p>
+
+                                                             
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div className="modal-footer">
+                                            <button className='btn btn-outline-primary btn-block' onClick={generatePDF}>Download PDF</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
         </section>
       </div>
     </div>
