@@ -483,17 +483,44 @@ const ecr = () => {
         setFinalBillArray([]);
 
     };
-    const generatePDF = () => {
-        // Capture the HTML content as a canvas
-        html2canvas(document.querySelector("#pdf-content")).then(canvas => {
-            const pdf = new jsPDF('p', 'mm', 'a4'); // 'p' for portrait, 'mm' for millimeters, 'a4' for page size
-            const imgData = canvas.toDataURL("image/png");
+    // const generatePDF = () => {
+    //     // Capture the HTML content as a canvas
+    //     html2canvas(document.querySelector("#pdf-content")).then(canvas => {
+    //         const pdf = new jsPDF('p', 'mm', 'a4'); // 'p' for portrait, 'mm' for millimeters, 'a4' for page size
+    //         const imgData = canvas.toDataURL("image/png");
 
-            // Add the image to the PDF
-            pdf.addImage(imgData, 'PNG', 10, 10, 190, 0);
-            pdf.save("invoice.pdf");
-        });
-    };
+    //         // Add the image to the PDF
+    //         pdf.addImage(imgData, 'PNG', 10, 10, 190, 0);
+    //         pdf.save("invoice.pdf");
+    //     });
+    // };
+
+   const generatePDF = () => {
+    const input = document.getElementById("pdf-content");
+
+    html2canvas(input, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#fff",
+        windowWidth: input.scrollWidth,
+        windowHeight: input.scrollHeight
+    }).then(canvas => {
+
+        const imgData = canvas.toDataURL("image/png");
+
+        const pdf = new jsPDF("p", "mm", "a4");
+
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+
+        const imgWidth = pageWidth;
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+
+        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+
+        pdf.save("invoice.pdf");
+    });
+};
     const handlePaymentModeChange = (e) => {
         set_paymentMode(e.target.value);
     };
@@ -833,7 +860,7 @@ const ecr = () => {
                                                         {finalBillArray.map((employee, index) => (
 
                                                             <tr key={index}>
-                                                            
+
                                                                 <td>{index + 1}</td>
 
                                                                 <td>{employee.perticular}</td>
@@ -854,7 +881,7 @@ const ecr = () => {
 
                                                                 <td>&nbsp;</td>
 
-                                                               
+
                                                             </tr>
 
                                                         ))}
@@ -922,7 +949,7 @@ const ecr = () => {
                                                     </div>
 
                                                     <div className="col-md-6">
-<br></br>
+                                                        <br></br>
                                                         <table className="table table-borderless">
 
                                                             <tbody>
@@ -947,7 +974,7 @@ const ecr = () => {
 
                                                                 </tr>
 
-                                                                
+
 
                                                                 <tr className="invoice-total">
 
@@ -969,12 +996,12 @@ const ecr = () => {
 
                                                 <div className="invoice-footer">
 
-                                                   
-                                                   <p>Payment Should make in favor of Anandam Solution And Services</p> 
+
+                                                    <p>Payment Should make in favor of Anandam Solution And Services</p>
                                                     <p>For any Busniess enquiry please contact us Manewada Road, Nagpur-440024</p>
                                                     <p>Thank you for your business!</p>
 
-                                                             
+
                                                 </div>
 
                                             </div>
