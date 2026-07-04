@@ -212,7 +212,7 @@ const [selectedCard, setSelectedCard] = useState("");
     await getBillDetailsForGraph(fromMonth, toMonth, parseInt(e.target.value), parseInt(e.target.value) + 1)
   };
 
-  // const colors = ['#2b6b86', '#f76e6e'];
+  const colors = ['#2b6b86', '#f76e6e'];
   const handleCardClick = (cardName) => {
     setSelectedCard(cardName);
 

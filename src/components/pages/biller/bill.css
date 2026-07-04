@@ -33,9 +33,18 @@ body {
     font-size: 15px;
   }
 
-  .invoice-template{
+  /* .invoice-template{
     background:#fff;
     padding:30px;
+} */
+
+.invoice-template {
+    width: 270mm;
+    min-height: 297mm;
+    background: #fff;
+    padding: 20px;
+    margin: auto;
+    box-sizing: border-box;
 }
 
 .invoice-header{
