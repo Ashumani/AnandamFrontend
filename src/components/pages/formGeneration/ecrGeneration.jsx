@@ -12,9 +12,9 @@ const ecrGeneration = () => {
   const [returnsYear, setReturnsYear] = useState('')
   const [subIds, setSubIds] = useState('')
 
-  const [selectedMonth, setSelectedMonth] = useState(1);
+  const [selectedMonth, setSelectedMonth] = useState();
   const [selectedYear, setSelectedYear] = useState();
-  const [selectedSubId, setSelectedSubId] = useState(0);
+  const [selectedSubId, setSelectedSubId] = useState();
 
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
@@ -199,7 +199,7 @@ const ecrGeneration = () => {
                           className="form-select rounded-4"
                           aria-label="Default select example" value={selectedMonth} onChange={handleMonthChange}
                         >
-                         
+                          <option>Select Year</option>
                           {returnsYear && returnsYear.month.map((retYear) => (
                             // eslint-disable-next-line react/jsx-key
                             <option value={retYear}>{retYear}</option>
@@ -212,6 +212,7 @@ const ecrGeneration = () => {
                           className="form-select rounded-4"
                           aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
                         >
+                         <option>Select Year</option>
                          {returnsYear && returnsYear.year.map((returnYear) => (
                             // eslint-disable-next-line react/jsx-key
                             <option value={returnYear}>{returnYear}</option>

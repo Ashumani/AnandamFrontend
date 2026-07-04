@@ -150,6 +150,7 @@ const form3A6AGeneration = () => {
                           className="form-select rounded-4"
                           aria-label="Default select example" value={fromDate} onChange={handleChange}
                         >
+                         <option>Select Year</option>
                           {returnsYear && returnsYear.yearTo.map((returnYear) => (
                             // eslint-disable-next-line react/jsx-key
                             <option value={returnYear.startYear}>{returnYear.between}</option>
@@ -172,7 +173,7 @@ const form3A6AGeneration = () => {
                         </button>
                       </div>
                       <div className="col-md-2">
-                        <button type="button" className="btn btn-primary btn-block rounded-4" onClick={download} disabled={!isDownload} >
+                        <button style={{ "margin": "24px 10px 10px 1px" }} type="button" className="btn btn-primary btn-block rounded-4" onClick={download} disabled={!isDownload} >
                           Download
                         </button>
                       </div>
