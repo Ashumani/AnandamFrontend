@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getEstId, getErId } from "../Auth/authToken";
-import { getAllEmployee, saveEERegister, getEmployee, updateEmployee, uploadEmployee, searchEmployee, deleteEmployeeById } from "../../api/services";
+import { getAllEmployee, saveEERegister, getEmployee, updateEmployee, uploadEmployee, updateSubIdByUANUpload, searchEmployee, deleteEmployeeById } from "../../api/services";
 import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
 import React, { useRef } from 'react';
@@ -440,6 +440,62 @@ const employee = () => {
     }
   }
 
+  const uplaodEmployeeSubid = async () => {
+    if (!file) {
+      alert('Please choose a file first.');
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const id = getErId()
+
+      // console.log('======', params)
+
+      const data = await updateSubIdByUANUpload(id, formData);
+      if (data.status === true) {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'success',
+          toast: true,
+          title: data.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+
+
+        getAll(1);
+      } else {
+        if (data.code != 200) {
+          Swal.fire({
+            title: 'Error',
+            text: data.message,
+            icon: 'error',
+            confirmButtonText: 'Okay'
+          });
+        }
+        const uan = data.data.map((x) => x.ee_uan_no);
+        Swal.fire({
+          position: 'top',
+          icon: 'error',
+          toast: true,
+          title: data.message + " : " + uan,
+          showConfirmButton: true,
+          showCloseButton: true,
+          timer: 10000,
+        });
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+
+      reset();
+
+    } catch (error) {
+      console.error('Login error ', error);
+      setError(error);
+    }
+  }
   const handlePageChange = async (pageNumber) => {
     setCurrentPage(pageNumber);
     try {
@@ -491,36 +547,36 @@ const employee = () => {
     bootstrapModal.show();
   };
 
-  
-      const deleteEmployee = async (id) => {
-        try {
-          // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-          const response = await deleteEmployeeById(id);
-          if (response.status == true) {
-    
-            Swal.fire({
-              title: response.message,
-              icon: 'success',
-              confirmButtonText: 'Okay'
-            });
-    
-          } else {
-            Swal.fire({
-              title: response.message,
-              icon: 'error',
-              confirmButtonText: 'Okay'
-            });
-          }
-    
-          await getAll(1);
-    
-        } catch (error) {
-          console.error('Error fetching data:', error);
-          setError('Error fetching data. Please try again.');
-          setLoading(false);
-        }
-      };
-    
+
+  const deleteEmployee = async (id) => {
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await deleteEmployeeById(id);
+      if (response.status == true) {
+
+        Swal.fire({
+          title: response.message,
+          icon: 'success',
+          confirmButtonText: 'Okay'
+        });
+
+      } else {
+        Swal.fire({
+          title: response.message,
+          icon: 'error',
+          confirmButtonText: 'Okay'
+        });
+      }
+
+      await getAll(1);
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Error fetching data. Please try again.');
+      setLoading(false);
+    }
+  };
+
 
   const getDisplayedPages = () => {
     const pages = [];
@@ -572,7 +628,7 @@ const employee = () => {
                       Add Employee
                     </button>
                   </div>
-                  <div className="col-sm-4 col-md-4 col-lg-4 col-4">
+                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                     <input className="form-control rounded-4" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
                   </div>
                   <div className="col-sm-2 col-md-2 col-lg-2 col-2">
@@ -580,6 +636,12 @@ const employee = () => {
                       Upload
                     </button>
                   </div>
+                  <div className="col-sm-1 col-md-1 col-lg-1 col-1">
+                    <button type="button" className="btn btn-primary rounded-4" onClick={uplaodEmployeeSubid}>
+                      UAN Update
+                    </button>
+                  </div>
+
                   <div className="col-sm-3 col-md-3 col-lg-3 col-3">
                     <input type="text" className="form-control rounded-4" placeholder="Search" onChange={(e) => set_search_emp(e.target.value)} onBlur={searchEmp} />
                   </div>
@@ -605,6 +667,7 @@ const employee = () => {
                       <th>Relation</th>
                       <th>EPF Wages</th>
                       <th>Eps Wages</th>
+                      <th>SubId</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -627,6 +690,7 @@ const employee = () => {
                           <td>{employee.ee_relation}</td>
                           <td>{employee.ee_gross_wages}</td>
                           <td>{employee.ee_epf_wages}</td>
+                          <td>{employee.ee_sub_id}</td>
                           <td>
                             <div className="d-flex align-items-center">
                               <button className="btn btn-light" onClick={() => { fetchEmployee(employee.id) }}>
