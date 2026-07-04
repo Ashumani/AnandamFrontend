@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
-import { downlaodFile, generateECR, getEpfReturnByMonth, getYearsAndMonth } from "../../api/services";
+import { downlaodFile, generateECR, getEpfReturnByMonth, getYear } from "../../api/services";
 import Swal from 'sweetalert2';
 
 
@@ -10,9 +10,10 @@ import Swal from 'sweetalert2';
 const ecrGeneration = () => {
 
   const [returnsYear, setReturnsYear] = useState('')
-  
+  const [subIds, setSubIds] = useState('')
+
   const [selectedMonth, setSelectedMonth] = useState(1);
-  const [selectedYear, setSelectedYear] = useState(2024);
+  const [selectedYear, setSelectedYear] = useState();
   const [selectedSubId, setSelectedSubId] = useState(0);
 
   const itemsPerPage = 10; // Number of items per page
@@ -39,16 +40,16 @@ const ecrGeneration = () => {
 
 
 
-    useEffect(() => {
-      const fetchData = async () => {
-        await getYears();
-      
-  
-      };
-  
-      fetchData();
-  
-    }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      await getYears();
+
+    };
+
+    fetchData();
+
+  }, []);
+
   const getReturnByMonth = async (pageNumber) => {
     // api call
     try {
@@ -90,22 +91,25 @@ const ecrGeneration = () => {
     }
   };
 
-    const getYears = async () => {
-      // api call
-  
-      try {
-  
-        const response = await getYearsAndMonth();
-        setReturnsYear(response.data);
-     
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        // setError('Error fetching data. Please try again.');
-        // setLoading(false);
-      }
-    };
-  
-  
+  const getYears = async () => {
+    // api call
+
+    try {
+
+      const response = await getYear(getErId());
+        
+      setReturnsYear(response.month_year);
+      setSubIds(response.est_sub_id);
+      // console.log(response.data)
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // setError('Error fetching data. Please try again.');
+      // setLoading(false);
+    }
+  };
+
+
 
   const download = async () => {
     // api call
@@ -195,9 +199,10 @@ const ecrGeneration = () => {
                           className="form-select rounded-4"
                           aria-label="Default select example" value={selectedMonth} onChange={handleMonthChange}
                         >
-                          {returnsYear.month.map((returnYear) => (
+                         
+                          {returnsYear && returnsYear.month.map((retYear) => (
                             // eslint-disable-next-line react/jsx-key
-                            <option value={returnYear.monthNum}>{returnYear.monthText}</option>
+                            <option value={retYear}>{retYear}</option>
                           ))}
                         </select>
 
@@ -207,10 +212,12 @@ const ecrGeneration = () => {
                           className="form-select rounded-4"
                           aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
                         >
-                          {returnsYear.Year.map((retYear) => (
+                         {returnsYear && returnsYear.year.map((returnYear) => (
                             // eslint-disable-next-line react/jsx-key
-                            <option value={retYear}>{retYear}</option>
+                            <option value={returnYear}>{returnYear}</option>
                           ))}
+
+                          
                         </select>
 
                       </div>
@@ -219,9 +226,9 @@ const ecrGeneration = () => {
                           className="form-select rounded-4"
                           aria-label="Default select example" value={selectedSubId} onChange={handleSubIdChange}
                         >
-                          {returnsYear.subIds.map((retYear) => (
+                          {subIds && subIds.map((retYear) => (
                             // eslint-disable-next-line react/jsx-key
-                            <option value={retYear}>{retYear}</option>
+                            <option value={retYear.est_sub_id}>{retYear.est_sub_id}</option>
                           ))}
                         </select>
 
@@ -272,7 +279,7 @@ const ecrGeneration = () => {
                           <tr key={index}>
                             <th scope="row">{globalIndex + 1}</th>
                             <th scope="row">{employee.ee_uan}</th>
-                            <td>{employee.er_name}</td>
+                            <td>{employee.ee_name}</td>
                             <td>{employee.gross_wages}</td>
                             <td>{employee.epf_wages}</td>
                             <td>{employee.edli_wages}</td>
@@ -299,19 +306,19 @@ const ecrGeneration = () => {
                       })}
                     </tbody>
                     <tfoot>
-                <tr>
-                  <th id="total" colSpan="3">Total :</th>
-                  <td>{total_gross_wages}</td>
-                  <td>{total_epf_wages}</td>
-                  <td>{total_edli_wages}</td>
-                  <td>{total_eps_wages}</td>
-                  <td>{total_ee_share}</td>
-                  <td>{total_eps_share}</td>
-                  <td>{total_diff_share}</td>
-                  <td>{total_ncp_days}</td>
-                  <td></td>
-                </tr>
-              </tfoot>
+                      <tr>
+                        <th id="total" colSpan="3">Total :</th>
+                        <td>{total_gross_wages}</td>
+                        <td>{total_epf_wages}</td>
+                        <td>{total_edli_wages}</td>
+                        <td>{total_eps_wages}</td>
+                        <td>{total_ee_share}</td>
+                        <td>{total_eps_share}</td>
+                        <td>{total_diff_share}</td>
+                        <td>{total_ncp_days}</td>
+                        <td></td>
+                      </tr>
+                    </tfoot>
                   </table>
                   {/* Pagination Controls */}
                   <div className="pagination">
