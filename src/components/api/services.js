@@ -795,3 +795,12 @@ export const setRead = async (id, params) => {
         throw error.response.data.error;
     }
 }
+
+export const getEPFChallanCardsDetails = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/dashboard/getEPFChallanCardsDetails`, { headers: header });
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}

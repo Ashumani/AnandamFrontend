@@ -304,3 +304,34 @@ body {
     }
   }
   
+  /* Custom Vertical Table Scroller Container */
+.custom-table-vertical-scroller {
+    max-height: 350px;           /* Caps the table height inside the modal */
+    overflow-y: auto;            /* Activates vertical scrolling when items overflow */
+    overflow-x: auto;            /* Keeps horizontal scroll active if columns get wide */
+}
+
+/* Fix: Ensures the background behind the sticky table header stays solid while scrolling */
+.custom-table-vertical-scroller thead.sticky-top th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa;   /* Matches Bootstrap's standard thead-light background */
+    z-index: 2;                  /* Keeps headers floating cleanly over body cells */
+    box-shadow: inset 0 -1px 0 #dee2e6; /* Prevents the bottom border from disappearing */
+}
+
+/* Polished Vertical Scrollbar Styling */
+.custom-table-vertical-scroller::-webkit-scrollbar {
+    width: 6px;                  /* Slim vertical scrollbar width */
+    height: 6px;                 /* Slim horizontal scrollbar height */
+}
+
+.custom-table-vertical-scroller::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;   /* Soft grey grab bar */
+    border-radius: 4px;
+}
+
+.custom-table-vertical-scroller::-webkit-scrollbar-track {
+    background-color: #f1f5f9;   /* Track background */
+    border-radius: 4px;
+}

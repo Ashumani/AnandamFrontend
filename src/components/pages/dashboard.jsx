@@ -5,15 +5,15 @@ import { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill }
   from 'react-icons/bs'
 import { BarChart, PieChart, Pie, AreaChart, Area, Bar, ComposedChart, ScatterChart, Scatter, ZAxis, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, LabelList, Cell }
   from 'recharts';
-import { getBillGraph, getCardsCount, getGraph, getUser, getUserGraph, getYearsAndMonth } from "../api/services";
+import { getBillGraph, getCardsCount, getEPFChallanCardsDetails, getGraph, getUser, getUserGraph, getYearsAndMonth } from "../api/services";
 import { useState, useEffect } from "react"
 import moment from "moment";
 import { getErId, getEstId } from "./Auth/authToken";
 
 const dashboard = () => {
 
-  
-const [selectedCard, setSelectedCard] = useState("");
+
+  const [selectedCard, setSelectedCard] = useState("");
 
 
 
@@ -42,29 +42,7 @@ const [selectedCard, setSelectedCard] = useState("");
   const [pieChartData, setPieChartData] = useState([]);
   const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042"];
 
-  const employeeList = [
-  {
-    name: "Rahul Sharma",
-    epfId: "NGNAG0064576",
-    month: "May",
-    year: 2026,
-    status: "SUCCESS",
-  },
-  {
-    name: "Amit Verma",
-    epfId: "NGNAG0064577",
-    month: "May",
-    year: 2026,
-    status: "FAILED",
-  },
-  {
-    name: "Priya Singh",
-    epfId: "NGNAG0064578",
-    month: "May",
-    year: 2026,
-    status: "PENDING",
-  },
-];
+  const [employerList, setEmployerList] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,6 +81,25 @@ const [selectedCard, setSelectedCard] = useState("");
       // setLoading(false);
     }
   };
+
+  const getEPFChallanCards = async () => {
+    // api call
+
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await getEPFChallanCardsDetails();
+      if (response.status == true) {
+        setEmployerList(response.data)
+      }
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // setError('Error fetching data. Please try again.');
+      // setLoading(false);
+    }
+  };
+
 
   const getGraphDetails = async (fromMonth, toMonth, fromYear, toYear) => {
     // api call
@@ -213,12 +210,16 @@ const [selectedCard, setSelectedCard] = useState("");
   };
 
   const colors = ['#2b6b86', '#f76e6e'];
-  const handleCardClick = (cardName) => {
+  const handleCardClick = async (cardName) => {
+
+    if (cardName == "epf") {
+      await getEPFChallanCards()
+    }
     setSelectedCard(cardName);
 
     // Call API here if required
     // getEsicDetails();
-};
+  };
   return (
     <div>
 
@@ -237,7 +238,7 @@ const [selectedCard, setSelectedCard] = useState("");
               </div>
               <h1>{totalclient}</h1>
             </div>
-            
+
             <div
               className='cardCustom cardprop2'
               style={{ cursor: "pointer" }}
@@ -250,7 +251,7 @@ const [selectedCard, setSelectedCard] = useState("");
                 <BsPeopleFill className="card_icon" />
               </div>
 
-               <h1>{totalepf}/{epfchallancreated}</h1>
+              <h1>{totalepf}/{epfchallancreated}</h1>
             </div>
             <div className='cardCustom cardprop3'>
               <div className='card-inner'>
@@ -514,106 +515,91 @@ const [selectedCard, setSelectedCard] = useState("");
       </main>
 
       <div
-  className="modal fade"
-  id="employeeStatusModal"
-  tabIndex="-1"
-  role="dialog"
-  aria-labelledby="employeeStatusModalLabel"
-  aria-hidden="true"
->
-  <div className="modal-dialog modal-lg" role="document">
-    <div className="modal-content">
+        className="modal fade"
+        id="employeeStatusModal"
+        tabIndex="-1"
+        role="dialog"
+        aria-labelledby="employeeStatusModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-lg" role="document">
+          <div className="modal-content">
 
-      <div className="modal-header text-white">
-        <h5 className="modal-title" id="employeeStatusModalLabel">
-          Employer Chalan Status
-        </h5>
+            <div className="modal-header text-white">
+              <h5 className="modal-title" id="employeeStatusModalLabel">
+                Employer Chalan Status
+              </h5>
 
-        <button
-          type="button"
-          className="close text-black"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+              <button
+                type="button"
+                className="close text-black"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
 
-      <div className="modal-body">
+            <div className="modal-body">
+              {/* Added 'custom-table-vertical-scroller' to lock the height and enable scrolling */}
+              <div className="table-responsive custom-table-vertical-scroller">
+                <table className="table table-bordered table-hover table-striped align-middle">
+                  {/* 
+        sticky-top ensures the table header stays locked at the top 
+        while you scroll through hundreds of records underneath it.
+      */}
+                  <thead className="thead-light sticky-top">
+                    <tr>
+                      <th scope="col" style={{ width: '50px' }}>#</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">EPF ID</th>
+                      <th scope="col">Month</th>
+                      <th scope="col">Year</th>
+                      <th scope="col" className="text-center">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {employerList && employerList.length > 0 ? (
+                      employerList.map((emp, index) => (
+                        <tr key={emp.id || index}>
+                          <td>{index + 1}</td>
+                          <td>{emp.est_name}</td>
+                          <td className="text-monospace">{emp.est_epf_id}</td>
+                          <td>{emp.month}</td>
+                          <td>{emp.year}</td>
+                          <td className="text-center">
+                            {emp.month === null ? (
+                              <span className="badge bg-danger text-white px-2 py-1">Pending</span>
+                            ): (
+                              <span className="badge bg-success text-white px-2 py-1">Done</span>
+                            )}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="6" className="text-center text-muted py-4">
+                          No Records Found
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
 
-        <div className="table-responsive">
-
-          <table className="table table-bordered table-hover table-striped">
-
-            <thead className="thead-light">
-
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>EPF ID</th>
-                <th>Month</th>
-                <th>Year</th>
-                <th>Status</th>
-              </tr>
-
-            </thead>
-
-            <tbody>
-
-              {employeeList && employeeList.length > 0 ? (
-                employeeList.map((emp, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{emp.name}</td>
-                    <td>{emp.epfId}</td>
-                    <td>{emp.month}</td>
-                    <td>{emp.year}</td>
-                    <td>
-                      {emp.status === "SUCCESS" ? (
-                        <span className="badge badge-success">
-                          SUCCESS
-                        </span>
-                      ) : emp.status === "PENDING" ? (
-                        <span className="badge badge-warning">
-                          PENDING
-                        </span>
-                      ) : (
-                        <span className="badge badge-danger">
-                          FAILED
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="text-center">
-                    No Records Found
-                  </td>
-                </tr>
-              )}
-
-            </tbody>
-
-          </table>
-
+          </div>
         </div>
-
       </div>
-
-      <div className="modal-footer">
-        <button
-          type="button"
-          className="btn btn-secondary"
-          data-dismiss="modal"
-        >
-          Close
-        </button>
-      </div>
-
-    </div>
-  </div>
-</div>
     </div>
   )
 }
