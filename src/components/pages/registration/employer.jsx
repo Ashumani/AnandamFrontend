@@ -30,7 +30,7 @@ const employer = () => {
   const [Acc2, setAcc2] = useState('');
   const [Acc10, setAcc10] = useState('');
   const [Acc21, setAcc21] = useState('');
-  const [Acc22, setAcc22] = useState('');
+  const [Acc22, setAcc22] = useState(0);
   const [rate, setRate] = useState('');
   const [isUpdate, setIsUpdate] = useState(false);
   const [checkedDSC, setCheckedDSC] = useState(false);

@@ -14,7 +14,7 @@ const ecrGeneration = () => {
 
   const [selectedMonth, setSelectedMonth] = useState();
   const [selectedYear, setSelectedYear] = useState();
-  const [selectedSubId, setSelectedSubId] = useState();
+  const [selectedSubId, setSelectedSubId] = useState(0);
 
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);

@@ -38,7 +38,7 @@ const master = () => {
   const [Acc2, setAcc2] = useState(0.50);
   const [Acc10, setAcc10] = useState(8.33);
   const [Acc21, setAcc21] = useState(0.50);
-  const [Acc22, setAcc22] = useState(0);
+  const [Acc22, setAcc22] = useState('0');
   const [rate, setRate] = useState(1000);
   const [checkedDSC, setCheckedDSC] = useState(false);
   // eslint-disable-next-line react-hooks/rules-of-hooks, no-unused-vars

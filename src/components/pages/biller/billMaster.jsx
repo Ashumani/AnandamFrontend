@@ -1,20 +1,15 @@
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken"
-import { Link, useNavigate  } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getAllBill, getBill, searchBill } from "../../api/services";
 import Swal from "sweetalert2";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import logo from "../../../standalone_assets/images/Anandam.png"
 import "./bill.css"
 
 const billMaster = () => {
-  // Sample data
-  const data = [
-    { id: 1, company: 'Anandam', estId: 'NGNAG0012345000', particular: 'EPF Challan For Period Mar-23 To Apr-24', rate: 1000, amount: 12000, paymentMode: 'Cash', status: 'Paid', discount: 0 },
-    { id: 2, company: 'Anandam', estId: 'NGNAG0012345000', particular: 'EPF Challan For Period Mar-20 To Apr-24', rate: 1000, amount: 12000, paymentMode: 'Cash', status: 'Paid', discount: 0 },
-    { id: 3, company: 'Anandam', estId: 'NGNAG0012345000', particular: 'EPF Challan For Period Mar-21 To Apr-24', rate: 1000, amount: 12000, paymentMode: 'Cash', status: 'Paid', discount: 0 },
-    // Add more data as needed
-  ];
+
   const itemsPerPage = 5; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, set_totalPages] = useState(1);
@@ -152,14 +147,21 @@ const billMaster = () => {
   };
 
   const generatePDF = async () => {
-    await getBillById()
+    await getBillById(bill_number)
     // Capture the HTML content as a canvas
     html2canvas(document.querySelector("#pdf-content")).then(canvas => {
       const pdf = new jsPDF('p', 'mm', 'a4'); // 'p' for portrait, 'mm' for millimeters, 'a4' for page size
       const imgData = canvas.toDataURL("image/png");
+      // Dynamically fetch the current page dimensions
+      const pageHeight = pdf.internal.pageSize.getHeight(); // Returns 297 (if using mm)
+      const pageWidth = pdf.internal.pageSize.getWidth();   // Returns 210 (if using mm)
+
+      // Example: Calculate a safe bottom margin to trigger a new page
+      const bottomMargin = 20;
+      const safeZoneHeight = pageHeight - bottomMargin; // 277 mm
 
       // Add the image to the PDF
-      pdf.addImage(imgData, 'PNG', 10, 10, 190, 0);
+      pdf.addImage(imgData, 'PNG', 10, 10, 190, safeZoneHeight);
       pdf.save("invoice.pdf");
     });
   };
@@ -168,12 +170,12 @@ const billMaster = () => {
     setCurrentPage(pageNumber);
   };
 
- 
-const handleEdit = (billId) => {
-  
- navigate(`/auth/dashboard/bill/create/${billId}`);
 
-};
+  const handleEdit = (billId) => {
+
+    navigate(`/auth/dashboard/bill/create/${billId}`);
+
+  };
   return (
     <div>
 
@@ -263,7 +265,7 @@ const handleEdit = (billId) => {
                             <td>{item.amount_paid}</td>
                             <td>{item.status}</td>
                             <td><button type="button" className="btn btn-outline-primary" style={{ "margin": "5px" }} data-toggle="modal" data-target=".bd-example-modal-xl" onClick={() => getBillById(item.id)}><i className="bi bi-file-pdf-fill"></i></button></td>
-                            <td><button type="button" className="btn btn-outline-primary" style={{ "margin": "5px" }}  onClick={() => handleEdit(item.id)}><i className="bi bi-pencil"></i></button></td>
+                            <td><button type="button" className="btn btn-outline-primary" style={{ "margin": "5px" }} onClick={() => handleEdit(item.id)}><i className="bi bi-pencil"></i></button></td>
                           </tr>
                         ))}
                       </tbody>
@@ -309,265 +311,271 @@ const handleEdit = (billId) => {
               </div>
             </div>
           </div>
-            <div className="modal fade bd-example-modal-xl" tabIndex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-                                <div className="modal-dialog modal-xl">
-                                    <div className="modal-content">
-                                        <div className="modal-header">
-                                            <h5 className="modal-title" id="exampleModalLabel">Bill View</h5>
-                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div className="modal-body">
-                                            <div id="pdf-content" className="invoice-template">
+          <div className="modal fade bd-example-modal-xl" tabIndex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+            <div className="modal-dialog modal-xl">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">Bill View</h5>
+                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <div id="pdf-content" className="invoice-template">
 
-                                                {/* Header */}
-                                                <div className="invoice-header d-flex justify-content-between">
+                    {/* Header */}
+                    <div className="invoice-header d-flex justify-content-between">
 
-                                                    <div className="invoice-logo">
-                                                        <h1>INVOICE</h1>
-                                                    </div>
+                      <div className="invoice-logo">
+                        <h1>INVOICE</h1>
+                      </div>
 
-                                                    <div className="text-right">
-                                                        <h5><b>Anandam Consultancy</b></h5>
+                      <div className="text-right">
+                        {/* <h1><b>Anandam Solution & Services</b></h1> */}
+                        <a href="/auth/dashboard" className="logo d-flex align-items-center">
+                          {/* <img src="assets/img/logo.png" alt="" /> */}
+                          <img className="d-none d-lg-block main_logo ml-4" style={{ width: '100%', "max-height": "250px" }} src={logo} alt="" />
+                          {/* <span className="d-none d-lg-block">AnanDam</span> */}
+                        </a>
+                         <h1><b>Solution & Services</b></h1>
+                        <div><h5>101, Anant Apartment</h5></div>
+                        <div><h5>Near Rakshak Bandhu</h5></div>
+                        <div><h5>Manewada Road, Nagpur-440024</h5></div>
+                        <div><h5>0712-2748370</h5></div>
+                        <div><h5>anand.esipf@gmail.com</h5></div>
+                      </div>
 
-                                                        <div>101, Anant Apartment</div>
-                                                        <div>Near Rakshak Bandhu</div>
-                                                        <div>Manewada Road, Nagpur-440024</div>
-                                                        <div>0712-2748370</div>
-                                                        <div>anand.esipf@gmail.com</div>
-                                                    </div>
+                    </div>
 
-                                                </div>
+                    {/* Details */}
 
-                                                {/* Details */}
+                    <div className="row mt-4">
 
-                                                <div className="row mt-4">
+                      <div className="col-md-6">
+                        <h5><b>To</b></h5>
 
-                                                    <div className="col-md-6">
-                                                        <h5><b>To</b></h5>
+                        <p><h4><b>{est_name}</b></h4></p>
 
-                                                        <p><b>{est_name}</b></p>
+                        <p>{estDesignation}</p>
 
-                                                        <p>{estDesignation}</p>
+                        <p>{est_address}</p>
 
-                                                        <p>{est_address}</p>
+                        <p>{estCity}</p>
 
-                                                        <p>{estCity}</p>
+                        <p>{estMobile}</p>
 
-                                                        <p>{estMobile}</p>
+                        <p>{estEmail}</p>
+                      </div>
 
-                                                        <p>{estEmail}</p>
-                                                    </div>
+                      <div className="col-md-6 text-right">
 
-                                                    <div className="col-md-6 text-right">
 
+                        <table className="table table-borderless table-sm">
 
-                                                        <table className="table table-borderless table-sm">
+                          <tbody>
 
-                                                            <tbody>
+                            <tr>
+                              <th>Invoice No.</th>
+                              <td>{bill_number}</td>
+                            </tr>
 
-                                                                <tr>
-                                                                    <th>Invoice No.</th>
-                                                                    <td>{bill_number}</td>
-                                                                </tr>
+                            <tr>
+                              <th>Date of Issue</th>
+                              <td>{date}</td>
+                            </tr>
 
-                                                                <tr>
-                                                                    <th>Date of Issue</th>
-                                                                    <td>{date}</td>
-                                                                </tr>
+                            <tr>
+                              <th>Employer ID</th>
+                              <td>{est_id}</td>
+                            </tr>
 
-                                                                <tr>
-                                                                    <th>Employer ID</th>
-                                                                    <td>{est_id}</td>
-                                                                </tr>
+                          </tbody>
 
-                                                            </tbody>
+                        </table>
 
-                                                        </table>
 
+                      </div>
 
-                                                    </div>
+                    </div>
+                    {/* Item Table */}
 
-                                                </div>
+                    <table className="table table-bordered mt-3">
 
-                                                {/* Item Table */}
+                      <thead>
 
-                                                <table className="table table-bordered mt-3">
+                        <tr>
 
-                                                    <thead>
+                          <th width="8%">Item</th>
 
-                                                        <tr>
+                          <th>Description</th>
 
-                                                            <th width="8%">Item</th>
+                          <th width="15%">Rate</th>
 
-                                                            <th>Description</th>
+                          <th width="18%">Amount</th>
 
-                                                            <th width="15%">Rate</th>
+                        </tr>
 
-                                                            <th width="18%">Amount</th>
+                      </thead>
 
-                                                        </tr>
+                      <tbody>
 
-                                                    </thead>
+                        {finalBillArray.map((employee, index) => (
 
-                                                    <tbody>
+                          <tr key={index}>
 
-                                                        {finalBillArray.map((employee, index) => (
+                            <td>{index + 1}</td>
 
-                                                            <tr key={index}>
-                                                            
-                                                                <td>{index + 1}</td>
+                            <td>{employee.perticular}</td>
 
-                                                                <td>{employee.perticular}</td>
+                            <td>₹ {rate}</td>
 
-                                                                <td>₹ {rate}</td>
+                            <td>₹ {employee.amount}</td>
 
-                                                                <td>₹ {employee.amount}</td>
+                          </tr>
 
-                                                            </tr>
+                        ))}
 
-                                                        ))}
+                        {/* Blank rows */}
 
-                                                        {/* Blank rows */}
+                        {[...Array(Math.max(0, 1 - finalBillArray.length))].map((_, i) => (
 
-                                                        {[...Array(Math.max(0, 1 - finalBillArray.length))].map((_, i) => (
+                          <tr key={i}>
 
-                                                            <tr key={i}>
+                            <td>&nbsp;</td>
 
-                                                                <td>&nbsp;</td>
 
-                                                               
-                                                            </tr>
+                          </tr>
 
-                                                        ))}
+                        ))}
 
-                                                    </tbody>
+                      </tbody>
 
-                                                </table>
+                    </table>
 
-                                                {/* Bottom */}
+<br />
+                    {/* Bottom */}
 
-                                                <div className="row mt-4">
+                    <div className="row mt-4">
 
-                                                    <div className="col-md-6">
+                      <div className="col-md-6">
 
-                                                        <h5>Bank Details</h5>
+                        <h5>Bank Details</h5>
 
-                                                        <table className="table table-borderless table-sm">
+                        <table className="table table-borderless table-sm">
 
-                                                            <tbody>
+                          <tbody>
 
-                                                                <tr>
+                            <tr>
 
-                                                                    <th>Bank</th>
+                              <th><h5>Bank</h5></th>
 
-                                                                    <td>Indian Overseas Bank</td>
+                              <td><h5>Indian Overseas Bank</h5></td>
 
-                                                                </tr>
+                            </tr>
 
-                                                                <tr>
+                            <tr>
 
-                                                                    <th>Branch</th>
+                              <th><h5>Branch</h5></th>
 
-                                                                    <td>Hudkeshwar (Nagpur)</td>
+                              <td><h5>Hudkeshwar (Nagpur)</h5></td>
 
-                                                                </tr>
+                            </tr>
 
-                                                                <tr>
+                            <tr>
 
-                                                                    <th>Account No.</th>
+                              <th><h5>Account No.</h5></th>
 
-                                                                    <td>264102000000449</td>
+                              <td><h5>264102000000449</h5></td>
 
-                                                                </tr>
+                            </tr>
 
-                                                                <tr>
+                            <tr>
 
-                                                                    <th>IFSC</th>
+                              <th><h5>IFSC</h5></th>
 
-                                                                    <td>IOBA0002641</td>
+                              <td><h5>IOBA0002641</h5></td>
 
-                                                                </tr>
+                            </tr>
 
-                                                                <tr>
+                            <tr>
 
-                                                                    <th>PAN</th>
+                              <th><h5>PAN</h5></th>
 
-                                                                    <td>AARPV4479R</td>
+                              <td><h5>AARPV4479R</h5></td>
 
-                                                                </tr>
+                            </tr>
 
-                                                            </tbody>
+                          </tbody>
 
-                                                        </table>
+                        </table>
 
-                                                    </div>
+                      </div>
 
-                                                    <div className="col-md-6">
-<br></br>
-                                                        <table className="table table-borderless">
+                      <div className="col-md-6">
+                        <br></br>
+                        <table className="table table-borderless">
 
-                                                            <tbody>
+                          <tbody>
 
-                                                                <tr>
+                            <tr>
 
-                                                                    <th>Subtotal</th>
+                              <th>Subtotal</th>
 
-                                                                    <td className="text-right">
-                                                                        ₹ {totalAmount}
-                                                                    </td>
+                              <td className="text-right">
+                                ₹ {totalAmount}
+                              </td>
 
-                                                                </tr>
+                            </tr>
 
-                                                                <tr>
+                            <tr>
 
-                                                                    <th>Discount</th>
+                              <th>Discount</th>
 
-                                                                    <td className="text-right">
-                                                                        ₹ 0.00
-                                                                    </td>
+                              <td className="text-right">
+                                ₹ 0.00
+                              </td>
 
-                                                                </tr>
+                            </tr>
 
-                                                                
 
-                                                                <tr className="invoice-total">
 
-                                                                    <th>Total</th>
+                            <tr className="invoice-total">
 
-                                                                    <th className="text-right">
-                                                                        ₹ {totalAmount}
-                                                                    </th>
+                              <th>Total</th>
 
-                                                                </tr>
+                              <th className="text-right">
+                                ₹ {totalAmount}
+                              </th>
 
-                                                            </tbody>
+                            </tr>
 
-                                                        </table>
+                          </tbody>
 
-                                                    </div>
+                        </table>
 
-                                                </div>
+                      </div>
 
-                                                <div className="invoice-footer">
+                    </div>
 
-                                                   
-                                                   <p>Payment Should make in favor of Anandam Solution And Services</p> 
-                                                    <p>For any Busniess enquiry please contact us Manewada Road, Nagpur-440024</p>
-                                                    <p>Thank you for your business!</p>
+<br /><br /><br />
+                    <div className="invoice-footer">
 
-                                                             
-                                                </div>
 
-                                            </div>
-                                        </div>
-                                        <div className="modal-footer">
-                                            <button className='btn btn-outline-primary btn-block' onClick={generatePDF}>Download PDF</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                      <p><h5>Payment Should make in favor of Anandam Solution And Services</h5></p>
+                      <p><h5>For any Busniess enquiry please contact us Manewada Road, Nagpur-440024</h5></p>
+                      <p><h5>Thank you for your business!</h5></p>
+
+
+                    </div>
+
+                  </div>
+                </div>
+                <div className="modal-footer">
+                  <button className='btn btn-outline-primary btn-block' onClick={generatePDF}>Download PDF</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
         </section>
       </div>

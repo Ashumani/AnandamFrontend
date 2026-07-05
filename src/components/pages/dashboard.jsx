@@ -478,8 +478,8 @@ const [selectedCard, setSelectedCard] = useState("");
                 <YAxis />
                 <CartesianGrid strokeDasharray="3 3" />
                 <Tooltip />
-                <Area type="monotone" dataKey="uv" stroke="#fb66c2" fillOpacity={1} fill="url(#colorUv)" />
-                <Area type="monotone" dataKey="pv" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
+                <Area type="monotone" dataKey="value" stroke="#fb66c2" fillOpacity={1} fill="url(#colorUv)" />
+                <Area type="monotone" dataKey="value" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
               </AreaChart>
             </ResponsiveContainer>
 
