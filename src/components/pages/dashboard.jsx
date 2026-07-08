@@ -124,6 +124,27 @@ const dashboard = () => {
     }
   };
 
+  const sortByStatus = async () => {
+  
+    const sortedList = await [...employerList].sort((a, b) => {
+      // 1. Send null values to the bottom of the list
+      if (a.year === null || a.month === null) return 1;
+      if (b.year === null || b.month === null) return -1;
+      if (a.year === null && b.year === null) return 0;
+
+      // 2. First comparison: Sort chronologically by Year
+      if (a.year !== b.year) {
+        return a.year - b.year; // Change to (b.year - a.year) for newest first
+      }
+
+      // 3. Second comparison: If years match, sort by Month
+      return a.month - b.month;   // Change to (b.month - a.month) for newest first
+    });
+
+
+    setEmployerList(sortedList); // Update your React state array
+  };
+
   const getUserGraphDetails = async (fromMonth, toMonth, fromYear, toYear) => {
     // api call
 
@@ -529,6 +550,11 @@ const dashboard = () => {
               <h5 className="modal-title" id="employeeStatusModalLabel">
                 Employer Chalan Status
               </h5>
+              <div className="col-sm-2">
+                <button
+                  type="file"
+                  className="btn btn-outline-primary btn-block rounded-4"  onClick={sortByStatus}> Status Sort</button>
+              </div>
 
               <button
                 type="button"
@@ -570,7 +596,7 @@ const dashboard = () => {
                           <td className="text-center">
                             {emp.month === null ? (
                               <span className="badge bg-danger text-white px-2 py-1">Pending</span>
-                            ): (
+                            ) : (
                               <span className="badge bg-success text-white px-2 py-1">Done</span>
                             )}
                           </td>
