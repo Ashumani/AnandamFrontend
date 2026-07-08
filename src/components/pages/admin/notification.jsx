@@ -160,12 +160,22 @@ const notification = () => {
                     <td>{employee.category}</td>
                     <td>{employee.message}</td>
                     <td >{moment(employee.date).format('YYYY-MM-DD')}</td>
-                    <td>{employee.created_by}</td>
-                    <td>Manish</td>
+                    <td>{employee.CreatedByName}</td>
+                    <td>{employee.CheckedByName}</td>
                     <td>{employee.remark}</td>
-                    <td>{employee.status ? "Read": "Pending"}</td>
+                    <td className="text-center">
+                            {employee.status? (
+                              <span className="badge bg-success text-white px-2 py-1">Approved</span>
+                            ) : (
+                              <span className="badge bg-danger text-white px-2 py-1">Pending</span>
+                            )}
+                          </td>
+                    {/* <td>{employee.status ? "Read": "Pending"}</td> */}
                     <td>
-                        <div className="d-flex align-items-center">
+                    {employee.status ? (
+                                          <div className="d-flex align-items-center"></div>
+                                    ) : (
+                                         <div className="d-flex align-items-center">
                           
                           <button className="btn btn-light" onClick={() => setReadNotification(employee.id, 1, "ok")}>
                             <i className="bi bi-check text-success"></i>
@@ -174,6 +184,8 @@ const notification = () => {
                             <i className="bi bi-x text-danger"></i>
                           </button>
                         </div>
+                                    )}
+                      
                       </td>
 
                     
