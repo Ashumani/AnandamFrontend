@@ -28,6 +28,7 @@ import superUser from "./components/pages/admin/superUser"
 import notification from "./components/pages/admin/notification"
 import userProfile from "./components/pages/user/userProfile"
 import EpfWidget from "./components/pages/admin/EPFWidget"
+import EpfWidgetMember from "./components/pages/admin/EPFMember"
 import React from "react"
 
 const AllRoutes = () => {
@@ -63,6 +64,7 @@ const AllRoutes = () => {
         <Route exact path='/auth/dashboard/userProfile' Component={userProfile}/>
         <Route path="/auth/dashboard/bill/create/:id" element={React.createElement(billing)} />
         <Route path="/auth/dashboard/EpfWidget" Component={EpfWidget} />
+        <Route path="/auth/dashboard/EpfMember" Component={EpfWidgetMember} />
         
     </Routes>
     
