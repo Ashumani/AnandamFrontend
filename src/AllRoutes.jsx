@@ -27,6 +27,7 @@ import customiza from "./components/pages/admin/customizeForm"
 import superUser from "./components/pages/admin/superUser"
 import notification from "./components/pages/admin/notification"
 import userProfile from "./components/pages/user/userProfile"
+import EpfWidget from "./components/pages/admin/EPFWidget"
 import React from "react"
 
 const AllRoutes = () => {
@@ -61,6 +62,7 @@ const AllRoutes = () => {
         <Route exact path='/auth/dashboard/notification' Component={notification}/>
         <Route exact path='/auth/dashboard/userProfile' Component={userProfile}/>
         <Route path="/auth/dashboard/bill/create/:id" element={React.createElement(billing)} />
+        <Route path="/auth/dashboard/EpfWidget" Component={EpfWidget} />
         
     </Routes>
     

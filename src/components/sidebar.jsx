@@ -328,6 +328,11 @@ const Sidebar = () => {
                     "path": "/auth/dashboard/user",
                     "icon": "bx bx-user"
                 },
+                 {
+                    "item": "UAN Agent",
+                    "path": "/auth/dashboard/EPFWidget",
+                    "icon": "bi bi-question-circle"
+                },
                 {
                     "item": "Blogs",
                     "path": "/auth/dashboard/blogs",

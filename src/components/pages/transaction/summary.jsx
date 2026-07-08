@@ -702,7 +702,8 @@ const summary = () => {
   }
 
   const monthlyBack = async () => {
-    getAllSummary(getErId(), selectedYear, 1);
+    getAllYear()
+    // getAllSummary(getErId(), selectedYear, 1);
     setMonthly(true)
 
   }
