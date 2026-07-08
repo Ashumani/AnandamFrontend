@@ -156,7 +156,7 @@ const notification = () => {
                 {currentItems.map((employee, index) => (
                   <tr key={employee.id}>
                     <th >{index + 1}</th>
-                    <td>{employee.category}</td>
+                    <td>{employee.name}</td>
                     <td>{employee.category}</td>
                     <td>{employee.message}</td>
                     <td >{moment(employee.date).format('YYYY-MM-DD')}</td>
