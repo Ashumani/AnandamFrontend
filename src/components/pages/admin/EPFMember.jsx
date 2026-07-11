@@ -9,7 +9,7 @@ const SYS_MODES = {
 };
 
 export default function EPFMember() {
-  const [uan, setUan] = useState(101218648503);
+  const [uan, setUan] = useState("101218648503");
   const [password, setPassword] = useState('');
   const [otp, setOtp] = useState('');
 
@@ -37,7 +37,7 @@ export default function EPFMember() {
       });
       const parsingData = await res.json();
 
-      if (parsingData.status === 'READY_FOR_LOGIN') {
+      if (parsingData.status === 'SUCCESS') {
         // Standard user login credential flow
         setStepMode(SYS_MODES.CREDENTIALS_SIGN_IN);
       } else if (parsingData.status === 'REDIRECTED_TO_VERIFY') {
@@ -85,7 +85,7 @@ export default function EPFMember() {
     setErrAlert('');
 
     try {
-      const res = await fetch(`${GATEWAY_URL}/member/verify`, {
+      const res = await fetch(`${GATEWAY_URL}/member/verifyMember`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ uan, otp })
@@ -115,6 +115,13 @@ export default function EPFMember() {
   };
 
   return (
+       <div>
+
+      <div className="main-container" style={{ "marginTop": "50px", "fontSize": "15px", "color": "black" }}>
+        <div className='main-title'>
+          <h3>UAN Member Agent</h3>
+        </div>
+        <section className="section">
     <div style={uiStyles.container}>
       <div style={uiStyles.card}>
         <div style={uiStyles.headerBox}>
@@ -229,7 +236,47 @@ export default function EPFMember() {
             <button onClick={triggerResetEngine} style={uiStyles.button}>Audit Next Member Identifier</button>
           </div>
         )}
+
+        {/* LAYOUT PHASE 4 */}
+        {stepMode === SYS_MODES.DASHBOARD_COMPLETED && dataset && (
+          <div style={uiStyles.resultsWrapper}>
+            <div style={uiStyles.profileSection}>
+              <h3 style={{ margin: '0 0 4px 0', color: '#111827' }}>Verified Member Profile: {dataset.member_name}</h3>
+              <p style={{ margin: 0, fontSize: '13px', color: '#4b5563' }}>{dataset.total_balance}</p>
+            </div>
+
+            <h4 style={uiStyles.tableTitle}>Passbook Transaction Ledger</h4>
+            <div style={uiStyles.tableResponsive}>
+              <table style={uiStyles.table}>
+                <thead>
+                  <tr>
+                    <th style={uiStyles.th}>Month</th>
+                    <th style={uiStyles.th}>Employee PF</th>
+                    <th style={uiStyles.th}>Employer PF</th>
+                    <th style={uiStyles.th}>Pension Contribution</th>
+                    <th style={uiStyles.th}>Member ID</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dataset.transactions && dataset.transactions.map((record, idx) => (
+                    <tr key={idx} style={idx % 2 === 0 ? {} : uiStyles.tableRowAlt}>
+                      <td style={uiStyles.td}><strong>{record.wage_month}</strong></td>
+                      <td style={{ ...uiStyles.td, color: '#10b981' }}>{record.employee_pf}</td>
+                      <td style={{ ...uiStyles.td, color: '#2563eb' }}>{record.employer_pf}</td>
+                      <td style={{ ...uiStyles.td, color: '#d97706' }}>{record.pension}</td>
+                      <td style={{ ...uiStyles.td, fontSize: '12px', color: '#4b5563' }}>{record.member_id}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <button onClick={triggerResetEngine} style={uiStyles.button}>Audit Next Member Identifier</button>
+          </div>
+        )}
       </div>
+    </div>
+    </section></div>
     </div>
   );
 }

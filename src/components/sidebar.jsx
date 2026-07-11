@@ -329,8 +329,13 @@ const Sidebar = () => {
                     "icon": "bx bx-user"
                 },
                  {
-                    "item": "UAN Agent",
+                    "item": "UAN Passbook Agent",
                     "path": "/auth/dashboard/EPFWidget",
+                    "icon": "bi bi-question-circle"
+                },
+                {
+                    "item": "UAN Member Agent",
+                    "path": "/auth/dashboard/EpfMember",
                     "icon": "bi bi-question-circle"
                 },
                 {
