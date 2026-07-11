@@ -1,6 +1,5 @@
 // src/components/pages/admin/EPFWidget.jsx
-import React, { useState } from 'react';
-import { generateMemberIssues } from "./issueGenerator";
+import React, { useEffect, useState } from 'react';
 
 const SYS_MODES = {
   UAN_SETUP: 1,
@@ -8,20 +7,6 @@ const SYS_MODES = {
   TWO_FACTOR_OTP: 3,
   DASHBOARD_COMPLETED: 4
 };
-const severityColor = {
-  HIGH: "#dc2626",
-  MEDIUM: "#ea580c",
-  LOW: "#ca8a04",
-  SUCCESS: "#16a34a",
-};
-
-const severityIcon = {
-  HIGH: "🔴",
-  MEDIUM: "🟠",
-  LOW: "🟡",
-  SUCCESS: "🟢",
-};
-
 
 export default function EPFMember() {
   const [uan, setUan] = useState("101218648503");
@@ -34,13 +19,22 @@ export default function EPFMember() {
   const [dataset, setDataset] = useState(null);
 
 
+  
+  const sampleresponse ={}
+
+  useEffect(() => {
+    const fetchData = async () => {
+      triggerFinalOtpVerify({})
+
+    };
+
+    fetchData();
+
+  }, []);
+
 
 
   const GATEWAY_URL = 'http://localhost:4001';
-
-  const [issues, setIssues] = useState([])
-  const [hasIssues,setHasIssue] = useState(false);
-
 
   const triggerInitSession = async (e) => {
     e.preventDefault();
@@ -57,7 +51,9 @@ export default function EPFMember() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ uan })
       });
-      const parsingData = await res.json();
+      // const parsingData = await res.json();
+      const parsingData = sampleresponse;
+
 
       if (parsingData.status === 'SUCCESS') {
         // Standard user login credential flow
@@ -87,7 +83,8 @@ export default function EPFMember() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ uan, password })
       });
-      const parsingData = await res.json();
+      // const parsingData = await res.json();
+      const parsingData = sampleresponse;
 
       if (parsingData.status === 'SUCCESS') {
         setStepMode(SYS_MODES.TWO_FACTOR_OTP);
@@ -102,55 +99,19 @@ export default function EPFMember() {
   };
 
   const triggerFinalOtpVerify = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     setInExecution(true);
     setErrAlert('');
 
     try {
+      // const res = await fetch(`${GATEWAY_URL}/member/verifyMember`, {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ uan, otp })
+      // });
+      // const parsingData = await res.json();
+      const parsingData = sampleresponse;
 
-      const res = await fetch(`${GATEWAY_URL}/member/verifyMember`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uan, otp })
-      });
-      const parsingData = await res.json();
-
-      if (parsingData.status === 'SUCCESS') {
-        setDataset(parsingData);
-        const issueList = generateMemberIssues(parsingData)
-        setIssues(issueList)
-        setHasIssue(issueList.length > 0 && !issueList.every((issue) => issue.severity === "SUCCESS"))
-        // setStepMode(SYS_MODES.DASHBOARD_COMPLETED);
-      } else {
-        setErrAlert(parsingData.message || 'Invalid or mismatched verification OTP code.');
-      }
-    } catch (err) {
-      setErrAlert('Network connection failure mapping output fields matrix reports.');
-    } finally {
-      setInExecution(false);
-    }
-  };
-
-  const showIssues = () => {
-    setStepMode(SYS_MODES.DASHBOARD_COMPLETED);
-    setHasIssue(false)
-  }
-
-
-
-  const triggerReload = async (e) => {
-    e.preventDefault();
-    setInExecution(true);
-    setErrAlert('');
-
-    try {
-
-      const res = await fetch(`${GATEWAY_URL}/member/reloadVerifyMember`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uan, reload: true })
-      });
-      const parsingData = await res.json();
 
       if (parsingData.status === 'SUCCESS') {
         setDataset(parsingData);
@@ -164,8 +125,6 @@ export default function EPFMember() {
       setInExecution(false);
     }
   };
-
-
 
   const triggerResetEngine = () => {
     setUan('');
@@ -189,85 +148,9 @@ export default function EPFMember() {
               <div style={uiStyles.headerBox}>
                 <h2 style={uiStyles.title}>EPF Unified Portal Monitor</h2>
                 <p style={uiStyles.subtitle}>Unified Member Interface Management Integration Module</p>
-                <button onClick={triggerReload} style={uiStyles.button}>Refresh</button>
               </div>
 
-              {errAlert && (
-                <div style={uiStyles.errorAlert}>
-                  <strong>Execution Barrier Exception:</strong> {errAlert}
-                </div>
-              )}
-
-              {/* LAYOUT PHASE 1 */}
-              {stepMode === SYS_MODES.UAN_SETUP && (
-                <form onSubmit={triggerInitSession} style={uiStyles.form}>
-                  <div>
-                    <label style={uiStyles.label}>Universal Account Identifier (UAN)</label>
-                    <input
-                      type="text"
-                      maxLength="12"
-                      placeholder="Enter 12-digit core UAN reference"
-                      value={uan}
-                      onChange={(e) => setUan(e.target.value.replace(/\D/g, ''))}
-                      style={uiStyles.input}
-                      disabled={inExecution}
-                      required
-                    />
-                  </div>
-                  <button type="submit" style={uiStyles.button} disabled={inExecution}>
-                    {inExecution ? 'Opening Automation Thread...' : 'Connect Unified Portal'}
-                  </button>
-                </form>
-              )}
-
-              {/* LAYOUT PHASE 2 */}
-              {stepMode === SYS_MODES.CREDENTIALS_SIGN_IN && (
-                <form onSubmit={triggerAuthValidation} style={uiStyles.form}>
-                  <div>
-                    <label style={uiStyles.label}>Portal Account Access Password</label>
-                    <input
-                      type="password"
-                      placeholder="Enter account security characters string"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      style={uiStyles.input}
-                      disabled={inExecution}
-                      required
-                    />
-                  </div>
-
-                  <button type="submit" style={uiStyles.buttonPrimary} disabled={inExecution}>
-                    {inExecution ? 'Verifying parameters across secure channel relays...' : 'Verify Access & Send OTP'}
-                  </button>
-                  {/* <button type="button" onClick={triggerResetEngine} style={uiStyles.buttonSecondary}>Terminate Session</button> */}
-                </form>
-              )}
-
-              {/* LAYOUT PHASE 3 */}
-              {stepMode === SYS_MODES.TWO_FACTOR_OTP && (
-                <form onSubmit={triggerFinalOtpVerify} style={uiStyles.form}>
-                  <div style={uiStyles.infoAlert}>
-                    Security check validated successfully. Provide the Aadhaar-linked verification code dispatched for identification account target.
-                  </div>
-                  <div>
-                    <label style={uiStyles.label}>Enter 2FA Verification OTP</label>
-                    <input
-                      type="text"
-                      maxLength="8"
-                      placeholder="Enter validation code numeric arrays"
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value.trim())}
-                      style={uiStyles.input}
-                      disabled={inExecution}
-                      required
-                    />
-                  </div>
-                  <button type="submit" style={uiStyles.buttonPrimary} disabled={inExecution}>
-                    {inExecution ? 'Decrypting profile index metrics grids...' : 'Authorize Token & Synchronize'}
-                  </button>
-                </form>
-              )}
-
+             
               {/* LAYOUT PHASE 4 */}
               {stepMode === SYS_MODES.DASHBOARD_COMPLETED && dataset && (
                 <div style={uiStyles.resultsWrapper}>
@@ -284,45 +167,15 @@ export default function EPFMember() {
                     <table style={uiStyles.table}>
                       <thead>
                         <tr>
-                          <th rowSpan="2">UAN</th>
-                          <th rowSpan="2">Member ID</th>
-                          <th colSpan="3">Date of Joining </th>
-                          <th colSpan="3">Date of Exit </th>
-                          <th rowSpan="2">Reason for Leaving</th>
-                          <th rowSpan="2">PF Last Transfered into MID</th>
-                          <th rowSpan="2">PF Status</th>
-                          <th rowSpan="2">PF Balance</th>
-                          <th rowSpan="2">Service Status</th>
-                          <th rowSpan="2">Service Last Transfered into MID</th>
-                          <th rowSpan="2">Service Benefit Taken</th>
-                        </tr>
-                        <tr>
-                          <th>EPF</th>
-                          <th>EPS</th>
-                          <th>FPS</th>
-                          <th>EPF</th>
-                          <th>EPS</th>
-                          <th>FPS</th>
+                          <th style={uiStyles.th}>Enterprise Establishment Business Corporate Title</th>
+                          <th style={uiStyles.th}>Registration Date of Joining</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {dataset.service_history_details && dataset.service_history_details.map((record, idx) => (
+                        {dataset.employment_history && dataset.employment_history.map((record, idx) => (
                           <tr key={idx} style={idx % 2 === 0 ? {} : uiStyles.tableRowAlt}>
-                            <td style={uiStyles.td}>{record.uan}</td>
-                            <td style={uiStyles.td}>{record.member_id}</td>
-                            <td style={uiStyles.td}>{record.doj_epf}</td>
-                            <td style={uiStyles.td}>{record.doj_eps}</td>
-                            <td style={uiStyles.td}>{record.doj_fps}</td>
-                            <td style={uiStyles.td}>{record.doe_epf}</td>
-                            <td style={uiStyles.td}>{record.doe_eps}</td>
-                            <td style={uiStyles.td}>{record.doe_fps}</td>
-                            <td style={uiStyles.td}>{record.reason_of_leavin}</td>
-                            <td style={uiStyles.td}>{record.last_transfer_mid}</td>
-                            <td style={uiStyles.td}>{record.pf_status}</td>
-                            <td style={uiStyles.td}>{record.pf_balance}</td>
-                            <td style={uiStyles.td}>{record.service_status}</td>
-                            <td style={uiStyles.td}>{record.service_last_transfer_mid}</td>
-                            <td style={uiStyles.td}>{record.service_benefit_taken}</td>
+                            <td style={uiStyles.td}>{record.establishment_name}</td>
+                            <td style={uiStyles.td}>{record.date_of_joining}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -407,96 +260,11 @@ export default function EPFMember() {
                     </table>
                   </div>
 
-                  <button onClick={triggerResetEngine} style={uiStyles.button}>Audit Next Member Identifier</button>
+                  {/* <button onClick={triggerResetEngine} style={uiStyles.button}>Audit Next Member Identifier</button> */}
                 </div>
               )}
             </div>
-             {hasIssues ? (<div
-              style={{
-                background: "#fff",
-                borderRadius: 10,
-                border: hasIssues
-                  ? "1px solid #ef4444"
-                  : "1px solid #22c55e",
-                padding: 18,
-                marginTop: 20,
-                boxShadow: "0 2px 8px rgba(0,0,0,.08)",
-              }}
-            >
-              <h3
-                style={{
-                  margin: 0,
-                  marginBottom: 12,
-                  color: "#1f2937",
-                }}
-              >
-                Member Validation Report
-              </h3>
-
-              <div style={{ marginBottom: 12 }}>
-                <strong>UAN:</strong> {uan}
-              </div>
-
-              {hasIssues ? (
-                <>
-                  <div
-                    style={{
-                      color: "#dc2626",
-                      fontWeight: 700,
-                      marginBottom: 15,
-                      fontSize: 16,
-                    }}
-                  >
-                    ⚠ {issues.length} Issue{issues.length > 1 ? "s" : ""} Found
-                  </div>
-
-                  <ul
-                    style={{
-                      paddingLeft: 20,
-                      margin: 0,
-                    }}
-                  >
-                    {issues.map((issue, index) => (
-                      <li
-                        key={index}
-                        style={{
-                          color:
-                            severityColor[issue.severity] || "#374151",
-                          marginBottom: 10,
-                          lineHeight: "22px",
-                        }}
-                      >
-                        <strong>
-                          {severityIcon[issue.severity]} {issue.type}
-                        </strong>
-
-                        <div
-                          style={{
-                            marginLeft: 28,
-                          }}
-                        >
-                          {issue.message}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              ) : (
-                <div
-                  style={{
-                    color: "#16a34a",
-                    fontWeight: 700,
-                    fontSize: 16,
-                  }}
-                >
-                  ✅ No issues found. Member details are valid.
-                </div>
-                
-              )}
-              <button onClick={showIssues} style={uiStyles.button}>Show</button>
-            </div>) : (<></> )}
-
-          </div>  
+          </div>
         </section></div>
     </div>
   );
@@ -531,7 +299,7 @@ const uiStyles = {
   infoAlert: { padding: '14px 16px', backgroundColor: '#f0fdf4', borderRadius: '6px', color: '#166534', fontSize: '13px', lineHeight: '1.5', border: '1px solid #bbf7d0' },
   resultsWrapper: { display: 'flex', flexDirection: 'column', gap: '22px' },
   profileSection: { backgroundColor: '#eff6ff', padding: '16px', borderRadius: '8px', border: '1px solid #bfdbfe' },
-  tableTitle: { fontSize: '14px', fontWeight: '700', color: '#374151', margin: '4px 0' },
+  tableTitle: { fontSize: '14px', fontWeight: '700', color: '#374151', margin: '20px 0' },
   tableResponsive: { overflowX: 'auto', border: '1px solid #e5e7eb', borderRadius: '8px' },
   table: { width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '13px' },
   th: { backgroundColor: '#f9fafb', padding: '12px 14px', color: '#4b5563', fontWeight: '600', borderBottom: '1px solid #e5e7eb' },
