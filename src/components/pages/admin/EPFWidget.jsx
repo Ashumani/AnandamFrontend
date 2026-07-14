@@ -34,7 +34,7 @@ export default function EPFWidget() {
     setErrorMessage('');
 
     try {
-      const res = await fetch(`${BACKEND_URL}/member/initiate`, {
+      const res = await fetch(`${BACKEND_URL}/member_pass/initiate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ uan })
@@ -61,7 +61,7 @@ export default function EPFWidget() {
     setErrorMessage('');
 
     try {
-      const res = await fetch(`${BACKEND_URL}/member/submit-auth`, {
+      const res = await fetch(`${BACKEND_URL}/member_pass/submit-auth`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ uan, password, captcha })
@@ -69,7 +69,7 @@ export default function EPFWidget() {
       const data = await res.json();
 
       if (data.status === 'SUCCESS') {
-        setCurrentStep(EPF_STEPS.OTP_CONFIRMATION);
+        // setCurrentStep(EPF_STEPS.OTP_CONFIRMATION);
       } else {
         setErrorMessage(data.message || 'Credential mismatch verification failed on EPFO server.');
       }
@@ -87,7 +87,7 @@ export default function EPFWidget() {
     setErrorMessage('');
 
     try {
-      const res = await fetch(`${BACKEND_URL}/member/verify`, {
+      const res = await fetch(`${BACKEND_URL}/member_pass/verify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ uan, otp })

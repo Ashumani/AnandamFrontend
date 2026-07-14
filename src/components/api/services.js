@@ -804,3 +804,12 @@ export const getEPFChallanCardsDetails = async () => {
         throw error.response.data.error;
     }
 }
+
+export const getESICChallanCardsDetails = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/dashboard/getESICChallanCardsDetails`, { headers: header });
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}

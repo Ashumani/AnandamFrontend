@@ -213,7 +213,7 @@ const customiza = () => {
 
       <div className="main-container"  style={{ "marginTop": "50px", "fontSize": "15px", "color": "black" }}>
         <div className='main-title'>
-          <h3>Blogs</h3>
+          <h3>Forms</h3>
         </div>
         <section className="section">
           <br />

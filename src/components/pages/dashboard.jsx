@@ -5,7 +5,7 @@ import { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill }
   from 'react-icons/bs'
 import { BarChart, PieChart, Pie, AreaChart, Area, Bar, ComposedChart, ScatterChart, Scatter, ZAxis, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, LabelList, Cell }
   from 'recharts';
-import { getBillGraph, getCardsCount, getEPFChallanCardsDetails, getGraph, getUser, getUserGraph, getYearsAndMonth } from "../api/services";
+import { getBillGraph, getCardsCount, getEPFChallanCardsDetails, getESICChallanCardsDetails, getGraph, getUser, getUserGraph, getYearsAndMonth } from "../api/services";
 import { useState, useEffect } from "react"
 import moment from "moment";
 import { getErId, getEstId } from "./Auth/authToken";
@@ -100,6 +100,40 @@ const dashboard = () => {
     }
   };
 
+  const getESICChallanCards = async () => {
+    // api call
+
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await getESICChallanCardsDetails();
+      if (response.status == true) {
+        setEmployerList(response.data)
+      }
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // setError('Error fetching data. Please try again.');
+      // setLoading(false);
+    }
+  };
+  const getDSCChallanCards = async () => {
+    // api call
+
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await getESICChallanCardsDetails();
+      if (response.status == true) {
+        setEmployerList(response.data)
+      }
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // setError('Error fetching data. Please try again.');
+      // setLoading(false);
+    }
+  };
 
   const getGraphDetails = async (fromMonth, toMonth, fromYear, toYear) => {
     // api call
@@ -125,7 +159,7 @@ const dashboard = () => {
   };
 
   const sortByStatus = async () => {
-  
+
     const sortedList = await [...employerList].sort((a, b) => {
       // 1. Send null values to the bottom of the list
       if (a.year === null || a.month === null) return 1;
@@ -235,6 +269,10 @@ const dashboard = () => {
 
     if (cardName == "epf") {
       await getEPFChallanCards()
+    } else if (cardName == "esic") {
+      await getESICChallanCards()
+    } else if (cardName == "dsc") {
+      await getDSCChallanCards()
     }
     setSelectedCard(cardName);
 
@@ -274,7 +312,12 @@ const dashboard = () => {
 
               <h1>{totalepf}/{epfchallancreated}</h1>
             </div>
-            <div className='cardCustom cardprop3'>
+            <div className='cardCustom cardprop3'
+             style={{ cursor: "pointer" }}
+              data-toggle="modal"
+              data-target="#employeeStatusModal"
+              onClick={() => handleCardClick("esic")}
+              >
               <div className='card-inner'>
                 <h5>ESIC</h5>
                 <BsPeopleFill className='card_icon' />
@@ -282,7 +325,12 @@ const dashboard = () => {
               <h1>{totalesic}/{esicchallancreated}</h1>
 
             </div>
-            <div className='cardCustom cardprop4'>
+            <div className='cardCustom cardprop4'
+             style={{ cursor: "pointer" }}
+              data-toggle="modal"
+              data-target="#employeeStatusModal"
+              onClick={() => handleCardClick("dsc")}
+              >
               <div className='card-inner'>
                 <h5>DSC</h5>
                 <BsFillBellFill className='card_icon' />
@@ -553,7 +601,7 @@ const dashboard = () => {
               <div className="col-sm-2">
                 <button
                   type="file"
-                  className="btn btn-outline-primary btn-block rounded-4"  onClick={sortByStatus}> Status Sort</button>
+                  className="btn btn-outline-primary btn-block rounded-4" onClick={sortByStatus}> Status Sort</button>
               </div>
 
               <button
@@ -578,7 +626,7 @@ const dashboard = () => {
                     <tr>
                       <th scope="col" style={{ width: '50px' }}>#</th>
                       <th scope="col">Name</th>
-                      <th scope="col">EPF ID</th>
+                      <th scope="col">EPF/ESIC ID</th>
                       <th scope="col">Month</th>
                       <th scope="col">Year</th>
                       <th scope="col" className="text-center">Status</th>
@@ -590,7 +638,7 @@ const dashboard = () => {
                         <tr key={emp.id || index}>
                           <td>{index + 1}</td>
                           <td>{emp.est_name}</td>
-                          <td className="text-monospace">{emp.est_epf_id}</td>
+                          <td className="text-monospace">{emp.est_epf_id ? emp.est_epf_id : emp.est_esic_id}</td>
                           <td>{emp.month}</td>
                           <td>{emp.year}</td>
                           <td className="text-center">
