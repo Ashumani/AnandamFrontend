@@ -1,6 +1,7 @@
 // src/components/pages/admin/EPFWidget.jsx
 import React, { useState } from 'react';
 import { generateMemberIssues } from "./issueGenerator";
+import ConsentModal from './consentModel';
 
 const SYS_MODES = {
   UAN_SETUP: 1,
@@ -40,6 +41,7 @@ export default function EPFMember() {
 
   const [issues, setIssues] = useState([])
   const [hasIssues,setHasIssue] = useState(false);
+  const [showConsent, setShowConsent] = useState(true);
 
 
   const triggerInitSession = async (e) => {
@@ -497,6 +499,14 @@ export default function EPFMember() {
             </div>) : (<></> )}
 
           </div>  
+          <ConsentModal
+    open={showConsent}
+    onCancel={() => setShowConsent(false)}
+    onAccept={() => {
+        setShowConsent(false);
+        // Continue Login
+    }}
+/>
         </section></div>
     </div>
   );
