@@ -5,7 +5,7 @@ import { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill }
   from 'react-icons/bs'
 import { BarChart, PieChart, Pie, AreaChart, Area, Bar, ComposedChart, ScatterChart, Scatter, ZAxis, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, LabelList, Cell }
   from 'recharts';
-import { getBillGraph, getCardsCount, getGraph, getUserGraph, getYearsAndMonth } from "../../api/services";
+import { getBillGraph, getCardsCount, getGraph, getUser, getUserGraph, getYearsAndMonth } from "../../api/services";
 import { useState, useEffect } from "react"
 import moment from "moment";
 import { getEstId } from "../Auth/authToken";
@@ -30,16 +30,27 @@ const userProfile = () => {
   const [totaldsc, settotaldsc] = useState('')
   const [expiredsc, setexpiredsc] = useState('')
   const [userGraphData, setUserGraphData] = useState([]);
-  
+  const [userData, setUserData] = useState([]);
+
 
   const fromMonth = 3
   const toMonth = 4
   const fromYear = moment().year() - 1
-  const toYear = moment().year() 
+  const toYear = moment().year()
   const [selectedYear, setSelectedYear] = useState(fromYear);
 
   const [chartData, setChartData] = useState([]);
   const [pieChartData, setPieChartData] = useState([]);
+
+  const [name, set_name] = useState('');
+  const [mobilenumber, set_mobilenumber] = useState('');
+  const [email_id, set_email_id] = useState('');
+  const [panNo, set_panNo] = useState('');
+  const [gstNo, set_gstNo] = useState('');
+  const [country, set_country] = useState('');
+  const [username, set_username] = useState('');
+  const [password, set_password] = useState('');
+  const [date_of_join, set_date_of_join] = useState('');
 
 
 
@@ -47,6 +58,7 @@ const userProfile = () => {
   useEffect(() => {
     const fetchData = async () => {
       await getYears();
+      await getusers();
       await getUserGraphDetails(fromMonth, toMonth, fromYear, toYear)
 
     };
@@ -56,32 +68,56 @@ const userProfile = () => {
   }, []);
 
   const getUserGraphDetails = async (fromMonth, toMonth, fromYear, toYear) => {
-      // api call
-  
-      try {
-  
-        const params = {
-          "fromMonth": fromMonth,
-          "toMonth": toMonth,
-          "fromYear": fromYear,
-          "toYear": toYear,
-          "est_id": getEstId()
-        }
-        const response = await getUserGraph(params);
-        setUserGraphData(response.total)
-        settotalepf(response.total[1].value)
-        settotalesic(response.total[2].value)
-        settotalclient(response.data_epf.length)
-  
-  
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        // setError('Error fetching data. Please try again.');
-        // setLoading(false);
-      }
-    };
+    // api call
 
-  
+    try {
+
+      const params = {
+        "fromMonth": fromMonth,
+        "toMonth": toMonth,
+        "fromYear": fromYear,
+        "toYear": toYear,
+        "est_id": getEstId()
+      }
+      const response = await getUserGraph(params);
+      setUserGraphData(response.total)
+      settotalepf(response.total[1].value)
+      settotalesic(response.total[2].value)
+      settotalclient(response.data_epf.length)
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // setError('Error fetching data. Please try again.');
+      // setLoading(false);
+    }
+  };
+
+
+  const getusers = async () => {
+    // api call
+
+    try {
+
+      const response = await getUser();
+      setUserData(response);
+      set_name(response.name);
+      set_mobilenumber(response.mobilenumber);
+      set_email_id(response.email_id);
+      set_panNo(response.panNo);
+      set_gstNo(response.gstNo);
+      set_country(response.country);
+      set_username(response.name);
+      set_password(response.name);
+      set_date_of_join(response.createdAt)
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // setError('Error fetching data. Please try again.');
+      // setLoading(false);
+    }
+  };
 
   const getYears = async () => {
     // api call
@@ -115,36 +151,36 @@ const userProfile = () => {
           <h3>User Insights</h3>
         </div>
         <div className="row">
-        <div className='main-cards'>
-          <div className='cardCustom cardprop1'>
-            <div className='card-inner'>
-              <h5>User</h5>
-              <BsFillArchiveFill className='card_icon' />
+          <div className='main-cards'>
+            <div className='cardCustom cardprop1'>
+              <div className='card-inner'>
+                <h5>User</h5>
+                <BsFillArchiveFill className='card_icon' />
+              </div>
+              <h1>{totalclient}</h1>
             </div>
-            <h1>{totalclient}</h1>
-          </div>
-          <div className='cardCustom cardprop2'>
-            <div className='card-inner'>
-              <h5>EPF</h5>
-              <BsFillGrid3X3GapFill className='card_icon' />
+            <div className='cardCustom cardprop2'>
+              <div className='card-inner'>
+                <h5>EPF</h5>
+                <BsFillGrid3X3GapFill className='card_icon' />
+              </div>
+              <h1>{totalepf}</h1>
             </div>
-            <h1>{totalepf}</h1>
-          </div>
-          <div className='cardCustom cardprop3'>
-            <div className='card-inner'>
-              <h5>ESIC</h5>
-              <BsPeopleFill className='card_icon' />
+            <div className='cardCustom cardprop3'>
+              <div className='card-inner'>
+                <h5>ESIC</h5>
+                <BsPeopleFill className='card_icon' />
+              </div>
+              <h1>{totalesic}</h1>
             </div>
-            <h1>{totalesic}</h1>
-          </div>
-          <div className='cardCustom cardprop4'>
-            <div className='card-inner'>
-              <h5>DSC</h5>
-              <BsFillBellFill className='card_icon' />
+            <div className='cardCustom cardprop4'>
+              <div className='card-inner'>
+                <h5>DSC</h5>
+                <BsFillBellFill className='card_icon' />
+              </div>
+              <h1>{totaldsc}/{expiredsc}</h1>
             </div>
-            <h1>{totaldsc}/{expiredsc}</h1>
           </div>
-        </div>
         </div>
         <div className="row">
           <div className="col-sm-2">
@@ -161,226 +197,57 @@ const userProfile = () => {
 
         </div>
 
-        <div className="chartView">
-          <div className='charts'>
-            <ResponsiveContainer width="100%" height="75%">
-              {data && data.length > 0 ? (<BarChart
-                data={data}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <defs>
-                  <linearGradient id="colorPv" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" style={{ stopColor: '#2b6b86', stopOpacity: 1 }} />
-                    <stop offset="100%" style={{ stopColor: '#82ca9d', stopOpacity: 1 }} />
-                  </linearGradient>
-                  <linearGradient id="colorUv" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" style={{ stopColor: '#f7c94c', stopOpacity: 1 }} />
-                    <stop offset="100%" style={{ stopColor: '#f76e6e', stopOpacity: 1 }} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend
-                  payload={[
-                    { id: 'employerCount', type: 'line', color: '#2b6b86', value: 'Employee Count' },
-                    { id: 'challanCount', type: 'line', color: '#f7c94c', value: 'Challan Count' },
-                  ]}
-                  verticalAlign="bottom"
-                />
-                <Bar dataKey="employerCount" fill="url(#colorPv)">
-                  <LabelList dataKey="employerCount" position="top" />
-                </Bar>
-                <Bar dataKey="challanCount" fill="url(#colorUv)">
-                  <LabelList dataKey="challanCount" position="top" />
-                </Bar>
-              </BarChart>) : (
-                <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
-                  No Data Available
-                </div>
-              )}
-            </ResponsiveContainer>
-          <ResponsiveContainer width="100%" height="75%">
-              {data && data.length > 0 ? (<ComposedChart width={730} height={250} data={data}>
-                <defs>
-                  <linearGradient id="colorAmt" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" style={{ stopColor: '#8884d8', stopOpacity: 1 }} />
-                    <stop offset="100%" style={{ stopColor: '#d4c3e0', stopOpacity: 1 }} />
-                  </linearGradient>
-                  <linearGradient id="colorPv" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" style={{ stopColor: '#fcbdb3', stopOpacity: 1 }} />
-                    <stop offset="100%" style={{ stopColor: '#ff6b6b', stopOpacity: 1 }} />
-                  </linearGradient>
-                </defs>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <CartesianGrid stroke="#f5f5f5" />
-                <Area type="monotone" dataKey="amt" fill="url(#colorAmt)" stroke="#8884d8" />
-                <Bar dataKey="" barSize={20} fill="url(#colorPv)" />
-                <Bar dataKey="employerCont" barSize={20} fill="url(#colorPv)" />
-                <Line type="monotone" dataKey="challanCount" stroke="#ff7300" />
-              </ComposedChart>
-              ) : (
-                <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
-                  No Data Available
-                </div>
-              )}
-            </ResponsiveContainer>
+        <div className="row">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title text-left">
+                User Details
+              </h5>
 
+              <div className="row">
+                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <label htmlFor="inputText">First Name</label>
+                  <input type="text" className="form-control rounded-4" required onChange={(e) => handleYearChange(e.target.value)} value={name} />
+                </div>
+                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <label htmlFor="inputEmail">Last Name</label>
+                  <input type="text" className="form-control rounded-4" required onChange={(e) => handleYearChange(e.target.value)} value={name} />
+                </div>
+
+                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <label htmlFor="inputEmail">Email</label>
+                  <input type="text" className="form-control rounded-4" required onChange={(e) => handleYearChange(e.target.value)} value={email_id} />
+                </div>
+                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <label htmlFor="inputText">Mobile</label>
+                  <input type="text" className="form-control rounded-4" required onChange={(e) => handleYearChange(e.target.value)} value={mobilenumber} />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <label htmlFor="inputText">PAN</label>
+                  <input type="text" className="form-control rounded-4" required onChange={(e) => handleYearChange(e.target.value)} value={panNo} />
+                </div>
+                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <label htmlFor="inputEmail">User Name</label>
+                  <input type="text" className="form-control rounded-4" required onChange={(e) => handleYearChange(e.target.value)} value={username} />
+                </div>
+
+                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <label htmlFor="inputEmail">Password</label>
+                  <input type="text" className="form-control rounded-4" required onChange={(e) => handleYearChange(e.target.value)} value={password} />
+                </div>
+                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <label htmlFor="inputText">Date of Joining</label>
+                  <input type="date" className="form-control rounded-4" required onChange={(e) => handleYearChange(e.target.value)} value={date_of_join} />
+                </div>
+              </div>
+
+
+
+
+            </div>
           </div>
-
-          <div className='charts'>
-            <ResponsiveContainer width="100%" height="75%">
-              {pieChartData && pieChartData.length > 0 ? (
-                <PieChart>
-                  <Pie
-                    data={pieChartData}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={100}
-                    fill="#8884d8"
-                    label="value"
-                  >
-                    {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                  <Legend />
-                </PieChart>
-              ) : (
-                <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
-                  No Data Available
-                </div>
-              )}
-            </ResponsiveContainer>
-
-            <ResponsiveContainer width="100%" height="75%">
-              {chartData.length > 0 ? (
-                <BarChart
-                  data={chartData}
-                  margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5,
-                  }}
-                >
-                  <defs>
-                    <linearGradient id="colorTotalBill" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: '#2b6b86', stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: '#82ca9d', stopOpacity: 1 }} />
-                    </linearGradient>
-                    <linearGradient id="colorAmtReceived" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: '#f7c94c', stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: '#f76e6e', stopOpacity: 1 }} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend
-                    payload={[
-                      { id: 'totalbill', type: 'line', color: '#2b6b86', value: 'Total Bill' },
-                      { id: 'totalamtreceived', type: 'line', color: '#f7c94c', value: 'Total Amount Received' },
-                    ]}
-                    verticalAlign="bottom"
-                  />
-                  <Bar dataKey="totalbill" fill="url(#colorTotalBill)">
-                    <LabelList dataKey="totalbill" position="top" />
-                  </Bar>
-                  <Bar dataKey="totalamtreceived" fill="url(#colorAmtReceived)">
-                    <LabelList dataKey="totalamtreceived" position="top" />
-                  </Bar>
-                </BarChart>
-              ) : (
-                <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
-                  No Data Available
-                </div>
-              )}
-            </ResponsiveContainer>
-
-            {/* <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              width={500}
-              height={300}
-              data={data}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="pv" stroke="#fb66c2" activeDot={{ r: 8 }} />
-              <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-            </LineChart>
-          </ResponsiveContainer> */}
-
-          </div>
-
-          {/* <div className='charts'>
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart width={730} height={250} data={data}
-              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-              <defs>
-                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#fb66c2" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#fb66c2" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <CartesianGrid strokeDasharray="3 3" />
-              <Tooltip />
-              <Area type="monotone" dataKey="uv" stroke="#fb66c2" fillOpacity={1} fill="url(#colorUv)" />
-              <Area type="monotone" dataKey="pv" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
-            </AreaChart>
-          </ResponsiveContainer>
-
-          <ResponsiveContainer width="100%" height="100%">
-            <ScatterChart
-              width={730}
-              height={250}
-              margin={{
-                top: 20,
-                right: 20,
-                bottom: 10,
-                left: 10,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="value" type="number" name="stature" unit="cm" />
-              <YAxis dataKey="value" type="number" name="weight" unit="kg" />
-              <ZAxis dataKey="z" type="number" range={[64, 144]} name="score" unit="km" />
-              <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-              <Legend />
-              <Scatter name="A school" data={data1} fill="#8884d8" />
-              <Scatter name="B school" data={data2} fill="#82ca9d" />
-            </ScatterChart>
-          </ResponsiveContainer>
-
-        </div> */}
         </div>
 
       </main>
