@@ -5,9 +5,10 @@ import { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill }
   from 'react-icons/bs'
 import { BarChart, PieChart, Pie, AreaChart, Area, Bar, ComposedChart, ScatterChart, Scatter, ZAxis, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, LabelList, Cell }
   from 'recharts';
-import { getBillGraph, getCardsCount, getGraph, getYearsAndMonth } from "../../api/services";
+import { getBillGraph, getCardsCount, getGraph, getUserGraph, getYearsAndMonth } from "../../api/services";
 import { useState, useEffect } from "react"
 import moment from "moment";
+import { getEstId } from "../Auth/authToken";
 
 
 const userProfile = () => {
@@ -28,6 +29,8 @@ const userProfile = () => {
   const [esicchallancreated, setesicchallancreated] = useState('')
   const [totaldsc, settotaldsc] = useState('')
   const [expiredsc, setexpiredsc] = useState('')
+  const [userGraphData, setUserGraphData] = useState([]);
+  
 
   const fromMonth = 3
   const toMonth = 4
@@ -44,9 +47,7 @@ const userProfile = () => {
   useEffect(() => {
     const fetchData = async () => {
       await getYears();
-      await getAll();
-      await getGraphDetails(fromMonth, toMonth, fromYear, toYear)
-      await getBillDetailsForGraph(fromMonth, toMonth, fromYear, toYear)
+      await getUserGraphDetails(fromMonth, toMonth, fromYear, toYear)
 
     };
 
@@ -54,88 +55,33 @@ const userProfile = () => {
 
   }, []);
 
-  const getAll = async () => {
-    // api call
-
-    try {
-      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-      const response = await getCardsCount();
-      if (response.status == true) {
-        settotalclient(response.data.totalClient)
-        settotalepf(response.data.totalepf)
-        setepfchallancreated(response.data.epfchallancreated)
-        settotalesic(response.data.totalesic)
-        setesicchallancreated(response.data.esicchallancreated)
-        settotaldsc(response.data.totaldsc)
-        setexpiredsc(response.data.expiredsc)
+  const getUserGraphDetails = async (fromMonth, toMonth, fromYear, toYear) => {
+      // api call
+  
+      try {
+  
+        const params = {
+          "fromMonth": fromMonth,
+          "toMonth": toMonth,
+          "fromYear": fromYear,
+          "toYear": toYear,
+          "est_id": getEstId()
+        }
+        const response = await getUserGraph(params);
+        setUserGraphData(response.total)
+        settotalepf(response.total[1].value)
+        settotalesic(response.total[2].value)
+        settotalclient(response.data_epf.length)
+  
+  
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        // setError('Error fetching data. Please try again.');
+        // setLoading(false);
       }
+    };
 
-
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      // setError('Error fetching data. Please try again.');
-      // setLoading(false);
-    }
-  };
-
-  const getGraphDetails = async (fromMonth, toMonth, fromYear, toYear) => {
-    // api call
-
-    try {
-
-      const params = {
-        "fromMonth": fromMonth,
-        "toMonth": toMonth,
-        "fromYear": fromYear,
-        "toYear": toYear
-      }
-      const response = await getGraph(params);
-      setData(response.data)
-
-
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      // setError('Error fetching data. Please try again.');
-      // setLoading(false);
-    }
-  };
-
-  const getBillDetailsForGraph = async (fromMonth, toMonth, fromYear, toYear) => {
-    // api call
-
-    try {
-
-      const params = {
-        "fromMonth": fromMonth,
-        "toMonth": toMonth,
-        "fromYear": fromYear,
-        "toYear": toYear
-      }
-      const response = await getBillGraph(params);
-      if (response.status == true) {
-        const Data = response.data.map(item => ({
-          name: item.est_epf_id,
-          totalbill: Number(item.totalbill),
-          totalamtreceived: Number(item.totalamtreceived),
-
-        }));
-        setChartData(Data);
-        setPieChartData(response.total)
-
-      } else {
-        setChartData([]);
-        setPieChartData([])
-      }
-
-
-
-
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      // setError('Error fetching data. Please try again.');
-      // setLoading(false);
-    }
-  };
+  
 
   const getYears = async () => {
     // api call
@@ -164,9 +110,6 @@ const userProfile = () => {
   const colors = ['#2b6b86', '#f76e6e'];
   return (
     <div>
-
-
-
       <main className='main-container' style={{ "marginTop": "50px", "fontSize": "15px", "color": "black" }}>
         <div className='main-title'>
           <h3>User Insights</h3>
@@ -185,14 +128,14 @@ const userProfile = () => {
               <h5>EPF</h5>
               <BsFillGrid3X3GapFill className='card_icon' />
             </div>
-            <h1>{totalepf}/{epfchallancreated}</h1>
+            <h1>{totalepf}</h1>
           </div>
           <div className='cardCustom cardprop3'>
             <div className='card-inner'>
               <h5>ESIC</h5>
               <BsPeopleFill className='card_icon' />
             </div>
-            <h1>{totalesic}/{esicchallancreated}</h1>
+            <h1>{totalesic}</h1>
           </div>
           <div className='cardCustom cardprop4'>
             <div className='card-inner'>
