@@ -29,6 +29,7 @@ import notification from "./components/pages/admin/notification"
 import userProfile from "./components/pages/user/userProfile"
 import EpfWidget from "./components/pages/admin/EPFWidget"
 import EpfWidgetMember from "./components/pages/admin/EPFMember"
+import Calculator from "./components/pages/admin/Calculator"
 
 import test from "./components/pages/admin/AgentLayoutSet"
 import React from "react"
@@ -67,6 +68,7 @@ const AllRoutes = () => {
         <Route path="/auth/dashboard/bill/create/:id" element={React.createElement(billing)} />
         <Route path="/auth/dashboard/EpfWidget" Component={EpfWidget} />
         <Route path="/auth/dashboard/EpfMember" Component={EpfWidgetMember} />
+        <Route path="/auth/dashboard/Calculator" Component={Calculator} />
         <Route path="/auth/dashboard/test" Component={test} />
         
     </Routes>

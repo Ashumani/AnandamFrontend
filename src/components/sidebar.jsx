@@ -337,6 +337,10 @@ const Sidebar = () => {
                     "item": "UAN Member Agent",
                     "path": "/auth/dashboard/EpfMember",
                     "icon": "bi bi-question-circle"
+                },{
+                    "item": "Penalty Calculator",
+                    "path": "/auth/dashboard/Calculator",
+                    "icon": "bi bi-question-circle"
                 },
                 {
                     "item": "Blogs",
