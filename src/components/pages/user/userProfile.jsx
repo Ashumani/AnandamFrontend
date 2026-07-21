@@ -147,11 +147,11 @@ const userProfile = () => {
   return (
     <div>
       <main className='main-container' style={{ "marginTop": "50px", "fontSize": "15px", "color": "black" }}>
-        <div className='main-title'>
+        <div className='userprofile-main-title'>
           <h3>User Insights</h3>
         </div>
         <div className="row">
-          <div className='main-cards'>
+          <div className='userprofile-main-cards'>
             <div className='cardCustom cardprop1'>
               <div className='card-inner'>
                 <h5>User</h5>

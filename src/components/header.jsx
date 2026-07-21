@@ -152,7 +152,11 @@ const Header = () => {
     }
   };
 
-
+// const togglesidebar = () => {
+//     document.body.classList.toggle("toggle-sidebar");
+//     console.log("clicked");
+//     console.log(document.body.className);
+// };
 
 
   return (
@@ -167,7 +171,7 @@ const Header = () => {
             <img className="d-none d-lg-block main_logo" style={{ width: '80%', "maxHeight": "250px" }} src={logo} alt="" />
             {/* <span className="d-none d-lg-block">AnanDam</span> */}
           </a>
-          <i className="bi bi-list toggle-sidebar-btn" onClick={togglesidebar}></i>
+          <i className="bi bi-list toggle-sidebar-btn " onClick={togglesidebar}></i>
         </div>
         {/* <div className="dropdown">
 

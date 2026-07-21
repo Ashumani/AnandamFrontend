@@ -285,11 +285,12 @@ const dashboard = () => {
 
 
       <main className='main-container' style={{ "marginTop": "50px", "fontSize": "15px", "color": "black" }}>
-        <div className='main-title'>
+        <div className='dashboard-main-title'>
           <h3>DASHBOARD</h3>
         </div>
-        <div className="row">
-          <div className='main-cards'>
+         <section className="section">
+          <div className="row">
+          <div className='dashboard-main-cards'>
             <div className='cardCustom cardprop1'>
               <div className='card-inner'>
                 <h5>Clients</h5>
@@ -581,6 +582,8 @@ const dashboard = () => {
           </div>
         </div>
 
+         </section>
+        
       </main>
 
       <div

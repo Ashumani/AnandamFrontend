@@ -1,10 +1,10 @@
-body {
+/* body {
     margin: 0;
     padding: 0;
    
     color: #9e9ea4;
     font-family: 'Montserrat', sans-serif;
-  }
+  } */
   
   .icon {
     vertical-align: middle;
@@ -27,7 +27,7 @@ body {
     cursor: pointer;
   }
   
-  .grid-container {
+  /* .grid-container {
     display: grid;
     grid-template-columns: 260px 1fr 1fr 1fr;
     grid-template-rows: 0.2fr 3fr;
@@ -35,7 +35,7 @@ body {
       'sidebar header header header'
       'sidebar main main main';
     height: 100vh;
-  }
+  } */
   
   /* Header  */
   .header {
@@ -63,7 +63,7 @@ body {
     -webkit-transition: all 0.5s;
   } */
   
-  .sidebar-title {
+  /* .sidebar-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -100,15 +100,10 @@ body {
     text-decoration: none;
     color: #9e9ea4;
   }
-  
+   */
   .sidebar-responsive {
     display: inline !important;
     position: absolute;
-    /*
-      we want the z-index of the sidebar higher so that
-      the charts are not showing over the sidebar 
-      on small screens
-    */
     z-index: 12 !important;
   }
   
@@ -122,15 +117,20 @@ body {
     transition: all 0.3s;
     padding: 20px 20px;
     color: rgba(255, 255, 255, 0.95);
+
+    position: relative;
+    margin-left: 300px;
+    width: calc(100% - 300px);
+    transition: all .3s ease;
   }
   
-  .main-title {
+  .userprofile-main-title {
     display: flex;
     color: #012970;
     justify-content: space-between;
   }
   
-  .main-cards {
+  .userprofile-main-cards {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 20px;
@@ -269,10 +269,7 @@ body {
         'main';
     }
   
-    #sidebar {
-      display: none;
-    }
-  
+
     .menu-icon {
       display: inline;
     }

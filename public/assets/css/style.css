@@ -613,11 +613,11 @@ h6 {
   background-color: #fff;
 }
 
-@media (max-width: 1199px) {
+/* @media (max-width: 1199px) {
   .sidebar {
     left: -300px;
   }
-}
+} */
 
 .sidebar::-webkit-scrollbar {
   width: 5px;
@@ -629,45 +629,60 @@ h6 {
   background-color: #aab7cf;
 }
 
-@media (min-width: 1200px) {
-
-  #main,
-  #footer {
-    margin-left: 300px;
-  }
-}
-
-@media (max-width: 1199px) {
-  .toggle-sidebar .sidebar {
-    left: 0;
-  }
-}
 .main-container{
-  left: 310px;
-  position: relative;
-  transition: all .5s ease;
-  transition: var(--tran-05);
-  width: calc(100% - 310px);
+   display: block;
+    visibility: visible;
+    opacity: 1;
+    position: relative;
+    margin-left: 300px;
+    width: calc(100% - 300px);
+    transition: all .3s ease;
 }
+
 .toggle-sidebar .main-container{
-  left: 10px;
-  position: relative;
-  transition: all .5s ease;
-  transition: var(--tran-05);
-  width: calc(100% - 10px);
+    margin-left: 0;
+    width: 100%;
 }
 
 
-@media (min-width: 1200px) {
+@media (min-width:1200px){
 
-  .toggle-sidebar #main,
-  .toggle-sidebar #footer {
-    margin-left: 0;
-  }
+    body.toggle-sidebar #main,
+    body.toggle-sidebar #footer{
+        margin-left:0;
+    }
 
-  .toggle-sidebar .sidebar {
-    left: -300px;
-  }
+    body.toggle-sidebar .main-container{
+        margin-left:0;
+        width:100%;
+    }
+
+    body.toggle-sidebar .sidebar{
+        left:-300px;
+    }
+    .main-container{
+        margin-left:300px;
+        width:calc(100% - 300px);
+    }
+
+}
+
+@media (max-width:1199px){
+
+    .sidebar{
+        left:-300px;
+    }
+
+    body.toggle-sidebar .sidebar{
+        left:0;
+    }
+
+    .main-container,
+    #main,
+    #footer{
+        margin-left:0 !important;
+        width:100% !important;
+    }
 }
 
 .sidebar-nav {
@@ -1219,11 +1234,12 @@ h6 {
   background: #3e4f6f;
 }
 
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {
   .error-404 img {
     max-width: 50%;
   }
-}
+} */
+
 
 /*--------------------------------------------------------------
 # Footer
@@ -1246,3 +1262,4 @@ h6 {
   font-size: 13px;
   color: #012970;
 }
+

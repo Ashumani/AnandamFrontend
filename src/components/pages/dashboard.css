@@ -1,11 +1,4 @@
-body {
-    margin: 0;
-    padding: 0;
-   
-    color: #9e9ea4;
-    font-family: 'Montserrat', sans-serif;
-  }
-  
+
   .icon {
     vertical-align: middle;
     line-height: 1px;
@@ -27,7 +20,7 @@ body {
     cursor: pointer;
   }
   
-  .grid-container {
+  /* .grid-container {
     display: grid;
     grid-template-columns: 260px 1fr 1fr 1fr;
     grid-template-rows: 0.2fr 3fr;
@@ -35,7 +28,7 @@ body {
       'sidebar header header header'
       'sidebar main main main';
     height: 100vh;
-  }
+  } */
   
   /* Header  */
   .header {
@@ -63,7 +56,7 @@ body {
     -webkit-transition: all 0.5s;
   } */
   
-  .sidebar-title {
+  /* .sidebar-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -100,18 +93,14 @@ body {
     text-decoration: none;
     color: #9e9ea4;
   }
-  
-  .sidebar-responsive {
+   */
+  /* .sidebar-responsive {
     display: inline !important;
     position: absolute;
-    /*
-      we want the z-index of the sidebar higher so that
-      the charts are not showing over the sidebar 
-      on small screens
-    */
+    
     z-index: 12 !important;
   }
-  
+   */
   /* End Sidebar  */
   
   
@@ -122,15 +111,20 @@ body {
     transition: all 0.3s;
     padding: 20px 20px;
     color: rgba(255, 255, 255, 0.95);
+
+    position: relative;
+    margin-left: 300px;
+    width: calc(100% - 300px);
+    transition: all .3s ease;
   }
   
-  .main-title {
+  .dashboard-main-title {
     display: flex;
     color: #012970;
     justify-content: space-between;
   }
   
-  .main-cards {
+  .dashboard-main-cards {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 20px;
@@ -258,51 +252,6 @@ body {
   /* End Main  */
   
   
-  /* Medium <= 992px */
-    
-  @media screen and (max-width: 992px) {
-    .grid-container {
-      grid-template-columns: 1fr;
-      grid-template-rows: 0.2fr 3fr;
-      grid-template-areas:
-        'header'
-        'main';
-    }
-  
-    #sidebar {
-      display: none;
-    }
-  
-    .menu-icon {
-      display: inline;
-    }
-  
-    .sidebar-title > span {
-      display: inline;
-    }
-  }
-  /* Small <= 768px */
-    
-  @media screen and (max-width: 768px) {
-    .main-cards {
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin-bottom: 0;
-    }
-  
-    .charts {
-      grid-template-columns: 1fr;
-      margin-top: 30px;
-    }
-  }
-  
-  /* Extra Small <= 576px */
-  
-  @media screen and (max-width: 576px) {
-    .hedaer-left {
-      display: none;
-    }
-  }
   
   /* Custom Vertical Table Scroller Container */
 .custom-table-vertical-scroller {
