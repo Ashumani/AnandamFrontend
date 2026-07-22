@@ -357,8 +357,8 @@ const dashboard = () => {
         </div>
 
         <div className="chartView">
-          <div className='charts'>
-            <ResponsiveContainer width="100%" height="75%">
+          {/* <div className='charts'> */}
+            <ResponsiveContainer width="100%" height={300}>
               {data && data.length > 0 ? (<BarChart
                 data={data}
                 margin={{
@@ -402,7 +402,7 @@ const dashboard = () => {
                 </div>
               )}
             </ResponsiveContainer>
-            <ResponsiveContainer width="100%" height="75%">
+            <ResponsiveContainer width="100%" height={300}>
               {data && data.length > 0 ? (<ComposedChart width={730} height={250} data={data}>
                 <defs>
                   <linearGradient id="colorAmt" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -431,10 +431,10 @@ const dashboard = () => {
               )}
             </ResponsiveContainer>
 
-          </div>
+          {/* </div> */}
 
-          <div className='charts'>
-            <ResponsiveContainer width="100%" height="75%">
+          {/* <div className='charts'> */}
+            <ResponsiveContainer width="100%" height={300}>
               {pieChartData && pieChartData.length > 0 ? (
                 <PieChart>
                   <Pie
@@ -461,7 +461,7 @@ const dashboard = () => {
               )}
             </ResponsiveContainer>
 
-            <ResponsiveContainer width="100%" height="75%">
+            <ResponsiveContainer width="100%" height={300}>
               {chartData.length > 0 ? (
                 <BarChart
                   data={chartData}
@@ -507,32 +507,11 @@ const dashboard = () => {
               )}
             </ResponsiveContainer>
 
-            {/* <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              width={500}
-              height={300}
-              data={data}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="pv" stroke="#fb66c2" activeDot={{ r: 8 }} />
-              <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-            </LineChart>
-          </ResponsiveContainer> */}
 
-          </div>
+          {/* </div> */}
 
-          <div className='charts'>
-            <ResponsiveContainer width="100%" height="100%">
+          {/* <div className='charts'> */}
+            <ResponsiveContainer width="100%" height={300}>
               <AreaChart width={730} height={250} data={userGraphData}
                 margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                 <defs>
@@ -579,7 +558,7 @@ const dashboard = () => {
                 <Legend />
               </PieChart>
             </ResponsiveContainer>
-          </div>
+          {/* </div> */}
         </div>
 
          </section>

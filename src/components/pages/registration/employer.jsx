@@ -256,50 +256,50 @@ const employer = () => {
                 </h5>
 
                 <div className="row">
-                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
                     <label htmlFor="inputText">EPF No</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setEstEpfId(e.target.value)} value={EstEpfId} />
                   </div>
-                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
                     <label htmlFor="inputEmail">ESIC No</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setEstEsicId(e.target.value)} value={EstEsicId} />
                   </div>
 
-                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
                     <label htmlFor="inputEmail">Establishment Type</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setEstType(e.target.value)} value={EstType} />
                   </div>
-                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
                     <label htmlFor="inputText">Date of Coverage</label>
                     <input type="date" className="form-control rounded-4" required onChange={(e) => setDoc(e.target.value)} value={estDoc} />
                   </div>
                 </div>
 
                 <div className="row">
-                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
                     <label htmlFor="inputPassword">Establishment Name</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setEstName(e.target.value)} value={EstName} />
                   </div>
-                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
                     <label htmlFor="inputEmail">Employer Namee</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setErName(e.target.value)} value={ErName} />
                   </div>
-                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
                     <label htmlFor="inputEmail">Designation</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => set_designation(e.target.value)} value={ErDesignation} />
                   </div>
-                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
                     <label htmlFor="inputEmail">City</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setCity(e.target.value)} value={city} />
                   </div>
                 </div>
 
                 <div className="row">
-                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
                     <label htmlFor="inputText">Email id</label>
                     <input type="email" className="form-control rounded-4" required onChange={(e) => setEmail(e.target.value)} value={Email} />
                   </div>
-                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
                     <label htmlFor="inputPassword">Contact Number</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setMobile(e.target.value)} value={Mobile} />
                   </div>
@@ -307,7 +307,7 @@ const employer = () => {
                     <label htmlFor="inputPassword">Address</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setAddress(e.target.value)} value={Address} />
                   </div>
-                  {/* <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  {/* <div className="col-12 col-md-6 col-lg-3 mb-3">
                     <label htmlFor="inputPassword">Exampted</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => set_is_exampted(e.target.value)} value={is_exampted} />
                   </div> */}
@@ -347,19 +347,19 @@ const employer = () => {
                 {checkedDSC && (
                   <div className="row">
 
-                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                    <div className="col-12 col-md-6 col-lg-3 mb-3">
                       <label htmlFor="inputText">Name On DSC </label>
                       <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_on_name(e.target.value)} value={dsc_on_name} />
                     </div>
-                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                    <div className="col-12 col-md-6 col-lg-3 mb-3">
                       <label htmlFor="inputEmail">Designation</label>
                       <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_designation(e.target.value)} value={dsc_designation} />
                     </div>
-                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                    <div className="col-12 col-md-6 col-lg-3 mb-3">
                       <label htmlFor="inputEmail">Expire Date</label>
                       <input type="date" className="form-control rounded-4" required onChange={(e) => set_dsc_expire(e.target.value)} value={dsc_expire} />
                     </div>
-                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                    <div className="col-12 col-md-6 col-lg-3 mb-3">
                       <label htmlFor="inputText">Mobile</label>
                       <input type="text" className="form-control rounded-4" required onChange={(e) => set_dsc_mobile(e.target.value)} value={dsc_mobile} />
                     </div>
@@ -370,7 +370,7 @@ const employer = () => {
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title text-left">
-                  Retruns Parameter
+                  Returns Parameter
                 </h5>
                 <h5 className="card-title text-left">
                   EPF
@@ -448,7 +448,7 @@ const employer = () => {
 
                 <div className="row">
                   <hr className="mt-3" style={{ width: '98%' }} />
-                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
                     {!isUpdate ? (
                       <button type="button" className="btn btn-outline-secondary rounded-4" onClick={saveErDetails}>
                         Save

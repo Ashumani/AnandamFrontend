@@ -538,55 +538,55 @@ const ecr = () => {
                             <h5 className="card-title text-center"><strong>Generate Bill</strong></h5>
                             <form>
                                 <div className="row">
-                                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                    <div className="col-12 col-md-6 col-lg-3 mb-3">
                                         <label htmlFor="inputText" >Est Id</label>
                                         <input type="text" className="form-control rounded-4" onChange={(e) => setEstId(e.target.value)} value={est_id} />
                                     </div>
-                                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                    <div className="col-12 col-md-6 col-lg-3 mb-3">
                                         <label htmlFor="inputText" >Bill Number</label>
                                         <input type="text" className="form-control rounded-4" onChange={(e) => setBillNumber(e.target.value)} value={bill_number} />
                                     </div>
-                                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                    <div className="col-12 col-md-6 col-lg-3 mb-3">
                                         <button type="button" className="btn btn-outline-primary rounded-4 w-100" style={{ "margin-top": "20px" }} onClick={() => biller(est_id ? est_id : bill_number)}>Get Details</button>
                                     </div>
-                                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                    <div className="col-12 col-md-6 col-lg-3 mb-3">
                                         <button type="button" className="btn btn-outline-primary rounded-4 w-100" style={{ "margin-top": "20px" }} onClick={resetPage}>Reset</button>
                                     </div>
                                 </div>
                             </form>
 
                             <div className="row">
-                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
                                     <label htmlFor="inputText" >Company Name</label>
                                     <input type="text" className="form-control rounded-4" required onChange={(e) => setEstName(e.target.value)} value={est_name} />
                                 </div>
-                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
                                     <label htmlFor="inputText" >Employer Name</label>
                                     <input type="text" className="form-control rounded-4" required onChange={(e) => setErName(e.target.value)} value={er_name} />
                                 </div>
-                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
                                     <label htmlFor="inputText" >Date Of Coverage</label>
                                     <input type="text" className="form-control rounded-4" required onChange={(e) => setDOC(e.target.value)} value={est_doc} />
                                 </div>
-                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
                                     <label htmlFor="inputText" >Address</label>
                                     <input type="text" className="form-control rounded-4" required onChange={(e) => setAddress(e.target.value)} value={est_address} />
                                 </div>
-                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
                                     <label htmlFor="inputText" >From</label>
                                     <input type="month" className="form-control rounded-4" required onChange={(e) => setFromDate(e.target.value)} value={fromDate} />
                                 </div>
-                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
                                     <label htmlFor="inputText" >To</label>
                                     <input type="month" className="form-control rounded-4" required onChange={(e) => setToDate(e.target.value)} value={toDate} />
                                 </div>
-                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
                                     <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-50" style={{ "margin": "22px 5px 10px 10px" }} onClick={() => openModal('exampleModal')}>Next</button>
                                 </div>
-                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
 
                                 </div>
-                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
                                     {!IsUpdate ? (
                                         <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} onClick={addBill}>Save</button>
                                     ) : (
@@ -594,11 +594,11 @@ const ecr = () => {
                                     )}
                                     <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} data-toggle="modal" data-target=".bd-example-modal-xl">Make PDF</button>
                                 </div>
-                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
                                     <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} data-toggle="modal" data-target="#exampleModal">Email PDF</button>
                                     <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} data-toggle="modal" data-target="#exampleModal">Print PDF</button>
                                 </div>
-                                <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
                                     <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-50" style={{ "margin": "5px" }} data-toggle="modal" data-target="receivedModal" onClick={() => openModal("receivedModal")} disabled={!IsUpdate}>Received</button>
                                 </div>
                             </div>

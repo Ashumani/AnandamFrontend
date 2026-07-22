@@ -5,6 +5,7 @@ import { Navigate } from 'react-router-dom';
 
 // alert(window.location.host)
 const BASE_URL = window.location.host == 'localhost:5173' ? 'http://localhost:4001' : 'http://192.168.1.200:4001';
+// const BASE_URL = window.location.host == 'localhost:5173' ? 'http://localhost:4001' : 'http://10.224.233.216:4001';
 // const BASE_URL = "http://192.168.1.14:4001"
 // const BASE_URL = "https://anandam-bckend.vercel.app"
 const authToken = getAuthToken()

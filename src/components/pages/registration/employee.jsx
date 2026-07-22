@@ -623,12 +623,12 @@ const employee = () => {
             <div className="card">
               <div className="card-body">
                 <div className="row">
-                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
                     <button type="button" className="btn btn-primary rounded-4" onClick={openModal}>
                       Add Employee
                     </button>
                   </div>
-                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
                     <input className="form-control rounded-4" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
                   </div>
                   <div className="col-sm-2 col-md-2 col-lg-2 col-2">
@@ -642,7 +642,7 @@ const employee = () => {
                     </button>
                   </div>
 
-                  <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
                     <input type="text" className="form-control rounded-4" placeholder="Search" onChange={(e) => set_search_emp(e.target.value)} onBlur={searchEmp} />
                   </div>
                 </div>

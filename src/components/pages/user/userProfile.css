@@ -235,7 +235,7 @@
     font-size: 25px;
   }
   
-  .charts {
+  .user-charts {
     display: grid;
     grid-template-columns: 0.5fr 0.5fr;
     gap: 5px;
@@ -245,7 +245,7 @@
   }
   
 
-    .chartView {
+    .user-chartView {
       /* left: 310px; */
       position: relative;
       transition: all .5s ease;
@@ -287,7 +287,7 @@
       margin-bottom: 0;
     }
   
-    .charts {
+    .user-charts {
       grid-template-columns: 1fr;
       margin-top: 30px;
     }

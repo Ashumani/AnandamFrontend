@@ -929,7 +929,7 @@ const summary = () => {
                 <div className="card-body">
                   {/* <h5 className="card-title text-center"><strong>Summary</strong></h5> */}
                   <div className="row">
-                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                    <div className="col-12 col-md-6 col-lg-3 mb-3">
                       <select
                         className="form-select rounded-4"
                         aria-label="Default select example" value={selectedMonth} onChange={handleMonthChange}
@@ -941,7 +941,7 @@ const summary = () => {
                       </select>
 
                     </div>
-                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                    <div className="col-12 col-md-6 col-lg-3 mb-3">
                       <select
                         className="form-select rounded-4"
                         aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
@@ -952,12 +952,12 @@ const summary = () => {
                         ))}
                       </select>
                     </div>
-                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                    <div className="col-12 col-md-6 col-lg-3 mb-3">
                       <button type="button" className="btn btn-outline-primary btn-block rounded-4 rounded-4" onClick={() => { getReturnByMonth(1, selectedMonth, selectedYear) }} >Next
                         {/* <Link to="/auth/dashboard/monthlypf"><span >Next</span></Link> */}
                       </button>
                     </div>
-                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                    <div className="col-12 col-md-6 col-lg-3 mb-3">
                       <button
                         type="file"
                         className="btn btn-outline-primary btn-block rounded-4 rounded-4" onClick={() => { openModal('importReturn') }}
@@ -972,10 +972,10 @@ const summary = () => {
 
                       <h5 >EPF Summary </h5>
                     </div>
-                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                    <div className="col-12 col-md-6 col-lg-3 mb-3">
 
                     </div>
-                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                    <div className="col-12 col-md-6 col-lg-3 mb-3">
                       <select
                         className="form-select rounded-4"
                         aria-label="Default select example" value={selectedSubId} onChange={handleSelectSubIdChange}
@@ -986,7 +986,7 @@ const summary = () => {
                         ))}
                       </select>
                     </div>
-                    <div className="col-sm-3 col-md-3 col-lg-3 col-3">
+                    <div className="col-12 col-md-6 col-lg-3 mb-3">
                       <select
                         className="form-select rounded-4"
                         aria-label="Default select example" value={selectedReturnYear} onChange={handleReturnYearChange}

@@ -116,6 +116,7 @@
     margin-left: 300px;
     width: calc(100% - 300px);
     transition: all .3s ease;
+    gap:20px;
   }
   
   .dashboard-main-title {
@@ -129,6 +130,40 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 20px;
     margin: 15px 0;
+}
+
+@media (max-width:992px){
+    .dashboard-main-cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media (max-width:576px){
+    .dashboard-main-cards{
+        grid-template-columns:1fr;
+    }
+}
+@media (max-width: 992px) {
+    .charts {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .chartView {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .chartView {
+        grid-template-columns: 1fr !important;
+    }
+
+    .charts {
+        width: 100%;
+    }
 }
 
 .cardCustom {
@@ -229,25 +264,20 @@
     font-size: 25px;
   }
   
-  .charts {
+.chartView {
     display: grid;
-    grid-template-columns: 0.5fr 0.5fr;
-    gap: 5px;
-    margin-top: 0px;
-    height: 300px;
-    margin-left: -20px;
-  }
-  
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 100%;
+    margin: 20px 0;
+}
 
-    .chartView {
-      /* left: 310px; */
-      position: relative;
-      transition: all .5s ease;
-      transition: var(--tran-05);
-      width: calc(100% );
-      height: 70%;
-      margin: 20px;
-  }
+.charts {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    width: 100%;
+}
   
   /* End Main  */
   
