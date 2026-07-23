@@ -105,7 +105,7 @@ const salary = () => {
         set_ee_gross_wages(userData.data.ee_gross_wages);
         set_ee_epf_wages(userData.data.ee_epf_wages);
         set_isDisabled(false)
-      }else {
+      } else {
         Swal.fire({
           position: 'top-right',
           icon: 'error',
@@ -405,7 +405,7 @@ const salary = () => {
   };
 
   const calculation = async (param) => {
-    if(param == 'rate'){
+    if (param == 'rate') {
       set_ee_basic(ee_rate * ee_days)
     }
     const pf = (parseInt(ee_basic) + parseInt(ee_da)) * 12 / 100
@@ -578,7 +578,7 @@ const salary = () => {
           <section className="section">
             <br />
             <div className="row">
-              <div className="col-sm">
+              <div className="col-12 col-md-6 col-lg-3 mb-3">
                 <select
                   className="form-select rounded-4"
                   aria-label="Default select example" value={selectedMonth} onChange={handleMonthChange}
@@ -589,7 +589,7 @@ const salary = () => {
                   ))}
                 </select>
               </div>
-              <div className="col-sm">
+              <div className="col-12 col-md-6 col-lg-3 mb-3">
                 <select
                   className="form-select rounded-4"
                   aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
@@ -600,15 +600,15 @@ const salary = () => {
                   ))}
                 </select>
               </div>
-              <div className="col-sm-2">
-                <button type="button" className="btn btn-outline-primary btn-block rounded-4" onClick={() => { GetSalaryByMonth(1) }} >Next
+              <div className="col-12 col-md-6 col-lg-3 mb-3">
+                <button type="button" className="btn btn-outline-primary w-100 rounded-4" onClick={() => { GetSalaryByMonth(1) }} >Next
                   {/* <Link to="/auth/dashboard/monthlypf"><span >Next</span></Link> */}
                 </button>
               </div>
-              <div className="col-sm-2">
+              <div className="col-12 col-md-6 col-lg-3 mb-3">
                 <button
                   type="file"
-                  className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#importReturn"
+                  className="btn btn-outline-primary w-100 rounded-4" data-toggle="modal" data-target="#importReturn"
                 >
                   Import
                 </button>
@@ -617,7 +617,7 @@ const salary = () => {
             </div>
 
             {/* return success or  failure msg */}
-          
+
             {/* Import Salary Return Model */}
             <div className="modal fade" id="importReturn" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div className="modal-dialog" role="document">
@@ -639,70 +639,74 @@ const salary = () => {
               </div>
             </div>
             <h5 className="mt-4">Salary Summary</h5>
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">Sn</th>
-                  <th scope="col">MM-YY</th>
-                  <th scope="col">EE</th>
-                  <th scope="col">Rate</th>
-                  <th scope="col">Basic</th>
-                  <th scope="col">DA</th>
-                  <th scope="col">HRA</th>
-                  <th scope="col">Others</th>
-                  <th scope="col">No of Days</th>
-                  <th scope="col">OT</th>
-                  <th scope="col">Gross</th>
-                  <th scope="col">PT</th>
-                  <th scope="col">PF</th>
-                  <th scope="col">ESIC</th>
-                  <th scope="col">Adv</th>
-                  <th scope="col">TDS</th>
-                  <th scope="col">MSWF</th>
-                  <th scope="col">Tot Deduct.</th>
-                  <th scope="col">Net Pay</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {employeeData.map((employee, index) => (
-                  <tr key={index}>
-                    <th scope="row">{index}</th>
-                    <td>{employee.month}-{employee.year}</td>
-                    <td>{employee.totalee}</td>
-                    <td>{employee.totalgross}</td>
-                    <td>{employee.totalbasic}</td>
-                    <td>{employee.totalda}</td>
-                    <td>{employee.totalhra}</td>
-                    <td>{employee.totalothers}</td>
-                    <td>{employee.totalno_of_days}</td>
-                    <td>{employee.totalot}</td>
-                    <td>{employee.totalgross}</td>
-                    <td>{employee.totalpt}</td>
-                    <td>{employee.totalpf}</td>
-                    <td>{employee.totalesic}</td>
-                    <td>{employee.totaladv}</td>
-                    <td>{employee.totaltds}</td>
-                    <td>{employee.totalmswf}</td>
-                    <td>{employee.totaldeduction}</td>
-                    <td>{employee.totalnetpay}</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <button className="btn btn-light" onClick={() => { ViewSalaryByMonth(1, employee.month, employee.year) }}>
-                          <i className="bi bi-eye text-info"></i>
-                        </button>
-                        <button className="btn btn-light mx-1" onClick={() => { ViewSalaryByMonth(1, employee.month, employee.year) }}>
-                          <i className="bi bi-pencil-fill text-info"></i>
-                        </button>
-                        <button className="btn btn-light" disabled>
-                          <i className="bi bi-trash text-danger"></i>
-                        </button>
-                      </div>
-                    </td>
+            <div className="table-responsive mt-2">
+
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Sn</th>
+                    <th scope="col">MM-YY</th>
+                    <th scope="col">EE</th>
+                    <th scope="col">Rate</th>
+                    <th scope="col">Basic</th>
+                    <th scope="col">DA</th>
+                    <th scope="col">HRA</th>
+                    <th scope="col">Others</th>
+                    <th scope="col">No of Days</th>
+                    <th scope="col">OT</th>
+                    <th scope="col">Gross</th>
+                    <th scope="col">PT</th>
+                    <th scope="col">PF</th>
+                    <th scope="col">ESIC</th>
+                    <th scope="col">Adv</th>
+                    <th scope="col">TDS</th>
+                    <th scope="col">MSWF</th>
+                    <th scope="col">Tot Deduct.</th>
+                    <th scope="col">Net Pay</th>
+                    <th scope="col">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {employeeData.map((employee, index) => (
+                    <tr key={index}>
+                      <th scope="row">{index}</th>
+                      <td>{employee.month}-{employee.year}</td>
+                      <td>{employee.totalee}</td>
+                      <td>{employee.totalgross}</td>
+                      <td>{employee.totalbasic}</td>
+                      <td>{employee.totalda}</td>
+                      <td>{employee.totalhra}</td>
+                      <td>{employee.totalothers}</td>
+                      <td>{employee.totalno_of_days}</td>
+                      <td>{employee.totalot}</td>
+                      <td>{employee.totalgross}</td>
+                      <td>{employee.totalpt}</td>
+                      <td>{employee.totalpf}</td>
+                      <td>{employee.totalesic}</td>
+                      <td>{employee.totaladv}</td>
+                      <td>{employee.totaltds}</td>
+                      <td>{employee.totalmswf}</td>
+                      <td>{employee.totaldeduction}</td>
+                      <td>{employee.totalnetpay}</td>
+                      <td>
+                        <div className="d-flex align-items-center">
+                          <button className="btn btn-light" onClick={() => { ViewSalaryByMonth(1, employee.month, employee.year) }}>
+                            <i className="bi bi-eye text-info"></i>
+                          </button>
+                          <button className="btn btn-light mx-1" onClick={() => { ViewSalaryByMonth(1, employee.month, employee.year) }}>
+                            <i className="bi bi-pencil-fill text-info"></i>
+                          </button>
+                          <button className="btn btn-light" disabled>
+                            <i className="bi bi-trash text-danger"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
           </section>
         </div>
       ) : (
@@ -748,7 +752,7 @@ const salary = () => {
                   className="btn btn-outline-primary btn-block rounded-4" onClick={SummaryBack}
                 >
                   BACK
-                </button> 
+                </button>
               </div>
               {/* <div className="col-md-4">
               <input className="form-control rounded-3" type="file" id="formFile" />
@@ -763,7 +767,7 @@ const salary = () => {
                 <div className="modal-content">
                   <div className="modal-header bg-primary">
                     <h5 className="modal-title text-white" id="exampleModalLabel">Salary Return Filing For {selectedMonth}-{selectedYear}</h5>
-                    <button type="button" className="close text-white"  onClick={closeModal}>
+                    <button type="button" className="close text-white" onClick={closeModal}>
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -827,35 +831,35 @@ const salary = () => {
                           </div>
 
                           <div className="row">
-                          <div className="col-sm">
+                            <div className="col-sm">
                               <label htmlFor="inputPassword">Days</label>
                               <input type="number" className="form-control rounded-3" disabled={isDisabled} id="days" onChange={(e) => set_ee_days(e.target.value)} value={ee_days} />
                             </div>
-                            
+
                             <div className="col-sm">
                               <label htmlFor="inputPassword">Rate</label>
-                              <input type="number" className="form-control rounded-3" disabled={isDisabled} onChange={(e) => set_ee_rate(e.target.value)} onBlur={ () => calculation('rate')} value={ee_rate} />
+                              <input type="number" className="form-control rounded-3" disabled={isDisabled} onChange={(e) => set_ee_rate(e.target.value)} onBlur={() => calculation('rate')} value={ee_rate} />
                             </div>
-                            
+
                             <div className="col-sm">
                               <label htmlFor="inputPassword">Basic</label>
-                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="basic" onBlur={ () => calculation('basic')} onChange={(e) => { set_ee_basic(e.target.value) }} value={ee_basic} />
+                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="basic" onBlur={() => calculation('basic')} onChange={(e) => { set_ee_basic(e.target.value) }} value={ee_basic} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">DA</label>
-                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="da" onBlur={ () => calculation('da')} onChange={(e) => { set_ee_da(e.target.value) }} value={ee_da} />
+                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="da" onBlur={() => calculation('da')} onChange={(e) => { set_ee_da(e.target.value) }} value={ee_da} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">HRA</label>
-                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="hra" onBlur={ () => calculation('hra')} onChange={(e) => { set_ee_hra(e.target.value) }} value={ee_hra} />
+                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="hra" onBlur={() => calculation('hra')} onChange={(e) => { set_ee_hra(e.target.value) }} value={ee_hra} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">Others</label>
-                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="others" onBlur={ () => calculation('others')} onChange={(e) => { set_ee_others(e.target.value) }} value={ee_others} />
+                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="others" onBlur={() => calculation('others')} onChange={(e) => { set_ee_others(e.target.value) }} value={ee_others} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputPassword">OT</label>
-                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="ot" onBlur={ () => calculation('ot')} onChange={(e) => { set_ee_ot(e.target.value); }} value={ee_ot} />
+                              <input type="number" className="form-control rounded-3" disabled={isDisabled} id="ot" onBlur={() => calculation('ot')} onChange={(e) => { set_ee_ot(e.target.value); }} value={ee_ot} />
                             </div>
                             <div className="col-sm">
                               <label htmlFor="inputColor">Gross Wages</label>
@@ -879,7 +883,7 @@ const salary = () => {
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">Adv</label>
-                              <input type="number" className="form-control rounded-3" disabled={isDisabled}  onChange={(e) => set_ee_adv(e.target.value)} value={ee_adv} />
+                              <input type="number" className="form-control rounded-3" disabled={isDisabled} onChange={(e) => set_ee_adv(e.target.value)} value={ee_adv} />
                             </div>
                             <div className="col mb-3">
                               <label htmlFor="inputPassword">TDS</label>
@@ -938,7 +942,7 @@ const salary = () => {
             </div>
 
 
-            
+
             {/* Import EPF Return Model */}
             <div className="modal fade" id="importReturn" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div className="modal-dialog" role="document">
@@ -962,70 +966,73 @@ const salary = () => {
               </div>
             </div>
             <h5 className="mt-4">Salary For Month {selectedMonth}-{selectedYear}</h5>
-            <table className="table table-striped" id="tableToExport">
-              <thead>
-                <tr>
-                  <th scope="col">Sn</th>
-                  <th scope="col">UAN</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Rate</th>
-                  <th scope="col">Basic</th>
-                  <th scope="col">DA</th>
-                  <th scope="col">HRA</th>
-                  <th scope="col">Others</th>
-                  <th scope="col">No of Days</th>
-                  <th scope="col">OT</th>
-                  <th scope="col">Gross</th>
-                  <th scope="col">PT</th>
-                  <th scope="col">PF</th>
-                  <th scope="col">ESIC</th>
-                  <th scope="col">Adv</th>
-                  <th scope="col">TDS</th>
-                  <th scope="col">MSWF</th>
-                  <th scope="col">Tot Deduct.</th>
-                  <th scope="col">Net Pay</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {employeeData.map((employee, index) => (
-                  <tr key={index}>
-                    <th scope="row">{index}</th>
-                    <th scope="row">{employee.uan}</th>
-                    <td>{employee.ee_name}</td>
-                    <td>{employee.rate}</td>
-                    <td>{employee.basic}</td>
-                    <td>{employee.da}</td>
-                    <td>{employee.hra}</td>
-                    <td>{employee.others}</td>
-                    <td>{employee.no_of_days}</td>
-                    <td>{employee.ot}</td>
-                    <td>{employee.gross}</td>
-                    <td>{employee.pt}</td>
-                    <td>{employee.pf}</td>
-                    <td>{employee.esic}</td>
-                    <td>{employee.adv}</td>
-                    <td>{employee.tds}</td>
-                    <td>{employee.mswf}</td>
-                    <td>{employee.deduction}</td>
-                    <td>{employee.netpay}</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <button className="btn btn-light" onClick={() => { GetSalaryById(employee.id) }}>
-                          <i className="bi bi-eye text-info"></i>
-                        </button>
-                        <button className="btn btn-light mx-1" onClick={() => { GetSalaryById(employee.id) }}>
-                          <i className="bi bi-pencil-fill text-info"></i>
-                        </button>
-                        <button className="btn btn-light" disabled>
-                          <i className="bi bi-trash text-danger"></i>
-                        </button>
-                      </div>
-                    </td>
+            <div className="table-responsive mt-2">
+              <table className="table table-striped" id="tableToExport">
+                <thead>
+                  <tr>
+                    <th scope="col">Sn</th>
+                    <th scope="col">UAN</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Rate</th>
+                    <th scope="col">Basic</th>
+                    <th scope="col">DA</th>
+                    <th scope="col">HRA</th>
+                    <th scope="col">Others</th>
+                    <th scope="col">No of Days</th>
+                    <th scope="col">OT</th>
+                    <th scope="col">Gross</th>
+                    <th scope="col">PT</th>
+                    <th scope="col">PF</th>
+                    <th scope="col">ESIC</th>
+                    <th scope="col">Adv</th>
+                    <th scope="col">TDS</th>
+                    <th scope="col">MSWF</th>
+                    <th scope="col">Tot Deduct.</th>
+                    <th scope="col">Net Pay</th>
+                    <th scope="col">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {employeeData.map((employee, index) => (
+                    <tr key={index}>
+                      <th scope="row">{index}</th>
+                      <th scope="row">{employee.uan}</th>
+                      <td>{employee.ee_name}</td>
+                      <td>{employee.rate}</td>
+                      <td>{employee.basic}</td>
+                      <td>{employee.da}</td>
+                      <td>{employee.hra}</td>
+                      <td>{employee.others}</td>
+                      <td>{employee.no_of_days}</td>
+                      <td>{employee.ot}</td>
+                      <td>{employee.gross}</td>
+                      <td>{employee.pt}</td>
+                      <td>{employee.pf}</td>
+                      <td>{employee.esic}</td>
+                      <td>{employee.adv}</td>
+                      <td>{employee.tds}</td>
+                      <td>{employee.mswf}</td>
+                      <td>{employee.deduction}</td>
+                      <td>{employee.netpay}</td>
+                      <td>
+                        <div className="d-flex align-items-center">
+                          <button className="btn btn-light" onClick={() => { GetSalaryById(employee.id) }}>
+                            <i className="bi bi-eye text-info"></i>
+                          </button>
+                          <button className="btn btn-light mx-1" onClick={() => { GetSalaryById(employee.id) }}>
+                            <i className="bi bi-pencil-fill text-info"></i>
+                          </button>
+                          <button className="btn btn-light" disabled>
+                            <i className="bi bi-trash text-danger"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
           </section>
         </div>
       )}

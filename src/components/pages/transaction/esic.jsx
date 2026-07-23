@@ -776,11 +776,11 @@ const esic = () => {
         </div>
         <section className="section">
           <br />
-          <div className="row">
+          <div className="row g-3">
             <div className="card">
               <div className="card-body">
-                <div className="row">
-                  <div className="col-sm-3 col-md-3 col-lg-4 col-3">
+                <div className="row g-3">
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
                     <select
                       className="form-select rounded-4"
                       aria-label="Default select example" value={selectedMonth} onChange={handleMonthChange}
@@ -791,7 +791,7 @@ const esic = () => {
                       ))}
                     </select>
                   </div>
-                  <div className="col-sm-3 col-md-3 col-lg-4 col-3">
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
                     <select
                       className="form-select rounded-4"
                       aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
@@ -802,15 +802,14 @@ const esic = () => {
                       ))}
                     </select>
                   </div>
-                  <div className="col-sm-2 col-md-3 col-lg-2 col-2">
-                    <button type="button" className="btn btn-outline-primary btn-block rounded-4" onClick={() => showEsicReturnPage(selectedMonth, selectedYear)}  >Next
-                      {/* <Link to="/auth/dashboard/monthlypf"><span >Next</span></Link> */}
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
+                    <button type="button" className="btn btn-outline-primary w-100 rounded-4" onClick={() => showEsicReturnPage(selectedMonth, selectedYear)}  >Next
                     </button>
                   </div>
-                  <div className="col-sm-2 col-md-3 col-lg-2 col-2">
+                  <div className="col-12 col-md-6 col-lg-3 mb-3">
                     <button
                       type="file"
-                      className="btn btn-outline-primary btn-block rounded-4" onClick={() => { openModal('importReturn') }}
+                      className="btn btn-outline-primary w-100 rounded-4" onClick={() => { openModal('importReturn') }}
                     >
                       Import
                     </button>
@@ -820,64 +819,67 @@ const esic = () => {
 
 
               <h5 className="mt-4">ESIC Return</h5>
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">Sn</th>
-                    <th scope="col">MM-YY</th>
-                    <th scope="col">No Of EE</th>
-                    <th scope="col">Gross</th>
-                    <th scope="col">EE Share</th>
-                    <th scope="col">ER Share</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {employeeData.map((employee, index) => (
-                    <tr key={index}>
-                      <th scope="row">{index + 1}</th>
-                      <td>{employee.month}-{employee.year}</td>
-                      <td>{employee.numofee}</td>
-
-                      <td>{employee.gross_wages}</td>
-
-                      <td>{employee.ee_share}</td>
-                      <td>{employee.er_share}</td>
-
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <button className="btn btn-light" onClick={() => { setMonthYearForReports(employee.month, employee.year) }}>
-                            <i className="bi bi-eye text-info"></i>
-
-                          </button>
-                          <button
-                            className="btn btn-light mx-1"
-                            onClick={() => showEsicReturnPage(employee.month, employee.year)}
-                          >
-                            <i className="bi bi-pencil-fill text-info"></i>
-                          </button>
-                          <button
-                            className="btn btn-light"
-
-                          >
-                            <i className="bi bi-trash text-danger" onClick={() => deleteReturnByMonthAndYear( employee.month, employee.year)}></i>
-                          </button>
-
-                        </div>
-                      </td>
+              <div className="table-responsive mt-2">
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">Sn</th>
+                      <th scope="col">MM-YY</th>
+                      <th scope="col">No Of EE</th>
+                      <th scope="col">Gross</th>
+                      <th scope="col">EE Share</th>
+                      <th scope="col">ER Share</th>
+                      <th scope="col">Action</th>
                     </tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <th id="total" colSpan="3">Total :</th>
-                    <td>{totalgross}</td>
-                    <td>{totalEEShare}</td>
-                    <td>{totalERShare}</td>
-                    <td></td>
-                  </tr>
-                </tfoot>
-              </table>
+                  </thead>
+                  <tbody>
+                    {employeeData.map((employee, index) => (
+                      <tr key={index}>
+                        <th scope="row">{index + 1}</th>
+                        <td>{employee.month}-{employee.year}</td>
+                        <td>{employee.numofee}</td>
+
+                        <td>{employee.gross_wages}</td>
+
+                        <td>{employee.ee_share}</td>
+                        <td>{employee.er_share}</td>
+
+                        <td>
+                          <div className="d-flex align-items-center">
+                            <button className="btn btn-light" onClick={() => { setMonthYearForReports(employee.month, employee.year) }}>
+                              <i className="bi bi-eye text-info"></i>
+
+                            </button>
+                            <button
+                              className="btn btn-light mx-1"
+                              onClick={() => showEsicReturnPage(employee.month, employee.year)}
+                            >
+                              <i className="bi bi-pencil-fill text-info"></i>
+                            </button>
+                            <button
+                              className="btn btn-light"
+
+                            >
+                              <i className="bi bi-trash text-danger" onClick={() => deleteReturnByMonthAndYear(employee.month, employee.year)}></i>
+                            </button>
+
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th id="total" colSpan="3">Total :</th>
+                      <td>{totalgross}</td>
+                      <td>{totalEEShare}</td>
+                      <td>{totalERShare}</td>
+                      <td></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+
               {showReport && (
                 <Report month={reportMonth} year={reportYear} onClose={() => setShowReport(false)} />
               )}
@@ -914,35 +916,35 @@ const esic = () => {
         </div>
         <section className="section">
           <br />
-          <div className="row">
+          <div className="row g-3">
             <div className="card">
               <div className="card-body">
-                <div className="row">
-                  <div className="col-sm-2 col-md-2 col-lg-2 col-2">
-                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 " onClick={() => { openModal('exampleModal') }}>
+                <div className="row g-3">
+                  <div className="col-12 col-sm-6 col-md-4 col-lg-2">
+                    <button type="button" className="btn btn-outline-primary w-100 rounded-4 rounded-4 " onClick={() => { openModal('exampleModal') }}>
                       Add ({selectedMonth}-{selectedYear})
                     </button>
                   </div>
-                  <div className="col-sm-2 col-md-2 col-lg-2 col-2">
+                  <div className="col-12 col-sm-6 col-md-4 col-lg-2">
                     <button
                       type="file"
-                      className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#importReturn"
+                      className="btn btn-outline-primary w-100 rounded-4 rounded-4" data-toggle="modal" data-target="#importReturn"
                     >
                       Import
                     </button>
                   </div>
-                  <div className="col-sm-2 col-md-2 col-lg-2 col-2">
+                  <div className="col-12 col-sm-6 col-md-4 col-lg-2">
                     <button
                       type="button"
-                      className="btn btn-outline-primary btn-block rounded-4" onClick={() => downloadTemplates()}
+                      className="btn btn-outline-primary w-100 rounded-4 rounded-4" onClick={() => downloadTemplates()}
                     >
                       Export
                     </button>
                   </div>
-                  <div className="col-sm-2 col-md-2 col-lg-2 col-2">
+                  <div className="col-12 col-sm-6 col-md-4 col-lg-2">
                     <button
                       type="button"
-                      className="btn btn-outline-primary btn-block rounded-4" onClick={showEsicSummary}
+                      className="btn btn-outline-primary w-100 rounded-4 rounded-4" onClick={showEsicSummary}
                     >
                       BACK
                     </button>
@@ -956,7 +958,8 @@ const esic = () => {
           </div>
 
           <h5 className="mt-4">ESIC Return For Month {selectedMonth}-{selectedYear}</h5>
-          <table className="table table-striped">
+          <div className="table-responsive mt-2">
+ <table className="table table-striped">
             <thead>
               <tr>
                 <th scope="col">Sn</th>
@@ -1091,6 +1094,8 @@ const esic = () => {
               Next
             </button>
           </div>
+          </div>
+         
 
 
           {/* Add Epf Return Model */}
@@ -1106,11 +1111,11 @@ const esic = () => {
                   </button>
                 </div>
                 <div className="modal-body text-dark">
-                  <div className="row">
+                  <div className="row g-3">
                     <div className="col-lg-12">
 
                       <form>
-                        <div className="row">
+                        <div className="row g-3">
                           <div className="col-md-4">
                             <input type="number" className="form-control rounded-4" placeholder="Enter ESIC Number" onChange={(e) => set_search_esic(e.target.value)} value={search_esic} />
                           </div>
@@ -1119,7 +1124,7 @@ const esic = () => {
                           </div>
 
                         </div>
-                        <div className="row">
+                        <div className="row g-3">
                           <div className="col mb-2">
                             <label htmlFor="inputPassword">Name</label>
                             <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_name(e.target.value)} value={ee_name} />
@@ -1138,7 +1143,7 @@ const esic = () => {
                           </div>
                         </div>
 
-                        <div className="row">
+                        <div className="row g-3">
                           <div className="col mb-3">
                             <label htmlFor="inputNumber">Date Of Birth</label>
                             <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_dob(e.target.value)} value={ee_dob} />
@@ -1150,7 +1155,7 @@ const esic = () => {
 
                         </div>
 
-                        <div className="row">
+                        <div className="row g-3">
                           <div className="col-sm">
                             <label htmlFor="inputEPFWages">No Of Days</label>
                             <input type="number" className="form-control rounded-4" disabled={isDisabled} onChange={(e) => set_noOfDays(e.target.value)} value={noOfDays} />
@@ -1170,7 +1175,7 @@ const esic = () => {
                             <input type="number" className="form-control rounded-4" disabled value={er_esic} />
                           </div>
                         </div>
-                        <div className="row">
+                        <div className="row g-3">
                           <div className="col mb-3">
                             <label htmlFor="inputNumber">Date Of Exit</label>
                             <input type="date" className="form-control rounded-4" onChange={(e) => set_ee_dol(e.target.value)} value={ee_dol} />
@@ -1187,7 +1192,7 @@ const esic = () => {
                   </div>
                 </div>
                 <div className="modal-footer d-flex">
-                  <div className="row">
+                  <div className="row g-3">
                     <div className="col-sm">
                       <button type="button" disabled={isUpdate || isSaveEnable} className="btn btn-outline-primary btn-block rounded-4" onClick={saveReturns}>Save</button>
                     </div>
