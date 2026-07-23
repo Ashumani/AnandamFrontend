@@ -9,6 +9,9 @@ const Download = () => {
         { mainItem: "Form 13", icon: "bi bi-journal-text" },
         { mainItem: "Form 31", icon: "bi bi-journal-text" },
         { mainItem: "Form 10 D", icon: "bi bi-journal-text" },
+        { mainItem: "Joint Declaration", icon: "bi bi-journal-text" },
+        { mainItem: "Form 5", icon: "bi bi-journal-text" },
+        
         // Add more items as needed...
     ]);
 
@@ -89,7 +92,7 @@ const Download = () => {
                                 <div className="row">
                                     {sideItems.map((item, index) => (
                                         <div className="col-sm-2" key={index}>
-                                            <button type="button" className="btn btn-outline-primary btn-block" style={{ margin: "2px 5px 10px 10px" }}>
+                                            <button type="button" className="btn btn-outline-primary w-100 rounded-4" style={{ margin: "2px 5px 10px 10px" }}>
                                                 {item.mainItem}
                                             </button>
                                         </div>

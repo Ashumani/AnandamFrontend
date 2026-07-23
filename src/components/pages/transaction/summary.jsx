@@ -12,7 +12,7 @@ const summary = () => {
 
   const returnsYear = {
     "month": [{ "monthNum": 1, "monthText": "Jan" }, { "monthNum": 2, "monthText": "Feb" }, { "monthNum": 3, "monthText": "Mar" }, { "monthNum": 4, "monthText": "Apr" }, { "monthNum": 5, "monthText": "May" }, { "monthNum": 6, "monthText": "Jun" }, { "monthNum": 7, "monthText": "Jul" }, { "monthNum": 8, "monthText": "Aug" }, { "monthNum": 9, "monthText": "Sep" }, { "monthNum": 10, "monthText": "Oct" }, { "monthNum": 11, "monthText": "Nov" }, { "monthNum": 12, "monthText": "Dec" }],
-    "Year": [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025,2026]
+    "Year": [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
   }
   const [ee_above58, set_ee_above58] = useState('')
   const [returnsYearInSystem, set_returnsYearInSystem] = useState([])
@@ -467,7 +467,7 @@ const summary = () => {
         "month": month,
         "year": year,
         "est_sub_id": est_sub_id,
-        "est_id":est_id
+        "est_id": est_id
       }
 
       const userData = await deleteRecordsByMonthYear(params);
@@ -482,7 +482,7 @@ const summary = () => {
           showCloseButton: true,
           timer: 1500,
         });
-       
+
       } else {
         Swal.fire({
           position: 'top-right',
@@ -652,9 +652,9 @@ const summary = () => {
         set_er_epf(Math.round(epfwages_if_above * userData.data.er_diff_rate / 100))
         eps = Math.round(epfwages_if_above * userData.data.er_eps_rate / 100)
         set_er_eps(eps)
-        if (is_high_salaried == 1 && epf_wages > 15000 ) {
+        if (is_high_salaried == 1 && epf_wages > 15000) {
           set_er_epf(550)
-        }else{
+        } else {
           set_er_epf(epf - eps)
         }
 
@@ -863,7 +863,7 @@ const summary = () => {
 
   const handleSelectSubIdChange = (e) => {
     set_selectedSubId(e.target.value);
-     getAllSummary(getErId(), selectedReturnYear, e.target.value);
+    getAllSummary(getErId(), selectedReturnYear, e.target.value);
     // getReturnByMonth(1, selectedMonth, e.target.value)
   };
 
@@ -924,11 +924,11 @@ const summary = () => {
           </div>
           <section className="section">
             <br />
-            <div className="row">
+            <div className="row g-3">
               <div className="card">
                 <div className="card-body">
                   {/* <h5 className="card-title text-center"><strong>Summary</strong></h5> */}
-                  <div className="row">
+                  <div className="row g-3">
                     <div className="col-12 col-md-6 col-lg-3 mb-3">
                       <select
                         className="form-select rounded-4"
@@ -953,14 +953,14 @@ const summary = () => {
                       </select>
                     </div>
                     <div className="col-12 col-md-6 col-lg-3 mb-3">
-                      <button type="button" className="btn btn-outline-primary btn-block rounded-4 rounded-4" onClick={() => { getReturnByMonth(1, selectedMonth, selectedYear) }} >Next
+                      <button type="button" className="btn btn-outline-primary w-100 rounded-4 rounded-4" onClick={() => { getReturnByMonth(1, selectedMonth, selectedYear) }} >Next
                         {/* <Link to="/auth/dashboard/monthlypf"><span >Next</span></Link> */}
                       </button>
                     </div>
                     <div className="col-12 col-md-6 col-lg-3 mb-3">
                       <button
                         type="file"
-                        className="btn btn-outline-primary btn-block rounded-4 rounded-4" onClick={() => { openModal('importReturn') }}
+                        className="btn btn-outline-primary w-100 rounded-4 rounded-4" onClick={() => { openModal('importReturn') }}
                       >
                         Import
                       </button>
@@ -1021,63 +1021,65 @@ const summary = () => {
                       </div>
                     </div>
                   </div>
-
-                  <table className="table table-striped">
-                    <thead>
-                      <tr>
-                        <th scope="col">Number Of EE</th>
-                        <th scope="col">Month</th>
-                        <th scope="col">Year</th>
-                        <th scope="col">Account 1</th>
-                        <th scope="col">Account 2</th>
-                        <th scope="col">Account 10</th>
-                        <th scope="col">Account 21</th>
-                        <th scope="col">Account 22</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {currentItems.map((employee, index) => (
-                        <tr key={index}>
-                          <th scope="row">{employee.NumbersOfEE}</th>
-                          <td>{employee.month}</td>
-                          <td>{employee.year}</td>
-                          <td>{employee.acc1}</td>
-                          <td>{employee.acc2}</td>
-                          <td>{employee.acc10}</td>
-                          <td>{employee.acc21}</td>
-                          <td>{employee.acc22}</td>
-                          <td>{employee.total}</td>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { getReturnByMonth(1, moment(employee.month, 'MMM').month() + 1, employee.year) }}>
-                                <i className="bi bi-eye text-info"></i>
-                              </button>
-                              <button className="btn btn-light" onClick={() => { genECR(moment(employee.month, 'MMM').month() + 1, employee.year) }} >
-                                <i className="bi bi-download"></i>
-                              </button>
-                              <button className="btn btn-light" onClick={() => { deleteReturnByMonth(moment(employee.month, 'MMM').month() + 1, employee.year, employee.est_sub_id, employee.est_id) }} >
-                                <i className="bi bi-trash text-danger"></i>
-                              </button>
-                            </div>
-                          </td>
+                  <div className="table-responsive mt-2">
+                    <table className="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">Number Of EE</th>
+                          <th scope="col">Month</th>
+                          <th scope="col">Year</th>
+                          <th scope="col">Account 1</th>
+                          <th scope="col">Account 2</th>
+                          <th scope="col">Account 10</th>
+                          <th scope="col">Account 21</th>
+                          <th scope="col">Account 22</th>
+                          <th scope="col">Total</th>
+                          <th scope="col">Action</th>
                         </tr>
-                      ))}
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <th id="total" colSpan="3">Total :</th>
-                        <td>{total_acc1}</td>
-                        <td>{total_acc2}</td>
-                        <td>{total_acc10}</td>
-                        <td>{total_acc21}</td>
-                        <td>{total_acc22}</td>
-                        <td>{total_acc}</td>
-                        <td></td>
-                      </tr>
-                    </tfoot>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {currentItems.map((employee, index) => (
+                          <tr key={index}>
+                            <th scope="row">{employee.NumbersOfEE}</th>
+                            <td>{employee.month}</td>
+                            <td>{employee.year}</td>
+                            <td>{employee.acc1}</td>
+                            <td>{employee.acc2}</td>
+                            <td>{employee.acc10}</td>
+                            <td>{employee.acc21}</td>
+                            <td>{employee.acc22}</td>
+                            <td>{employee.total}</td>
+                            <td>
+                              <div className="d-flex align-items-center">
+                                <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { getReturnByMonth(1, moment(employee.month, 'MMM').month() + 1, employee.year) }}>
+                                  <i className="bi bi-eye text-info"></i>
+                                </button>
+                                <button className="btn btn-light" onClick={() => { genECR(moment(employee.month, 'MMM').month() + 1, employee.year) }} >
+                                  <i className="bi bi-download"></i>
+                                </button>
+                                <button className="btn btn-light" onClick={() => { deleteReturnByMonth(moment(employee.month, 'MMM').month() + 1, employee.year, employee.est_sub_id, employee.est_id) }} >
+                                  <i className="bi bi-trash text-danger"></i>
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th id="total" colSpan="3">Total :</th>
+                          <td>{total_acc1}</td>
+                          <td>{total_acc2}</td>
+                          <td>{total_acc10}</td>
+                          <td>{total_acc21}</td>
+                          <td>{total_acc22}</td>
+                          <td>{total_acc}</td>
+                          <td></td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+
                 </div>
               </div>
             </div>
@@ -1090,132 +1092,135 @@ const summary = () => {
           </div>
           <section className="section">
             <br />
-            <div className="row">
+            <div className="row g-3">
               <div className="card">
                 <div className="card-body">
                 </div>
-                <div className="row">
-                  <div className="col-2 col-md-2 col-lg-2 col-2">
-                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 " onClick={() => { openModal('EpfReturnFillingModel') }}>
+                <div className="row g-2">
+                  <div className="col-12 col-sm-6 col-md-4 col-lg-2">
+                    <button type="button" className="btn btn-outline-primary w-100 rounded-4" onClick={() => { openModal('EpfReturnFillingModel') }}>
                       Add ({selectedMonth}-{selectedYear})
                     </button>
                   </div>
-                  <div className="col-2 col-md-2 col-lg-2 col-2">
+                  <div className="col-12 col-sm-6 col-md-4 col-lg-2">
                     <button
                       type="file"
-                      className="btn btn-outline-primary btn-block rounded-4" onClick={() => { openModal('importReturn') }}
+                      className="btn btn-outline-primary w-100 rounded-4" onClick={() => { openModal('importReturn') }}
                     >
                       Import
                     </button>
                   </div>
-                  <div className="col-2 col-md-2 col-lg-2 col-2">
+                  <div className="col-12 col-sm-6 col-md-4 col-lg-2">
                     <button
                       type="button"
-                      className="btn btn-outline-primary btn-block rounded-4" onClick={() => { openModal('importReturn') }}
+                      className="btn btn-outline-primary w-100 rounded-4" onClick={() => { openModal('importReturn') }}
                     >
                       Export
                     </button>
                   </div>
-                  <div className="col-2 col-md-2 col-lg-2 col-2">
+                  <div className="col-12 col-sm-6 col-md-4 col-lg-2">
                     <button
                       type="button"
-                      className="btn btn-outline-primary btn-block rounded-4" data-toggle="modal" data-target="#confirmationModal"
+                      className="btn btn-outline-primary w-100 rounded-4" data-toggle="modal" data-target="#confirmationModal"
                     >
                       Same as Prev
                     </button>
                   </div>
-                  <div className="col-2 col-md-2 col-lg-2 col-2">
+                  <div className="col-12 col-sm-6 col-md-4 col-lg-2">
                     <button
                       type="button"
-                      className="btn btn-outline-primary btn-block rounded-4" onClick={() => { genECR(selectedMonth, selectedYear) }}
+                      className="btn btn-outline-primary w-100 rounded-4" onClick={() => { genECR(selectedMonth, selectedYear) }}
                     >
                       ECR
                     </button>
                   </div>
-                  <div className="col-2 col-md-2 col-lg-2 col-2">
+                  <div className="col-12 col-sm-6 col-md-4 col-lg-2">
                     <button
                       type="button"
-                      className="btn btn-outline-primary btn-block rounded-4" onClick={monthlyBack}
+                      className="btn btn-outline-primary w-100 rounded-4" onClick={monthlyBack}
                     >
                       BACK
                     </button>
                   </div>
                 </div>
                 <div className="row mt-4  d-flex justify-content-end">
-                  <div className="col-3">
+                  <div className="col-12 col-md-3">
                     <input type="text" className="form-control rounded-4" placeholder="Search" onChange={(e) => setSearchEE(e.target.value)} onBlur={searchMonthlyEE} />
                   </div>
                 </div>
 
 
                 <h5>EPF Return For Month {selectedMonth}-{selectedYear}</h5>
-                <table className="table table-striped">
-                  <thead>
-                    <tr>
-                      <th scope="col">Sn</th>
-                      <th scope="col">UAN</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Gross Wages</th>
-                      <th scope="col">EPF Wages</th>
-                      <th scope="col">EPS Wages</th>
-                      <th scope="col">EDLI Wages</th>
-                      <th scope="col">EE(12%)</th>
-                      <th scope="col">EPS(8.33%)</th>
-                      <th scope="col">ER(3.67%)</th>
-                      <th scope="col">NCP Days</th>
-                      <th scope="col">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                <div className="table-responsive">
+                  <table className="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">Sn</th>
+                        <th scope="col">UAN</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Gross Wages</th>
+                        <th scope="col">EPF Wages</th>
+                        <th scope="col">EPS Wages</th>
+                        <th scope="col">EDLI Wages</th>
+                        <th scope="col">EE(12%)</th>
+                        <th scope="col">EPS(8.33%)</th>
+                        <th scope="col">ER(3.67%)</th>
+                        <th scope="col">NCP Days</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
 
-                    {currentItems.map((employee, index) => {
-                      const globalIndex = currentPage * itemsPerPage - itemsPerPage + index;
-                      return (
+                      {currentItems.map((employee, index) => {
+                        const globalIndex = currentPage * itemsPerPage - itemsPerPage + index;
+                        return (
 
-                        <tr key={index}>
-                          <th scope="row">{globalIndex + 1}</th>
-                          <th scope="row">{employee.ee_uan}</th>
-                          <td>{employee.ee_name}</td>
-                          <td>{employee.gross_wages}</td>
-                          <td>{employee.epf_wages}</td>
-                          <td>{employee.eps_wages}</td>
-                          <td>{employee.edli_wages}</td>
-                          <td>{employee.ee_share}</td>
-                          <td>{employee.eps_share}</td>
-                          <td>{employee.diff_share}</td>
-                          <td>{employee.ncp_days}</td>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
-                                <i className="bi bi-eye text-info"></i>
-                              </button>
-                              <button className="btn btn-light mx-1" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
-                                <i className="bi bi-pencil-fill text-info"></i>
-                              </button>
-                              <button className="btn btn-light" onClick={() => { deleteReturn(employee.id) }} >
-                                <i className="bi bi-trash text-danger"></i>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <th id="total" colSpan="3">Total :</th>
-                      <td>{total_gross_wages}</td>
-                      <td>{total_epf_wages}</td>
-                      <td>{total_edli_wages}</td>
-                      <td>{total_eps_wages}</td>
-                      <td>{total_ee_share}</td>
-                      <td>{total_eps_share}</td>
-                      <td>{total_diff_share}</td>
-                      <td>{total_ncp_days}</td>
-                      <td></td>
-                    </tr>
-                  </tfoot>
-                </table>
+                          <tr key={index}>
+                            <th scope="row">{globalIndex + 1}</th>
+                            <th scope="row">{employee.ee_uan}</th>
+                            <td>{employee.ee_name}</td>
+                            <td>{employee.gross_wages}</td>
+                            <td>{employee.epf_wages}</td>
+                            <td>{employee.eps_wages}</td>
+                            <td>{employee.edli_wages}</td>
+                            <td>{employee.ee_share}</td>
+                            <td>{employee.eps_share}</td>
+                            <td>{employee.diff_share}</td>
+                            <td>{employee.ncp_days}</td>
+                            <td>
+                              <div className="d-flex align-items-center">
+                                <button className="btn btn-light" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
+                                  <i className="bi bi-eye text-info"></i>
+                                </button>
+                                <button className="btn btn-light mx-1" data-toggle="modal" data-target="#exampleModal" onClick={() => { fetchReturn(employee.id) }}>
+                                  <i className="bi bi-pencil-fill text-info"></i>
+                                </button>
+                                <button className="btn btn-light" onClick={() => { deleteReturn(employee.id) }} >
+                                  <i className="bi bi-trash text-danger"></i>
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th id="total" colSpan="3">Total :</th>
+                        <td>{total_gross_wages}</td>
+                        <td>{total_epf_wages}</td>
+                        <td>{total_edli_wages}</td>
+                        <td>{total_eps_wages}</td>
+                        <td>{total_ee_share}</td>
+                        <td>{total_eps_share}</td>
+                        <td>{total_diff_share}</td>
+                        <td>{total_ncp_days}</td>
+                        <td></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+
                 {/* Pagination Controls */}
                 {/* <div className="pagination">
                   <button className="btn btn-primary"
@@ -1289,7 +1294,7 @@ const summary = () => {
                 {/* {showModal && ( */}
                 {/* <div style={{ display: 'block' }} className="modal fade show" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
                 <div className="modal fade bd-example-modal-lg" id="EpfReturnFillingModel" ref={modalRef} role="dialog" aria-labelledby="EpfReturnFillingModelLabel" aria-hidden="true">
-                  <div className="modal-dialog modal-lg" role="document">
+                  <div className="modal-dialog modal-xl" role="document">
                     <div className="modal-content">
                       <div className="modal-header bg-primary">
                         <h5 className="modal-title" id="EpfReturnFillingModelLabel">EPF Return Filing For {selectedMonth}-{selectedYear}</h5>
@@ -1298,83 +1303,83 @@ const summary = () => {
                         </button>
                       </div>
                       <div className="modal-body text-dark">
-                        <div className="row">
+                        <div className="row g-3">
                           <div className="col-lg-12">
 
                             <form>
-                              <div className="row">
-                                <div className="col-md-4">
+                              <div className="row g-3">
+                                <div className="col-12 col-md-4">
                                   <input type="number" className="form-control rounded-4" placeholder="Enter UAN Number" onChange={(e) => set_search_uan(e.target.value)} value={search_uan} />
                                 </div>
-                                <div className="col-md-4">
+                                <div className="col-12 col-md-4">
                                   <input type="text" className="form-control rounded-4" placeholder="Enter PF Number" onChange={(e) => set_search_pf(e.target.value)} value={search_pf} />
                                 </div>
-                                <div className="col-sm">
-                                  <button type="button" className="btn btn-outline-primary" onClick={fetchEmployee}>Search</button>
+                                <div className="col-12 col-md-4">
+                                  <button type="button" className="btn btn-outline-primary w-100 rounded-4" onClick={fetchEmployee}>Search</button>
                                 </div>
 
                               </div>
-                              <div className="row">
-                                <div className="col mb-2">
+                              <div className="row g-3">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
                                   <label htmlFor="inputPassword">Name</label>
                                   <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_name(e.target.value)} value={ee_name} />
                                 </div>
-                                <div className="col mb-2">
-                                  <label htmlFor="inputNumber">Gender</label>
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                  <label htmlFor="inputNumber">Gender11</label>
                                   <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_gender(e.target.value)} value={ee_gender} />
                                 </div>
-                                <div className="col mb-2">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
                                   <label htmlFor="inputNumber">Father/husband</label>
                                   <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_father_husband(e.target.value)} value={ee_father_husband} />
                                 </div>
-                                <div className="col mb-2">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
                                   <label htmlFor="inputNumber">Maritial Status</label>
                                   <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_maritial_status(e.target.value)} value={ee_maritial_status} />
                                 </div>
                               </div>
 
-                              <div className="row">
-                                <div className="col mb-3">
+                              <div className="row g-3">
+                                <div className="col-12 col-md-6 col-lg-2 mb-3">
                                   <label htmlFor="inputNumber">Date Of Birth</label>
                                   <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_dob(e.target.value)} value={ee_dob} />
                                 </div>
-                                <div className="col mb-3">
+                                <div className="col-12 col-md-6 col-lg-2 mb-3">
                                   <label htmlFor="inputTime">Date Of Joining</label>
                                   <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_doj(e.target.value)} value={ee_doj} />
                                 </div>
-                                <div className="col mb-3">
+                                <div className="col-12 col-md-6 col-lg-2 mb-3">
                                   <label htmlFor="inputDate">Above 58</label>
                                   <input type="text" className="form-control rounded-4" disabled onChange={(e) => set_ee_above58(e.target.value)} value={ee_above58} />
                                 </div>
-                                <div className="col mb-3">
+                                <div className="col-12 col-md-6 col-lg-2 mb-3">
                                   <label htmlFor="inputColor">Gross Wages</label>
                                   <input type="number" className="form-control rounded-4" disabled onChange={(e) => set_ee_gross_wages(e.target.value)} value={ee_gross_wages} />
                                 </div>
-                                <div className="col mb-3">
+                                <div className="col-12 col-md-6 col-lg-2 mb-3">
                                   <label htmlFor="inputPassword">EPF Wages</label>
                                   <input type="number" className="form-control rounded-4" disabled onChange={(e) => set_ee_epf_wages(e.target.value)} value={ee_epf_wages} />
                                 </div>
-                                <div className="col mb-3">
+                                <div className="col-12 col-md-6 col-lg-2 mb-3">
                                   <label htmlFor="inputPassword">High Salary</label>
-                                  <input type="text" className="form-control rounded-4" disabled  value={is_high_salaried === 0 ? "No" : "Yes"} />
+                                  <input type="text" className="form-control rounded-4" disabled value={is_high_salaried === 0 ? "No" : "Yes"} />
                                 </div>
                               </div>
 
-                              <div className="row">
-                                <div className="col-sm">
+                              <div className="row g-3">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
                                   <label htmlFor="inputColor">Gross Wages</label>
                                   <input type="number" className="form-control rounded-4" disabled={isDisabled} onChange={(e) => set_cal_gross_wages(e.target.value)} value={cal_gross_wages} />
                                 </div>
-                                <div className="col-sm">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
                                   <label htmlFor="inputEPFWages">EPF Wages</label>
                                   <input type="number" className="form-control rounded-4" disabled={isDisabled} onBlur={(e) => calculation(e.target.value)} onChange={(e) => set_cal_epf_wages(e.target.value)} value={cal_epf_wages} />
                                 </div>
 
-                                <div className="col-sm">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
                                   <label htmlFor="inputPassword">EDLI Wages</label>
                                   <input type="number" className="form-control rounded-4" disabled value={ee_edli_wages} />
                                 </div>
-                                <div className="col-sm">
+                                <div className="col-12 col-md-6 col-lg-3 mb-3">
                                   <label htmlFor="inputPassword">EPS Wages</label>
                                   <input type="number" className="form-control rounded-4" disabled value={ee_eps_wages} />
                                 </div>
@@ -1392,37 +1397,37 @@ const summary = () => {
                                   <input type="number" className="form-control rounded-4" disabled value={er_epf} />
                                 </div>
                               </div>
-                              {/* <div className="row">
+                              {/* <div className="row g-3">
                               <div className="col-sm">
-                                <button type="button" className="btn btn-outline-primary btn-block rounded-4" onClick={saveReturns}>Save</button>
+                                <button type="button" className="btn btn-outline-primary w-100 rounded-4" onClick={saveReturns}>Save</button>
                               </div>
                               <div className="col-sm">
-                                <button type="button" className="btn btn-outline-primary btn-block rounded-4">Update</button>
+                                <button type="button" className="btn btn-outline-primary w-100 rounded-4">Update</button>
                               </div>
                               <div className="col-sm">
-                                <button type="button" className="btn btn-outline-primary btn-block rounded-4">Reset</button>
+                                <button type="button" className="btn btn-outline-primary w-100 rounded-4">Reset</button>
                               </div>
                               <div className="col-sm">
-                                <button type="button" className="btn btn-outline-primary btn-block rounded-4" data-dismiss="modal" aria-label="Close"  onClick={() => { closeModal('exampleModal') }} >Close</button>
+                                <button type="button" className="btn btn-outline-primary w-100 rounded-4" data-dismiss="modal" aria-label="Close"  onClick={() => { closeModal('exampleModal') }} >Close</button>
                               </di  v>
                             </div> */}
                             </form>
                           </div>
                         </div>
                       </div>
-                      <div className="modal-footer d-flex">
-                        <div className="row">
-                          <div className="col-sm">
-                            <button type="button" disabled={isUpdate || isSaveEnable} className="btn btn-outline-primary btn-block rounded-4" onClick={saveReturns}>Save</button>
+                      <div className="modal-footer">
+                        <div className="row w-100 g-2">
+                          <div className="col-12 col-md-3">
+                            <button type="button" disabled={isUpdate || isSaveEnable} className="btn btn-outline-primary w-100 rounded-4" onClick={saveReturns}>Save</button>
                           </div>
-                          <div className="col-sm">
-                            <button type="button" disabled={!isUpdate} className="btn btn-outline-primary btn-block rounded-4" onClick={updateReturns}>Update</button>
+                          <div className="col-12 col-md-3">
+                            <button type="button" disabled={!isUpdate} className="btn btn-outline-primary w-100 rounded-4" onClick={updateReturns}>Update</button>
                           </div>
-                          <div className="col-sm">
-                            <button type="button" className="btn btn-outline-primary btn-block rounded-4">Reset</button>
+                          <div className="col-12 col-md-3">
+                            <button type="button" className="btn btn-outline-primary w-100 rounded-4">Reset</button>
                           </div>
-                          <div className="col-sm">
-                            <button type="button" className="btn btn-outline-primary btn-block rounded-4" aria-label="Close" onClick={() => { closeModal('EpfReturnFillingModel') }} >Close</button>
+                          <div className="col-12 col-md-3">
+                            <button type="button" className="btn btn-outline-primary w-100 rounded-4" aria-label="Close" onClick={() => { closeModal('EpfReturnFillingModel') }} >Close</button>
                           </div>
                         </div>
 

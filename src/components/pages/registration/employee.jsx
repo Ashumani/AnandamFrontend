@@ -619,30 +619,32 @@ const employee = () => {
         </div>
         <section className="section">
           <br />
-          <div className="row">
+          <div className="row g-3 align-items-end">
             <div className="card">
               <div className="card-body">
-                <div className="row">
-                  <div className="col-12 col-md-6 col-lg-3 mb-3">
+                <div className="row g-3 align-items-end">
+                  <div className="col-12 col-md-6 col-lg-2">
                     <button type="button" className="btn btn-primary rounded-4" onClick={openModal}>
                       Add Employee
                     </button>
                   </div>
-                  <div className="col-12 col-md-6 col-lg-3 mb-3">
+                  <div className="col-12 col-md-6 col-lg-3">
                     <input className="form-control rounded-4" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
                   </div>
-                  <div className="col-sm-2 col-md-2 col-lg-2 col-2">
-                    <button type="button" className="btn btn-primary rounded-4" onClick={uplaodEmployee}>
-                      Upload
-                    </button>
-                  </div>
-                  <div className="col-sm-1 col-md-1 col-lg-1 col-1">
-                    <button type="button" className="btn btn-primary rounded-4" onClick={uplaodEmployeeSubid}>
-                      UAN Update
-                    </button>
-                  </div>
+                  <div className="col-12 col-md-6 col-lg-2 text-center">
+  <small className="text-muted d-block mb-1">New Employees</small>
+  <button className="btn btn-primary w-100 rounded-4">
+    Upload
+  </button>
+</div>
 
-                  <div className="col-12 col-md-6 col-lg-3 mb-3">
+<div className="col-12 col-md-6 col-lg-2 text-center">
+  <small className="text-muted d-block mb-1">Existing Employees</small>
+  <button className="btn btn-success w-100 rounded-4">
+    UAN Update
+  </button>
+</div>
+                  <div className="col-12 col-md-6 col-lg-3">
                     <input type="text" className="form-control rounded-4" placeholder="Search" onChange={(e) => set_search_emp(e.target.value)} onBlur={searchEmp} />
                   </div>
                 </div>
