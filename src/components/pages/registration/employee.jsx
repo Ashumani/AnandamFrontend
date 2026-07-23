@@ -632,18 +632,18 @@ const employee = () => {
                     <input className="form-control rounded-4" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
                   </div>
                   <div className="col-12 col-md-6 col-lg-2 text-center">
-  <small className="text-muted d-block mb-1">New Employees</small>
-  <button className="btn btn-primary w-100 rounded-4">
-    Upload
-  </button>
-</div>
+                    <small className="text-muted d-block mb-1">New Employees</small>
+                    <button className="btn btn-primary w-100 rounded-4">
+                      Upload
+                    </button>
+                  </div>
 
-<div className="col-12 col-md-6 col-lg-2 text-center">
-  <small className="text-muted d-block mb-1">Existing Employees</small>
-  <button className="btn btn-success w-100 rounded-4">
-    UAN Update
-  </button>
-</div>
+                  <div className="col-12 col-md-6 col-lg-2 text-center">
+                    <small className="text-muted d-block mb-1">Existing Employees</small>
+                    <button className="btn btn-success w-100 rounded-4">
+                      UAN Update
+                    </button>
+                  </div>
                   <div className="col-12 col-md-6 col-lg-3">
                     <input type="text" className="form-control rounded-4" placeholder="Search" onChange={(e) => set_search_emp(e.target.value)} onBlur={searchEmp} />
                   </div>
