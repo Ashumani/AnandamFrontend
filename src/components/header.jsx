@@ -13,10 +13,12 @@ import { useSidebar } from './SidebarContext';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
 import Select from 'react-select';
+import ChatWidget from "./ChatWidget.jsx";
 
 
 const Header = () => {
 
+  const [showChat, setShowChat] = useState(false);
   const { setShowAll } = useSidebar();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -103,9 +105,9 @@ const Header = () => {
   }, []);
 
   const handleChange = (e) => {
-    
+
     const value = e.value;
-    
+
     setSelectedId(value);
     if (value === "All") {
       deleteEstId();
@@ -152,11 +154,11 @@ const Header = () => {
     }
   };
 
-// const togglesidebar = () => {
-//     document.body.classList.toggle("toggle-sidebar");
-//     console.log("clicked");
-//     console.log(document.body.className);
-// };
+  // const togglesidebar = () => {
+  //     document.body.classList.toggle("toggle-sidebar");
+  //     console.log("clicked");
+  //     console.log(document.body.className);
+  // };
 
 
   return (
@@ -381,6 +383,20 @@ const Header = () => {
               </ul>
             </li>
 
+            {/* <li className="nav-item">
+              <a
+                className="nav-link nav-icon"
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowChat(true);
+                }}
+              >
+                <i className="bi bi-chat-left-text"></i>
+                <span className="badge bg-success badge-number">3</span>
+              </a>
+            </li>
+           */}
             <li className="nav-item dropdown pe-3">
               <a
                 className="nav-link nav-profile d-flex align-items-center pe-0"
@@ -407,7 +423,7 @@ const Header = () => {
                 </li>
 
                 <li>
-                
+
                   <a
                     className="dropdown-item d-flex align-items-center"
                     href="/auth/dashboard/userProfile"
@@ -460,6 +476,49 @@ const Header = () => {
           </ul>
         </nav>
       </header>
+      {showChat && (
+        <div className="chat-window">
+          <div className="chat-header">
+            <span>💬 Chat</span>
+
+            <button
+              className="close-btn"
+              onClick={() => setShowChat(false)}
+            >
+              ✕
+            </button>
+          </div>
+
+          <div className="chat-body">
+            <div className="message other">
+              <strong>Ashish</strong>
+              <p>Hello Team 👋</p>
+            </div>
+
+            <div className="message me">
+              <strong>You</strong>
+              <p>Hi Ashish! How are you ?</p>
+            </div>
+          </div>
+
+          <div className="chat-footer">
+            <input
+              type="text"
+              placeholder="Type a message..."
+            />
+
+            <button>Send</button>
+          </div>
+        </div>
+      )}
+
+      {/* Floating Chat Icon */}
+      <button
+        className="chat-icon"
+        onClick={() => setShowChat(!showChat)}
+      >
+        💬
+      </button>
     </div>
   );
 };
