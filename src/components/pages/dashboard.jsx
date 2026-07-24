@@ -5,7 +5,7 @@ import { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill }
   from 'react-icons/bs'
 import { BarChart, PieChart, Pie, AreaChart, Area, Bar, ComposedChart, ScatterChart, Scatter, ZAxis, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, LabelList, Cell }
   from 'recharts';
-import { getBillGraph, getCardsCount, getEPFChallanCardsDetails, getESICChallanCardsDetails, getGraph, getUser, getUserGraph, getYearsAndMonth } from "../api/services";
+import { getBillGraph, getCardsCount, getDSCCardsDetails, getEPFChallanCardsDetails, getESICChallanCardsDetails, getGraph, getUser, getUserGraph, getYearsAndMonth } from "../api/services";
 import { useState, useEffect } from "react"
 import moment from "moment";
 import { getErId, getEstId } from "./Auth/authToken";
@@ -122,7 +122,7 @@ const dashboard = () => {
 
     try {
       // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-      const response = await getESICChallanCardsDetails();
+      const response = await getDSCCardsDetails();
       if (response.status == true) {
         setEmployerList(response.data)
       }
@@ -158,27 +158,53 @@ const dashboard = () => {
     }
   };
 
-  const sortByStatus = async () => {
+const sortByStatus = () => {
+  let sortedList = [];
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  if (selectedCard === "dsc") {
+   sortedList = employerList
+  .map((item) => {
+    if (!item.dsc_date) {
+      return { ...item, dsc_status: false };
+    }
 
-    const sortedList = await [...employerList].sort((a, b) => {
-      // 1. Send null values to the bottom of the list
-      if (a.year === null || a.month === null) return 1;
-      if (b.year === null || b.month === null) return -1;
-      if (a.year === null && b.year === null) return 0;
+    const dscDate = new Date(item.dsc_date);
+    dscDate.setHours(0, 0, 0, 0);
 
-      // 2. First comparison: Sort chronologically by Year
+    return {
+      ...item,
+      dsc_status: dscDate >= today, // true if today or future, false if expired
+    };
+  })
+  .sort((a, b) => {
+    if (!a.dsc_date && !b.dsc_date) return 0;
+    if (!a.dsc_date) return 1;
+    if (!b.dsc_date) return -1;
+
+    return new Date(b.dsc_date) - new Date(a.dsc_date);
+  });
+
+  } else {
+    sortedList = [...employerList].sort((a, b) => {
+      // Null values at the end
+      if (a.year == null || a.month == null) return 1;
+      if (b.year == null || b.month == null) return -1;
+      if (a.year == null && b.year == null) return 0;
+
+      // Descending Year
       if (a.year !== b.year) {
-        return a.year - b.year; // Change to (b.year - a.year) for newest first
+        return b.year - a.year;
       }
 
-      // 3. Second comparison: If years match, sort by Month
-      return a.month - b.month;   // Change to (b.month - a.month) for newest first
+      // Descending Month
+      return b.month - a.month;
     });
+  }
 
-
-    setEmployerList(sortedList); // Update your React state array
-  };
-
+  setEmployerList(sortedList);
+};
   const getUserGraphDetails = async (fromMonth, toMonth, fromYear, toYear) => {
     // api call
 
@@ -266,9 +292,9 @@ const dashboard = () => {
 
   const colors = ['#2b6b86', '#f76e6e'];
   const handleCardClick = async (cardName) => {
-
     if (cardName == "epf") {
       await getEPFChallanCards()
+
     } else if (cardName == "esic") {
       await getESICChallanCards()
     } else if (cardName == "dsc") {
@@ -288,76 +314,76 @@ const dashboard = () => {
         <div className='dashboard-main-title'>
           <h3>DASHBOARD</h3>
         </div>
-         <section className="section">
+        <section className="section">
           <div className="row">
-          <div className='dashboard-main-cards'>
-            <div className='cardCustom cardprop1'>
-              <div className='card-inner'>
-                <h5>Clients</h5>
-                <BsFillArchiveFill className='card_icon' />
-              </div>
-              <h1>{totalclient}</h1>
-            </div>
-
-            <div
-              className='cardCustom cardprop2'
-              style={{ cursor: "pointer" }}
-              data-toggle="modal"
-              data-target="#employeeStatusModal"
-              onClick={() => handleCardClick("epf")}
-            >
-              <div className="card-inner">
-                <h5>EPF</h5>
-                <BsPeopleFill className="card_icon" />
+            <div className='dashboard-main-cards'>
+              <div className='cardCustom cardprop1'>
+                <div className='card-inner'>
+                  <h5>Clients</h5>
+                  <BsFillArchiveFill className='card_icon' />
+                </div>
+                <h1>{totalclient}</h1>
               </div>
 
-              <h1>{totalepf}/{epfchallancreated}</h1>
-            </div>
-            <div className='cardCustom cardprop3'
-             style={{ cursor: "pointer" }}
-              data-toggle="modal"
-              data-target="#employeeStatusModal"
-              onClick={() => handleCardClick("esic")}
+              <div
+                className='cardCustom cardprop2'
+                style={{ cursor: "pointer" }}
+                data-toggle="modal"
+                data-target="#employeeStatusModal"
+                onClick={() => handleCardClick("epf")}
               >
-              <div className='card-inner'>
-                <h5>ESIC</h5>
-                <BsPeopleFill className='card_icon' />
-              </div>
-              <h1>{totalesic}/{esicchallancreated}</h1>
+                <div className="card-inner">
+                  <h5>EPF</h5>
+                  <BsPeopleFill className="card_icon" />
+                </div>
 
-            </div>
-            <div className='cardCustom cardprop4'
-             style={{ cursor: "pointer" }}
-              data-toggle="modal"
-              data-target="#employeeStatusModal"
-              onClick={() => handleCardClick("dsc")}
-              >
-              <div className='card-inner'>
-                <h5>DSC</h5>
-                <BsFillBellFill className='card_icon' />
+                <h1>{totalepf}/{epfchallancreated}</h1>
               </div>
-              <h1>{totaldsc}/{expiredsc}</h1>
+              <div className='cardCustom cardprop3'
+                style={{ cursor: "pointer" }}
+                data-toggle="modal"
+                data-target="#employeeStatusModal"
+                onClick={() => handleCardClick("esic")}
+              >
+                <div className='card-inner'>
+                  <h5>ESIC</h5>
+                  <BsPeopleFill className='card_icon' />
+                </div>
+                <h1>{totalesic}/{esicchallancreated}</h1>
+
+              </div>
+              <div className='cardCustom cardprop4'
+                style={{ cursor: "pointer" }}
+                data-toggle="modal"
+                data-target="#employeeStatusModal"
+                onClick={() => handleCardClick("dsc")}
+              >
+                <div className='card-inner'>
+                  <h5>DSC</h5>
+                  <BsFillBellFill className='card_icon' />
+                </div>
+                <h1>{totaldsc}/{expiredsc}</h1>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="col-sm-2">
-            <select
-              // className="form-select rounded-4 dropdown-content"
-              className="form-select rounded-4"
-              aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
-            >
-              {returnsYear && returnsYear.yearTo.map((returnYear) => (
-                // eslint-disable-next-line react/jsx-key
-                <option value={returnYear.startYear}>{returnYear.between}</option>
-              ))}
-            </select>
+          <div className="row">
+            <div className="col-sm-2">
+              <select
+                // className="form-select rounded-4 dropdown-content"
+                className="form-select rounded-4"
+                aria-label="Default select example" value={selectedYear} onChange={handleYearChange}
+              >
+                {returnsYear && returnsYear.yearTo.map((returnYear) => (
+                  // eslint-disable-next-line react/jsx-key
+                  <option value={returnYear.startYear}>{returnYear.between}</option>
+                ))}
+              </select>
+            </div>
+
           </div>
 
-        </div>
-
-        <div className="chartView">
-          {/* <div className='charts'> */}
+          <div className="chartView">
+            {/* <div className='charts'> */}
             <ResponsiveContainer width="100%" height={300}>
               {data && data.length > 0 ? (<BarChart
                 data={data}
@@ -431,9 +457,9 @@ const dashboard = () => {
               )}
             </ResponsiveContainer>
 
-          {/* </div> */}
+            {/* </div> */}
 
-          {/* <div className='charts'> */}
+            {/* <div className='charts'> */}
             <ResponsiveContainer width="100%" height={300}>
               {pieChartData && pieChartData.length > 0 ? (
                 <PieChart>
@@ -508,9 +534,9 @@ const dashboard = () => {
             </ResponsiveContainer>
 
 
-          {/* </div> */}
+            {/* </div> */}
 
-          {/* <div className='charts'> */}
+            {/* <div className='charts'> */}
             <ResponsiveContainer width="100%" height={300}>
               <AreaChart width={730} height={250} data={userGraphData}
                 margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
@@ -558,11 +584,11 @@ const dashboard = () => {
                 <Legend />
               </PieChart>
             </ResponsiveContainer>
-          {/* </div> */}
-        </div>
+            {/* </div> */}
+          </div>
 
-         </section>
-        
+        </section>
+
       </main>
 
       <div
@@ -578,7 +604,7 @@ const dashboard = () => {
 
             <div className="modal-header text-white">
               <h5 className="modal-title" id="employeeStatusModalLabel">
-                Employer Chalan Status
+                {selectedCard == "dsc" ? "Dsc Status" : "Challan Status"}
               </h5>
               <div className="col-sm-2">
                 <button
@@ -598,12 +624,9 @@ const dashboard = () => {
 
             <div className="modal-body">
               {/* Added 'custom-table-vertical-scroller' to lock the height and enable scrolling */}
-              <div className="table-responsive custom-table-vertical-scroller">
+              {selectedCard != "dsc" ? (<div className="table-responsive custom-table-vertical-scroller">
                 <table className="table table-bordered table-hover table-striped align-middle">
-                  {/* 
-        sticky-top ensures the table header stays locked at the top 
-        while you scroll through hundreds of records underneath it.
-      */}
+
                   <thead className="thead-light sticky-top">
                     <tr>
                       <th scope="col" style={{ width: '50px' }}>#</th>
@@ -627,7 +650,7 @@ const dashboard = () => {
                             {emp.month === null ? (
                               <span className="badge bg-danger text-white px-2 py-1">Pending</span>
                             ) : (
-                              <span className="badge bg-success text-white px-2 py-1">Done</span>
+                              <span className="badge bg-success text-white px-2 py-1">Completed</span>
                             )}
                           </td>
                         </tr>
@@ -641,7 +664,52 @@ const dashboard = () => {
                     )}
                   </tbody>
                 </table>
-              </div>
+              </div>) : (<div className="table-responsive custom-table-vertical-scroller">
+                <table className="table table-bordered table-hover table-striped align-middle">
+
+                  <thead className="thead-light sticky-top">
+                    <tr>
+                      <th scope="col" style={{ width: '50px' }}>#</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">EPF ID</th>
+                      <th scope="col">Designation</th>
+                      <th scope="col">Name On Dsc</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Mobile</th>
+                      <th scope="col" className="text-center">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {employerList && employerList.length > 0 ? (
+                      employerList.map((emp, index) => (
+                        <tr key={emp.id || index}>
+                          <td>{index + 1}</td>
+                          <td>{emp.est_name}</td>
+                          <td className="text-monospace">{emp.est_epf_id ? emp.est_epf_id : emp.est_esic_id}</td>
+                          <td>{emp.name_on_dsc}</td>
+                          <td>{emp.dsc_designation}</td>
+                          <td>{emp.dsc_date}</td>
+                          <td>{emp.dsc_mobile_number}</td>
+                          <td className="text-center">
+                            {emp.dsc_status === true ? (
+                              <span className="badge bg-success text-white px-2 py-1">Active</span>
+                            ) : (
+                              <span className="badge bg-danger text-white px-2 py-1">InActive</span>
+                            )}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="6" className="text-center text-muted py-4">
+                          No Records Found
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>)}
+
             </div>
             <div className="modal-footer">
               <button

@@ -814,3 +814,12 @@ export const getESICChallanCardsDetails = async () => {
         throw error.response.data.error;
     }
 }
+
+export const getDSCCardsDetails = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/dashboard/getDSCCardsDetails`, { headers: header });
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
