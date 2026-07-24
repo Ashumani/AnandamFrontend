@@ -452,7 +452,7 @@ const Header = () => {
                 <li>
                   <a
                     className="dropdown-item d-flex align-items-center"
-                    href="pages-faq.html"
+                    href="/auth/dashboard/NeedHelp"
                   >
                     <i className="bi bi-question-circle"></i>
                     <span>Need Help?</span>

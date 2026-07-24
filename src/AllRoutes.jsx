@@ -30,6 +30,7 @@ import userProfile from "./components/pages/user/userProfile"
 import EpfWidget from "./components/pages/admin/EPFWidget"
 import EpfWidgetMember from "./components/pages/admin/EPFMember"
 import Calculator from "./components/pages/admin/Calculator"
+import NeedHelp from "./components/pages/devInfo/NeedHelp"
 
 import test from "./components/pages/admin/AgentLayoutSet"
 import React from "react"
@@ -69,7 +70,8 @@ const AllRoutes = () => {
         <Route path="/auth/dashboard/EpfWidget" Component={EpfWidget} />
         <Route path="/auth/dashboard/EpfMember" Component={EpfWidgetMember} />
         <Route path="/auth/dashboard/Calculator" Component={Calculator} />
-        <Route path="/auth/dashboard/test" Component={test} />
+        <Route path="/auth/dashboard/NeedHelp" Component={NeedHelp} />
+        <Route path="/auth/dashboard/NeedHelp" Component={test} />
         
     </Routes>
     
