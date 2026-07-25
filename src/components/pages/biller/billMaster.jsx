@@ -10,6 +10,7 @@ import "./bill.css"
 
 const billMaster = () => {
 
+   const [billType, setBillType] = useState("");
   const itemsPerPage = 5; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, set_totalPages] = useState(1);
@@ -122,6 +123,7 @@ const billMaster = () => {
         setMobile(response.data.er_mobile_number)
         setDesignation(response.data.est_designation)
         setCity(response.data.est_city)
+        setBillType(response.data.bill_type)
         setAddress(response.data.est_address)
         setDate(response.data.date)
         setDOC(response.data.est_doc)
@@ -331,13 +333,11 @@ const billMaster = () => {
                       </div>
 
                       <div className="text-right">
-                        {/* <h1><b>Anandam Solution & Services</b></h1> */}
-                        <a href="/auth/dashboard" className="logo d-flex align-items-center">
-                          {/* <img src="assets/img/logo.png" alt="" /> */}
+                        {/* <a href="/auth/dashboard" className="logo d-flex align-items-center">
                           <img className="d-none d-lg-block main_logo ml-4" style={{ width: '100%', "max-height": "250px" }} src={logo} alt="" />
-                          {/* <span className="d-none d-lg-block">AnanDam</span> */}
-                        </a>
-                         <h1><b>Solution & Services</b></h1>
+                        </a> */}
+                        <h1><b>{billType == "services"  ? "Anandam Solution and Services" :  "Anandam Consultancy"}</b></h1>
+
                         <div><h5>101, Anant Apartment</h5></div>
                         <div><h5>Near Rakshak Bandhu</h5></div>
                         <div><h5>Manewada Road, Nagpur-440024</h5></div>

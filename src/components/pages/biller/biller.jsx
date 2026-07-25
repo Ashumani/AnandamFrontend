@@ -13,6 +13,7 @@ const ecr = () => {
 
     const [est_name, setEstName] = useState('');
     const [est_id, setEstId] = useState('');
+     const [esic_est_id, setESICEstId] = useState('');
     const [er_name, setErName] = useState('');
     const [est_doc, setDOC] = useState('');
     const [est_address, setAddress] = useState('');
@@ -40,6 +41,8 @@ const ecr = () => {
     const [modalTotal, setModalTotal] = useState(0)
 
     const [IsUpdate, setIsUpdate] = useState(false);
+    const [showTypeModal, setShowTypeModal] = useState(false);
+    const [billType, setBillType] = useState("");
 
 
     const [receivedAmountDate, set_receivedAmountDate] = useState('')
@@ -55,7 +58,9 @@ const ecr = () => {
         if (id) {
             biller(id)
         } else if (getEstId()) {
+            setShowTypeModal(true)
             fetchEmployer(getEstId())
+
         }
 
 
@@ -86,6 +91,7 @@ const ecr = () => {
 
             if (response.status === true) {
                 setEstId(response.data.est_epf_id);
+                setESICEstId(response.data.est_esic_id)
                 setEstName(response.data.est_name)
                 setErName(response.data.er_name)
                 //   setEmail(response.data.er_email_id)
@@ -123,6 +129,7 @@ const ecr = () => {
 
             if (response.status === true) {
                 setEstId(response.data.est_epf_id);
+                setESICEstId(response.data.est_esic_id)
                 setEstName(response.data.est_name)
                 setErName(response.data.er_name)
                 setEmail(response.data.er_email_id)
@@ -311,8 +318,9 @@ const ecr = () => {
 
     const addBill = async () => {
         let params = {
+            "bill_type":billType,
             "est_epf_id": est_id,
-            "est_esic_id": "12345678",
+            "est_esic_id": esic_est_id,
             "rate": rate,
             "amount": totalAmount,
             "billData": finalBillArray,
@@ -473,6 +481,7 @@ const ecr = () => {
 
         setEstName('');
         setEstId('');
+        setESICEstId('')
         setErName('');
         setDOC('');
         setAddress('');
@@ -495,32 +504,32 @@ const ecr = () => {
     //     });
     // };
 
-   const generatePDF = () => {
-    const input = document.getElementById("pdf-content");
+    const generatePDF = () => {
+        const input = document.getElementById("pdf-content");
 
-    html2canvas(input, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#fff",
-        windowWidth: input.scrollWidth,
-        windowHeight: input.scrollHeight
-    }).then(canvas => {
+        html2canvas(input, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: "#fff",
+            windowWidth: input.scrollWidth,
+            windowHeight: input.scrollHeight
+        }).then(canvas => {
 
-        const imgData = canvas.toDataURL("image/png");
+            const imgData = canvas.toDataURL("image/png");
 
-        const pdf = new jsPDF("p", "mm", "a4");
+            const pdf = new jsPDF("p", "mm", "a4");
 
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
 
-        const imgWidth = pageWidth;
-        const imgHeight = canvas.height * imgWidth / canvas.width;
+            const imgWidth = pageWidth;
+            const imgHeight = canvas.height * imgWidth / canvas.width;
 
-        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+            pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
 
-        pdf.save("invoice.pdf");
-    });
-};
+            pdf.save("invoice.pdf");
+        });
+    };
     const handlePaymentModeChange = (e) => {
         set_paymentMode(e.target.value);
     };
@@ -773,7 +782,7 @@ const ecr = () => {
                                                     </div>
 
                                                     <div className="text-right">
-                                                        <h5><b>Anandam Consultancy</b></h5>
+                                                        <h1><b>{billType == "services"  ? "Anandam Solution and Services" :  "Anandam Consultancy"}</b></h1>
 
                                                         <div>101, Anant Apartment</div>
                                                         <div>Near Rakshak Bandhu</div>
@@ -1064,6 +1073,56 @@ const ecr = () => {
                         </div>
                     </div>
                 </div>
+                {showTypeModal && (
+                    <>
+                        <div className="modal fade show d-block">
+                            <div className="modal-dialog modal-dialog-centered">
+                                <div className="modal-content">
+
+                                    <div className="modal-header">
+                                        <h4>Select Bill Type</h4>
+                                    </div>
+
+                                    <div className="modal-body">
+
+                                        <div
+                                            className={`card p-3 mb-3 ${billType === "consultancy" ? "border border-primary" : ""}`}
+                                            style={{ cursor: "pointer" }}
+                                            onClick={() => setBillType("consultancy")}
+                                        >
+                                            <h5>🏢 Consultancy</h5>
+                                        </div>
+
+                                        <div
+                                            className={`card p-3 ${billType === "services" ? "border border-primary" : ""}`}
+                                            style={{ cursor: "pointer" }}
+                                            onClick={() => setBillType("services")}
+                                        >
+                                            <h5>🛠 Services</h5>
+                                        </div>
+
+                                    </div>
+
+                                    <div className="modal-footer">
+
+                                        <button
+                                            className="btn btn-primary"
+                                            disabled={!billType}
+                                            onClick={() => setShowTypeModal(false)}
+                                        >
+                                            Continue
+                                        </button>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="modal-backdrop fade show"></div>
+                    </>
+                )}
+
             </section>
 
         </div>
