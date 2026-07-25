@@ -7,9 +7,11 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import logo from "../../../standalone_assets/images/Anandam.png"
 import "./bill.css"
+import { toWords } from "number-to-words";
 
 const billMaster = () => {
-
+const [amountToWord, setAmountToWord] = useState('');
+    
    const [billType, setBillType] = useState("");
   const itemsPerPage = 5; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
@@ -129,8 +131,19 @@ const billMaster = () => {
         setDOC(response.data.est_doc)
         set_rate(response.data.rate)
         setFinalBillArray(response.data.billData)
-        setTotalAmount(response.data.amount)
-        setIsUpdate(true)
+        set_totalAmount(response.data.amount)
+        // setIsUpdate(true)
+
+         // toWords(21000) returns "twenty-one thousand"
+        const words = toWords(response.data.amount);
+
+        // Capitalize first letter of each word
+        const capitalizedWords = words
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+        setAmountToWord(capitalizedWords)
+        
 
       } else {
         Swal.fire({
@@ -547,6 +560,12 @@ const billMaster = () => {
                                 ₹ {totalAmount}
                               </th>
 
+                            </tr>
+                             <tr className="invoice-total">
+
+                              <th>Rs. {amountToWord} Only</th>
+
+                            
                             </tr>
 
                           </tbody>
