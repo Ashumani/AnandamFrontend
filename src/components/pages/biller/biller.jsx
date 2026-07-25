@@ -12,6 +12,7 @@ import { toWords } from 'number-to-words';
 
 const ecr = () => {
 
+    const [bankdetails, setBankDetails] = useState({});
     const [amountToWord, setAmountToWord] = useState('');
     const [est_name, setEstName] = useState('');
     const [est_id, setEstId] = useState('');
@@ -80,6 +81,30 @@ const ecr = () => {
         }
     }
 
+    const selectBankdetails = async () => {
+        if (billType == "consultant") {
+            let Bank_details = {
+                "account": "264102000000449",
+                "pan": "AARPV4479R",
+                "office":"Anandam Consultant",
+                "bank_name": "Indian Overseas Bank",
+                "branch": "Hudkeshwar(Nagpur)",
+                "ifsc": "IOBA0002641"
+            }
+            setBankDetails(Bank_details)
+
+        } else {
+            let Bank_details = {
+                "office":"Anandam Solution & Services",
+                "account": "264102000000169",
+                "pan": "AETPV0937Q",
+                "bank_name": "Indian Overseas Bank",
+                "branch": "Hudkeshwar(Nagpur)",
+                "ifsc": "IOBA0002641"
+            }
+            setBankDetails(Bank_details)
+        }
+    }
     const fetchEmployer = async (est_id) => {
         resetModel();
         resetPage();
@@ -700,7 +725,7 @@ const ecr = () => {
                                     ) : (
                                         <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} onClick={update}>Update</button>
                                     )}
-                                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} data-toggle="modal" data-target=".bd-example-modal-xl">Make PDF</button>
+                                    <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} data-toggle="modal" data-target=".bd-example-modal-xl" onClick={selectBankdetails}>Make PDF</button>
                                 </div>
                                 <div className="col-12 col-md-6 col-lg-3 mb-3">
                                     <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-45" style={{ "margin": "5px" }} data-toggle="modal" data-target="#exampleModal">Email PDF</button>
@@ -906,18 +931,19 @@ const ecr = () => {
                                                     <div className="col-md-6">
                                                         <h5><b>To</b></h5>
 
-                                                        <p><b>{est_name}</b></p>
+                                                        <h5><b>{est_name}</b></h5>
 
-                                                        <p>{estDesignation}</p>
+                                                        <p><h6>{estDesignation}</h6></p>
 
-                                                        <p>{est_address}</p>
+                                                        <p><h6>{est_address}</h6></p>
 
-                                                        <p>{estCity}</p>
+                                                        <p><h6>{estCity}</h6></p>
 
-                                                        <p>{estMobile}</p>
+                                                        <p><h6>{estMobile}</h6></p>
 
-                                                        <p>{estEmail}</p>
+                                                        <p><h6>{estEmail}</h6></p>
                                                     </div>
+                                                    
 
                                                     <div className="col-md-6 text-right">
 
@@ -933,7 +959,7 @@ const ecr = () => {
 
                                                                 <tr>
                                                                     <th>Date of Issue</th>
-                                                                    <td>{date}</td>
+                                                                    <td>{date ? moment(date).format("DD-MM-YYYY") : "N/A"}</td>
                                                                 </tr>
 
                                                                 <tr>
@@ -1021,7 +1047,7 @@ const ecr = () => {
 
                                                                     <th>Bank</th>
 
-                                                                    <td>Indian Overseas Bank</td>
+                                                                    <td>{bankdetails.bank_name}</td>
 
                                                                 </tr>
 
@@ -1029,7 +1055,7 @@ const ecr = () => {
 
                                                                     <th>Branch</th>
 
-                                                                    <td>Hudkeshwar (Nagpur)</td>
+                                                                     <td>{bankdetails.branch}</td>
 
                                                                 </tr>
 
@@ -1037,7 +1063,7 @@ const ecr = () => {
 
                                                                     <th>Account No.</th>
 
-                                                                    <td>264102000000449</td>
+                                                                    <td>{bankdetails.account}</td>
 
                                                                 </tr>
 
@@ -1045,7 +1071,7 @@ const ecr = () => {
 
                                                                     <th>IFSC</th>
 
-                                                                    <td>IOBA0002641</td>
+                                                                    <td>{bankdetails.ifsc}</td>
 
                                                                 </tr>
 
@@ -1053,7 +1079,7 @@ const ecr = () => {
 
                                                                     <th>PAN</th>
 
-                                                                    <td>AARPV4479R</td>
+                                                                    <td>{bankdetails.pan}</td>
 
                                                                 </tr>
 
@@ -1113,10 +1139,10 @@ const ecr = () => {
 
                                                 </div>
 
-                                                <div className="invoice-footer">
+                                                <div className="invoice-footer mt-4">
 
 
-                                                    <p>Payment Should make in favor of Anandam Solution And Services</p>
+                                                    <p>Payment Should make in favor of {bankdetails.office}</p>
                                                     <p>For any Busniess enquiry please contact us Manewada Road, Nagpur-440024</p>
                                                     <p>Thank you for your business!</p>
 
