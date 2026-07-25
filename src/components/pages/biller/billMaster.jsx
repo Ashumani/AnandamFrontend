@@ -1,18 +1,22 @@
 import { useState, useEffect } from "react"
+import moment from 'moment';
+
 import { getErId, getEstId } from "../Auth/authToken"
 import { Link, useNavigate } from "react-router-dom";
 import { getAllBill, getBill, searchBill } from "../../api/services";
 import Swal from "sweetalert2";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import logo from "../../../standalone_assets/images/Anandam.png"
+import consultancyStamp from "../../../standalone_assets/images/consultancyStamp.png"
 import "./bill.css"
 import { toWords } from "number-to-words";
 
 const billMaster = () => {
-const [amountToWord, setAmountToWord] = useState('');
-    
-   const [billType, setBillType] = useState("");
+  const [amountToWord, setAmountToWord] = useState('');
+
+  const [bankdetails, setBankDetails] = useState({});
+
+  const [billType, setBillType] = useState("");
   const itemsPerPage = 5; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, set_totalPages] = useState(1);
@@ -116,6 +120,7 @@ const [amountToWord, setAmountToWord] = useState('');
       // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
       const response = await getBill(id);
 
+
       if (response.status === true) {
         setBillNumber(id)
         setEstId(response.data.est_epf_id);
@@ -133,17 +138,18 @@ const [amountToWord, setAmountToWord] = useState('');
         setFinalBillArray(response.data.billData)
         set_totalAmount(response.data.amount)
         // setIsUpdate(true)
+        selectBankdetails()
 
-         // toWords(21000) returns "twenty-one thousand"
+        // toWords(21000) returns "twenty-one thousand"
         const words = toWords(response.data.amount);
 
         // Capitalize first letter of each word
         const capitalizedWords = words
-            .split(' ')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ');
+          .split(' ')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
         setAmountToWord(capitalizedWords)
-        
+
 
       } else {
         Swal.fire({
@@ -161,26 +167,62 @@ const [amountToWord, setAmountToWord] = useState('');
     }
   };
 
+  const selectBankdetails = async () => {
+    if (billType == "consultant") {
+      let Bank_details = {
+        "account": "264102000000449",
+        "pan": "AARPV4479R",
+        "office": "Anandam Consultantncy",
+        "bank_name": "Indian Overseas Bank",
+        "branch": "Hudkeshwar(Nagpur)",
+        "ifsc": "IOBA0002641"
+      }
+      setBankDetails(Bank_details)
+
+    } else {
+      let Bank_details = {
+        "office": "Anandam Solution & Services",
+        "account": "264102000000169",
+        "pan": "AETPV0937Q",
+        "bank_name": "Indian Overseas Bank",
+        "branch": "Hudkeshwar(Nagpur)",
+        "ifsc": "IOBA0002641"
+      }
+      setBankDetails(Bank_details)
+    }
+  }
+
   const generatePDF = async () => {
-    await getBillById(bill_number)
-    // Capture the HTML content as a canvas
-    html2canvas(document.querySelector("#pdf-content")).then(canvas => {
-      const pdf = new jsPDF('p', 'mm', 'a4'); // 'p' for portrait, 'mm' for millimeters, 'a4' for page size
-      const imgData = canvas.toDataURL("image/png");
-      // Dynamically fetch the current page dimensions
-      const pageHeight = pdf.internal.pageSize.getHeight(); // Returns 297 (if using mm)
-      const pageWidth = pdf.internal.pageSize.getWidth();   // Returns 210 (if using mm)
+    await getBillById(bill_number);
 
-      // Example: Calculate a safe bottom margin to trigger a new page
-      const bottomMargin = 20;
-      const safeZoneHeight = pageHeight - bottomMargin; // 277 mm
+    const element = document.querySelector("#pdf-content");
+    if (!element) return;
 
-      // Add the image to the PDF
-      pdf.addImage(imgData, 'PNG', 10, 10, 190, safeZoneHeight);
-      pdf.save("invoice.pdf");
+    // 1. High-resolution canvas capturing
+    const canvas = await html2canvas(element, {
+      scale: 2,           // Sharp text resolution (2x Retina scale)
+      useCORS: true,      // Loads local images and fonts cleanly
+      logging: false,
+      backgroundColor: "#ffffff", // Prevents transparent background fading
     });
-  };
 
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF('p', 'mm', 'a4');
+
+    // 2. A4 Dimensions & Margins
+    const pdfWidth = pdf.internal.pageSize.getWidth();  // 210 mm
+    const pdfHeight = pdf.internal.pageSize.getHeight(); // 297 mm
+    const margin = 10;                                   // 10 mm margin
+    const imgWidth = pdfWidth - margin * 2;             // 190 mm printable area
+
+    // 3. Proportional height calculation (Prevents stretching)
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    // 4. Add image safely within page limits
+    pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
+
+    pdf.save(`Invoice_${bill_number || "Anandam"}.pdf`);
+  };
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -349,7 +391,7 @@ const [amountToWord, setAmountToWord] = useState('');
                         {/* <a href="/auth/dashboard" className="logo d-flex align-items-center">
                           <img className="d-none d-lg-block main_logo ml-4" style={{ width: '100%', "max-height": "250px" }} src={logo} alt="" />
                         </a> */}
-                        <h1><b>{billType == "services"  ? "Anandam Solution and Services" :  "Anandam Consultancy"}</b></h1>
+                        <h1 className="anandamTitle"><b>{billType == "services" ? "Anandam Solution and Services" : "Anandam Consultancy"}</b></h1>
 
                         <div><h5>101, Anant Apartment</h5></div>
                         <div><h5>Near Rakshak Bandhu</h5></div>
@@ -362,22 +404,22 @@ const [amountToWord, setAmountToWord] = useState('');
 
                     {/* Details */}
 
-                    <div className="row mt-4">
+                    <div className="row mt-3 ">
 
-                      <div className="col-md-6">
+                      <div className="col-md-6 toSection">
                         <h5><b>To</b></h5>
 
                         <p><h4><b>{est_name}</b></h4></p>
 
-                        <p>{estDesignation}</p>
+                        <p><h5>{estDesignation}</h5></p>
 
-                        <p>{est_address}</p>
+                        <p><h5>{est_address}</h5></p>
 
-                        <p>{estCity}</p>
+                        <p><h5>{estCity}</h5></p>
 
-                        <p>{estMobile}</p>
+                        <p><h5>{estMobile}</h5></p>
 
-                        <p>{estEmail}</p>
+                        <p><h5>{estEmail}</h5></p>
                       </div>
 
                       <div className="col-md-6 text-right">
@@ -394,7 +436,7 @@ const [amountToWord, setAmountToWord] = useState('');
 
                             <tr>
                               <th>Date of Issue</th>
-                              <td>{date}</td>
+                              <td>{date ? moment(date).format("DD-MM-YYYY") : "N/A"}</td>
                             </tr>
 
                             <tr>
@@ -405,7 +447,6 @@ const [amountToWord, setAmountToWord] = useState('');
                           </tbody>
 
                         </table>
-
 
                       </div>
 
@@ -465,7 +506,7 @@ const [amountToWord, setAmountToWord] = useState('');
 
                     </table>
 
-<br />
+                    <br />
                     {/* Bottom */}
 
                     <div className="row mt-4">
@@ -480,48 +521,47 @@ const [amountToWord, setAmountToWord] = useState('');
 
                             <tr>
 
-                              <th><h5>Bank</h5></th>
+                              <th>Bank</th>
 
-                              <td><h5>Indian Overseas Bank</h5></td>
-
-                            </tr>
-
-                            <tr>
-
-                              <th><h5>Branch</h5></th>
-
-                              <td><h5>Hudkeshwar (Nagpur)</h5></td>
+                              <td>{bankdetails.bank_name}</td>
 
                             </tr>
 
                             <tr>
 
-                              <th><h5>Account No.</h5></th>
+                              <th>Branch</th>
 
-                              <td><h5>264102000000449</h5></td>
-
-                            </tr>
-
-                            <tr>
-
-                              <th><h5>IFSC</h5></th>
-
-                              <td><h5>IOBA0002641</h5></td>
+                              <td>{bankdetails.branch}</td>
 
                             </tr>
 
                             <tr>
 
-                              <th><h5>PAN</h5></th>
+                              <th>Account No.</th>
 
-                              <td><h5>AARPV4479R</h5></td>
+                              <td>{bankdetails.account}</td>
+
+                            </tr>
+
+                            <tr>
+
+                              <th>IFSC</th>
+
+                              <td>{bankdetails.ifsc}</td>
+
+                            </tr>
+
+                            <tr>
+
+                              <th>PAN</th>
+
+                              <td>{bankdetails.pan}</td>
 
                             </tr>
 
                           </tbody>
 
                         </table>
-
                       </div>
 
                       <div className="col-md-6">
@@ -550,8 +590,6 @@ const [amountToWord, setAmountToWord] = useState('');
 
                             </tr>
 
-
-
                             <tr className="invoice-total">
 
                               <th>Total</th>
@@ -561,11 +599,11 @@ const [amountToWord, setAmountToWord] = useState('');
                               </th>
 
                             </tr>
-                             <tr className="invoice-total">
+                            <tr className="invoice-total">
+                              <th></th>
+                              <th className="text-right">Rs. {amountToWord} Only</th>
 
-                              <th>Rs. {amountToWord} Only</th>
 
-                            
                             </tr>
 
                           </tbody>
@@ -575,8 +613,17 @@ const [amountToWord, setAmountToWord] = useState('');
                       </div>
 
                     </div>
-
-<br /><br /><br />
+                    <div className="row justify-content-end my-3">
+                      <div className="col-auto text-right">
+                        <img
+                          className="main_logo mr-4"
+                          style={{ width: '320px', maxHeight: '320px', objectFit: 'contain' }}
+                          src={consultancyStamp}
+                          alt="Stamp"
+                        />
+                      </div>
+                    </div>
+                    <br /><br /><br />
                     <div className="invoice-footer">
 
 

@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    font-size: 12px;
+    font-size: 16px;
   
   }
   table {
@@ -11,6 +11,7 @@ body {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
+    font-size: 18px;
   }
   /* th {
     background-color: #f0f0f0;
@@ -25,8 +26,9 @@ body {
   }
 
   .anandamTitle{
-    font-style: italic;
+    font-style: bold;
     font-family: 'Bradley Hand ITC';
+    font-size: 35px;
   }
 
   .font-size-bill{
@@ -61,7 +63,7 @@ body {
 
 .invoice-logo h1{
     margin:0;
-    font-size:42px;
+    font-size:65px;
     font-weight:bold;
 }
 
@@ -87,4 +89,32 @@ body {
 .table td,
 .table th{
     vertical-align:middle;
+}
+
+.toSection{
+  font-style: bold;
+  color: black;
+}
+
+/* Print optimization for html2canvas */
+#pdf-content.invoice-template {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+#pdf-content h1, 
+#pdf-content h4, 
+#pdf-content h5, 
+#pdf-content p, 
+#pdf-content th, 
+#pdf-content td {
+  color: #000000 !important; /* Forces pure black to prevent faint rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+#pdf-content .table-bordered th,
+#pdf-content .table-bordered td {
+  border: 1px solid #000000 !important; /* Clean table grid lines */
 }

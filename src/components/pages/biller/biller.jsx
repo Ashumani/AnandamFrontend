@@ -86,7 +86,7 @@ const ecr = () => {
             let Bank_details = {
                 "account": "264102000000449",
                 "pan": "AARPV4479R",
-                "office":"Anandam Consultant",
+                "office":"Anandam Consultantncy",
                 "bank_name": "Indian Overseas Bank",
                 "branch": "Hudkeshwar(Nagpur)",
                 "ifsc": "IOBA0002641"
@@ -902,255 +902,257 @@ const ecr = () => {
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <div className="modal-body">
-                                            <div id="pdf-content" className="invoice-template">
-
-                                                {/* Header */}
-                                                <div className="invoice-header d-flex justify-content-between">
-
-                                                    <div className="invoice-logo">
-                                                        <h1>INVOICE</h1>
-                                                    </div>
-
-                                                    <div className="text-right">
-                                                        <h1><b>{billType == "services" ? "Anandam Solution and Services" : "Anandam Consultancy"}</b></h1>
-
-                                                        <div>101, Anant Apartment</div>
-                                                        <div>Near Rakshak Bandhu</div>
-                                                        <div>Manewada Road, Nagpur-440024</div>
-                                                        <div>0712-2748370</div>
-                                                        <div>anand.esipf@gmail.com</div>
-                                                    </div>
-
-                                                </div>
-
-                                                {/* Details */}
-
-                                                <div className="row mt-4">
-
-                                                    <div className="col-md-6">
-                                                        <h5><b>To</b></h5>
-
-                                                        <h5><b>{est_name}</b></h5>
-
-                                                        <p><h6>{estDesignation}</h6></p>
-
-                                                        <p><h6>{est_address}</h6></p>
-
-                                                        <p><h6>{estCity}</h6></p>
-
-                                                        <p><h6>{estMobile}</h6></p>
-
-                                                        <p><h6>{estEmail}</h6></p>
-                                                    </div>
-                                                    
-
-                                                    <div className="col-md-6 text-right">
-
-
-                                                        <table className="table table-borderless table-sm">
-
-                                                            <tbody>
-
-                                                                <tr>
-                                                                    <th>Invoice No.</th>
-                                                                    <td>{bill_number}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <th>Date of Issue</th>
-                                                                    <td>{date ? moment(date).format("DD-MM-YYYY") : "N/A"}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <th>Employer ID</th>
-                                                                    <td>{est_id}</td>
-                                                                </tr>
-
-                                                            </tbody>
-
-                                                        </table>
-
-
-                                                    </div>
-
-                                                </div>
-
-                                                {/* Item Table */}
-
-                                                <table className="table table-bordered mt-3">
-
-                                                    <thead>
-
-                                                        <tr>
-
-                                                            <th width="8%">Item</th>
-
-                                                            <th>Description</th>
-
-                                                            <th width="15%">Rate</th>
-
-                                                            <th width="18%">Amount</th>
-
-                                                        </tr>
-
-                                                    </thead>
-
-                                                    <tbody>
-
-                                                        {finalBillArray.map((employee, index) => (
-
-                                                            <tr key={index}>
-
-                                                                <td>{index + 1}</td>
-
-                                                                <td>{employee.perticular}</td>
-
-                                                                <td>₹ {rate}</td>
-
-                                                                <td>₹ {employee.amount}</td>
-
-                                                            </tr>
-
-                                                        ))}
-
-                                                        {/* Blank rows */}
-
-                                                        {[...Array(Math.max(0, 1 - finalBillArray.length))].map((_, i) => (
-
-                                                            <tr key={i}>
-
-                                                                <td>&nbsp;</td>
-
-
-                                                            </tr>
-
-                                                        ))}
-
-                                                    </tbody>
-
-                                                </table>
-
-                                                {/* Bottom */}
-
-                                                <div className="row mt-4">
-
-                                                    <div className="col-md-6">
-
-                                                        <h5>Bank Details</h5>
-
-                                                        <table className="table table-borderless table-sm">
-
-                                                            <tbody>
-
-                                                                <tr>
-
-                                                                    <th>Bank</th>
-
-                                                                    <td>{bankdetails.bank_name}</td>
-
-                                                                </tr>
-
-                                                                <tr>
-
-                                                                    <th>Branch</th>
-
+                                       <div className="modal-body">
+                                                         <div id="pdf-content" className="invoice-template">
+                                       
+                                                           {/* Header */}
+                                                           <div className="invoice-header d-flex justify-content-between">
+                                       
+                                                             <div className="invoice-logo">
+                                                               <h1>INVOICE</h1>
+                                                             </div>
+                                       
+                                                             <div className="text-right">
+                                                               {/* <a href="/auth/dashboard" className="logo d-flex align-items-center">
+                                                                 <img className="d-none d-lg-block main_logo ml-4" style={{ width: '100%', "max-height": "250px" }} src={logo} alt="" />
+                                                               </a> */}
+                                                               <h1><b>{billType == "services" ? "Anandam Solution and Services" : "Anandam Consultancy"}</b></h1>
+                                       
+                                                               <div><h5>101, Anant Apartment</h5></div>
+                                                               <div><h5>Near Rakshak Bandhu</h5></div>
+                                                               <div><h5>Manewada Road, Nagpur-440024</h5></div>
+                                                               <div><h5>0712-2748370</h5></div>
+                                                               <div><h5>anand.esipf@gmail.com</h5></div>
+                                                             </div>
+                                       
+                                                           </div>
+                                       
+                                                           {/* Details */}
+                                       
+                                                           <div className="row mt-4">
+                                       
+                                                             <div className="col-md-6">
+                                                               <h5><b>To</b></h5>
+                                       
+                                                               <p><h4><b>{est_name}</b></h4></p>
+                                       
+                                                               <p>{estDesignation}</p>
+                                       
+                                                               <p>{est_address}</p>
+                                       
+                                                               <p>{estCity}</p>
+                                       
+                                                               <p>{estMobile}</p>
+                                       
+                                                               <p>{estEmail}</p>
+                                                             </div>
+                                       
+                                                             <div className="col-md-6 text-right">
+                                       
+                                       
+                                                               <table className="table table-borderless table-sm">
+                                       
+                                                                 <tbody>
+                                       
+                                                                   <tr>
+                                                                     <th>Invoice No.</th>
+                                                                     <td>{bill_number}</td>
+                                                                   </tr>
+                                       
+                                                                   <tr>
+                                                                     <th>Date of Issue</th>
+                                                                     <td>{date ? moment(date).format("DD-MM-YYYY") : "N/A"}</td>
+                                                                   </tr>
+                                       
+                                                                   <tr>
+                                                                     <th>Employer ID</th>
+                                                                     <td>{est_id}</td>
+                                                                   </tr>
+                                       
+                                                                 </tbody>
+                                       
+                                                               </table>
+                                       
+                                                             </div>
+                                       
+                                                           </div>
+                                                           {/* Item Table */}
+                                       
+                                                           <table className="table table-bordered mt-3">
+                                       
+                                                             <thead>
+                                       
+                                                               <tr>
+                                       
+                                                                 <th width="8%">Item</th>
+                                       
+                                                                 <th>Description</th>
+                                       
+                                                                 <th width="15%">Rate</th>
+                                       
+                                                                 <th width="18%">Amount</th>
+                                       
+                                                               </tr>
+                                       
+                                                             </thead>
+                                       
+                                                             <tbody>
+                                       
+                                                               {finalBillArray.map((employee, index) => (
+                                       
+                                                                 <tr key={index}>
+                                       
+                                                                   <td>{index + 1}</td>
+                                       
+                                                                   <td>{employee.perticular}</td>
+                                       
+                                                                   <td>₹ {rate}</td>
+                                       
+                                                                   <td>₹ {employee.amount}</td>
+                                       
+                                                                 </tr>
+                                       
+                                                               ))}
+                                       
+                                                               {/* Blank rows */}
+                                       
+                                                               {[...Array(Math.max(0, 1 - finalBillArray.length))].map((_, i) => (
+                                       
+                                                                 <tr key={i}>
+                                       
+                                                                   <td>&nbsp;</td>
+                                       
+                                       
+                                                                 </tr>
+                                       
+                                                               ))}
+                                       
+                                                             </tbody>
+                                       
+                                                           </table>
+                                       
+                                                           <br />
+                                                           {/* Bottom */}
+                                       
+                                                           <div className="row mt-4">
+                                       
+                                                             <div className="col-md-6">
+                                       
+                                                               <h5>Bank Details</h5>
+                                       
+                                                               <table className="table table-borderless table-sm">
+                                       
+                                                                 <tbody>
+                                       
+                                                                   <tr>
+                                       
+                                                                     <th>Bank</th>
+                                       
+                                                                     <td>{bankdetails.bank_name}</td>
+                                       
+                                                                   </tr>
+                                       
+                                                                   <tr>
+                                       
+                                                                     <th>Branch</th>
+                                       
                                                                      <td>{bankdetails.branch}</td>
-
-                                                                </tr>
-
-                                                                <tr>
-
-                                                                    <th>Account No.</th>
-
-                                                                    <td>{bankdetails.account}</td>
-
-                                                                </tr>
-
-                                                                <tr>
-
-                                                                    <th>IFSC</th>
-
-                                                                    <td>{bankdetails.ifsc}</td>
-
-                                                                </tr>
-
-                                                                <tr>
-
-                                                                    <th>PAN</th>
-
-                                                                    <td>{bankdetails.pan}</td>
-
-                                                                </tr>
-
-                                                            </tbody>
-
-                                                        </table>
-
-                                                    </div>
-
-                                                    <div className="col-md-6">
-                                                        <br></br>
-                                                        <table className="table table-borderless">
-
-                                                            <tbody>
-
-                                                                <tr>
-
-                                                                    <th>Subtotal</th>
-
-                                                                    <td className="text-right">
-                                                                        ₹ {totalAmount}
-                                                                    </td>
-
-                                                                </tr>
-
-                                                                <tr>
-
-                                                                    <th>Discount</th>
-
-                                                                    <td className="text-right">
-                                                                        ₹ 0.00
-                                                                    </td>
-
-                                                                </tr>
-
-
-
-                                                                <tr className="invoice-total">
-
-                                                                    <th>Total</th>
-
-                                                                    <th className="text-right">
-                                                                        ₹ {totalAmount}
-                                                                    </th>
-
-                                                                </tr>
-                                                                <tr >
-                                                                    <th></th>
-                                                                    <th className="text-right">Rs. {amountToWord} Only</th>
-                                                                </tr>
-
-                                                            </tbody>
-
-                                                        </table>
-
-                                                    </div>
-
-                                                </div>
-
-                                                <div className="invoice-footer mt-4">
-
-
-                                                    <p>Payment Should make in favor of {bankdetails.office}</p>
-                                                    <p>For any Busniess enquiry please contact us Manewada Road, Nagpur-440024</p>
-                                                    <p>Thank you for your business!</p>
-
-
-                                                </div>
-
-                                            </div>
-                                        </div>
+                                       
+                                                                   </tr>
+                                       
+                                                                   <tr>
+                                       
+                                                                     <th>Account No.</th>
+                                       
+                                                                     <td>{bankdetails.account}</td>
+                                       
+                                                                   </tr>
+                                       
+                                                                   <tr>
+                                       
+                                                                     <th>IFSC</th>
+                                       
+                                                                     <td>{bankdetails.ifsc}</td>
+                                       
+                                                                   </tr>
+                                       
+                                                                   <tr>
+                                       
+                                                                     <th>PAN</th>
+                                       
+                                                                     <td>{bankdetails.pan}</td>
+                                       
+                                                                   </tr>
+                                       
+                                                                 </tbody>
+                                       
+                                                               </table>
+                                                             </div>
+                                       
+                                                             <div className="col-md-6">
+                                                               <br></br>
+                                                               <table className="table table-borderless">
+                                       
+                                                                 <tbody>
+                                       
+                                                                   <tr>
+                                       
+                                                                     <th>Subtotal</th>
+                                       
+                                                                     <td className="text-right">
+                                                                       ₹ {totalAmount}
+                                                                     </td>
+                                       
+                                                                   </tr>
+                                       
+                                                                   <tr>
+                                       
+                                                                     <th>Discount</th>
+                                       
+                                                                     <td className="text-right">
+                                                                       ₹ 0.00
+                                                                     </td>
+                                       
+                                                                   </tr>
+                                       
+                                                                   <tr className="invoice-total">
+                                       
+                                                                     <th>Total</th>
+                                       
+                                                                     <th className="text-right">
+                                                                       ₹ {totalAmount}
+                                                                     </th>
+                                       
+                                                                   </tr>
+                                                                   <tr className="invoice-total">
+                                                                     <th></th>
+                                                                     <th className="text-right">Rs. {amountToWord} Only</th>
+                                       
+                                       
+                                                                   </tr>
+                                       
+                                                                 </tbody>
+                                       
+                                                               </table>
+                                       
+                                                             </div>
+                                       
+                                                           </div>
+                                       
+                                                           <br /><br /><br />
+                                                           <div className="invoice-footer">
+                                       
+                                       
+                                                             <p><h5>Payment Should make in favor of Anandam Solution And Services</h5></p>
+                                                             <p><h5>For any Busniess enquiry please contact us Manewada Road, Nagpur-440024</h5></p>
+                                                             <p><h5>Thank you for your business!</h5></p>
+                                       
+                                       
+                                                           </div>
+                                       
+                                                         </div>
+                                                       </div>
+                                                      
                                         <div className="modal-footer">
                                             <button className='btn btn-outline-primary btn-block' onClick={generatePDF}>Download PDF</button>
                                         </div>
