@@ -13,7 +13,7 @@ const ecr = () => {
 
     const [est_name, setEstName] = useState('');
     const [est_id, setEstId] = useState('');
-     const [esic_est_id, setESICEstId] = useState('');
+    const [esic_est_id, setESICEstId] = useState('');
     const [er_name, setErName] = useState('');
     const [est_doc, setDOC] = useState('');
     const [est_address, setAddress] = useState('');
@@ -128,6 +128,7 @@ const ecr = () => {
             const response = await getBill(bill_number);
 
             if (response.status === true) {
+                setBillType(response.data.bill_type);
                 setEstId(response.data.est_epf_id);
                 setESICEstId(response.data.est_esic_id)
                 setEstName(response.data.est_name)
@@ -318,7 +319,7 @@ const ecr = () => {
 
     const addBill = async () => {
         let params = {
-            "bill_type":billType,
+            "bill_type": billType,
             "est_epf_id": est_id,
             "est_esic_id": esic_est_id,
             "rate": rate,
@@ -366,6 +367,7 @@ const ecr = () => {
 
     const update = async () => {
         let params = {
+            "bill_type": billType,
             "est_epf_id": est_id,
             "est_esic_id": "12345678",
             "rate": rate,
@@ -593,7 +595,43 @@ const ecr = () => {
                                     <button type="button" className="btn btn-outline-primary btn-block rounded-4 w-50" style={{ "margin": "22px 5px 10px 10px" }} onClick={() => openModal('exampleModal')}>Next</button>
                                 </div>
                                 <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                    <label className="form-label fw-bold d-block mb-2">Bill Type</label>
 
+                                    <div className="btn-group w-100" role="group">
+                                        <input
+                                            type="radio"
+                                            className="btn-check"
+                                            name="billType"
+                                            id="services"
+                                            value="services"
+                                            checked={billType === "services"}
+                                            onChange={(e) => setBillType(e.target.value)}
+                                            autoComplete="off"
+                                        />
+                                        <label
+                                            className="btn btn-outline-primary rounded-start-4"
+                                            htmlFor="services"
+                                        >
+                                            Services
+                                        </label>
+
+                                        <input
+                                            type="radio"
+                                            className="btn-check"
+                                            name="billType"
+                                            id="consultant"
+                                            value="consultant"
+                                            checked={billType === "consultant"}
+                                            onChange={(e) => setBillType(e.target.value)}
+                                            autoComplete="off"
+                                        />
+                                        <label
+                                            className="btn btn-outline-primary rounded-end-4"
+                                            htmlFor="consultant"
+                                        >
+                                            Consultant
+                                        </label>
+                                    </div>
                                 </div>
                                 <div className="col-12 col-md-6 col-lg-3 mb-3">
                                     {!IsUpdate ? (
@@ -782,7 +820,7 @@ const ecr = () => {
                                                     </div>
 
                                                     <div className="text-right">
-                                                        <h1><b>{billType == "services"  ? "Anandam Solution and Services" :  "Anandam Consultancy"}</b></h1>
+                                                        <h1><b>{billType == "services" ? "Anandam Solution and Services" : "Anandam Consultancy"}</b></h1>
 
                                                         <div>101, Anant Apartment</div>
                                                         <div>Near Rakshak Bandhu</div>
@@ -1088,7 +1126,7 @@ const ecr = () => {
                                         <div
                                             className={`card p-3 mb-3 ${billType === "consultancy" ? "border border-primary" : ""}`}
                                             style={{ cursor: "pointer" }}
-                                            onClick={() => setBillType("consultancy")}
+                                            onClick={() => setBillType("consultant")}
                                         >
                                             <h5>🏢 Consultancy</h5>
                                         </div>
