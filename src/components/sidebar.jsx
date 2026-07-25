@@ -406,12 +406,12 @@ const Sidebar = () => {
                             ))}
                         </li>
                     ))}
-                    <li className="nav-item">
+                    {/* <li className="nav-item">
                         <a className="nav-link " href="/auth/dashboard/bill/create">
                             <i className="bi bi-archive"></i>
                             <span>Invoice Generation</span>
                         </a>
-                    </li>
+                    </li> */}
                     <li className="nav-item">
                         <a className="nav-link " href="/login">
                             <i className="bi bi-box-arrow-right"></i>
