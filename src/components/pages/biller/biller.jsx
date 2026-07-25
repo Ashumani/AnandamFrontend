@@ -656,6 +656,13 @@ const ecr = () => {
                                     <div className="modal-content">
                                         <div className="modal-header">
                                             <h5 className="modal-title" id="exampleModalLabel">Bill Parameter</h5>
+                                            <div className="col-sm-1">
+                                                <label htmlFor="inputPassword">Rate</label>
+    
+                                            </div>
+                                            <div className="col-sm-4">
+                                                <input type="text" className="form-control" onChange={(e) => set_rate(e.target.value)} value={rate} />
+                                            </div>
                                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
