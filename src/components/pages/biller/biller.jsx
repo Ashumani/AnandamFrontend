@@ -7,10 +7,12 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import "./bill.css"
 import { useParams } from 'react-router-dom';
+import { toWords } from 'number-to-words';
 
 
 const ecr = () => {
 
+    const [amountToWord, setAmountToWord] = useState('');
     const [est_name, setEstName] = useState('');
     const [est_id, setEstId] = useState('');
     const [esic_est_id, setESICEstId] = useState('');
@@ -144,6 +146,16 @@ const ecr = () => {
                 setFinalBillArray(response.data.billData)
                 setTotalAmount(response.data.amount)
                 setIsUpdate(true)
+                // toWords(21000) returns "twenty-one thousand"
+                const words = toWords(response.data.amount);
+
+                // Capitalize first letter of each word
+                const capitalizedWords = words
+                    .split(' ')
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ');
+                setAmountToWord(capitalizedWords)
+
 
             } else {
                 Swal.fire({
@@ -160,141 +172,181 @@ const ecr = () => {
 
         }
     };
-    const calculation = async () => {
-
-        try {
-            const date1 = moment(fromDate, 'YYYY-MM');
-            const date2 = moment(toDate, 'YYYY-MM');
-            const differenceInMonths = date2.diff(date1, 'months');
-
-            let newItems = [];
-
-            if (checkedPf) {
-                newItems.push({
-                    perticular: "EPF Challan For Period " + fromDate + " To " + toDate,
-                    rate: rate,
-                    amount: rate * differenceInMonths,
-                    billNumber: bill_number,
-                    toMonth: moment(toDate, "YYYY-MM").month() + 1,
-                    fromMonth: moment(fromDate, "YYYY-MM").month() + 1,
-                    toYear: moment(toDate, "YYYY-MM").year(),
-                    fromYear: moment(fromDate, "YYYY-MM").year()
-                });
-            }
-
-            if (checkedEsic) {
-                newItems.push({
-                    perticular: "ESIC Challan For Period " + fromDate + " To " + toDate,
-                    rate: rate,
-                    amount: rate * differenceInMonths,
-                    billNumber: bill_number,
-                    toMonth: moment(toDate, "YYYY-MM").month() + 1,
-                    fromMonth: moment(fromDate, "YYYY-MM").month() + 1,
-                    toYear: moment(toDate, "YYYY-MM").year(),
-                    fromYear: moment(fromDate, "YYYY-MM").year()
-                });
-            }
-
-            if (checkedCoverage && coverageAmount > 0) {
-                newItems.push({
-                    perticular: "EPF Registration Charge",
-                    rate: coverageAmount,
-                    amount: coverageAmount,
-                    billNumber: bill_number,
-                    toMonth: moment(toDate, "YYYY-MM").month() + 1,
-                    fromMonth: moment(fromDate, "YYYY-MM").month() + 1,
-                    toYear: moment(toDate, "YYYY-MM").year(),
-                    fromYear: moment(fromDate, "YYYY-MM").year()
-                });
-            }
-
-            if (checkedOther && otherAmount > 0) {
-                newItems.push({
-                    perticular: otherReason,
-                    rate: otherAmount,
-                    amount: otherAmount,
-                    billNumber: bill_number,
-                    toMonth: moment(toDate, "YYYY-MM").month() + 1,
-                    fromMonth: moment(fromDate, "YYYY-MM").month() + 1,
-                    toYear: moment(toDate, "YYYY-MM").year(),
-                    fromYear: moment(fromDate, "YYYY-MM").year()
-                });
-            }
-
-            // Update state with new items and calculate total amount
-            setFinalBillArray(prevArray => {
-                const updatedArray = [...prevArray, ...newItems];
-                const newTotalAmount = updatedArray.reduce((total, bill) => parseInt(total) + parseInt(bill.amount), 0);
-                setTotalAmount(newTotalAmount);
-                return updatedArray;
-            });
-
-            resetModel()
-            closeModal('exampleModal')
-
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            // setError('Error fetching data. Please try again.');
+const calculation = async () => {
+    try {
+        if (!fromDate || !toDate) {
+            alert("Please select both From and To dates.");
+            return;
         }
-    };
 
-
-    const handleChange = (event) => {
-        // Define your dates using year-month format
+        // 1. Parse Moment objects once
         const date1 = moment(fromDate, 'YYYY-MM');
         const date2 = moment(toDate, 'YYYY-MM');
-        // Calculate the difference in months
-        const differenceInMonths = date2.diff(date1, 'months');
 
-        if (event.target.id == "flexSwitchCheckPf" && event.target.checked) {
-            setCheckedPf(event.target.checked);
-            setpfAmount(rate * differenceInMonths)
-            setModalTotal(rate * differenceInMonths - modalTotal)
-            let item = {
-                "perticular": "EPF Challan For Period " + fromDate + " To " + toDate,
-                "rate": rate,
-                "amount": rate * differenceInMonths,
-                "billNumber": bill_number,
-                "fromDate": fromDate,
-                "toDate": toDate
-            }
-            // setFinalBillArray(prevArray => [...prevArray, item]);
-        } else if (event.target.id == "flexSwitchCheckPf" && !event.target.checked) {
-            setCheckedPf(event.target.checked);
-            setModalTotal(rate * differenceInMonths - modalTotal)
-            setpfAmount(0)
-        }
-        if (event.target.id == "flexSwitchCheckEsic" && event.target.checked) {
-            setCheckedEsic(event.target.checked);
-            setEsicAmount(rate * differenceInMonths)
-            setModalTotal(rate * differenceInMonths + modalTotal)
-            let item = {
-                "perticular": "ESIC Challan For Period " + fromDate + " To " + toDate,
-                "rate": rate,
-                "amount": rate * differenceInMonths,
-                "billNumber": bill_number,
-                toMonth: moment(toDate, "YYYY-MM").month() + 1,
-                fromMonth: moment(fromDate, "YYYY-MM").month() + 1,
-                toYear: moment(toDate, "YYYY-MM").year(),
-                fromYear: moment(fromDate, "YYYY-MM").year()
-            }
-            // setFinalBillArray(prevArray => [...prevArray, item]);
-        } else if (event.target.id == "flexSwitchCheckEsic" && !event.target.checked) {
-            setCheckedEsic(event.target.checked);
-            setModalTotal(rate * differenceInMonths - modalTotal)
-            setEsicAmount(0)
+        // Calculate total months (inclusive)
+        const differenceInMonths = date2.diff(date1, 'months') + 1;
+
+        // 2. Prepare common date metadata
+        const formattedFrom = date1.format('MM-YYYY');
+        const formattedTo = date2.format('MM-YYYY');
+        const periodText = `For Period ${formattedFrom} To ${formattedTo}`;
+
+        const dateMeta = {
+            fromMonth: date1.month() + 1,
+            toMonth: date2.month() + 1,
+            fromYear: date1.year(),
+            toYear: date2.year(),
+            billNumber: bill_number,
+        };
+
+        let newItems = [];
+
+        // 3. Push items conditionally
+        if (checkedPf) {
+            newItems.push({
+                ...dateMeta,
+                perticular: `EPF Challan ${periodText}`,
+                rate: rate,
+                amount: rate * differenceInMonths,
+            });
         }
 
-        if (event.target.id == "flexSwitchCheckCoverage") {
-            setCheckedCoverage(event.target.checked);
-            setCoverageAmount(0)
+        if (checkedEsic) {
+            newItems.push({
+                ...dateMeta,
+                perticular: `ESIC Challan ${periodText}`,
+                rate: rate,
+                amount: rate * differenceInMonths,
+            });
         }
-        if (event.target.id == "flexSwitchCheckOther") {
-            setCheckedOther(event.target.checked);
-            setOtherAmount(0)
+
+        if (checkedCoverage && coverageAmount > 0) {
+            newItems.push({
+                ...dateMeta,
+                perticular: "EPF Registration Charge",
+                rate: coverageAmount,
+                amount: coverageAmount,
+            });
         }
+
+        if (checkedOther && otherAmount > 0) {
+            newItems.push({
+                ...dateMeta,
+                perticular: otherReason,
+                rate: otherAmount,
+                amount: otherAmount,
+            });
+        }
+
+        // 4. Update state safely
+        setFinalBillArray((prevArray) => {
+            const updatedArray = [...prevArray, ...newItems];
+            const newTotalAmount = updatedArray.reduce(
+                (total, item) => total + (Number(item.amount) || 0),
+                0
+            );
+            setTotalAmount(newTotalAmount);
+            return updatedArray;
+        });
+
+        // 5. Cleanup UI
+        resetModel();
+        closeModal('exampleModal');
+
+    } catch (error) {
+        console.error('Error during bill calculation:', error);
+    }
+};
+
+const handleChange = (event) => {
+    const { id, checked } = event.target;
+
+    // Parse date range
+    const date1 = moment(fromDate, 'YYYY-MM');
+    const date2 = moment(toDate, 'YYYY-MM');
+    const differenceInMonths = (date1.isValid() && date2.isValid()) 
+        ? date2.diff(date1, 'months') + 1 
+        : 1;
+
+    const calculatedAmount = rate * differenceInMonths;
+    const periodText = `For Period ${date1.format('MM-YYYY')} To ${date2.format('MM-YYYY')}`;
+
+    // Common date payload for objects
+    const datePayload = {
+        fromMonth: date1.month() + 1,
+        toMonth: date2.month() + 1,
+        fromYear: date1.year(),
+        toYear: date2.year(),
+        billNumber: bill_number,
+        fromDate,
+        toDate
     };
 
+    switch (id) {
+        case "flexSwitchCheckPf": {
+            setCheckedPf(checked);
+            if (checked) {
+                setpfAmount(calculatedAmount);
+                setModalTotal(prev => prev + calculatedAmount);
+
+                const item = {
+                    ...datePayload,
+                    perticular: `EPF Challan ${periodText}`,
+                    rate,
+                    amount: calculatedAmount,
+                };
+                // setFinalBillArray(prev => [...prev, item]);
+            } else {
+                setpfAmount(0);
+                setModalTotal(prev => prev - calculatedAmount);
+            }
+            break;
+        }
+
+        case "flexSwitchCheckEsic": {
+            setCheckedEsic(checked);
+            if (checked) {
+                setEsicAmount(calculatedAmount);
+                setModalTotal(prev => prev + calculatedAmount);
+
+                const item = {
+                    ...datePayload,
+                    perticular: `ESIC Challan ${periodText}`,
+                    rate,
+                    amount: calculatedAmount,
+                };
+                // setFinalBillArray(prev => [...prev, item]);
+            } else {
+                setEsicAmount(0);
+                setModalTotal(prev => prev - calculatedAmount);
+            }
+            break;
+        }
+
+        case "flexSwitchCheckCoverage": {
+            setCheckedCoverage(checked);
+            if (!checked) {
+                // Subtract old coverage amount from running total when unchecked
+                setModalTotal(prev => prev - (coverageAmount || 0));
+            }
+            setCoverageAmount(0);
+            break;
+        }
+
+        case "flexSwitchCheckOther": {
+            setCheckedOther(checked);
+            if (!checked) {
+                // Subtract old other amount from running total when unchecked
+                setModalTotal(prev => prev - (otherAmount || 0));
+            }
+            setOtherAmount(0);
+            break;
+        }
+
+        default:
+            break;
+    }
+};
     const calculate = async () => {
         setModalTotal(modalTotal + coverageAmount);
     }
@@ -784,8 +836,8 @@ const ecr = () => {
                                 <tfoot>
                                     <tr>
                                         <th id="total" colSpan="3">Total : </th>
-                                        <td>{totalAmount}</td>
-                                        <td></td>
+                                        <td><strong>{totalAmount}</strong></td>
+                                        <td><strong>Rs : {amountToWord} Only</strong></td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -1037,6 +1089,13 @@ const ecr = () => {
                                                                     <th className="text-right">
                                                                         ₹ {totalAmount}
                                                                     </th>
+
+                                                                </tr>
+                                                                <tr>
+
+                                                                    <th>{amountToWord}</th>
+
+                                                                    
 
                                                                 </tr>
 
