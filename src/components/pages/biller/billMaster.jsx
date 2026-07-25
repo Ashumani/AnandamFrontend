@@ -613,6 +613,7 @@ const billMaster = () => {
                       </div>
 
                     </div>
+                    <br /><br /><br />
                     <div className="row justify-content-end my-3">
                       <div className="col-auto text-right">
                         <img
