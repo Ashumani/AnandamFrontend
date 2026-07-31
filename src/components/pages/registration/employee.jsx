@@ -435,7 +435,7 @@ const employee = () => {
       reset();
 
     } catch (error) {
-      console.error('Login error ', error);
+      console.error('Login error ', error);         
       setError(error);
     }
   }
@@ -633,14 +633,14 @@ const employee = () => {
                   </div>
                   <div className="col-12 col-md-6 col-lg-2 text-center">
                     <small className="text-muted d-block mb-1">New Employees</small>
-                    <button className="btn btn-primary w-100 rounded-4">
+                    <button className="btn btn-primary w-100 rounded-4" onClick={uplaodEmployee}>
                       Upload
                     </button>
                   </div>
 
                   <div className="col-12 col-md-6 col-lg-2 text-center">
                     <small className="text-muted d-block mb-1">Existing Employees</small>
-                    <button className="btn btn-success w-100 rounded-4">
+                    <button className="btn btn-success w-100 rounded-4" onClick={uplaodEmployeeSubid}>
                       UAN Update
                     </button>
                   </div>
