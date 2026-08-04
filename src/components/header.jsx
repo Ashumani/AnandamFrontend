@@ -6,7 +6,7 @@ import profileImg from "../assets/img/3.jpg";
 import logo from "../standalone_assets/images/Anandam.png"
 import React, { useState, useEffect } from "react"
 // import { Link } from "react-router-dom";
-import { fetchAllEmployer, getAllNotification, getUnreadNotification, getUser, recievedMessage, sendMessage } from "./api/services.js";
+import { fetchAllEmployer, getAll, getAllNotification, getUnreadNotification, getUser, recievedMessage, sendMessage } from "./api/services.js";
 import { setEstId, getEstId, deleteEstId, getErId } from "./pages/Auth/authToken.js";
 import Sidebar from "./sidebar.jsx";
 import { useSidebar } from './SidebarContext';
@@ -14,6 +14,8 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
 import Select from 'react-select';
 import ChatWidget from "./ChatWidget.jsx";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
 
 const Header = () => {
@@ -28,12 +30,15 @@ const Header = () => {
   const [currentUser, setCurrentUser] = useState({})
   const [notifications, setNotifications] = useState([])
   const [notificationCnt, setNotificationCnt] = useState(0)
-  const [sendingMessage,setSendingMessage] = useState('')
+  const [sendingMessage, setSendingMessage] = useState('')
 
   const [chatMessages, setChatMessages] = useState([]);
-  const currentUserId = 1 //localStorage.getItem("user_id")
+  const currentUserId = localStorage.getItem("user_id")
+  const [showRecipientModal, setShowRecipientModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState("");
+  const [message, setMessage] = useState("");
 
-
+const [employeeList, setEmployeeist] = useState([])
 
   const options = [
     { value: 'All', label: 'All' },
@@ -48,6 +53,7 @@ const Header = () => {
   useEffect(() => {
     const fetchData = async () => {
       await getMessage()
+      await getAllUser()
 
       try {
         // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
@@ -168,18 +174,46 @@ const Header = () => {
     setChatMessages(response.data)
   }
 
-  const postMessage = async (sendingMessage) => {
+  const postMessage = async () => {
+
+     if (!selectedUser) {
+        alert("Please select recipient.");
+        return;
+    }
+
+    
+    const user2 = employeeList.find(item => item.id === parseInt(selectedUser));
+
+    const recievername = user2 ? user2.name : ""; 
     const params = {
-      sender_id: 2,
-      reciever_id: 2,
-      sender_name: "Manish",
-      reciever_name: "Ashish",
+      reciever_id: selectedUser,
+      reciever_name: recievername,
       sender_message: sendingMessage,
       read: 0
     }
     const response = await sendMessage(params);
     setChatMessages(response.data)
+    setShowRecipientModal(false)
   }
+
+    const getAllUser = async () => {
+      // api call
+  
+      try {
+        // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+        const response = await getAll();
+        if (response.status == true) {
+            setEmployeeist(response.data)
+  
+        }
+  
+  
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setError('Error fetching data. Please try again.');
+        setLoading(false);
+      }
+    };
   // const togglesidebar = () => {
   //     document.body.classList.toggle("toggle-sidebar");
   //     console.log("clicked");
@@ -552,7 +586,8 @@ const Header = () => {
               onChange={(e) => setSendingMessage(e.target.value)}
             />
 
-            <button onClick={()=> postMessage(sendingMessage)} className="bi bi-send-fill"></button>
+            {/* <button onClick={() => postMessage(sendingMessage)} className="bi bi-send-fill"></button> */}
+            <button onClick={() => setShowRecipientModal(true)} className="bi bi-send-fill"></button>
           </div>
 
         </div>
@@ -565,7 +600,60 @@ const Header = () => {
       >
         💬
       </button>
+      <div><Modal
+    show={showRecipientModal}
+    onHide={() => setShowRecipientModal(false)}
+    centered
+>
+    <Modal.Header closeButton>
+        <Modal.Title>Select Recipient</Modal.Title>
+    </Modal.Header>
+
+    <Modal.Body>
+
+        <label>Send To</label>
+
+        <select
+            className="form-control"
+            value={selectedUser}
+            onChange={(e) => setSelectedUser(e.target.value)}
+        >
+            <option value="">Select Employee</option>
+
+            {employeeList.map(emp => (
+                <option
+                    key={emp.id}
+                    value={emp.id}
+                >
+                    {emp.name}
+                </option>
+            ))}
+
+        </select>
+
+    </Modal.Body>
+
+    <Modal.Footer>
+
+        <button
+            className="btn btn-secondary"
+            onClick={() => setShowRecipientModal(false)}
+        >
+            Cancel
+        </button>
+
+        <button
+            className="btn btn-primary"
+            onClick={postMessage}
+        >
+            Send Message
+        </button>
+
+    </Modal.Footer>
+
+</Modal></div>
     </div>
+    
   );
 };
 
