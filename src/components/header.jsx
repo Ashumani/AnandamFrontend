@@ -193,6 +193,7 @@ const [employeeList, setEmployeeist] = useState([])
     }
     const response = await sendMessage(params);
     setChatMessages(response.data)
+    await getMessage()
     setShowRecipientModal(false)
   }
 
