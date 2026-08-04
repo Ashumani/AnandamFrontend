@@ -6,7 +6,7 @@ import profileImg from "../assets/img/3.jpg";
 import logo from "../standalone_assets/images/Anandam.png"
 import React, { useState, useEffect } from "react"
 // import { Link } from "react-router-dom";
-import { fetchAllEmployer, getAllNotification, getUnreadNotification, getUser } from "./api/services.js";
+import { fetchAllEmployer, getAllNotification, getUnreadNotification, getUser, recievedMessage, sendMessage } from "./api/services.js";
 import { setEstId, getEstId, deleteEstId, getErId } from "./pages/Auth/authToken.js";
 import Sidebar from "./sidebar.jsx";
 import { useSidebar } from './SidebarContext';
@@ -28,6 +28,12 @@ const Header = () => {
   const [currentUser, setCurrentUser] = useState({})
   const [notifications, setNotifications] = useState([])
   const [notificationCnt, setNotificationCnt] = useState(0)
+  const [sendingMessage,setSendingMessage] = useState('')
+
+  const [chatMessages, setChatMessages] = useState([]);
+  const currentUserId = 1 //localStorage.getItem("user_id")
+
+
 
   const options = [
     { value: 'All', label: 'All' },
@@ -41,6 +47,7 @@ const Header = () => {
   // const [reload, setReload] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
+      await getMessage()
 
       try {
         // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
@@ -132,6 +139,7 @@ const Header = () => {
     }
   };
 
+
   const handleChange2 = (e) => {
     const value = e.target.value;
     setSelectedId(value);
@@ -154,6 +162,24 @@ const Header = () => {
     }
   };
 
+
+  const getMessage = async () => {
+    const response = await recievedMessage();
+    setChatMessages(response.data)
+  }
+
+  const postMessage = async (sendingMessage) => {
+    const params = {
+      sender_id: 2,
+      reciever_id: 2,
+      sender_name: "Manish",
+      reciever_name: "Ashish",
+      sender_message: sendingMessage,
+      read: 0
+    }
+    const response = await sendMessage(params);
+    setChatMessages(response.data)
+  }
   // const togglesidebar = () => {
   //     document.body.classList.toggle("toggle-sidebar");
   //     console.log("clicked");
@@ -478,6 +504,7 @@ const Header = () => {
       </header>
       {showChat && (
         <div className="chat-window">
+
           <div className="chat-header">
             <span>💬 Chat</span>
 
@@ -490,25 +517,44 @@ const Header = () => {
           </div>
 
           <div className="chat-body">
-            <div className="message other">
-              <strong>Ashish</strong>
-              <p>Hello Team 👋</p>
-            </div>
 
-            <div className="message me">
-              <strong>You</strong>
-              <p>Hi Ashish! How are you ?</p>
-            </div>
+            {chatMessages.length > 0 ? (
+              chatMessages.map((msg, index) => {
+                const isMe = msg.sender_id === currentUserId;
+
+                return (
+                  <div
+                    key={index}
+                    className={`message ${isMe ? "me" : "other"}`}
+                  >
+                    <strong>{isMe ? "You" : msg.sender_name}</strong>
+
+                    <p>{msg.sender_message}</p>
+
+                    <small>
+                      {new Date(msg.createdat).toLocaleString()}
+                    </small>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="no-message">
+                No messages found.
+              </div>
+            )}
+
           </div>
 
           <div className="chat-footer">
             <input
               type="text"
               placeholder="Type a message..."
+              onChange={(e) => setSendingMessage(e.target.value)}
             />
 
-            <button>Send</button>
+            <button onClick={()=> postMessage(sendingMessage)} className="bi bi-send-fill"></button>
           </div>
+
         </div>
       )}
 

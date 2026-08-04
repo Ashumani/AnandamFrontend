@@ -3,7 +3,27 @@ import "./ChatWidget.css";
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
-
+  const currentUserId = 2;
+  const messages = [
+    {
+      sender_id: 1,
+      reciever_id: 2,
+      sender_name: "Rahul",
+      reciever_name: "Manish",
+      read: 1,
+      sender_message: "Hello Team 👋",
+      createdat: "2026-08-04 10:00:00"
+    },
+    {
+      sender_id: 2,
+      reciever_id: 1,
+      sender_name: "Manish",
+      reciever_name: "Rahul",
+      read: 1,
+      sender_message: "Hi Rahul!",
+      createdat: "2026-08-04 10:01:00"
+    }
+  ];
   return (
     <>
       {/* Chat Window */}
@@ -21,15 +41,28 @@ export default function ChatWidget() {
           </div>
 
           <div className="chat-body">
-            <div className="message other">
-              <strong>Rahul</strong>
-              <p>Hello Team 👋</p>
-            </div>
+            {messages.length > 0 ? (
+              messages.map((msg, index) => {
+                const isMe = msg.sender_id === currentUserId;
 
-            <div className="message me">
-              <strong>You</strong>
-              <p>Hi Rahul!</p>
-            </div>
+                return (
+                  <div
+                    key={index}
+                    className={`message ${isMe ? "me" : "other"}`}
+                  >
+                    <strong>{isMe ? "You" : msg.sender_name}</strong>
+
+                    <p>{msg.sender_message}</p>
+
+                    <small>
+                      {new Date(msg.createdat).toLocaleString()}
+                    </small>
+                  </div>
+                );
+              })
+            ) : (
+              <p className="text-center">No messages found.</p>
+            )}
           </div>
 
           <div className="chat-footer">

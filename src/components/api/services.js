@@ -823,3 +823,20 @@ export const getDSCCardsDetails = async () => {
         throw error.response.data.error;
     }
 }
+
+export const sendMessage = async (params) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/message/send`,params, { headers: header });
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+export const recievedMessage = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/message/recieved`, { headers: header });
+        return response.data;
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
