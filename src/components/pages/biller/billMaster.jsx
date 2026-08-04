@@ -283,7 +283,7 @@ const billMaster = () => {
                     <table className="table table-sm table-hover font-size-bill">
                       <thead>
                         <tr>
-                          <th scope="col">#</th>
+                          <th scope="col">Sr No</th>
                           <th scope="col">Name</th>
                           <th scope="col">Est Id</th>
                           <th scope="col">Particular</th>
@@ -299,7 +299,7 @@ const billMaster = () => {
                       <tbody>
                         {currentItems.map(item => (
                           <tr key={item.id}>
-                            <th scope="row">{item.id}</th>
+                            <th scope="row">{item.bill_number_map}</th>
                             <td>{item.est_name}</td>
                             <td>{item.est_epf_id}</td>
                             {/* <td>{item.particular}</td> */}
@@ -321,8 +321,8 @@ const billMaster = () => {
                             <td>{item.discount}</td>
                             <td>{item.amount_paid}</td>
                             <td>{item.status}</td>
-                            <td><button type="button" className="btn btn-outline-primary" style={{ "margin": "5px" }} data-toggle="modal" data-target=".bd-example-modal-xl" onClick={() => getBillById(item.id)}><i className="bi bi-file-pdf-fill"></i></button></td>
-                            <td><button type="button" className="btn btn-outline-primary" style={{ "margin": "5px" }} onClick={() => handleEdit(item.id)}><i className="bi bi-pencil"></i></button></td>
+                            <td><button type="button" className="btn btn-outline-primary" style={{ "margin": "5px" }} data-toggle="modal" data-target=".bd-example-modal-xl" onClick={() => getBillById(item.bill_number_map)}><i className="bi bi-file-pdf-fill"></i></button></td>
+                            <td><button type="button" className="btn btn-outline-primary" style={{ "margin": "5px" }} onClick={() => handleEdit(item.bill_number_map)}><i className="bi bi-pencil"></i></button></td>
                           </tr>
                         ))}
                       </tbody>
