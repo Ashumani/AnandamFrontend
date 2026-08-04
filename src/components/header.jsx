@@ -2,6 +2,7 @@
 // import { Link } from "react-router-dom";
 import { togglesidebar } from "../assets/js/custome.js";
 import profileImg from "../assets/img/3.jpg";
+import "./header.css";
 
 import logo from "../standalone_assets/images/Anandam.png"
 import React, { useState, useEffect } from "react"
@@ -33,12 +34,13 @@ const Header = () => {
   const [sendingMessage, setSendingMessage] = useState('')
 
   const [chatMessages, setChatMessages] = useState([]);
-  const currentUserId = localStorage.getItem("user_id")
+  const currentUserId = parseInt(localStorage.getItem("user_id"))
   const [showRecipientModal, setShowRecipientModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState("");
   const [message, setMessage] = useState("");
 
-const [employeeList, setEmployeeist] = useState([])
+  const [employeeList, setEmployeeist] = useState([])
+  const [ChatNotification,setChatNotification] = useState([])
 
   const options = [
     { value: 'All', label: 'All' },
@@ -172,19 +174,27 @@ const [employeeList, setEmployeeist] = useState([])
   const getMessage = async () => {
     const response = await recievedMessage();
     setChatMessages(response.data)
+    let messages = []
+    for (let i of response.data) {
+      if (i.reciever_id == currentUserId) {
+        messages.push(i)
+      }
+    }
+    setChatNotification(messages)
+
   }
 
   const postMessage = async () => {
 
-     if (!selectedUser) {
-        alert("Please select recipient.");
-        return;
+    if (!selectedUser) {
+      alert("Please select recipient.");
+      return;
     }
 
-    
+
     const user2 = employeeList.find(item => item.id === parseInt(selectedUser));
 
-    const recievername = user2 ? user2.name : ""; 
+    const recievername = user2 ? user2.name : "";
     const params = {
       reciever_id: selectedUser,
       reciever_name: recievername,
@@ -197,24 +207,24 @@ const [employeeList, setEmployeeist] = useState([])
     setShowRecipientModal(false)
   }
 
-    const getAllUser = async () => {
-      // api call
-  
-      try {
-        // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-        const response = await getAll();
-        if (response.status == true) {
-            setEmployeeist(response.data)
-  
-        }
-  
-  
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setError('Error fetching data. Please try again.');
-        setLoading(false);
+  const getAllUser = async () => {
+    // api call
+
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await getAll();
+      if (response.status == true) {
+        setEmployeeist(response.data)
+
       }
-    };
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Error fetching data. Please try again.');
+      setLoading(false);
+    }
+  };
   // const togglesidebar = () => {
   //     document.body.classList.toggle("toggle-sidebar");
   //     console.log("clicked");
@@ -359,81 +369,68 @@ const [employeeList, setEmployeeist] = useState([])
                 data-bs-toggle="dropdown"
               >
                 <i className="bi bi-chat-left-text"></i>
-                <span className="badge bg-success badge-number">3</span>
+                <span className="badge bg-success badge-number"> {ChatNotification.length}</span>
               </a>
 
               <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+
                 <li className="dropdown-header">
-                  You have 3 new messages
+                  You have {ChatNotification.length} new message{ChatNotification.length !== 1 ? "s" : ""}
                   <a href="#">
                     <span className="badge rounded-pill bg-primary p-2 ms-2">
                       View all
                     </span>
                   </a>
                 </li>
+
                 <li>
                   <hr className="dropdown-divider" />
                 </li>
 
-                <li className="message-item">
-                  <a href="#">
-                    <img
-                      src="assets/img/messages-1.jpg"
-                      alt=""
-                      className="rounded-circle"
-                    />
-                    <div>
-                      <h4>Maria Hudson</h4>
-                      <p>
-                        Velit asperiores et ducimus soluta repudiandae labore
-                        officia est ut...
-                      </p>
-                      <p>4 hrs. ago</p>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
+                <div className="message-scroll">
 
-                <li className="message-item">
-                  <a href="#">
-                    <img
-                      src="assets/img/messages-2.jpg"
-                      alt=""
-                      className="rounded-circle"
-                    />
-                    <div>
-                      <h4>Anna Nelson</h4>
-                      <p>
-                        Velit asperiores et ducimus soluta repudiandae labore
-                        officia est ut...
-                      </p>
-                      <p>6 hrs. ago</p>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
+                  {ChatNotification.length > 0 ? (
+                    ChatNotification.map((msg, index) => {
+                      {/* const isMe = msg.sender_id === currentUserId; */}
 
-                <li className="message-item">
-                  <a href="#">
-                    <img
-                      src="assets/img/messages-3.jpg"
-                      alt=""
-                      className="rounded-circle"
-                    />
-                    <div>
-                      <h4>David Muldon</h4>
-                      <p>
-                        Velit asperiores et ducimus soluta repudiandae labore
-                        officia est ut...
-                      </p>
-                      <p>8 hrs. ago</p>
-                    </div>
-                  </a>
-                </li>
+                      return (
+                        <React.Fragment key={msg.id || index}>
+                          <li className="message-item">
+                            <a href="#">
+                              <img
+                                src="assets/img/messages-1.jpg"
+                                alt="Profile"
+                                className="rounded-circle"
+                              />
+
+                              <div>
+                                <h4>{msg.reciever_name}</h4>
+
+                                <p>{msg.sender_message}</p>
+
+                                <small className="text-muted">
+                                  {new Date(msg.createdat).toLocaleString()}
+                                </small>
+                              </div>
+                            </a>
+                          </li>
+
+                          {index !== chatMessages.length - 1 && (
+                            <li>
+                              <hr className="dropdown-divider" />
+                            </li>
+                          )}
+                        </React.Fragment>
+                      );
+                    })
+                  ) : (
+                    <li className="text-center py-3">
+                      No messages found.
+                    </li>
+                  )}
+
+                </div>
+
                 <li>
                   <hr className="dropdown-divider" />
                 </li>
@@ -441,6 +438,7 @@ const [employeeList, setEmployeeist] = useState([])
                 <li className="dropdown-footer">
                   <a href="#">Show all messages</a>
                 </li>
+
               </ul>
             </li>
 
@@ -602,59 +600,59 @@ const [employeeList, setEmployeeist] = useState([])
         💬
       </button>
       <div><Modal
-    show={showRecipientModal}
-    onHide={() => setShowRecipientModal(false)}
-    centered
->
-    <Modal.Header closeButton>
-        <Modal.Title>Select Recipient</Modal.Title>
-    </Modal.Header>
+        show={showRecipientModal}
+        onHide={() => setShowRecipientModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Select Recipient</Modal.Title>
+        </Modal.Header>
 
-    <Modal.Body>
+        <Modal.Body>
 
-        <label>Send To</label>
+          <label>Send To</label>
 
-        <select
+          <select
             className="form-control"
             value={selectedUser}
             onChange={(e) => setSelectedUser(e.target.value)}
-        >
+          >
             <option value="">Select Employee</option>
 
             {employeeList.map(emp => (
-                <option
-                    key={emp.id}
-                    value={emp.id}
-                >
-                    {emp.name}
-                </option>
+              <option
+                key={emp.id}
+                value={emp.id}
+              >
+                {emp.name}
+              </option>
             ))}
 
-        </select>
+          </select>
 
-    </Modal.Body>
+        </Modal.Body>
 
-    <Modal.Footer>
+        <Modal.Footer>
 
-        <button
+          <button
             className="btn btn-secondary"
             onClick={() => setShowRecipientModal(false)}
-        >
+          >
             Cancel
-        </button>
+          </button>
 
-        <button
+          <button
             className="btn btn-primary"
             onClick={postMessage}
-        >
+          >
             Send Message
-        </button>
+          </button>
 
-    </Modal.Footer>
+        </Modal.Footer>
 
-</Modal></div>
+      </Modal></div>
     </div>
-    
+
   );
 };
 

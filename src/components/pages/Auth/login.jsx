@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { loginData } from '../../api/services';
 import { useNavigate } from "react-router-dom";
-import {getAuthToken, setAuthToken } from "./authToken"
+import {getAuthToken, setAuthToken, setUserId } from "./authToken"
 import Swal from 'sweetalert2';
 
 import logo from "../../../standalone_assets/images/Anandam.png"
@@ -31,6 +31,7 @@ const login = () => {
           timer: 1500,
         });
         setAuthToken(userData.data.token);
+        setUserId(userData.data.id)
         navigate('/auth/dashboard')
         window.location.reload();
         

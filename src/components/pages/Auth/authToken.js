@@ -35,6 +35,11 @@ export const getErId = () => {
     // return estId;
     return  localStorage.getItem('erId');
 };
+
+export const setUserId = (userid) => {
+    // authToken = token;
+    localStorage.setItem('user_id', userid);
+};
 export const deleteEstId = () => {
     // estId=null;
     localStorage.removeItem('estId');

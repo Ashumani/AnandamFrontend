@@ -9,7 +9,9 @@
     height: 62px;
     border: none;
     border-radius: 50%;
-    background: linear-gradient(135deg, #4F46E5, #6366F1);
+    background: linear-gradient(135deg,#c7a1ea,#4c918c);
+    
+    /* background: linear-gradient(135deg, #4F46E5, #6366F1); */
     color: #fff;
     font-size: 26px;
     cursor: pointer;
@@ -58,7 +60,7 @@
 =================================*/
 .chat-header {
     height: 72px;
-    background: linear-gradient(135deg,#4F46E5,#6366F1);
+    background: linear-gradient(135deg,#c7a1ea,#4c918c);
     color: #fff;
     padding: 0 18px;
     display: flex;
@@ -153,7 +155,7 @@
 
 .message.me {
     align-self: flex-end;
-    background: linear-gradient(135deg,#4F46E5,#6366F1);
+    background: linear-gradient(135deg,#c7a1ea,#4c918c);
     color: white;
     border-bottom-right-radius: 5px;
     box-shadow: 0 8px 18px rgba(79,70,229,.22);
@@ -182,6 +184,7 @@
     margin: 0;
     line-height: 1.6;
     font-size: 14px;
+    color:white
 }
 
 /* Time */
@@ -236,7 +239,9 @@
     height: 48px;
     border: none;
     border-radius: 50%;
-    background: linear-gradient(135deg,#4F46E5,#6366F1);
+    /* background: linear-gradient(135deg,#4F46E5,#6366F1); */
+    background: linear-gradient(135deg,#c7a1ea,#4c918c);
+    
     color: white;
     font-size: 18px;
     cursor: pointer;
