@@ -48,19 +48,20 @@ const billMaster = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getAll(0);
+      await getAll(0,"");
     };
 
     fetchData();
 
   }, []);
 
-  const getAll = async (pageNumber) => {
+  const getAll = async (pageNumber,billType) => {
     // api call
     const params = {
       "est_epf_id": getEstId(),
       "limit": itemsPerPage,
-      "offset": pageNumber
+      "offset": pageNumber,
+      "bill_type":billType
     }
     try {
       // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
@@ -233,6 +234,11 @@ const billMaster = () => {
     navigate(`/auth/dashboard/bill/create/${billId}`);
 
   };
+
+  const handleBillTypeChange = async(e) => {
+    setBillType(e.target.value);
+    await getAll(0, e.target.value);
+  };
   return (
     <div>
 
@@ -277,6 +283,18 @@ const billMaster = () => {
                         </button>
                       </Link>
                     </div>
+                    <div className="col-sm mb-2">
+                          <label>Bill Type</label>
+                          <select
+                            className="form-select rounded-4"
+                            aria-label="Default select example" value={billType} onChange={handleBillTypeChange}
+                          >
+                            <option value="">Select</option>
+                            <option value="consultant">Consultant</option>
+                            <option value="services">Services</option>
+                          </select>
+                          {/* {err.ee_relation && <p style={{ color: 'red' }}>{err.ee_relation}</p>} */}
+                        </div>
                   </div>
 
                   <div className="table-responsive">
