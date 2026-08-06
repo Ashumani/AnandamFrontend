@@ -9,11 +9,11 @@
 //     const { showAll } = useSidebar();
 //     console.log(showAll)
 //     const [side_items, set_side_items] = useState([]);
-  
+
 
 //       useEffect(() => {
 //         const fetchData = async () => {
-            
+
 //           const sidebar =   [
 //             {
 //                 "show": !showAll ? "hide" : "show",
@@ -164,11 +164,11 @@
 
 //             set_side_items(sidebar)
 //          console.log(side_items)
-        
+
 //         };
-    
+
 //         fetchData();
-    
+
 //       }, []);
 
 
@@ -199,7 +199,7 @@
 //                 </li>
 //             ) : ( (
 //                 item.show === 'hide' &&
-          
+
 //                 <li key={index} className="nav-item">
 //                     <a className="nav-link" href="#">
 //                         <i className={item.icon}></i>
@@ -219,12 +219,13 @@
 // export default Sidebar
 
 import { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
 import { getEstId } from './pages/Auth/authToken';
 // import "../components/pages/dashboard"
 import { useSidebar } from './SidebarContext'; // Import the context
+import { Link, useNavigate } from "react-router-dom";
 const Sidebar = () => {
     const { showAll } = useSidebar();
+    const navigate = useNavigate();
     const [side_items] = useState(
         [{
             "mainItem": "Registration",
@@ -318,7 +319,7 @@ const Sidebar = () => {
                     "icon": "bi bi-download"
                 }
             ]
-        },{
+        }, {
             "mainItem": "Admin",
             "path": "",
             "icon": "bi bi-person-badge",
@@ -328,7 +329,7 @@ const Sidebar = () => {
                     "path": "/auth/dashboard/user",
                     "icon": "bx bx-user"
                 },
-                 {
+                {
                     "item": "UAN Passbook Agent",
                     "path": "/auth/dashboard/EPFWidget",
                     "icon": "bi bi-question-circle"
@@ -337,7 +338,7 @@ const Sidebar = () => {
                     "item": "UAN Member Agent",
                     "path": "/auth/dashboard/EpfMember",
                     "icon": "bi bi-question-circle"
-                },{
+                }, {
                     "item": "Penalty Calculator",
                     "path": "/auth/dashboard/Calculator",
                     "icon": "bi bi-question-circle"
@@ -351,7 +352,7 @@ const Sidebar = () => {
                     "item": "Inquiries",
                     "path": "/auth/dashboard/inquiries",
                     "icon": "bi bi-question-circle"
-                },{
+                }, {
                     "item": "Notification",
                     "path": "/auth/dashboard/notification",
                     "icon": "bi bi-question-circle"
@@ -370,6 +371,19 @@ const Sidebar = () => {
         }]
     );
     const [isShow] = useState(true);
+
+
+    const handleLogout = (e) => {
+        e.preventDefault(); // Prevents default anchor link behavior
+
+        // 1. Clear session and local storage
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // 2. Navigate user to login page and replace browser history
+        navigate('/login', { replace: true });
+    };
+
     return (
         <>
             <aside id="sidebar" className="sidebar">
@@ -386,8 +400,8 @@ const Sidebar = () => {
                             <span>Master</span>
                         </a>
                     </li>
-                    
-                    
+
+
                     {showAll && side_items.map((item, index) => (
                         <li key={index} className="nav-item">
                             <a className="nav-link collapsed" data-bs-target={`#components-nav-${index}`} data-bs-toggle="collapse" href="#">
@@ -413,7 +427,12 @@ const Sidebar = () => {
                         </a>
                     </li> */}
                     <li className="nav-item">
-                        <a className="nav-link " href="/login">
+                        <a
+                            href="#logout"
+                            className="nav-link cursor-pointer"
+                            onClick={handleLogout}
+                            role="button"
+                        >
                             <i className="bi bi-box-arrow-right"></i>
                             <span>Logout</span>
                         </a>

@@ -1,43 +1,52 @@
-// import React from 'react'
-import { BrowserRouter as Router } from 'react-router-dom';
-import Navbar from './components/navbar'
-import AllRoutes from "./AllRoutes"
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, useLocation } from 'react-router-dom';
+import Navbar from './components/navbar';
+import AllRoutes from "./AllRoutes";
 import Header from './components/header';
 import Sidebar from './components/sidebar';
-import { useState, useEffect } from 'react';
 import { SidebarProvider } from './components/SidebarContext';
 
-
-const App = () => {
-
-  let url = window.location.href;
-  let urlSplit = url.split('/');
-  const [hideMenu, showMenu] = useState(false)
+const MainLayout = () => {
+  const location = useLocation();
+  const [hideMenu, setHideMenu] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-     
-      if (urlSplit[3] === "auth") {
-        showMenu(true)
-      }
-    
-    };
-      fetchData();
+    const token = localStorage.getItem("token"); // Verify token exists
 
-  }, [urlSplit]);
+    // Show sidebar ONLY if user is on /auth route AND actively logged in
+    if (location.pathname.startsWith('/auth') && token) {
+      setHideMenu(true);
+    } else {
+      setHideMenu(false);
+    }
+  }, [location.pathname]);
 
   return (
-    <Router>
-       <SidebarProvider>
-     {hideMenu ? (
-        <><Header /><Sidebar /> <AllRoutes /></>
+    <>
+      {hideMenu ? (
+        <>
+          <Header />
+          <Sidebar />
+          <AllRoutes />
+        </>
       ) : (
-        <><Navbar /> 
-            <AllRoutes /></>
+        <>
+          <Navbar />
+          <AllRoutes />
+        </>
       )}
-      </SidebarProvider>
-    </Router>
-  )
+    </>
+  );
 };
 
-export default App
+const App = () => {
+  return (
+    <Router>
+      <SidebarProvider>
+        <MainLayout />
+      </SidebarProvider>
+    </Router>
+  );
+};
+
+export default App;

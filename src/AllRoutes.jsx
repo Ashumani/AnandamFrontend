@@ -1,81 +1,88 @@
-import {Routes,Route} from "react-router-dom"
-import login from './components/pages/Auth/login'
-import dashboard from './components/pages/dashboard'
-import employer from './components/pages/registration/employer'
-import employee from './components/pages/registration/employee'
-import monthly from './components/pages/transaction/monthlyPf'
-import summary from './components/pages/transaction/summary'
-import ecr from './components/pages/formGeneration/ecrGeneration'
-import form3A6A from './components/pages/formGeneration/form3A6AGeneration'
-import from5A from './components/pages/formGeneration/form5AGeneration'
-import kyc from './components/pages/formGeneration/kycGeneration'
-import billing from './components/pages/biller/biller'
-import billingMaster from './components/pages/biller/billMaster'
-import bill from './components/pages/biller/BillComponent'
-import standalone from "./components/pages/standaloneHome/standalone"
-import standalone2 from "./components/pages/standaloneHome1/standalone"
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
 
-import download from "./components/pages/download/download"
-import testing from "./components/pages/testing/testing"
-import salary from "./components/pages/transaction/salary"
-import master from "./components/pages/master/master"
-import esic from "./components/pages/transaction/esic"
-import blogs from "./components/pages/admin/blogs"
-import inquiries from "./components/pages/admin/inquiry"
-import user from "./components/pages/admin/user"
-import customiza from "./components/pages/admin/customizeForm"
-import superUser from "./components/pages/admin/superUser"
-import notification from "./components/pages/admin/notification"
-import userProfile from "./components/pages/user/userProfile"
-import EpfWidget from "./components/pages/admin/EPFWidget"
-import EpfWidgetMember from "./components/pages/admin/EPFMember"
-import Calculator from "./components/pages/admin/Calculator"
-import NeedHelp from "./components/pages/devInfo/NeedHelp"
+// Capitalized imports (PascalCase required for JSX elements)
+import Login from './components/pages/Auth/login';
+import Dashboard from './components/pages/dashboard';
+import Employer from './components/pages/registration/employer';
+import Employee from './components/pages/registration/employee';
+import Monthly from './components/pages/transaction/monthlyPf';
+import Summary from './components/pages/transaction/summary';
+import Ecr from './components/pages/formGeneration/ecrGeneration';
+import Form3A6A from './components/pages/formGeneration/form3A6AGeneration';
+import Form5A from './components/pages/formGeneration/form5AGeneration';
+import Kyc from './components/pages/formGeneration/kycGeneration';
+import Billing from './components/pages/biller/biller';
+import BillingMaster from './components/pages/biller/billMaster';
+import Bill from './components/pages/biller/BillComponent';
+import Standalone from "./components/pages/standaloneHome/standalone";
+import Standalone2 from "./components/pages/standaloneHome1/standalone";
 
-import test from "./components/pages/admin/AgentLayoutSet"
-import React from "react"
+import Download from "./components/pages/download/download";
+import Testing from "./components/pages/testing/testing";
+import Salary from "./components/pages/transaction/salary";
+import Master from "./components/pages/master/master";
+import Esic from "./components/pages/transaction/esic";
+import Blogs from "./components/pages/admin/blogs";
+import Inquiries from "./components/pages/admin/inquiry";
+import User from "./components/pages/admin/user";
+import Customiza from "./components/pages/admin/customizeForm";
+import SuperUser from "./components/pages/admin/superUser";
+import Notification from "./components/pages/admin/notification";
+import UserProfile from "./components/pages/user/userProfile";
+import EpfWidget from "./components/pages/admin/EPFWidget";
+import EpfWidgetMember from "./components/pages/admin/EPFMember";
+import Calculator from "./components/pages/admin/Calculator";
+import NeedHelp from "./components/pages/devInfo/NeedHelp";
+import Test from "./components/pages/admin/AgentLayoutSet";
 
 const AllRoutes = () => {
   return (
     <Routes>
-     <Route exact path='/' Component={standalone}/>
-     <Route exact path='/home2' Component={standalone2}/>
-        
-        <Route exact path='/login' Component={login}/>
-        <Route exact path='/auth/dashboard' Component={dashboard}/>
-        <Route exact path='/auth/dashboard/employer' Component={employer}/>
-        <Route exact path='/auth/dashboard/employee' Component={employee}/>
-        <Route exact path='/auth/dashboard/monthlypf' Component={monthly}/>
-        <Route exact path='/auth/dashboard/summary' Component={summary}/>
-        <Route exact path='/auth/dashboard/ecr' Component={ecr}/>
-        <Route exact path='/auth/dashboard/form3A6A' Component={form3A6A}/>
-        <Route exact path='/auth/dashboard/form5A' Component={from5A}/>
-        <Route exact path='/auth/dashboard/kyc' Component={kyc}/>
-        <Route exact path='/auth/dashboard/bill/create' Component={billing}/>
-        <Route exact path='/auth/dashboard/bill/billView' Component={billingMaster}/>
-        <Route exact path='/auth/dashboard/form/download' Component={download}/>
-        <Route exact path='/auth/dashboard/salary' Component={salary}/>
-        <Route exact path='/auth/dashboard/master' Component={master}/>
-        <Route exact path='/auth/dashboard/testing' Component={testing}/>
-        <Route exact path='/auth/dashboard/bill/pdf' Component={bill}/>
-        <Route exact path='/auth/dashboard/esic' Component={esic}/>
-        <Route exact path='/auth/dashboard/blogs' Component={blogs}/>
-        <Route exact path='/auth/dashboard/inquiries' Component={inquiries}/>
-        <Route exact path='/auth/dashboard/user' Component={user}/>
-        <Route exact path='/auth/dashboard/form' Component={customiza}/>
-        <Route exact path='/auth/dashboard/superUser' Component={superUser}/>
-        <Route exact path='/auth/dashboard/notification' Component={notification}/>
-        <Route exact path='/auth/dashboard/userProfile' Component={userProfile}/>
-        <Route path="/auth/dashboard/bill/create/:id" element={React.createElement(billing)} />
-        <Route path="/auth/dashboard/EpfWidget" Component={EpfWidget} />
-        <Route path="/auth/dashboard/EpfMember" Component={EpfWidgetMember} />
-        <Route path="/auth/dashboard/Calculator" Component={Calculator} />
-        <Route path="/auth/dashboard/NeedHelp" Component={NeedHelp} />
-        <Route path="/auth/dashboard/NeedHelp" Component={test} />
-        
-    </Routes>
-    
-  )
-}
+      {/* PUBLIC ROUTES */}
+      <Route path='/' element={<Standalone />} />
+      <Route path='/home2' element={<Standalone2 />} />
+      <Route path='/login' element={<Login />} />
 
-export default AllRoutes
+      {/* PROTECTED ROUTES - Only accessible if logged in */}
+      <Route element={<ProtectedRoute />}>
+        <Route path='/auth/dashboard' element={<Dashboard />} />
+        <Route path='/auth/dashboard/employer' element={<Employer />} />
+        <Route path='/auth/dashboard/employee' element={<Employee />} />
+        <Route path='/auth/dashboard/monthlypf' element={<Monthly />} />
+        <Route path='/auth/dashboard/summary' element={<Summary />} />
+        <Route path='/auth/dashboard/ecr' element={<Ecr />} />
+        <Route path='/auth/dashboard/form3A6A' element={<Form3A6A />} />
+        <Route path='/auth/dashboard/form5A' element={<Form5A />} />
+        <Route path='/auth/dashboard/kyc' element={<Kyc />} />
+        <Route path='/auth/dashboard/bill/create' element={<Billing />} />
+        <Route path='/auth/dashboard/bill/create/:id' element={<Billing />} />
+        <Route path='/auth/dashboard/bill/billView' element={<BillingMaster />} />
+        <Route path='/auth/dashboard/form/download' element={<Download />} />
+        <Route path='/auth/dashboard/salary' element={<Salary />} />
+        <Route path='/auth/dashboard/master' element={<Master />} />
+        <Route path='/auth/dashboard/testing' element={<Testing />} />
+        <Route path='/auth/dashboard/bill/pdf' element={<Bill />} />
+        <Route path='/auth/dashboard/esic' element={<Esic />} />
+        <Route path='/auth/dashboard/blogs' element={<Blogs />} />
+        <Route path='/auth/dashboard/inquiries' element={<Inquiries />} />
+        <Route path='/auth/dashboard/user' element={<User />} />
+        <Route path='/auth/dashboard/form' element={<Customiza />} />
+        <Route path='/auth/dashboard/superUser' element={<SuperUser />} />
+        <Route path='/auth/dashboard/notification' element={<Notification />} />
+        <Route path='/auth/dashboard/userProfile' element={<UserProfile />} />
+        <Route path="/auth/dashboard/EpfWidget" element={<EpfWidget />} />
+        <Route path="/auth/dashboard/EpfMember" element={<EpfWidgetMember />} />
+        <Route path="/auth/dashboard/Calculator" element={<Calculator />} />
+        <Route path="/auth/dashboard/NeedHelp" element={<NeedHelp />} />
+        <Route path="/auth/dashboard/agentLayout" element={<Test />} />
+      </Route>
+
+      {/* FALLBACK ROUTE */}
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
+  );
+};
+
+export default AllRoutes;

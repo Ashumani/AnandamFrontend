@@ -232,6 +232,18 @@ const Header = () => {
   // };
 
 
+ const handleLogout = (e) => {
+    e.preventDefault(); // Prevents default page jump/reload
+
+    // 1. Clear stored credentials and user data
+    localStorage.clear();
+    sessionStorage.clear();
+
+    // 2. Redirect to login page and clear history stack
+    navigate('/login', { replace: true });
+  };
+
+
   return (
     <div>
       <header
@@ -521,15 +533,17 @@ const Header = () => {
                   <hr className="dropdown-divider" />
                 </li>
 
-                <li>
-                  <a
-                    className="dropdown-item d-flex align-items-center"
-                    href="#"
-                  >
-                    <i className="bi bi-box-arrow-right"></i>
-                    <span>Sign Out</span>
-                  </a>
-                </li>
+               <li>
+      <a
+        href="#logout"
+        className="dropdown-item d-flex align-items-center cursor-pointer"
+        onClick={handleLogout}
+        role="button"
+      >
+        <i className="bi bi-box-arrow-right me-2"></i>
+        <span>Sign Out</span>
+      </a>
+    </li>
               </ul>
             </li>
           </ul>
