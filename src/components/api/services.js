@@ -35,17 +35,39 @@ const api = axios.create({
 // -------------------------
 // Request Interceptor
 // -------------------------
+
+// -------------------------
+// Request Interceptor
+// -------------------------
 api.interceptors.request.use(
   (config) => {
     loaderCallback?.(true);
 
     const token = getAuthToken();
+    config.headers = config.headers || {};
 
-    config.headers = {
-      ...config.headers,
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    };
+    // Apply Authorization header if token exists
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    // Check if request encryption should be bypassed
+    const isFormData = config.data instanceof FormData;
+    const shouldSkipRequestEncryption = config.skipRequestEncryption || config.skipEncryption || isFormData;
+
+    if (shouldSkipRequestEncryption) {
+      if (isFormData) {
+        // IMPORTANT: Let browser/Axios set multipart/form-data WITH boundary automatically
+        delete config.headers["Content-Type"];
+      }
+    } else {
+      // Set JSON header and encrypt payload
+      config.headers["Content-Type"] = "application/json";
+
+      if (config.data) {
+        config.data = encryptData(config.data);
+      }
+    }
 
     return config;
   },
@@ -61,17 +83,16 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => {
     loaderCallback?.(false);
-
-    // console.log("Response:", response.data);
-
+    
+    // Auto-decrypt if response payload contains encrypted structure
     if (
       response.data &&
       response.data.iv &&
       response.data.payload
     ) {
       response.data = decryptData(response.data);
-    } else {
-      console.warn("Response is not encrypted:", response.data);
+    //   console.log(response.data)
+      
     }
 
     return response;
@@ -79,8 +100,7 @@ api.interceptors.response.use(
   (error) => {
     loaderCallback?.(false);
 
-    console.log("Error Response:", error.response?.data);
-
+    // Auto-decrypt error payloads if sent encrypted
     if (
       error.response?.data?.iv &&
       error.response?.data?.payload
@@ -91,9 +111,7 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-// -------------------------
-// Export Axios
-// -------------------------
+
 export default api;
 
 // -------------------------
@@ -116,7 +134,7 @@ export const loginData = async (username, password) => {
 //Empllyer API
 export const erRegister = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/employer/register`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/employer/register`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -127,7 +145,7 @@ export const getEmployer = async (params) => {
     try {
 
 
-        const response = await api.post(`${BASE_URL}/employer/getEmployer`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/employer/getEmployer`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -136,7 +154,7 @@ export const getEmployer = async (params) => {
 
 export const erUpdate = async (id, params) => {
     try {
-        const response = await api.post(`${BASE_URL}/employer/updateEmployer/` + id,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/employer/updateEmployer/` + id,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -146,7 +164,7 @@ export const erUpdate = async (id, params) => {
 export const getErRegister = async (params) => {
     
     try {
-        const response = await api.post(`${BASE_URL}/employer/getEmployer`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/employer/getEmployer`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -164,7 +182,7 @@ export const fetchAllEmployer = async () => {
 
 export const getMasterList = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/employer/getMasterList`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/employer/getMasterList`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -173,7 +191,7 @@ export const getMasterList = async (params) => {
 
 export const downloadMaster = async (params) => {
     try {
-        const response = await api.get(`${BASE_URL}/upload/downloadMaster`,encryptData(params), { headers: header });
+        const response = await api.get(`${BASE_URL}/upload/downloadMaster`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -184,7 +202,7 @@ export const downloadMaster = async (params) => {
 
 export const saveEERegister = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/employee/eeRegister`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/employee/eeRegister`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -193,7 +211,7 @@ export const saveEERegister = async (params) => {
 
 export const updateEmployee = async (id, params) => {
     try {
-        const response = await api.post(`${BASE_URL}/employee/updateEmployee/` + id,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/employee/updateEmployee/` + id,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -203,7 +221,7 @@ export const updateEmployee = async (id, params) => {
 export const getAllEmployee = async (params) => {
     try {
         // params = await encryptData(params,publicKeyPem)
-        const response = await api.post(`${BASE_URL}/employee/getAllEmployee`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/employee/getAllEmployee`,params, { headers: header });
         return response.data
     } catch (error) {
         console.log(error.message);
@@ -222,7 +240,7 @@ export const getEmployee = async (id) => {
 
 export const getEmployeeByUANandEPFid = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/employee/getEmployeeByUANandEPFid`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/employee/getEmployeeByUANandEPFid`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -230,7 +248,7 @@ export const getEmployeeByUANandEPFid = async (params) => {
 }
 export const searchEmployee = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/employee/searchEmployee`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/employee/searchEmployee`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -241,7 +259,7 @@ export const searchEmployee = async (params) => {
 //monthly
 export const getEpfReturnByMonth = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/monthly/getEpfReturnByMonth`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/monthly/getEpfReturnByMonth`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -259,7 +277,7 @@ export const getSalaryReturn = async (id) => {
 
 export const sameAsPrev = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/monthly/sameAsPrev`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/monthly/sameAsPrev`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -277,7 +295,7 @@ export const deleteReturnById = async (id) => {
 
 export const generateECR = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/monthly/generateECR`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/monthly/generateECR`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -288,7 +306,7 @@ export const generateECR = async (params) => {
 
 export const fillEpfReturn = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/monthly/fillEpfReturn`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/monthly/fillEpfReturn`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -297,7 +315,7 @@ export const fillEpfReturn = async (params) => {
 
 export const updateEpfReturn = async (id, params) => {
     try {
-        const response = await api.post(`${BASE_URL}/monthly/updateEpfReturn/` + id,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/monthly/updateEpfReturn/` + id,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -306,7 +324,7 @@ export const updateEpfReturn = async (id, params) => {
 
 export const get3A = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/monthly/get3A`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/monthly/get3A`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -331,7 +349,7 @@ export const fetchEpfReturn = async (id) => {
 }
 export const searchMonthlyEmployee = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/monthly/search/`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/monthly/search/`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -340,7 +358,7 @@ export const searchMonthlyEmployee = async (params) => {
 
 export const getEsicReturnByMonth = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/esic/getEsicReturnByMonth`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/esic/getEsicReturnByMonth`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -349,7 +367,7 @@ export const getEsicReturnByMonth = async (params) => {
 
 export const getEsicReturns = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/esic/getEsicReturns`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/esic/getEsicReturns`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -358,7 +376,7 @@ export const getEsicReturns = async (params) => {
 
 export const fillEsicReturn = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/esic/fillEsicReturn`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/esic/fillEsicReturn`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -367,7 +385,7 @@ export const fillEsicReturn = async (params) => {
 
 export const UpdateEsicReturn = async (params, id) => {
     try {
-        const response = await api.put(`${BASE_URL}/esic/UpdateEsicReturn/`+id,encryptData(params), { headers: header });
+        const response = await api.put(`${BASE_URL}/esic/UpdateEsicReturn/`+id,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -376,7 +394,7 @@ export const UpdateEsicReturn = async (params, id) => {
 
 export const getEmployeeByEsic = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/employee/getEmployeeByEsic`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/employee/getEmployeeByEsic`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -407,7 +425,7 @@ export const uploadEmployer = async (formdata) => {
             'Content-Type': 'multipart/form-data'
         }
 
-        const response = await api.post(`${BASE_URL}/upload/employer`, formdata, { headers: uplaodHeader });
+        const response = await api.post(`${BASE_URL}/upload/employer`, formdata, { headers: uplaodHeader, skipRequestEncryption: true });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -420,7 +438,7 @@ export const uploadEmployee = async (id, formdata) => {
             'Content-Type': 'multipart/form-data'
         }
 
-        const response = await api.post(`${BASE_URL}/upload/employee/` + id, formdata, { headers: uplaodHeader });
+        const response = await api.post(`${BASE_URL}/upload/employee/` + id, formdata, { headers: uplaodHeader, skipRequestEncryption: true  });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -434,7 +452,7 @@ export const updateSubIdByUANUpload = async (id, formdata) => {
             'Content-Type': 'multipart/form-data'
         }
 
-        const response = await api.post(`${BASE_URL}/upload/employee/updateSubIdByUANUpload` + id, formdata, { headers: uplaodHeader });
+        const response = await api.post(`${BASE_URL}/upload/employee/updateSubIdByUANUpload` + id, formdata, { headers: uplaodHeader, skipRequestEncryption: true  });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -449,7 +467,7 @@ export const uploadMonthlyReturn = async (id, formdata) => {
             'Content-Type': 'multipart/form-data'
         }
 
-        const response = await api.post(`${BASE_URL}/upload/monthly/` + id, formdata, { headers: uplaodHeader });
+        const response = await api.post(`${BASE_URL}/upload/monthly/` + id, formdata, { headers: uplaodHeader, skipRequestEncryption: true  });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -462,7 +480,7 @@ export const uploadMonthlyEsicReturn = async (id, formdata) => {
             'Content-Type': 'multipart/form-data'
         }
 
-        const response = await api.post(`${BASE_URL}/upload/esic/` + id, formdata, { headers: uplaodHeader });
+        const response = await api.post(`${BASE_URL}/upload/esic/` + id, formdata, { headers: uplaodHeader, skipRequestEncryption: true  });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -471,7 +489,7 @@ export const uploadMonthlyEsicReturn = async (id, formdata) => {
 
 export const generateTemplates = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/esic/generateTemplates` ,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/esic/generateTemplates` ,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -486,7 +504,7 @@ export const uploadSalary = async (id, formdata) => {
             'Content-Type': 'multipart/form-data'
         }
 
-        const response = await api.post(`${BASE_URL}/upload/salary/` + id, formdata, { headers: uplaodHeader });
+        const response = await api.post(`${BASE_URL}/upload/salary/` + id, formdata, { headers: uplaodHeader, skipRequestEncryption: true  });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -503,7 +521,7 @@ export const getSummary = async (id, year, sub_id) => {
 
 export const createBill = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/bill/create`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/bill/create`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -512,7 +530,7 @@ export const createBill = async (params) => {
 
 export const updateBill = async (id, params) => {
     try {
-        const response = await api.post(`${BASE_URL}/bill/update/` + id,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/bill/update/` + id,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -520,7 +538,7 @@ export const updateBill = async (id, params) => {
 }
 export const getAllBill = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/bill/getAllBill`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/bill/getAllBill`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -547,7 +565,7 @@ export const searchBill = async (id) => {
 
 export const paymentReceived = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/bill/paymentReceived`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/bill/paymentReceived`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -565,7 +583,7 @@ export const getCardsCount = async () => {
 
 export const getGraph = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/dashboard/graphCreate`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/dashboard/graphCreate`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -574,7 +592,7 @@ export const getGraph = async (params) => {
 
 export const getUserGraph = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/dashboard/getUserGraph`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/dashboard/getUserGraph`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -582,7 +600,7 @@ export const getUserGraph = async (params) => {
 }
 export const getBillGraph = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/dashboard/getBillGraph`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/dashboard/getBillGraph`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -590,7 +608,7 @@ export const getBillGraph = async (params) => {
 }
 export const getSalaryByMonth = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/salary/getSalaryByMonth`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/salary/getSalaryByMonth`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -600,7 +618,7 @@ export const getSalaryByMonth = async (params) => {
 export const getSalarySummary = async (params) => {
     try {
 
-        const response = await api.post(`${BASE_URL}/salary/getSalarySummary`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/salary/getSalarySummary`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -609,7 +627,7 @@ export const getSalarySummary = async (params) => {
 
 export const saveSalaryReturn = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/salary/saveSalaryReturn`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/salary/saveSalaryReturn`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -636,7 +654,7 @@ export const getAll = async () => {
 
 export const register = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/users/register`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/users/register`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -664,7 +682,7 @@ export const getUser = async () => {
 
 export const getAllInquiries = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/inquiries/getAllInquiries`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/inquiries/getAllInquiries`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -672,7 +690,7 @@ export const getAllInquiries = async (params) => {
 }
 export const inquiryRegister = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/inquiries/inquiryRegister`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/inquiries/inquiryRegister`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -681,7 +699,7 @@ export const inquiryRegister = async (params) => {
 
 export const addBlogs = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/blogs/addBlogs`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/blogs/addBlogs`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -690,7 +708,7 @@ export const addBlogs = async (params) => {
 
 export const getAllBlogs = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/blogs/getAllBlogs`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/blogs/getAllBlogs`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -738,7 +756,7 @@ export const NewsData = async () => {
 
 export const deleteRecords = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/users/deleteRecords`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/users/deleteRecords`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -763,7 +781,7 @@ export const deleteCustomFieldsById = async (id) => {
 }
 export const deleteRecordsByMonthYear = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/monthly/deleteReturnByMonthYear`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/monthly/deleteReturnByMonthYear`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -794,7 +812,7 @@ export const getCustomFields = async (param) => {
 }
 export const addCustomFields = async (params) => {
     try {
-        const response = await api.post(`${BASE_URL}/custom/add`,encryptData(params), { headers: header });
+        const response = await api.post(`${BASE_URL}/custom/add`,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;
@@ -833,8 +851,8 @@ export const getNotificationById = async (id) => {
 
 export const setRead = async (id, params) => {
     try {
-        params = encryptData(params)
-        const response = await api.put(`${BASE_URL}/notification/setRead/` + id,encryptData(params), { headers: header });
+        params = params
+        const response = await api.put(`${BASE_URL}/notification/setRead/` + id,params, { headers: header });
         return response.data
     } catch (error) {
         throw error.response.data.error;

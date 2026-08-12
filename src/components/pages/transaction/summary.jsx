@@ -808,6 +808,7 @@ const summary = () => {
       // console.log('======', params)
 
       const data = await uploadMonthlyReturn(id, formData);
+      console.log("________________",data)
       if (data.status === true) {
         closeModal('importReturn')
         Swal.fire({
