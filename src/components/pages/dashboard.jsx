@@ -30,6 +30,8 @@ const dashboard = () => {
   const [esicchallancreated, setesicchallancreated] = useState('')
   const [totaldsc, settotaldsc] = useState('')
   const [expiredsc, setexpiredsc] = useState('')
+  const [activeEmployer, setActiveEmployer] = useState('')
+  const [inActiveEmployer, setInActiveEmployer] = useState('')
 
   const fromMonth = 4
   const toMonth = 3
@@ -72,6 +74,8 @@ const dashboard = () => {
         setesicchallancreated(response.data.esicchallancreated)
         settotaldsc(response.data.totaldsc)
         setexpiredsc(response.data.expiredsc)
+        setActiveEmployer(response.data.activeEmployer)
+        setInActiveEmployer(response.data.inActiveEmployer)
       }
 
 
@@ -158,53 +162,53 @@ const dashboard = () => {
     }
   };
 
-const sortByStatus = () => {
-  let sortedList = [];
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  
-  if (selectedCard === "dsc") {
-   sortedList = employerList
-  .map((item) => {
-    if (!item.dsc_date) {
-      return { ...item, dsc_status: false };
+  const sortByStatus = () => {
+    let sortedList = [];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedCard === "dsc") {
+      sortedList = employerList
+        .map((item) => {
+          if (!item.dsc_date) {
+            return { ...item, dsc_status: false };
+          }
+
+          const dscDate = new Date(item.dsc_date);
+          dscDate.setHours(0, 0, 0, 0);
+
+          return {
+            ...item,
+            dsc_status: dscDate >= today, // true if today or future, false if expired
+          };
+        })
+        .sort((a, b) => {
+          if (!a.dsc_date && !b.dsc_date) return 0;
+          if (!a.dsc_date) return 1;
+          if (!b.dsc_date) return -1;
+
+          return new Date(b.dsc_date) - new Date(a.dsc_date);
+        });
+
+    } else {
+      sortedList = [...employerList].sort((a, b) => {
+        // Null values at the end
+        if (a.year == null || a.month == null) return 1;
+        if (b.year == null || b.month == null) return -1;
+        if (a.year == null && b.year == null) return 0;
+
+        // Descending Year
+        if (a.year !== b.year) {
+          return b.year - a.year;
+        }
+
+        // Descending Month
+        return b.month - a.month;
+      });
     }
 
-    const dscDate = new Date(item.dsc_date);
-    dscDate.setHours(0, 0, 0, 0);
-
-    return {
-      ...item,
-      dsc_status: dscDate >= today, // true if today or future, false if expired
-    };
-  })
-  .sort((a, b) => {
-    if (!a.dsc_date && !b.dsc_date) return 0;
-    if (!a.dsc_date) return 1;
-    if (!b.dsc_date) return -1;
-
-    return new Date(b.dsc_date) - new Date(a.dsc_date);
-  });
-
-  } else {
-    sortedList = [...employerList].sort((a, b) => {
-      // Null values at the end
-      if (a.year == null || a.month == null) return 1;
-      if (b.year == null || b.month == null) return -1;
-      if (a.year == null && b.year == null) return 0;
-
-      // Descending Year
-      if (a.year !== b.year) {
-        return b.year - a.year;
-      }
-
-      // Descending Month
-      return b.month - a.month;
-    });
-  }
-
-  setEmployerList(sortedList);
-};
+    setEmployerList(sortedList);
+  };
   const getUserGraphDetails = async (fromMonth, toMonth, fromYear, toYear) => {
     // api call
 
@@ -317,14 +321,24 @@ const sortByStatus = () => {
         <section className="section">
           <div className="row">
             <div className='dashboard-main-cards'>
-              <div className='cardCustom cardprop1'>
-                <div className='card-inner'>
+              <div className="cardCustom cardprop1">
+                <div className="card-inner">
                   <h5>Clients</h5>
-                  <BsFillArchiveFill className='card_icon' />
+                  <BsFillArchiveFill className="card_icon" />
                 </div>
-                <h1>{totalclient}</h1>
-              </div>
 
+                <h1>{totalclient}</h1>
+
+                <div className="d-flex justify-content-between mt-3">
+                  <span className="badge bg-success">
+                    Active: {activeEmployer}
+                  </span>
+
+                  <span className="badge bg-danger">
+                    Inactive: {inActiveEmployer}
+                  </span>
+                </div>
+              </div>
               <div
                 className='cardCustom cardprop2'
                 style={{ cursor: "pointer" }}
@@ -337,7 +351,7 @@ const sortByStatus = () => {
                   <BsPeopleFill className="card_icon" />
                 </div>
 
-                <h1>{totalepf}/{epfchallancreated}</h1>
+                <h1>{activeEmployer}/{epfchallancreated}</h1>
               </div>
               <div className='cardCustom cardprop3'
                 style={{ cursor: "pointer" }}

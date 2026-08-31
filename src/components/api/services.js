@@ -819,6 +819,14 @@ export const addCustomFields = async (params) => {
     }
 }
 
+export const left = async (id, params) => {
+    try {
+        const response = await api.put(`${BASE_URL}/employer/left/`+id,params, { headers: header });
+        return response.data
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 
 //---------------------------------------------------------------- Notification  --------------------------------
 export const getAllNotification = async () => {
@@ -851,7 +859,7 @@ export const getNotificationById = async (id) => {
 
 export const setRead = async (id, params) => {
     try {
-        params = params
+        // params = params
         const response = await api.put(`${BASE_URL}/notification/setRead/` + id,params, { headers: header });
         return response.data
     } catch (error) {

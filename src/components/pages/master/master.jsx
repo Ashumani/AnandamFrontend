@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getEstId, getErId, setEstId } from "../Auth/authToken";
-import { getMasterList, uploadEmployer, erRegister, erUpdate, getErRegister, downloadMaster, downlaodFile, fetchAllEmployer } from "../../api/services";
+import { getMasterList, uploadEmployer, erRegister, erUpdate, getErRegister, downloadMaster, downlaodFile, fetchAllEmployer, left } from "../../api/services";
 import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
 import React, { useRef } from 'react';
@@ -17,9 +17,9 @@ const master = () => {
   const [currentItems, set_currentItems] = useState([]);
   const modalRef = useRef(null);
   const [selectedId, setSelectedId] = useState('');
-   const [selectedKey, setSelectedKey] = useState('');
-   const [items, setItems] = useState([]);
-   const navigate = useNavigate();
+  const [selectedKey, setSelectedKey] = useState('');
+  const [items, setItems] = useState([]);
+  const navigate = useNavigate();
 
   const [ErId, setErId] = useState('');
   const [EstEpfId, setEstEpfId] = useState('');
@@ -45,7 +45,7 @@ const master = () => {
 
   const [er_esic, set_er_esic] = useState(3.25);
   const [ee_esic, set_ee_esic] = useState(0.75);
-  
+
   const [dsc_on_name, set_dsc_on_name] = useState('');
   const [dsc_expire, set_dsc_expire] = useState('');
   const [dsc_mobile, set_dsc_mobile] = useState('');
@@ -87,7 +87,7 @@ const master = () => {
         // set_startIndex((currentPage - 1) * itemsPerPage);
         set_totalPages(Math.ceil(response.count / itemsPerPage));
         set_currentItems(response.data);
-        
+
 
       }
 
@@ -100,49 +100,82 @@ const master = () => {
   };
 
   const getEst = async () => {
-    
-          try {
-            // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-            const response = await fetchAllEmployer();
-            setItems(response.data)
-            const selectedItem = response.data.find(item => item.est_epf_id === getEstId());
-            setSelectedKey(selectedItem.est_name);
-         
-    
-          } catch (error) {
-            console.error('Error fetching data:', error);
-            setError('Error fetching data. Please try again.');
-        
-          }
-        ;
-    
-        if (getEstId() != "All" && getEstId() != null) {
-    
-          handleChange2({ "target": { "value": getEstId() } })
-    
-        } 
-      }
+
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await fetchAllEmployer();
+      setItems(response.data)
+      const selectedItem = response.data.find(item => item.est_epf_id === getEstId());
+      setSelectedKey(selectedItem.est_name);
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Error fetching data. Please try again.');
+
+    }
+    ;
+
+    if (getEstId() != "All" && getEstId() != null) {
+
+      handleChange2({ "target": { "value": getEstId() } })
+
+    }
+  }
 
   const handleChange2 = (e) => {
-      const value = e.target.value;
-      setSelectedId(value);
-      if (value === "All") {
-        deleteEstId();
-        setSelectedKey(null)
+    const value = e.target.value;
+    setSelectedId(value);
+    if (value === "All") {
+      deleteEstId();
+      setSelectedKey(null)
 
-      } else {
-  
-        const selectedItem = items.find(item => item.est_epf_id === value);
-        // window.location.reload();
-        if (selectedItem) {
-          setSelectedKey(selectedItem.est_name);// Update selectedKey with item's key
-          setEstId(value, selectedItem.id);
-  
-        }
-  
-       
+    } else {
+
+      const selectedItem = items.find(item => item.est_epf_id === value);
+      // window.location.reload();
+      if (selectedItem) {
+        setSelectedKey(selectedItem.est_name);// Update selectedKey with item's key
+        setEstId(value, selectedItem.id);
+
       }
-    };
+
+
+    }
+  };
+
+  const setActiveEmployer = async (id, status, reason) => {
+    // api call
+    const params = {
+      "is_active": status,
+      "remark": reason
+    }
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await left(id, params);
+      if (response.status == true) {
+
+        await getAll(1)
+        Swal.fire({
+          title: response.message,
+          icon: 'success',
+          confirmButtonText: 'Okay'
+        });
+      } else {
+        Swal.fire({
+          title: response.message,
+          icon: 'error',
+          confirmButtonText: 'Okay'
+        });
+      }
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Error fetching data. Please try again.');
+      setLoading(false);
+    }
+  };
 
   const uplaodBulkEmployer = async () => {
     if (!file) {
@@ -218,41 +251,43 @@ const master = () => {
         "er_esic": er_esic,
         "ee_esic": ee_esic
       }
-    if(!EstName  || !EstEpfId  || !EstEsicId  || !EstType  || !ErName  || !estDoc  || !Mobile  || !Email  || !Address  || !ErDesignation  || !city  || !EpfRate  || !EpsRate  || !ErRate  || !Acc1  || !Acc2  || !Acc10  || !Acc21  || !Acc22  || !rate   || !er_esic  || !ee_esic ){
-      let fields ={EstName:EstName,
-        EstEpfId:EstEpfId,
-        EstEsicId:EstEsicId,
-        EstType:EstType,
-        ErName:ErName,
-        estDoc:estDoc,
-        Mobile:Mobile,
-        Email:Email,
-        Address:Address,
-        ErDesignation:ErDesignation,
-        city:city,
-        EpfRate:EpfRate,
-        EpsRate:EpsRate,
-        ErRate:ErRate,
-        Acc1:Acc1,
-        Acc2:Acc2,
-        Acc10:Acc10,
-        Acc21:Acc21,
-        Acc22:Acc22,
-        rate:rate,
-        er_esic:er_esic}
-        let arr = ''
-      for (const field in fields) {
-        if (!fields[field]) {
-           arr += `${field} field is mandatory \n`;
+      if (!EstName || !EstEpfId || !EstEsicId || !EstType || !ErName || !estDoc || !Mobile || !Email || !Address || !ErDesignation || !city || !EpfRate || !EpsRate || !ErRate || !Acc1 || !Acc2 || !Acc10 || !Acc21 || !Acc22 || !rate || !er_esic || !ee_esic) {
+        let fields = {
+          EstName: EstName,
+          EstEpfId: EstEpfId,
+          EstEsicId: EstEsicId,
+          EstType: EstType,
+          ErName: ErName,
+          estDoc: estDoc,
+          Mobile: Mobile,
+          Email: Email,
+          Address: Address,
+          ErDesignation: ErDesignation,
+          city: city,
+          EpfRate: EpfRate,
+          EpsRate: EpsRate,
+          ErRate: ErRate,
+          Acc1: Acc1,
+          Acc2: Acc2,
+          Acc10: Acc10,
+          Acc21: Acc21,
+          Acc22: Acc22,
+          rate: rate,
+          er_esic: er_esic
         }
-    }
+        let arr = ''
+        for (const field in fields) {
+          if (!fields[field]) {
+            arr += `${field} field is mandatory \n`;
+          }
+        }
 
-      Swal.fire({
+        Swal.fire({
           title: arr,
           icon: 'error',
           confirmButtonText: 'Okay'
         });
-      } else{
+      } else {
         const data = await erRegister(params);
 
         if (data.status === true) {
@@ -264,7 +299,7 @@ const master = () => {
 
           closeModal('employerModel')
           await getAll(1);
-  
+
         } else {
           Swal.fire({
             title: data.message,
@@ -273,7 +308,7 @@ const master = () => {
           });
         }
       }
-   
+
 
     } catch (error) {
       console.error('Login error ', error);
@@ -313,64 +348,66 @@ const master = () => {
         "dsc_status": checkedDSC
       }
 
-      if(!EstName  || !EstEpfId  || !EstEsicId  || !EstType  || !ErName  || !estDoc  || !Mobile  || !Email  || !Address  || !ErDesignation  || !city  || !EpfRate  || !EpsRate  || !ErRate  || !Acc1  || !Acc2  || !Acc10  || !Acc21  || !Acc22  || !rate   || !er_esic  || !ee_esic ){
-        let fields ={EstName:EstName,
-          EstEpfId:EstEpfId,
-          EstEsicId:EstEsicId,
-          EstType:EstType,
-          ErName:ErName,
-          estDoc:estDoc,
-          Mobile:Mobile,
-          Email:Email,
-          Address:Address,
-          ErDesignation:ErDesignation,
-          city:city,
-          EpfRate:EpfRate,
-          EpsRate:EpsRate,
-          ErRate:ErRate,
-          Acc1:Acc1,
-          Acc2:Acc2,
-          Acc10:Acc10,
-          Acc21:Acc21,
-          Acc22:Acc22,
-          rate:rate,
-          er_esic:er_esic}
-          let arr = ''
+      if (!EstName || !EstEpfId || !EstEsicId || !EstType || !ErName || !estDoc || !Mobile || !Email || !Address || !ErDesignation || !city || !EpfRate || !EpsRate || !ErRate || !Acc1 || !Acc2 || !Acc10 || !Acc21 || !Acc22 || !rate || !er_esic || !ee_esic) {
+        let fields = {
+          EstName: EstName,
+          EstEpfId: EstEpfId,
+          EstEsicId: EstEsicId,
+          EstType: EstType,
+          ErName: ErName,
+          estDoc: estDoc,
+          Mobile: Mobile,
+          Email: Email,
+          Address: Address,
+          ErDesignation: ErDesignation,
+          city: city,
+          EpfRate: EpfRate,
+          EpsRate: EpsRate,
+          ErRate: ErRate,
+          Acc1: Acc1,
+          Acc2: Acc2,
+          Acc10: Acc10,
+          Acc21: Acc21,
+          Acc22: Acc22,
+          rate: rate,
+          er_esic: er_esic
+        }
+        let arr = ''
         for (const field in fields) {
           if (!fields[field]) {
-             arr += `${field} field is mandatory \n`;
+            arr += `${field} field is mandatory \n`;
           }
-      }
-  
+        }
+
         Swal.fire({
-            title: arr,
+          title: arr,
+          icon: 'error',
+          confirmButtonText: 'Okay'
+        });
+      } else {
+        const data = await erUpdate(ErId, params);
+
+        if (data.status === true) {
+          Swal.fire({
+            title: data.message,
+            icon: 'success',
+            confirmButtonText: 'Okay'
+          });
+
+          closeModal('employerModel')
+          await getAll(1);
+
+        } else {
+          Swal.fire({
+            title: data.message,
             icon: 'error',
             confirmButtonText: 'Okay'
           });
-        } else{
-          const data =  await erUpdate(ErId, params);
-  
-          if (data.status === true) {
-            Swal.fire({
-              title: data.message,
-              icon: 'success',
-              confirmButtonText: 'Okay'
-            });
-  
-            closeModal('employerModel')
-            await getAll(1);
-    
-          } else {
-            Swal.fire({
-              title: data.message,
-              icon: 'error',
-              confirmButtonText: 'Okay'
-            });
-          }
         }
-     
+      }
 
-     
+
+
     } catch (error) {
       console.error('Login error ', error);
       setError(error);
@@ -392,7 +429,7 @@ const master = () => {
         });
 
 
-      }else{
+      } else {
         Swal.fire({
           title: response.message,
           icon: 'error',
@@ -542,7 +579,7 @@ const master = () => {
                   <th>Total Bill Amount</th>
                   <th>Received Bill Amount</th>
                   <th>Balance Bill Amount</th>
-
+                  <th>Active</th>
                 </tr>
               </thead>
               <tbody>
@@ -559,7 +596,27 @@ const master = () => {
                     <td>{employee.totalbill}</td>
                     <td>{employee.recievedamount}</td>
                     <td>{employee.balanceamount}</td>
+                    <td>
+                      <div className="form-check form-switch">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          role="switch"
+                          checked={parseInt(employee.is_active) === 0}
+                          onChange={(e) =>
+                            setActiveEmployer(
+                              employee.id,
+                              e.target.checked ? 0 : 1,
+                              e.target.checked ? "Active" : "Inactive"
+                            )
+                          }
+                        />
 
+                        <label className="form-check-label">
+                          {parseInt(employee.is_active) === 0 ? "ON" : "OFF"}
+                        </label>
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -623,7 +680,7 @@ const master = () => {
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div className="modal-body"  style={{ color:'black'}}>
+                  <div className="modal-body" style={{ color: 'black' }}>
                     <div className="row mb-3">
                       <div className="form-group col-sm">
                         <label htmlFor="epfNo" > EPF No</label>
@@ -707,82 +764,82 @@ const master = () => {
                     )}
 
                     <div className="card">
-              <div className="card-body">
-                <h5 className="card-title text-left">
-                  Retruns Parameter 
-                </h5>
-                <h5 className="card-title text-left">
-                 EPF 
-                </h5>
-                <div className="row">
-                  <div className="form-group col-sm">
-                    <label htmlFor="inputText">EPF </label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => setEpfRate(e.target.value)} value={EpfRate} />
-                  </div>
-                  <div className="form-group col-sm">
-                    <label htmlFor="inputEmail">EPS</label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => setEpsRate(e.target.value)} value={EpsRate} />
-                  </div>
-                  <div className="form-group col-sm">
-                    <label htmlFor="inputEmail">ER</label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => setErRate(e.target.value)} value={ErRate} />
-                  </div>
-                  <div className="form-group col-sm">
-                    <label htmlFor="inputText">Account 1</label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc1(e.target.value)} value={Acc1} />
-                  </div>
-                  <div className="form-group col-sm">
-                    <label htmlFor="inputText">Account 2</label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc2(e.target.value)} value={Acc2} />
-                  </div>
-                  <div className="form-group col-sm">
-                    <label htmlFor="inputText">Account 10</label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc10(e.target.value)} value={Acc10} />
-                  </div>
-                  <div className="form-group col-sm">
-                    <label htmlFor="inputText">Account 21</label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc21(e.target.value)} value={Acc21} />
-                  </div>
-                  <div className="form-group col-sm">
-                    <label htmlFor="inputText">Account 22</label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
-                  </div>
-                  {/* <div className="form-group col-sm">
+                      <div className="card-body">
+                        <h5 className="card-title text-left">
+                          Retruns Parameter
+                        </h5>
+                        <h5 className="card-title text-left">
+                          EPF
+                        </h5>
+                        <div className="row">
+                          <div className="form-group col-sm">
+                            <label htmlFor="inputText">EPF </label>
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => setEpfRate(e.target.value)} value={EpfRate} />
+                          </div>
+                          <div className="form-group col-sm">
+                            <label htmlFor="inputEmail">EPS</label>
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => setEpsRate(e.target.value)} value={EpsRate} />
+                          </div>
+                          <div className="form-group col-sm">
+                            <label htmlFor="inputEmail">ER</label>
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => setErRate(e.target.value)} value={ErRate} />
+                          </div>
+                          <div className="form-group col-sm">
+                            <label htmlFor="inputText">Account 1</label>
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc1(e.target.value)} value={Acc1} />
+                          </div>
+                          <div className="form-group col-sm">
+                            <label htmlFor="inputText">Account 2</label>
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc2(e.target.value)} value={Acc2} />
+                          </div>
+                          <div className="form-group col-sm">
+                            <label htmlFor="inputText">Account 10</label>
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc10(e.target.value)} value={Acc10} />
+                          </div>
+                          <div className="form-group col-sm">
+                            <label htmlFor="inputText">Account 21</label>
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc21(e.target.value)} value={Acc21} />
+                          </div>
+                          <div className="form-group col-sm">
+                            <label htmlFor="inputText">Account 22</label>
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
+                          </div>
+                          {/* <div className="form-group col-sm">
                     <label htmlFor="inputText">Account 22</label>
                     <input type="text" className="form-control rounded-4" required onChange={(e) => setAcc22(e.target.value)} value={Acc22} />
                   </div> */}
-                  <hr style={{width:'99%'}} />
-                  <h5 className="card-title text-left">
-                  ESIC
-                </h5>
-                  <div className="form-group col-sm-2">
-                    <label htmlFor="inputText">ER Share</label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_er_esic(e.target.value)} value={er_esic} />
-                  </div>
-                  <div className="form-group col-sm-2">
-                    <label htmlFor="inputText">EE Share</label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_esic(e.target.value)} value={ee_esic} />
-                  </div>
-                 <hr  style={{width:'99%'}} />
-                 <h5 className="card-title text-left">
-                  Bill Rate
-                </h5>
-                  <div className="form-group col-sm-2">
-                    <label htmlFor="inputText">Rate</label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => setRate(e.target.value)} value={rate} />
-                  </div>
+                          <hr style={{ width: '99%' }} />
+                          <h5 className="card-title text-left">
+                            ESIC
+                          </h5>
+                          <div className="form-group col-sm-2">
+                            <label htmlFor="inputText">ER Share</label>
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => set_er_esic(e.target.value)} value={er_esic} />
+                          </div>
+                          <div className="form-group col-sm-2">
+                            <label htmlFor="inputText">EE Share</label>
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_esic(e.target.value)} value={ee_esic} />
+                          </div>
+                          <hr style={{ width: '99%' }} />
+                          <h5 className="card-title text-left">
+                            Bill Rate
+                          </h5>
+                          <div className="form-group col-sm-2">
+                            <label htmlFor="inputText">Rate</label>
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => setRate(e.target.value)} value={rate} />
+                          </div>
 
-                  <hr  style={{width:'99%'}} />
-                 <h5 className="card-title text-left">
-                  Pay Roll Parameter
-                </h5>
-                  <div className="form-group col-sm-2">
-                    <label htmlFor="inputText">Rate</label>
-                    <input type="text" className="form-control rounded-4" required onChange={(e) => setRate(e.target.value)} value={rate} />
-                  </div>
-                </div>
-              </div>
-            </div>
+                          <hr style={{ width: '99%' }} />
+                          <h5 className="card-title text-left">
+                            Pay Roll Parameter
+                          </h5>
+                          <div className="form-group col-sm-2">
+                            <label htmlFor="inputText">Rate</label>
+                            <input type="text" className="form-control rounded-4" required onChange={(e) => setRate(e.target.value)} value={rate} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div className="modal-footer">
                     {!isUpdate ? (
@@ -796,8 +853,8 @@ const master = () => {
                     )}
 
                     <button type="button" className="btn btn-outline-danger rounded-4" onClick={() => closeModal('employerModel')}>
-                        Close
-                      </button>
+                      Close
+                    </button>
                   </div>
                 </form>
               </div>

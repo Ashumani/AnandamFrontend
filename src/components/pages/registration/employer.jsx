@@ -79,7 +79,9 @@ const employer = () => {
         "dsc_status": checkedDSC,
         "er_esic": er_esic,
         "ee_esic": ee_esic,
-        "is_exampted": is_exampted
+        "is_exampted": is_exampted,
+        "is_active": 0,
+        "remark":""
       }
 
       const data = await erRegister(params);

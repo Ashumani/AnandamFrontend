@@ -169,13 +169,42 @@
 .cardCustom {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    padding: 8px 15px;
+    justify-content: space-between;
+    padding: 15px;
     border-radius: 18px !important;
-    background-color: #f4f4f4; /* Optional: Set a background color */
-    border: 1px solid #ddd; /* Optional: Add a border */
-    height: 77px; /* Set a fixed height */
-   
+    min-height: 120px;      /* Increased height */
+    color: #fff;
+}
+
+.card-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-footer-status {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.status-chip {
+    flex: 1;
+    text-align: center;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.status-active {
+    background: rgba(25, 135, 84, 0.9);
+}
+
+.status-inactive {
+    background: rgba(220, 53, 69, 0.9);
 }
 
   
