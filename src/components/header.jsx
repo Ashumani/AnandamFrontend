@@ -40,7 +40,7 @@ const Header = () => {
   const [message, setMessage] = useState("");
 
   const [employeeList, setEmployeeist] = useState([])
-  const [ChatNotification,setChatNotification] = useState([])
+  const [ChatNotification, setChatNotification] = useState([])
 
   const options = [
     { value: 'All', label: 'All' },
@@ -232,7 +232,7 @@ const Header = () => {
   // };
 
 
- const handleLogout = (e) => {
+  const handleLogout = (e) => {
     e.preventDefault(); // Prevents default page jump/reload
 
     // 1. Clear stored credentials and user data
@@ -403,7 +403,7 @@ const Header = () => {
 
                   {ChatNotification.length > 0 ? (
                     ChatNotification.map((msg, index) => {
-                      {/* const isMe = msg.sender_id === currentUserId; */}
+                      {/* const isMe = msg.sender_id === currentUserId; */ }
 
                       return (
                         <React.Fragment key={msg.id || index}>
@@ -533,17 +533,17 @@ const Header = () => {
                   <hr className="dropdown-divider" />
                 </li>
 
-               <li>
-      <a
-        href="#logout"
-        className="dropdown-item d-flex align-items-center cursor-pointer"
-        onClick={handleLogout}
-        role="button"
-      >
-        <i className="bi bi-box-arrow-right me-2"></i>
-        <span>Sign Out</span>
-      </a>
-    </li>
+                <li>
+                  <a
+                    href="#logout"
+                    className="dropdown-item d-flex align-items-center cursor-pointer"
+                    onClick={handleLogout}
+                    role="button"
+                  >
+                    <i className="bi bi-box-arrow-right me-2"></i>
+                    <span>Sign Out</span>
+                  </a>
+                </li>
               </ul>
             </li>
           </ul>
@@ -574,7 +574,15 @@ const Header = () => {
                     key={index}
                     className={`message ${isMe ? "me" : "other"}`}
                   >
-                    <strong>{isMe ? "You" : msg.sender_name}</strong>
+                    <strong>
+                      {isMe ? (
+                        <>
+                          You <i className="bi bi-arrow-right mx-1"></i> {msg.reciever_name}
+                        </>
+                      ) : (
+                        msg.sender_name
+                      )}
+                    </strong>
 
                     <p>{msg.sender_message}</p>
 

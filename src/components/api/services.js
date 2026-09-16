@@ -189,6 +189,15 @@ export const getMasterList = async (params) => {
     }
 }
 
+export const searchEmployer = async (params) => {
+    try {
+        const response = await api.post(`${BASE_URL}/employer/searchEmployer`,params, { headers: header });
+        return response.data
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
 export const downloadMaster = async (params) => {
     try {
         const response = await api.get(`${BASE_URL}/upload/downloadMaster`,params, { headers: header });

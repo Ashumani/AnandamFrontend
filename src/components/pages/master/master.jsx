@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getEstId, getErId, setEstId } from "../Auth/authToken";
-import { getMasterList, uploadEmployer, erRegister, erUpdate, getErRegister, downloadMaster, downlaodFile, fetchAllEmployer, left } from "../../api/services";
+import { getMasterList, uploadEmployer, erRegister, erUpdate, getErRegister,searchEmployer, downloadMaster, downlaodFile, fetchAllEmployer, left } from "../../api/services";
 import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
 import React, { useRef } from 'react';
@@ -12,6 +12,8 @@ const master = () => {
   const itemsPerPage = 20; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, set_totalPages] = useState(1);
+  const [search_emp, set_search_emp] = useState('');
+  
 
   // Get current items based on the current page
   const [currentItems, set_currentItems] = useState([]);
@@ -446,7 +448,48 @@ const master = () => {
     }
   };
 
+const searchEmp = async () => {
+    // api call
+    try {
+      const params = {
+        "est_id": getErId(),
+        "search": search_emp
+      }
+      const data = await searchEmployer(params);
+      if (data.status === true) {
 
+        // setEmployeeData(response.data);
+
+        // set_totalPages(Math.ceil(response.data.length / itemsPerPage));
+
+        // // Get current items based on the current page
+        // set_startIndex((currentPage - 1) * itemsPerPage);
+        set_totalPages(Math.ceil(data.count / itemsPerPage));
+        set_currentItems(data.data);
+
+
+        // closeModal()
+        // getAll();
+        // reset();
+      } else {
+        Swal.fire({
+          position: 'top-right',
+          icon: 'error',
+          toast: true,
+          title: data.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        });
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+
+
+    } catch (error) {
+      console.error('Login error ', error);
+      setError(error);
+    }
+  };
   // useEffect(() => {
   //   const fetchData = async () => {
   //     const params = {
@@ -561,6 +604,9 @@ const master = () => {
                 Export
               </button>
             </div>
+            <div className="col-12 col-md-6 col-lg-3">
+              <input type="text" className="form-control rounded-4" placeholder="Search" onChange={(e) => set_search_emp(e.target.value)} onBlur={searchEmp} />
+            </div>
 
           </div>
 
@@ -635,7 +681,7 @@ const master = () => {
               <button
                 key={index}
                 onClick={() => handlePageChange(index + 1)}
-                style={{ margin: '0 2px', backgroundColor: currentPage === index + 1 ? '#1e60aa' : 'white', border: '0px' }}
+                style={{ margin: '0 2px', backgroundColor: currentPage === index + 1 ? '#1e60aa' : '#4f79aa', border: '0px' }}
               >
                 {index + 1}
               </button>
