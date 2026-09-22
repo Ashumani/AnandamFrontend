@@ -207,6 +207,23 @@ export const downloadMaster = async (params) => {
     }
 }
 
+export const getParameters = async () => {
+    try {
+        const response = await api.get(`${BASE_URL}/parameters/getAll`, { headers: header });
+        return response.data
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const updateParameters = async (id, params) => {
+    try {
+        const response = await api.put(`${BASE_URL}/parameters/update/`+id,params, { headers: header });
+        return response.data
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 //Empllyee API
 
 export const saveEERegister = async (params) => {

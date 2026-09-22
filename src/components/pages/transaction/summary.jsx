@@ -88,12 +88,18 @@ const summary = () => {
   const [selected_sub_id, set_selected_sub_id] = useState(0)
   const [is_high_salaried, set_is_high_salaried] = useState(0)
 
+  const [epf_ceiling, set_epf_ceiling] = useState('');
+  const [edli_ceiling, set_edli_ceiling] = useState('');
+  const [eps_ceiling, set_eps_ceiling] = useState('');
+  const [params_id, set_params_id] = useState('');
+  const [param_date, set_param_date] = useState('');
+
+
 
   useEffect(() => {
     const fetchData = async () => {
       await getAllYear();
-
-
+      await getParams();
     };
 
     fetchData();
@@ -120,6 +126,24 @@ const summary = () => {
 
     }
   };
+      const getParams = async () => {
+        // api call
+        try {
+          const parameters = await getParameters();
+          set_edli_ceiling(parameters.data[0].edli_ceiling)
+          set_epf_ceiling(parameters.data[0].epf_ceiling)
+          set_eps_ceiling(parameters.data[0].eps_ceiling)
+          set_params_id(parameters.data[0].id)
+          set_param_date(parameters.data[0].date)
+    
+  
+          
+        } catch (error) {
+          console.error('Login error ', error);
+          // setError(error);
+        }
+      };
+    
 
   const getAllYear = async () => {
     // api call
@@ -634,9 +658,9 @@ const summary = () => {
       }
       const userData = await getEmployer(params);
       const epf_wages = value;
-      const epfwages_if_above = epf_wages < 15000 ? epf_wages : 15000
-      const eps_wag = epf_wages <= 15000 ? epf_wages : 15000
-      const edli = epf_wages <= 15000 ? epf_wages : 15000
+      const epfwages_if_above = epf_wages < epf_ceiling ? epf_wages : epf_ceiling
+      const eps_wag = epf_wages <= epf_ceiling ? epf_wages : epf_ceiling
+      const edli = epf_wages <= epf_ceiling ? epf_wages : epf_ceiling
       const epf = Math.round(epf_wages * userData.data.ee_epf_rate / 100)
       set_ee_eps_wages(eps_wag)
       set_ee_edli_wages(edli)
@@ -652,7 +676,7 @@ const summary = () => {
         set_er_epf(Math.round(epfwages_if_above * userData.data.er_diff_rate / 100))
         eps = Math.round(epfwages_if_above * userData.data.er_eps_rate / 100)
         set_er_eps(eps)
-        if (is_high_salaried == 1 && epf_wages > 15000) {
+        if (is_high_salaried == 1 && epf_wages > eps_ceiling) {
           set_er_epf(550)
         } else {
           set_er_epf(epf - eps)
@@ -808,7 +832,6 @@ const summary = () => {
       // console.log('======', params)
 
       const data = await uploadMonthlyReturn(id, formData);
-      console.log("________________",data)
       if (data.status === true) {
         closeModal('importReturn')
         Swal.fire({

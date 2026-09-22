@@ -35,6 +35,8 @@ import EpfWidget from "./components/pages/admin/EPFWidget";
 import EpfWidgetMember from "./components/pages/admin/EPFMember";
 import Calculator from "./components/pages/admin/Calculator";
 import NeedHelp from "./components/pages/devInfo/NeedHelp";
+
+import Parameters from "./components/pages/admin/parameters";
 import Test from "./components/pages/admin/AgentLayoutSet";
 
 const AllRoutes = () => {
@@ -76,6 +78,7 @@ const AllRoutes = () => {
         <Route path="/auth/dashboard/EpfMember" element={<EpfWidgetMember />} />
         <Route path="/auth/dashboard/Calculator" element={<Calculator />} />
         <Route path="/auth/dashboard/NeedHelp" element={<NeedHelp />} />
+        <Route path="/auth/dashboard/parameters" element={<Parameters />} />
         <Route path="/auth/dashboard/agentLayout" element={<Test />} />
       </Route>
 

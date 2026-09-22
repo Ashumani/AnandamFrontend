@@ -366,6 +366,11 @@ const Sidebar = () => {
                     "item": "Records Delete",
                     "path": "/auth/dashboard/superUser",
                     "icon": "bi bi-question-circle"
+                },
+                {
+                    "item": "Parameters",
+                    "path": "/auth/dashboard/parameters",
+                    "icon": "bi bi-question-circle"
                 }
             ]
         }]
