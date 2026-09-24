@@ -658,7 +658,7 @@ const calculation = async (value) => {
 
     const epf_wages = Number(value) || 0;
     const isHighSalaried = Number(is_high_salaried) === 1;
-    let years = moment().diff(ee_dob, 'years');
+    let totalMonths = moment().diff(moment(ee_dob), 'months');
 
     // Use ceilings fetched from database parameters API
     // eps_ceiling, edli_ceiling, epf_ceiling should be available in your component's scope
@@ -676,37 +676,37 @@ const calculation = async (value) => {
 
     // --- RULE LOGIC IMPLEMENTATION ---
 
-    if (epf_wages > wageLimit && isHighSalaried && years < 58) {
+    if (epf_wages > wageLimit && isHighSalaried && totalMonths < 696) {
       // 1. salary > 25000, high_salary == 1, age < 58
       eps_wag = eps_ceiling;
       eps = Math.round((eps_ceiling * epsRate) / 100);
       er_epf = epf - eps;
     } 
-    else if (epf_wages > wageLimit && isHighSalaried && years >= 58) {
+    else if (epf_wages > wageLimit && isHighSalaried && totalMonths > 696) {
       // 2. salary > 25000, high_salary == 1, age > 58
       eps_wag = 0;
       eps = 0;
       er_epf = epf; // epf - 0
     } 
-    else if (epf_wages > wageLimit && !isHighSalaried && years < 58) {
+    else if (epf_wages > wageLimit && !isHighSalaried && totalMonths < 696) {
       // 3. salary > 25000, high_salary != 1, age < 58
       eps_wag = eps_ceiling;
       eps = Math.round((eps_ceiling * epsRate) / 100);
       er_epf = epf - eps;
     } 
-    else if (epf_wages > wageLimit && !isHighSalaried && years >= 58) {
+    else if (epf_wages > wageLimit && !isHighSalaried && totalMonths > 696) {
       // 4. salary > 25000, high_salary != 1, age > 58
       eps_wag = 0;
       eps = 0;
       er_epf = epf; // epf - 0
     } 
-    else if (epf_wages <= wageLimit && years < 58) {
+    else if (epf_wages <= wageLimit && totalMonths < 696) {
       // 5. salary < 25000, age < 58
       eps_wag = epf_wages;
       eps = Math.round((epf_wages * epsRate) / 100);
       er_epf = epf - eps;
     } 
-    else if (epf_wages <= wageLimit && years >= 58) {
+    else if (epf_wages <= wageLimit && totalMonths > 696) {
       // 6. salary < 25000, age > 58
       eps_wag = 0;
       eps = 0;
