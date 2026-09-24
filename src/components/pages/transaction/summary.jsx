@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getErId, getEstId } from "../Auth/authToken";
-import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary, downlaodFile, fetchEpfReturn, updateEpfReturn, sameAsPrev, deleteReturnById, generateECR, searchMonthlyEmployee, getYear, deleteRecordsByMonthYear } from "../../api/services";
+import { getEmployeeByUANandEPFid, getEpfReturnByMonth, getEmployer, fillEpfReturn, uploadMonthlyReturn, getSummary, downlaodFile, fetchEpfReturn, updateEpfReturn, sameAsPrev, deleteReturnById, generateECR, searchMonthlyEmployee, getYear, deleteRecordsByMonthYear, getParameters } from "../../api/services";
 import Swal from 'sweetalert2';
 import React, { useRef } from 'react';
 import moment from "moment";
@@ -126,24 +126,22 @@ const summary = () => {
 
     }
   };
-      const getParams = async () => {
-        // api call
-        try {
-          const parameters = await getParameters();
-          set_edli_ceiling(parameters.data[0].edli_ceiling)
-          set_epf_ceiling(parameters.data[0].epf_ceiling)
-          set_eps_ceiling(parameters.data[0].eps_ceiling)
-          set_params_id(parameters.data[0].id)
-          set_param_date(parameters.data[0].date)
+  const getParams = async () => {
+    // api call
+    try {
+      const parameters = await getParameters();
+      set_edli_ceiling(parameters.data[0].edli_ceiling)
+      set_epf_ceiling(parameters.data[0].epf_ceiling)
+      set_eps_ceiling(parameters.data[0].eps_ceiling)
+      set_params_id(parameters.data[0].id)
+      set_param_date(parameters.data[0].date)
     
-  
-          
-        } catch (error) {
-          console.error('Login error ', error);
-          // setError(error);
-        }
-      };
-    
+    } catch (error) {
+      console.error('Login error ', error);
+      // setError(error);
+    }
+  };
+
 
   const getAllYear = async () => {
     // api call
@@ -659,9 +657,10 @@ const summary = () => {
       const userData = await getEmployer(params);
       const epf_wages = value;
       const epfwages_if_above = epf_wages < epf_ceiling ? epf_wages : epf_ceiling
-      const eps_wag = epf_wages <= epf_ceiling ? epf_wages : epf_ceiling
-      const edli = epf_wages <= epf_ceiling ? epf_wages : epf_ceiling
+      const eps_wag = epf_wages <= epf_ceiling ? epf_wages : eps_ceiling
+      const edli = epf_wages <= epf_ceiling ? epf_wages : edli_ceiling
       const epf = Math.round(epf_wages * userData.data.ee_epf_rate / 100)
+      console.log({"eps":eps_wag, "epf":epfwages_if_above, "edli": edli, "pf":epf})
       set_ee_eps_wages(eps_wag)
       set_ee_edli_wages(edli)
       set_ee_epf(epf)
@@ -681,9 +680,7 @@ const summary = () => {
         } else {
           set_er_epf(epf - eps)
         }
-
       }
-
       set_isSaveEnable(false)
 
     } catch (error) {
