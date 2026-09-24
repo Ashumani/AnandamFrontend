@@ -648,46 +648,95 @@ const summary = () => {
     }
   };
 
-  const calculation = async (value) => {
-    // api call
-    try {
-      const params = {
-        "est_epf_id": getEstId()
-      }
-      const userData = await getEmployer(params);
-      const epf_wages = value;
-      const epfwages_if_above = epf_wages < epf_ceiling ? epf_wages : epf_ceiling
-      const eps_wag = epf_wages <= epf_ceiling ? epf_wages : eps_ceiling
-      const edli = epf_wages <= epf_ceiling ? epf_wages : edli_ceiling
-      const epf = Math.round(epf_wages * userData.data.ee_epf_rate / 100)
-      console.log({"eps":eps_wag, "epf":epfwages_if_above, "edli": edli, "pf":epf})
-      set_ee_eps_wages(eps_wag)
-      set_ee_edli_wages(edli)
-      set_ee_epf(epf)
-      let years = moment().diff(ee_dob, 'years');
-      let eps = 0
-      if (years > 58) {
-        set_er_epf(Math.round(epfwages_if_above * userData.data.ee_epf_rate / 100))
-        set_ee_eps_wages(0)
-        set_er_eps(0)
+const calculation = async (value) => {
+  try {
+    const params = {
+      "est_epf_id": getEstId()
+    };
+    const userData = await getEmployer(params);
+    const rates = userData.data;
 
-      } else {
-        set_er_epf(Math.round(epfwages_if_above * userData.data.er_diff_rate / 100))
-        eps = Math.round(epfwages_if_above * userData.data.er_eps_rate / 100)
-        set_er_eps(eps)
-        if (is_high_salaried == 1 && epf_wages > eps_ceiling) {
-          set_er_epf(550)
-        } else {
-          set_er_epf(epf - eps)
-        }
-      }
-      set_isSaveEnable(false)
+    const epf_wages = Number(value) || 0;
+    const isHighSalaried = Number(is_high_salaried) === 1;
+    let years = moment().diff(ee_dob, 'years');
 
-    } catch (error) {
-      console.error('Login error ', error);
-      // setError(error);
+    // Use ceilings fetched from database parameters API
+    // eps_ceiling, edli_ceiling, epf_ceiling should be available in your component's scope
+    const wageLimit = eps_ceiling || 25000; 
+    const epfRate = rates.ee_epf_rate || 12;
+    const epsRate = rates.er_eps_rate || 8.33;
+
+    // Base calculations
+    const epf = Math.round((epf_wages * epfRate) / 100);
+    const edli = epf_wages <= wageLimit ? epf_wages : edli_ceiling;
+
+    let eps_wag = 0;
+    let eps = 0;
+    let er_epf = 0;
+
+    // --- RULE LOGIC IMPLEMENTATION ---
+
+    if (epf_wages > wageLimit && isHighSalaried && years < 58) {
+      // 1. salary > 25000, high_salary == 1, age < 58
+      eps_wag = eps_ceiling;
+      eps = Math.round((eps_ceiling * epsRate) / 100);
+      er_epf = epf - eps;
+    } 
+    else if (epf_wages > wageLimit && isHighSalaried && years >= 58) {
+      // 2. salary > 25000, high_salary == 1, age > 58
+      eps_wag = 0;
+      eps = 0;
+      er_epf = epf; // epf - 0
+    } 
+    else if (epf_wages > wageLimit && !isHighSalaried && years < 58) {
+      // 3. salary > 25000, high_salary != 1, age < 58
+      eps_wag = eps_ceiling;
+      eps = Math.round((eps_ceiling * epsRate) / 100);
+      er_epf = epf - eps;
+    } 
+    else if (epf_wages > wageLimit && !isHighSalaried && years >= 58) {
+      // 4. salary > 25000, high_salary != 1, age > 58
+      eps_wag = 0;
+      eps = 0;
+      er_epf = epf; // epf - 0
+    } 
+    else if (epf_wages <= wageLimit && years < 58) {
+      // 5. salary < 25000, age < 58
+      eps_wag = epf_wages;
+      eps = Math.round((epf_wages * epsRate) / 100);
+      er_epf = epf - eps;
+    } 
+    else if (epf_wages <= wageLimit && years >= 58) {
+      // 6. salary < 25000, age > 58
+      eps_wag = 0;
+      eps = 0;
+      er_epf = epf; // er = epf (12% on his salary)
     }
-  };
+
+    // Set state variables
+    set_ee_epf_wages(epf_wages);
+    set_ee_eps_wages(eps_wag);
+    set_ee_edli_wages(edli);
+    set_ee_epf(epf);
+    set_er_eps(eps);
+    set_er_epf(er_epf);
+
+    console.log({
+      "salary": epf_wages,
+      "age": years,
+      "high_salary": isHighSalaried ? 1 : 0,
+      "epf": epf,
+      "eps": eps,
+      "er_epf": er_epf,
+      "eps_wages": eps_wag
+    });
+
+    set_isSaveEnable(false);
+
+  } catch (error) {
+    console.error('Calculation error:', error);
+  }
+};
 
   const reset = async () => {
     set_search_pf('')
