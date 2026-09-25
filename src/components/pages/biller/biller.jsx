@@ -698,6 +698,7 @@ const ecr = () => {
                                             checked={billType === "services"}
                                             onChange={(e) => setBillType(e.target.value)}
                                             autoComplete="off"
+                                            disabled
                                         />
                                         <label
                                             className="btn btn-outline-primary rounded-start-4"
@@ -715,6 +716,7 @@ const ecr = () => {
                                             checked={billType === "consultant"}
                                             onChange={(e) => setBillType(e.target.value)}
                                             autoComplete="off"
+                                            disabled
                                         />
                                         <label
                                             className="btn btn-outline-primary rounded-end-4"

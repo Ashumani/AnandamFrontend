@@ -392,57 +392,170 @@ const Sidebar = () => {
     return (
         <>
             <aside id="sidebar" className="sidebar">
-                <ul className="sidebar-nav" id="sidebar-nav">
-                    <li className="nav-item">
-                        <a className="nav-link " href="/auth/dashboard">
-                            <i className="bi bi-grid"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link " href="/auth/dashboard/master">
-                            <i className="bi bi-archive"></i>
-                            <span>Master</span>
-                        </a>
-                    </li>
+               <ul className="sidebar-nav" id="sidebar-nav">
 
+    {/* Dashboard - Always visible */}
+    <li className="nav-item">
+        <a className="nav-link" href="/auth/dashboard">
+            <i className="bi bi-grid"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
 
-                    {showAll && side_items.map((item, index) => (
-                        <li key={index} className="nav-item">
-                            <a className="nav-link collapsed" data-bs-target={`#components-nav-${index}`} data-bs-toggle="collapse" href="#">
-                                <i className={item.icon}></i>
-                                <span>{item.mainItem}</span>
-                                <i key={index} className="bi bi-chevron-down ms-auto"></i>
-                            </a>
-                            {item.subItems.map((item1, index1) => (
-                                <ul key={index1} id={`components-nav-${index}`} className="nav-content collapse " data-bs-parent="#sidebar-nav">
-                                    <li>
-                                        <Link to={item1.path}>
-                                            <i className={item1.icon} style={{ transform: "scale(2.5)" }}></i><span>{item1.item}</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                            ))}
-                        </li>
-                    ))}
-                    {/* <li className="nav-item">
-                        <a className="nav-link " href="/auth/dashboard/bill/create">
-                            <i className="bi bi-archive"></i>
-                            <span>Invoice Generation</span>
-                        </a>
-                    </li> */}
-                    <li className="nav-item">
-                        <a
-                            href="#logout"
-                            className="nav-link cursor-pointer"
-                            onClick={handleLogout}
-                            role="button"
-                        >
-                            <i className="bi bi-box-arrow-right"></i>
-                            <span>Logout</span>
-                        </a>
-                    </li>
-                </ul>
+    {/* Master - Always visible */}
+    <li className="nav-item">
+        <a className="nav-link" href="/auth/dashboard/master">
+            <i className="bi bi-archive"></i>
+            <span>Master</span>
+        </a>
+    </li>
+
+    {/* Other menus - Only when showAll is true */}
+    {showAll && side_items
+        .filter(item => item.mainItem !== "Admin")
+        .map((item, index) => (
+            <li key={index} className="nav-item">
+
+                <a
+                    className="nav-link collapsed"
+                    data-bs-target={`#components-nav-${index}`}
+                    data-bs-toggle="collapse"
+                    href="#"
+                >
+                    <i className={item.icon}></i>
+                    <span>{item.mainItem}</span>
+                    <i className="bi bi-chevron-down ms-auto"></i>
+                </a>
+
+                {item.subItems?.length > 0 && (
+                    <ul
+                        id={`components-nav-${index}`}
+                        className="nav-content collapse"
+                        data-bs-parent="#sidebar-nav"
+                    >
+                        {item.subItems.map((item1, index1) => (
+                            <li key={index1}>
+                                <Link to={item1.path}>
+                                    <i
+                                        className={item1.icon}
+                                        style={{ transform: "scale(2.5)" }}
+                                    ></i>
+                                    <span>{item1.item}</span>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+
+            </li>
+        ))
+    }
+
+    {/* Admin - Always visible */}
+    <li className="nav-item">
+
+        <a
+            className="nav-link collapsed"
+            data-bs-target="#admin-nav"
+            data-bs-toggle="collapse"
+            href="#"
+        >
+            <i className="bi bi-person-badge"></i>
+            <span>Admin</span>
+            <i className="bi bi-chevron-down ms-auto"></i>
+        </a>
+
+        <ul
+            id="admin-nav"
+            className="nav-content collapse"
+            data-bs-parent="#sidebar-nav"
+        >
+            <li>
+                <Link to="/auth/dashboard/user">
+                    <i className="bx bx-user"></i>
+                    <span>User</span>
+                </Link>
+            </li>
+
+            <li>
+                <Link to="/auth/dashboard/EPFWidget">
+                    <i className="bi bi-question-circle"></i>
+                    <span>UAN Passbook Agent</span>
+                </Link>
+            </li>
+
+            <li>
+                <Link to="/auth/dashboard/EpfMember">
+                    <i className="bi bi-question-circle"></i>
+                    <span>UAN Member Agent</span>
+                </Link>
+            </li>
+
+            <li>
+                <Link to="/auth/dashboard/Calculator">
+                    <i className="bi bi-question-circle"></i>
+                    <span>Penalty Calculator</span>
+                </Link>
+            </li>
+
+            <li>
+                <Link to="/auth/dashboard/blogs">
+                    <i className="bx bxl-blogger"></i>
+                    <span>Blogs</span>
+                </Link>
+            </li>
+
+            <li>
+                <Link to="/auth/dashboard/inquiries">
+                    <i className="bi bi-question-circle"></i>
+                    <span>Inquiries</span>
+                </Link>
+            </li>
+
+            <li>
+                <Link to="/auth/dashboard/notification">
+                    <i className="bi bi-question-circle"></i>
+                    <span>Notification</span>
+                </Link>
+            </li>
+
+            <li>
+                <Link to="/auth/dashboard/form">
+                    <i className="bi bi-question-circle"></i>
+                    <span>Form</span>
+                </Link>
+            </li>
+
+            <li>
+                <Link to="/auth/dashboard/superUser">
+                    <i className="bi bi-question-circle"></i>
+                    <span>Records Delete</span>
+                </Link>
+            </li>
+
+            <li>
+                <Link to="/auth/dashboard/parameters">
+                    <i className="bi bi-question-circle"></i>
+                    <span>Parameters</span>
+                </Link>
+            </li>
+        </ul>
+    </li>
+
+    {/* Logout - Always visible */}
+    <li className="nav-item">
+        <a
+            href="#logout"
+            className="nav-link cursor-pointer"
+            onClick={handleLogout}
+            role="button"
+        >
+            <i className="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
+        </a>
+    </li>
+
+</ul>
             </aside>
         </>
     )

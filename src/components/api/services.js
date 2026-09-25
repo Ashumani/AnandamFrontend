@@ -854,6 +854,23 @@ export const left = async (id, params) => {
     }
 }
 
+export const getUserHistory = async () => {
+    try {
+        const response = await api.get(`${BASE_URL}/users/history`, { headers: header });
+        return response.data
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
+
+export const historyMonthWise = async () => {
+    try {
+        const response = await api.get(`${BASE_URL}/users/historyMonthWise`, { headers: header });
+        return response.data
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 //---------------------------------------------------------------- Notification  --------------------------------
 export const getAllNotification = async () => {
     try {
