@@ -435,7 +435,7 @@ const employee = () => {
       reset();
 
     } catch (error) {
-      console.error('Login error ', error);         
+      console.error('Login error ', error);
       setError(error);
     }
   }
@@ -620,7 +620,7 @@ const employee = () => {
         <section className="section">
           <br />
           <div className="row g-3 align-items-end">
-            <div className="card">
+            <div className="">
               <div className="card-body">
                 <div className="row g-3 align-items-end">
                   <div className="col-12 col-md-6 col-lg-2">
@@ -849,40 +849,101 @@ const employee = () => {
 
                       </div>
                       <div className="row">
-                        <div className="col mt-4">
-                          <label htmlFor="inputTime" className="form-label">Gender</label>
-                          <div className="form-check form-check-inline">
-                            <input className="form-check-input ml-1 mt-1" type="radio" name="gender" value='Male' id="Male" checked={ee_gender === 'Male'} onChange={(e) => set_ee_gender(e.target.value)} />
-                            <label className="form-check-label ml-2" htmlFor="male">Male</label>
-                          </div>
-                          <div className="form-check form-check-inline">
-                            <input className="form-check-input mt-1" type="radio" name="gender" id="Female" value='Female' checked={ee_gender === 'Female'} onChange={(e) => set_ee_gender(e.target.value)} />
-                            <label className="form-check-label ml-2" htmlFor="female">Female</label>
+
+                        {/* Gender */}
+                        <div className="col-sm mb-2">
+                          <label className="form-label d-block">Gender</label>
+
+                          <div className="d-flex align-items-center gap-4 mt-2">
+
+                            <div className="form-check d-flex align-items-center gap-2 mb-0">
+                              <input
+                                className="form-check-input"
+                                type="radio"
+                                name="gender"
+                                value="Male"
+                                id="Male"
+                                checked={ee_gender === "Male"}
+                                onChange={(e) => set_ee_gender(e.target.value)}
+                              />
+                              <label
+                                className="form-check-label mb-0"
+                                htmlFor="Male"
+                              >
+                                Male
+                              </label>
+                            </div>
+
+                            <div className="form-check d-flex align-items-center gap-2 mb-0">
+                              <input
+                                className="form-check-input"
+                                type="radio"
+                                name="gender"
+                                value="Female"
+                                id="Female"
+                                checked={ee_gender === "Female"}
+                                onChange={(e) => set_ee_gender(e.target.value)}
+                              />
+                              <label
+                                className="form-check-label mb-0"
+                                htmlFor="Female"
+                              >
+                                Female
+                              </label>
+                            </div>
+
                           </div>
 
-                          {err.ee_gender && <p style={{ color: 'red' }}>{err.ee_gender}</p>}
+                          {err.ee_gender && (
+                            <p className="text-danger mb-0 mt-1">
+                              {err.ee_gender}
+                            </p>
+                          )}
                         </div>
+
+
+                        {/* Marital Status */}
                         <div className="col-sm mb-2">
-                          <label>Maritial Status</label>
+                          <label className="form-label">Marital Status</label>
+
                           <select
                             className="form-select rounded-4"
-                            aria-label="Default select example" value={ee_maritial_status} onChange={handleMaritalStatusChange}
+                            value={ee_maritial_status}
+                            onChange={handleMaritalStatusChange}
                           >
                             <option value="M">Married</option>
                             <option value="U">UnMarried</option>
                           </select>
-                          {err.ee_maritial_status && <p style={{ color: 'red' }}>{err.ee_maritial_status}</p>}
-                        </div>
-                        <div className="col-sm mb-2">
-                          <label htmlFor="inputText">Father/Husband</label>
-                          <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_father_husband(e.target.value)} value={ee_father_husband} />
-                          {err.ee_father_husband && <p style={{ color: 'red' }}>{err.ee_father_husband}</p>}
+
+                          {err.ee_maritial_status && (
+                            <p className="text-danger mb-0 mt-1">
+                              {err.ee_maritial_status}
+                            </p>
+                          )}
                         </div>
 
-                        {/* <div className="col-sm mb-2">
-                            <label htmlFor="inputText">Relation</label>
-                            <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_relation(e.target.value)} value={ee_relation} />
-                          </div> */}
+
+                        {/* Father / Husband */}
+                        <div className="col-sm mb-2">
+                          <label className="form-label">
+                            Father/Husband
+                          </label>
+
+                          <input
+                            type="text"
+                            className="form-control rounded-4"
+                            required
+                            value={ee_father_husband}
+                            onChange={(e) => set_ee_father_husband(e.target.value)}
+                          />
+
+                          {err.ee_father_husband && (
+                            <p className="text-danger mb-0 mt-1">
+                              {err.ee_father_husband}
+                            </p>
+                          )}
+                        </div>
+
                       </div>
                       <div className="row">
                         <div className="col-sm mb-2">
@@ -908,10 +969,6 @@ const employee = () => {
                         </div>
                       </div>
                       <div className="row">
-                        {/* <div className="col mb-2">
-                            <label htmlFor="inputNumber">Aadhar No</label>
-                            <input type="text" className="form-control rounded-4" required onChange={(e) => set_ee_aadhar_no(e.target.value)} value={ee_aadhar_no} />
-                          </div> */}
 
                         <div className="col-sm mb-2">
                           <label htmlFor="inputColor">SubId</label>
@@ -930,21 +987,63 @@ const employee = () => {
                       </div>
                       <div className="row">
                         <div className="col mt-4">
-                          <label htmlFor="inputTime" className="form-label">High Salaried</label>
-                          <div className="form-check form-check-inline">
-                            <input className="form-check-input ml-1 mt-1" type="radio" name="highSalaried" value="1" id="highSal" checked={ee_high_salaried === "1"} onChange={(e) => set_ee_high_salaried(e.target.value)} />
-                            <label className="form-check-label ml-2" htmlFor="male">Yes</label>
-                          </div>
-                          <div className="form-check form-check-inline">
-                            <input className="form-check-input mt-1" type="radio" name="highSalaried" id="lowSal" value="0" checked={ee_high_salaried === "0"} onChange={(e) => set_ee_high_salaried(e.target.value)} />
-                            <label className="form-check-label ml-2" htmlFor="female">No</label>
+
+                          <label className="form-label d-block">
+                            High Salaried
+                          </label>
+
+                          <div className="d-flex align-items-center gap-4 mt-2">
+
+                            {/* Yes */}
+                            <div className="form-check d-flex align-items-center gap-2 mb-0">
+                              <input
+                                className="form-check-input"
+                                type="radio"
+                                name="highSalaried"
+                                value="1"
+                                id="highSal"
+                                checked={ee_high_salaried === "1"}
+                                onChange={(e) => set_ee_high_salaried(e.target.value)}
+                              />
+
+                              <label
+                                className="form-check-label mb-0"
+                                htmlFor="highSal"
+                              >
+                                Yes
+                              </label>
+                            </div>
+
+                            {/* No */}
+                            <div className="form-check d-flex align-items-center gap-2 mb-0">
+                              <input
+                                className="form-check-input"
+                                type="radio"
+                                name="highSalaried"
+                                value="0"
+                                id="lowSal"
+                                checked={ee_high_salaried === "0"}
+                                onChange={(e) => set_ee_high_salaried(e.target.value)}
+                              />
+
+                              <label
+                                className="form-check-label mb-0"
+                                htmlFor="lowSal"
+                              >
+                                No
+                              </label>
+                            </div>
+
                           </div>
 
-                          {err.ee_high_salaried && <p style={{ color: 'red' }}>{err.ee_high_salaried}</p>}
+                          {err.ee_high_salaried && (
+                            <p className="text-danger mb-0 mt-1">
+                              {err.ee_high_salaried}
+                            </p>
+                          )}
+
                         </div>
-
                       </div>
-
 
                     </div>
                   </div>

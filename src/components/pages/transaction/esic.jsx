@@ -777,7 +777,7 @@ const esic = () => {
         <section className="section">
           <br />
           <div className="row g-3">
-            <div className="card">
+            <div className="">
               <div className="card-body">
                 <div className="row g-3">
                   <div className="col-12 col-md-6 col-lg-3 mb-3">

@@ -995,7 +995,7 @@ const calculation = async (value) => {
           <section className="section">
             <br />
             <div className="row g-3">
-              <div className="card">
+              <div className="">
                 <div className="card-body">
                   {/* <h5 className="card-title text-center"><strong>Summary</strong></h5> */}
                   <div className="row g-3">
