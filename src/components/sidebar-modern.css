@@ -1,0 +1,959 @@
+/* =========================================================
+   ANANDAM MANAGEMENT PORTAL
+   PREMIUM LIGHT SIDEBAR
+   Bootstrap Accordion Based
+   ========================================================= */
+
+:root {
+  --sidebar-width: 272px;
+
+  --sidebar-bg: #ffffff;
+  --sidebar-surface: #f8fafc;
+  --sidebar-border: #e8edf4;
+
+  --sidebar-text: #334155;
+  --sidebar-muted: #94a3b8;
+
+  --sidebar-primary: #2563eb;
+  --sidebar-primary-dark: #1d4ed8;
+  --sidebar-primary-soft: #eff6ff;
+
+  --sidebar-hover: #f7f9fc;
+
+  --sidebar-danger: #dc2626;
+
+  --sidebar-shadow:
+    8px 0 30px rgba(15, 23, 42, 0.045);
+}
+
+
+/* =========================================================
+   SIDEBAR CONTAINER
+   ========================================================= */
+
+.sidebar-modern {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: var(--sidebar-width);
+  height: 100vh;
+
+  z-index: 1030;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  background: var(--sidebar-bg);
+
+  border-right: 1px solid var(--sidebar-border);
+
+  box-shadow: var(--sidebar-shadow);
+
+  font-family:
+    Inter,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.sidebar-brand {
+  flex-shrink: 0;
+
+  padding: -1px -1px 0px;
+}
+
+.brand-link {
+  display: flex;
+  align-items: center;
+
+  text-decoration: none;
+
+  color: #172033;
+}
+
+.brand-link:hover {
+  color: #172033;
+}
+
+
+/* Logo wrapper */
+
+.brand-text {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-decoration: none;
+}
+
+
+/* Actual Anandam logo */
+
+.brand-logo-wrapper {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 2px 8px 5px;
+}
+
+.brand-logo-wrapper .main_logo {
+  display: block;
+
+  width: 185px;
+  max-width: 100%;
+
+  height: auto;
+  max-height: 72px;
+
+  object-fit: contain;
+}
+
+
+/* Portal text */
+
+.brand-text small {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #94a3b8;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 1.8px;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   DIVIDER
+   ========================================================= */
+
+.sidebar-divider {
+  height: 1px;
+
+  margin: 0 18px 10px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #e8edf4,
+      transparent
+    );
+}
+
+
+/* =========================================================
+   SCROLL AREA
+   ========================================================= */
+
+.sidebar-scroll {
+  flex: 1;
+
+  min-height: 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 2px 12px 16px;
+}
+
+
+/* scrollbar */
+
+.sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: #dce4ee;
+  border-radius: 20px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}
+
+
+/* =========================================================
+   SECTION LABEL
+   ========================================================= */
+
+.sidebar-label {
+  padding: 13px 11px 7px;
+
+  color: #a1adbd;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.3px;
+
+  text-transform: uppercase;
+}
+
+.section-label {
+  margin-top: 7px;
+}
+
+
+/* =========================================================
+   NAV
+   ========================================================= */
+
+.sidebar-nav-modern {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+
+/* =========================================================
+   DASHBOARD / MASTER LINKS
+   ========================================================= */
+
+.sidebar-main-link {
+  position: relative;
+
+  width: 100%;
+  min-height: 44px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  margin-bottom: 4px;
+
+  padding: 0 12px;
+
+  border: 1px solid transparent;
+
+  border-radius: 11px;
+
+  color: #475569;
+
+  background: transparent;
+
+  font-size: 13px;
+  font-weight: 550;
+
+  text-decoration: none;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.sidebar-main-link:hover {
+  color: #1e293b;
+
+  background: #f8fafc;
+
+  border-color: #edf1f6;
+
+  transform: translateX(1px);
+}
+
+
+/* active */
+
+.sidebar-main-link.active {
+  color: var(--sidebar-primary-dark);
+
+  background:
+    linear-gradient(
+      90deg,
+      #eff6ff,
+      #f5f9ff
+    );
+
+  border-color: #dbeafe;
+
+  box-shadow:
+    0 4px 12px rgba(37, 99, 235, 0.06);
+}
+
+
+/* active left accent */
+
+.sidebar-main-link.active::before {
+  content: "";
+
+  position: absolute;
+
+  left: -12px;
+
+  top: 8px;
+  bottom: 8px;
+
+  width: 3px;
+
+  border-radius: 0 4px 4px 0;
+
+  background: var(--sidebar-primary);
+}
+
+
+/* =========================================================
+   ICONS
+   ========================================================= */
+
+.sidebar-menu-icon {
+  width: 30px;
+  height: 30px;
+
+  flex: 0 0 30px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 9px;
+
+  color: #7c8ba1;
+
+  background: #f8fafc;
+
+  font-size: 14px;
+
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+.sidebar-main-link:hover
+.sidebar-menu-icon {
+  color: #2563eb;
+
+  background: #eff6ff;
+}
+
+.sidebar-main-link.active
+.sidebar-menu-icon {
+  color: #2563eb;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 3px 8px rgba(37, 99, 235, 0.09);
+}
+
+
+/* =========================================================
+   BOOTSTRAP ACCORDION
+   ========================================================= */
+
+.sidebar-bootstrap-accordion {
+  margin: 0 0 4px;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+}
+
+.sidebar-bootstrap-accordion
+.accordion-item {
+  border: 0;
+
+  background: transparent;
+}
+
+.sidebar-bootstrap-accordion
+.accordion-header {
+  margin: 0;
+}
+
+
+/* =========================================================
+   ACCORDION BUTTON
+   ========================================================= */
+
+.sidebar-bootstrap-accordion
+.accordion-button {
+  position: relative;
+
+  width: 100%;
+  min-height: 44px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 12px;
+
+  border: 1px solid transparent;
+
+  border-radius: 11px;
+
+  color: #475569;
+
+  background: transparent;
+
+  font-size: 13px;
+
+  font-weight: 550;
+
+  box-shadow: none;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+
+/* Remove Bootstrap focus */
+
+.sidebar-bootstrap-accordion
+.accordion-button:focus {
+  box-shadow: none;
+}
+
+
+/* Hover */
+
+.sidebar-bootstrap-accordion
+.accordion-button:hover {
+  color: #1e293b;
+
+  background: #f8fafc;
+
+  border-color: #edf1f6;
+}
+
+
+/* Open */
+
+.sidebar-bootstrap-accordion
+.accordion-button:not(.collapsed) {
+  color: var(--sidebar-primary-dark);
+
+  background:
+    linear-gradient(
+      90deg,
+      #eff6ff,
+      #f5f9ff
+    );
+
+  border-color: #dbeafe;
+
+  box-shadow:
+    0 4px 12px rgba(37, 99, 235, 0.05);
+}
+
+
+/* =========================================================
+   BOOTSTRAP ARROW
+   ========================================================= */
+
+.sidebar-bootstrap-accordion
+.accordion-button::after {
+  width: 9px;
+  height: 9px;
+
+  margin-left: auto;
+
+  background-size: 9px;
+
+  opacity: 0.45;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.sidebar-bootstrap-accordion
+.accordion-button:not(.collapsed)::after {
+  opacity: 0.9;
+}
+
+
+/* =========================================================
+   LEFT CONTENT
+   ========================================================= */
+
+.sidebar-menu-left {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  flex: 1;
+}
+
+
+/* accordion icon */
+
+.sidebar-bootstrap-accordion
+.sidebar-menu-icon {
+  color: #7c8ba1;
+
+  background: #f8fafc;
+}
+
+.sidebar-bootstrap-accordion
+.accordion-button:hover
+.sidebar-menu-icon {
+  color: #2563eb;
+
+  background: #eff6ff;
+}
+
+.sidebar-bootstrap-accordion
+.accordion-button:not(.collapsed)
+.sidebar-menu-icon {
+  color: #2563eb;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 3px 8px rgba(37, 99, 235, 0.08);
+}
+
+
+/* =========================================================
+   ACCORDION BODY
+   ========================================================= */
+
+.sidebar-bootstrap-accordion
+.accordion-collapse {
+  border: 0;
+}
+
+.sidebar-bootstrap-accordion
+.accordion-body {
+  padding: 5px 0 7px;
+}
+
+
+/* =========================================================
+   SUBMENU CONTAINER
+   ========================================================= */
+
+.sidebar-submenu-list {
+  position: relative;
+
+  margin-left: 27px;
+
+  padding: 2px 0 2px 11px;
+
+  border-left: 1px solid #e2e8f0;
+}
+
+
+/* small vertical gradient */
+
+.sidebar-submenu-list::before {
+  content: "";
+
+  position: absolute;
+
+  left: -1px;
+
+  top: 8px;
+  bottom: 8px;
+
+  width: 1px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #dbeafe,
+      #e2e8f0,
+      #dbeafe
+    );
+}
+
+
+/* =========================================================
+   SUBMENU LINKS
+   ========================================================= */
+
+.sidebar-submenu-link {
+  position: relative;
+
+  min-height: 36px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  margin: 2px 0;
+
+  padding: 0 10px;
+
+  border-radius: 8px;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+  font-weight: 450;
+
+  text-decoration: none;
+
+  transition:
+    background 0.16s ease,
+    color 0.16s ease,
+    transform 0.16s ease;
+}
+
+
+/* connector */
+
+.sidebar-submenu-link::before {
+  content: "";
+
+  position: absolute;
+
+  left: -12px;
+
+  top: 50%;
+
+  width: 10px;
+  height: 1px;
+
+  background: #e2e8f0;
+}
+
+
+/* hover */
+
+.sidebar-submenu-link:hover {
+  color: #2563eb;
+
+  background: #f8fafc;
+
+  transform: translateX(2px);
+}
+
+
+/* active */
+
+.sidebar-submenu-link.active {
+  color: #1d4ed8;
+
+  background:
+    linear-gradient(
+      90deg,
+      #eff6ff,
+      #f7faff
+    );
+
+  font-weight: 600;
+
+  box-shadow:
+    inset 0 0 0 1px #dbeafe;
+}
+
+
+/* active connector */
+
+.sidebar-submenu-link.active::before {
+  width: 11px;
+
+  background: #93c5fd;
+}
+
+
+/* =========================================================
+   SUBMENU ICON
+   ========================================================= */
+
+.submenu-icon {
+  width: 24px;
+  height: 24px;
+
+  flex: 0 0 24px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 7px;
+
+  color: #a0aec0;
+
+  background: transparent;
+
+  font-size: 11px;
+
+  transition:
+    color 0.16s ease,
+    background 0.16s ease;
+}
+
+.sidebar-submenu-link:hover
+.submenu-icon {
+  color: #3b82f6;
+
+  background: #eff6ff;
+}
+
+.sidebar-submenu-link.active
+.submenu-icon {
+  color: #2563eb;
+
+  background: #ffffff;
+}
+
+
+/* =========================================================
+   BOTTOM AREA
+   ========================================================= */
+
+.sidebar-bottom {
+  flex-shrink: 0;
+
+  padding: 12px;
+
+  border-top: 1px solid var(--sidebar-border);
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff,
+      #fbfcfe
+    );
+}
+
+
+/* =========================================================
+   HELP CARD
+   ========================================================= */
+
+.sidebar-help {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 10px;
+
+  margin-bottom: 9px;
+
+  border: 1px solid #e9eef5;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f8fbff,
+      #ffffff
+    );
+
+  box-shadow:
+    0 3px 10px rgba(15, 23, 42, 0.025);
+}
+
+.help-icon {
+  width: 32px;
+  height: 32px;
+
+  flex: 0 0 32px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 9px;
+
+  color: #2563eb;
+
+  background: #eff6ff;
+
+  font-size: 14px;
+}
+
+.sidebar-help strong,
+.sidebar-help span {
+  display: block;
+}
+
+.sidebar-help strong {
+  color: #475569;
+
+  font-size: 11px;
+
+  font-weight: 650;
+}
+
+.sidebar-help span {
+  margin-top: 2px;
+
+  color: #94a3b8;
+
+  font-size: 9px;
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+.sidebar-logout {
+  width: 100%;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 11px;
+
+  border: 1px solid #fee2e2;
+
+  border-radius: 10px;
+
+  color: #dc2626;
+
+  background: #fffafa;
+
+  font-size: 12px;
+
+  font-weight: 550;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.sidebar-logout span {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.sidebar-logout i {
+  font-size: 14px;
+}
+
+.sidebar-logout > i {
+  color: #fca5a5;
+
+  font-size: 10px;
+}
+
+.sidebar-logout:hover {
+  color: #b91c1c;
+
+  border-color: #fecaca;
+
+  background: #fef2f2;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   MAIN CONTENT ALIGNMENT
+   ========================================================= */
+
+@media (min-width: 1200px) {
+
+  .main-container {
+    margin-left: 292px !important;
+
+    width: calc(100% - 292px) !important;
+  }
+}
+
+
+@media (max-width: 1199px) {
+
+  :root {
+    --sidebar-width: 250px;
+  }
+
+  .main-container {
+    margin-left: 270px !important;
+
+    width: calc(100% - 270px) !important;
+  }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 991px) {
+
+  .sidebar-modern {
+    width: 250px;
+  }
+
+  .main-container {
+    margin-left: 265px !important;
+
+    width: calc(100% - 265px) !important;
+  }
+
+  .brand-logo-wrapper .main_logo {
+    width: 165px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767px) {
+
+  .sidebar-modern {
+    width: 260px;
+
+    transform: translateX(-100%);
+
+    transition:
+      transform 0.25s ease;
+  }
+
+  .sidebar-modern.show,
+  body.toggle-sidebar .sidebar-modern {
+    transform: translateX(0);
+  }
+
+  .main-container {
+    margin-left: 0 !important;
+
+    width: 100% !important;
+  }
+}

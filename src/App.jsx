@@ -3,7 +3,7 @@ import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import Navbar from './components/navbar';
 import AllRoutes from "./AllRoutes";
 import Header from './components/header';
-import Sidebar from './components/sidebar';
+import Sidebar from './components/sidebar-modern';
 import { SidebarProvider } from './components/SidebarContext';
 import { registerLoader } from "./components/api/services";
 import Loader from './components/utils/Loader';

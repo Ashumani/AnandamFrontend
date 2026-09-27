@@ -4,7 +4,7 @@ import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRou
 
 // Capitalized imports (PascalCase required for JSX elements)
 import Login from './components/pages/Auth/login';
-import Dashboard from './components/pages/dashboard';
+import Dashboard from './components/pages/dashboard_modern';
 import Employer from './components/pages/registration/employer';
 import Employee from './components/pages/registration/employee';
 import Monthly from './components/pages/transaction/monthlyPf';

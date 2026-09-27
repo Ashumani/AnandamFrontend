@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
 import React, { useRef } from 'react';
 import { useNavigate } from "react-router-dom";
+import './master.css'
 const master = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const itemsPerPage = 20; // Number of items per page
@@ -576,7 +577,7 @@ const searchEmp = async () => {
   return (
     <div>
 
-      <div className="main-container">
+      <div className="main-container" style={{ "marginTop": "50px", "fontSize": "15px", "color": "black" }}>
         <div className='main-title'>
           <h3>Master List</h3>
         </div>

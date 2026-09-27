@@ -1,0 +1,462 @@
+
+/* =========================================================
+   MODERN DASHBOARD THEME
+   Replace dashboard.css with this file, or rename to dashboard.css.
+   Existing JSX/API logic remains unchanged.
+   ========================================================= */
+
+:root {
+  --dash-bg: #f6f8fc;
+  --dash-card: #ffffff;
+  --dash-text: #1e293b;
+  --dash-muted: #64748b;
+  --dash-border: #e2e8f0;
+  --dash-primary: #2563eb;
+  --dash-success: #0f766e;
+  --dash-purple: #6d5dfc;
+  --dash-orange: #c88719;
+  --dash-shadow: 0 8px 28px rgba(27, 39, 70, .07);
+  --dash-shadow-hover: 0 14px 35px rgba(27, 39, 70, .12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.main-container {
+  margin-left: 300px;
+  width: calc(100% - 300px);
+  min-height: 100vh;
+  padding: 30px 32px 45px;
+  background:
+    radial-gradient(circle at 92% 0%, rgba(37, 99, 235, .055), transparent 28%),
+    var(--dash-bg);
+  color: var(--dash-text);
+  transition: all .3s ease;
+}
+
+/* Page title */
+.dashboard-main-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding: 0 !important;
+}
+
+.dashboard-main-title::after {
+  content: "Business overview & analytics";
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+
+.dashboard-main-title h3 {
+  margin: 0;
+  color: #0f172a !important;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -.03em;
+}
+
+/* KPI cards */
+.dashboard-main-cards {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+  width: 100%;
+  margin: 0 0 30px !important;
+}
+
+.cardCustom {
+  position: relative;
+  min-height: 158px !important;
+  overflow: hidden;
+  padding: 21px !important;
+  border: 1px solid rgba(255,255,255,.3) !important;
+  border-radius: 18px !important;
+  color: #fff !important;
+  box-shadow: var(--dash-shadow) !important;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.cardCustom::after {
+  position: absolute;
+  content: "";
+  width: 105px;
+  height: 105px;
+  right: -35px;
+  bottom: -48px;
+  border: 18px solid rgba(255,255,255,.08);
+  border-radius: 50%;
+}
+
+.cardCustom:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--dash-shadow-hover) !important;
+}
+
+.cardprop1 {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+}
+
+.cardprop2 {
+  background: linear-gradient(135deg, #7c3aed, #5b21b6) !important;
+}
+
+.cardprop3 {
+  background: linear-gradient(135deg, #0f766e, #115e59) !important;
+}
+
+.cardprop4 {
+  background: linear-gradient(135deg, #b7791f, #92400e) !important;
+}
+
+.card-inner {
+  position: relative;
+  z-index: 1;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+}
+
+.card-inner h5 {
+  margin: 0;
+  color: rgba(255,255,255,.82) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+.card-inner .card_icon {
+  width: 44px;
+  height: 44px;
+  padding: 11px;
+  border-radius: 13px;
+  background: rgba(255,255,255,.15);
+  font-size: 21px !important;
+}
+
+.cardCustom h1 {
+  position: relative;
+  z-index: 1;
+  margin: 18px 0 0 !important;
+  color: #fff !important;
+  font-size: 30px !important;
+  font-weight: 800;
+}
+
+.cardCustom .badge {
+  position: relative;
+  z-index: 1;
+  padding: 6px 10px !important;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.13) !important;
+  color: #fff !important;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* Year selector */
+.section > .row:nth-child(2) {
+  display: flex;
+  justify-content: flex-end;
+  margin: -18px 0 15px;
+}
+
+.section > .row:nth-child(2) .col-sm-2 {
+  width: 190px;
+  padding: 0;
+}
+
+.section select.form-select {
+  min-height: 44px;
+  border: 1px solid var(--dash-border);
+  border-radius: 12px !important;
+  background: #fff;
+  color: #344054;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 2px 7px rgba(16,24,40,.03);
+}
+
+.section select.form-select:focus {
+  border-color: rgba(37,99,235,.42);
+  box-shadow: 0 0 0 4px rgba(37,99,235,.08);
+}
+
+/* Chart grid */
+.chartView {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 20px !important;
+  width: 100%;
+  margin: 0 !important;
+}
+
+/*
+  ResponsiveContainer renders a wrapper div. Style each chart slot
+  as a polished card without requiring JSX changes.
+*/
+.chartView > .recharts-responsive-container {
+  min-width: 0;
+  min-height: 410px;
+  padding: 20px 18px 12px;
+  border: 1px solid var(--dash-border);
+  border-radius: 18px;
+  background: var(--dash-card);
+  box-shadow: var(--dash-shadow);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.chartView > .recharts-responsive-container:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--dash-shadow-hover);
+}
+
+/* Give each chart a little breathing room */
+.chartView > .recharts-responsive-container::before {
+  display: block;
+  margin-bottom: 4px;
+  color: #1d2939;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.chartView > .recharts-responsive-container:nth-child(1)::before {
+  content: "Employer & Employee Overview";
+}
+
+.chartView > .recharts-responsive-container:nth-child(2)::before {
+  content: "Contribution Trend";
+}
+
+.chartView > .recharts-responsive-container:nth-child(3)::before {
+  content: "Billing Distribution";
+}
+
+.chartView > .recharts-responsive-container:nth-child(4)::before {
+  content: "Billing Performance";
+}
+
+.chartView > .recharts-responsive-container:nth-child(5)::before {
+  content: "User Activity";
+}
+
+.chartView > .recharts-responsive-container:nth-child(6)::before {
+  content: "User Distribution";
+}
+
+.chartView .recharts-surface {
+  overflow: visible;
+}
+
+.chartView .recharts-cartesian-grid-horizontal line {
+  stroke: #edf0f5;
+}
+
+.chartView .recharts-cartesian-axis-line,
+.chartView .recharts-cartesian-axis-tick-line {
+  stroke: #e6eaf0;
+}
+
+.chartView .recharts-text {
+  fill: #7a8499;
+  font-size: 11px;
+}
+
+.chartView .recharts-legend-item-text {
+  color: #667085 !important;
+  font-size: 11px !important;
+}
+
+.chartView .recharts-default-tooltip {
+  border: 0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 12px 35px rgba(31,41,55,.14) !important;
+}
+
+.chartView .recharts-tooltip-wrapper {
+  outline: none;
+}
+
+/* Table / modal */
+.dashboard-modal .modal-content {
+  overflow: hidden;
+  border: 0;
+  border-radius: 18px;
+  box-shadow: 0 24px 70px rgba(15,23,42,.2);
+}
+
+.dashboard-modal .modal-header,
+.modal-header {
+  border: 0;
+  background: linear-gradient(135deg, #172554, #3148a8);
+  color: #fff;
+}
+
+.modal-header {
+  padding: 18px 22px;
+}
+
+.modal-header .modal-title {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.custom-table-vertical-scroller {
+  max-height: 58vh;
+  overflow: auto;
+}
+
+.custom-table-vertical-scroller::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.custom-table-vertical-scroller::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.custom-table-vertical-scroller::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+.custom-table-vertical-scroller thead.sticky-top th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 12px 13px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f8fafc !important;
+  color: #667085;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+
+.custom-table-vertical-scroller tbody td {
+  padding: 12px 13px;
+  border-bottom-color: #f0f2f5;
+  color: #344054;
+  font-size: 13px;
+}
+
+.custom-table-vertical-scroller tbody tr:hover {
+  background: #f8faff;
+}
+
+/* Responsive */
+
+/* Professional chart palette */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: #e8edf5 !important;
+}
+
+.recharts-text {
+  fill: #64748b;
+  font-size: 11px;
+}
+
+.recharts-default-tooltip {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, .10) !important;
+}
+
+.recharts-legend-item-text {
+  color: #475569 !important;
+  font-size: 12px !important;
+}
+
+@media (max-width: 1200px) {
+  .main-container {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    padding: 27px 24px 40px;
+  }
+
+  .dashboard-main-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .main-container {
+    margin-left: 0;
+    width: 100%;
+    padding: 24px 18px 35px;
+  }
+
+  .dashboard-main-title::after {
+    display: none;
+  }
+
+  .chartView {
+    grid-template-columns: 1fr !important;
+  }
+
+  .chartView > .recharts-responsive-container {
+    min-height: 390px;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-container {
+    padding: 20px 12px 30px;
+  }
+
+  .dashboard-main-title {
+    margin-bottom: 19px;
+  }
+
+  .dashboard-main-title h3 {
+    font-size: 24px;
+  }
+
+  .dashboard-main-cards {
+    grid-template-columns: 1fr !important;
+    gap: 13px !important;
+    margin-bottom: 24px !important;
+  }
+
+  .cardCustom {
+    min-height: 145px !important;
+    padding: 18px !important;
+  }
+
+  .cardCustom h1 {
+    font-size: 28px !important;
+  }
+
+  .section > .row:nth-child(2) {
+    justify-content: stretch;
+    margin: -3px 0 14px;
+  }
+
+  .section > .row:nth-child(2) .col-sm-2 {
+    width: 100%;
+  }
+
+  .chartView {
+    gap: 14px !important;
+  }
+
+  .chartView > .recharts-responsive-container {
+    min-height: 370px;
+    padding: 17px 11px 10px;
+    border-radius: 15px;
+  }
+
+  .chartView > .recharts-responsive-container::before {
+    font-size: 14px;
+  }
+
+  .custom-table-vertical-scroller {
+    max-height: 55vh;
+  }
+}

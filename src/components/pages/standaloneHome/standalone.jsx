@@ -1,753 +1,903 @@
 /* eslint-disable react/no-unknown-property */
-// eslint-disable-next-line no-unused-vars
-import React, { useEffect, useState } from 'react';
-import logo from "../../../standalone_assets/images/Anandam.png"
-import slider from "../../../standalone_assets/images/epfo.png"
-// import slider from "../../../standalone_assets/images/slider-dec.png"
+import React, { useState } from "react";
+import logo from "../../../standalone_assets/images/Anandam.png";
+import heroImage from "../../../standalone_assets/images/epfo.png";
+import aboutImage from "../../../standalone_assets/images/about-dec.png";
 
-import aboutdec from "../../../standalone_assets/images/about-dec.png"
-import serviceicon01 from "../../../standalone_assets/images/service-icon-01.png"
-import serviceicon02 from "../../../standalone_assets/images/service-icon-02.png"
-import serviceicon03 from "../../../standalone_assets/images/service-icon-03.png"
-import serviceicon04 from "../../../standalone_assets/images/service-icon-04.png"
-// import serviceicon01 from "../../../standalone_assets/images/service-icon-01.png"                              
-import servicesimage from "../../../standalone_assets/images/services-image.jpg"
-import servicesimage02 from "../../../standalone_assets/images/services-image-02.jpg"
-import servicesimage03 from "../../../standalone_assets/images/services-image-03.jpg"
-import servicesimage04 from "../../../standalone_assets/images/services-image-04.jpg"
-// import servicesimage from "../../../standalone_assets/images/services-image.jpg"                                      
-// import portfolio01 from "../../../standalone_assets/images/portfolio-01.jpg"
-// import portfolio02 from "../../../standalone_assets/images/portfolio-02.jpg"
-// import portfolio03 from "../../../standalone_assets/images/portfolio-03.jpg"
-// import portfolio04 from "../../../standalone_assets/images/portfolio-04.jpg"
+import serviceIcon01 from "../../../standalone_assets/images/service-icon-01.png";
+import serviceIcon02 from "../../../standalone_assets/images/service-icon-02.png";
+import serviceIcon03 from "../../../standalone_assets/images/service-icon-03.png";
+import serviceIcon04 from "../../../standalone_assets/images/service-icon-04.png";
 
-import portfolio01 from "../../../standalone_assets/images/img/1.jpg"
-import portfolio02 from "../../../standalone_assets/images/img/2.jpg"
-import portfolio03 from "../../../standalone_assets/images/img/3.jpg"
-import portfolio04 from "../../../standalone_assets/images/img/4.jpg"
-import portfolio05 from "../../../standalone_assets/images/img/5.jpg"
-import portfolio06 from "../../../standalone_assets/images/img/4.png"
+import serviceImage01 from "../../../standalone_assets/images/services-image.jpg";
+import serviceImage02 from "../../../standalone_assets/images/services-image-02.jpg";
+import serviceImage03 from "../../../standalone_assets/images/services-image-03.jpg";
+import serviceImage04 from "../../../standalone_assets/images/services-image-04.jpg";
 
+import portfolio01 from "../../../standalone_assets/images/img/1.jpg";
+import portfolio02 from "../../../standalone_assets/images/img/2.jpg";
+import portfolio03 from "../../../standalone_assets/images/img/3.jpg";
+import portfolio04 from "../../../standalone_assets/images/img/4.jpg";
+import portfolio05 from "../../../standalone_assets/images/img/5.jpg";
+import portfolio06 from "../../../standalone_assets/images/img/4.png";
 
-import blogpost01 from "../../../standalone_assets/images/blog-post-01.jpg"
-import authorpost from "../../../assets/img/3.jpg";
-// import authorpost from "../../../standalone_assets/images/author-post.jpg"
-import blogpost02 from "../../../standalone_assets/images/blog-post-02.jpg"
-import blogpost03 from "../../../standalone_assets/images/blog-post-03.jpg"
-import blogpost04 from "../../../standalone_assets/images/blog-post-04.jpg"
-import contactdec from "../../../standalone_assets/images/contact-dec.png"
-import phoneicon from "../../../standalone_assets/images/phone-icon.png"
-import emailicon from "../../../standalone_assets/images/email-icon.png"
-import locationicon from "../../../standalone_assets/images/location-icon.png"
-import { inquiryRegister } from '../../api/services';
-import Swal from 'sweetalert2';
-// import "./standalone.css"
+import blog01 from "../../../standalone_assets/images/blog-post-01.jpg";
+import blog02 from "../../../standalone_assets/images/blog-post-02.jpg";
+import blog03 from "../../../standalone_assets/images/blog-post-03.jpg";
+import blog04 from "../../../standalone_assets/images/blog-post-04.jpg";
+import authorImage from "../../../assets/img/3.jpg";
 
-const standalone = () => {
+import phoneIcon from "../../../standalone_assets/images/phone-icon.png";
+import emailIcon from "../../../standalone_assets/images/email-icon.png";
+import locationIcon from "../../../standalone_assets/images/location-icon.png";
 
-const [inquiryname,set_inquiryname] = useState('')
-const [email,set_email] = useState('')
-const [subject,set_subject] = useState('')
-const [message,set_message] = useState('')
-  // const items = [{ "image": portfolio01, "title": "Manish", category: "T1" }, { "image": portfolio01, "title": "Manish", category: "T1" }, { "image": portfolio01, "title": "Manish", category: "T1" }];
-  const addInquiry = async () => {
-    // api call
-    const params = {
-      "name": inquiryname,
-      "email":email,
-      "subject":subject,
-      "message":message
+import { inquiryRegister } from "../../api/services";
+import Swal from "sweetalert2";
+
+import "./standalone.css";
+
+const services = [
+  {
+    id: "epf",
+    title: "EPF Consulting",
+    shortTitle: "EPF",
+    icon: serviceIcon01,
+    image: serviceImage01,
+    heading: "EPF Compliance, Returns & Employee Support",
+    description:
+      "Professional support for EPF-related compliance, documentation, reporting and employee claim processes. We help employers and employees navigate EPFO requirements with a structured and transparent approach.",
+    points: [
+      "EPF registration and compliance support",
+      "Monthly contribution and return assistance",
+      "Employee documentation guidance",
+      "EPF claim and withdrawal assistance",
+      "Compliance and reporting support",
+      "Practical labour compliance guidance",
+    ],
+  },
+  {
+    id: "esic",
+    title: "ESIC Consultancy",
+    shortTitle: "ESIC",
+    icon: serviceIcon02,
+    image: serviceImage02,
+    heading: "ESIC Compliance & Employee Benefit Support",
+    description:
+      "Comprehensive ESIC consultancy for registration, contribution calculations, return filing and employee benefit guidance. Our approach focuses on accurate documentation and timely compliance.",
+    points: [
+      "ESIC registration support",
+      "Contribution calculation assistance",
+      "Monthly return filing support",
+      "Employee benefit guidance",
+      "Claim process assistance",
+      "Compliance documentation",
+    ],
+  },
+  {
+    id: "dsc",
+    title: "Digital Signature",
+    shortTitle: "DSC",
+    icon: serviceIcon03,
+    image: serviceImage03,
+    heading: "DSC Support for EPFO Portal",
+    description:
+      "Digital Signature Certificates provide secure authentication for employer transactions on online portals. We provide guidance for DSC setup and EPFO portal registration.",
+    points: [
+      "Identity authentication",
+      "EPFO portal DSC registration",
+      "Secure online transactions",
+      "Data integrity and authenticity",
+      "Reduced paperwork",
+      "Faster digital processing",
+    ],
+  },
+  {
+    id: "labour",
+    title: "Labour Solutions",
+    shortTitle: "LABOUR",
+    icon: serviceIcon04,
+    image: serviceImage04,
+    heading: "Practical Labour Compliance Solutions",
+    description:
+      "We help organizations address labour-related documentation, compliance and employee support requirements through structured processes and practical guidance.",
+    points: [
+      "Compliance process guidance",
+      "Employee documentation",
+      "Grievance support",
+      "EPF & ESIC assistance",
+      "Digital and transparent solutions",
+      "Compliance process improvement",
+    ],
+  },
+  {
+    id: "training",
+    title: "Workshops",
+    shortTitle: "TRAINING",
+    icon: serviceIcon01,
+    image: serviceImage01,
+    heading: "Workshops & Compliance Awareness",
+    description:
+      "Awareness sessions and practical workshops can help employees and organizations understand EPF, ESIC and related compliance processes.",
+    points: [
+      "EPF awareness",
+      "ESIC awareness",
+      "Employee rights and benefits",
+      "Documentation guidance",
+      "Compliance process walkthroughs",
+      "Practical Q&A sessions",
+    ],
+  },
+];
+
+const team = [
+  portfolio01,
+  portfolio02,
+  portfolio03,
+  portfolio04,
+  portfolio05,
+  portfolio06,
+];
+
+const blogs = [
+  {
+    image: blog01,
+    category: "EPFO",
+    title: "Understanding EPF compliance and employee benefits",
+    description:
+      "Practical information to help employers and employees understand EPF-related processes.",
+  },
+  {
+    image: blog02,
+    category: "EPF",
+    title: "How to check your EPF balance",
+    description:
+      "An easy overview of common ways employees can access their PF information.",
+  },
+  {
+    image: blog03,
+    category: "ESIC",
+    title: "Understanding ESIC benefits",
+    description:
+      "A simple introduction to employee benefits available under the ESIC framework.",
+  },
+  {
+    image: blog04,
+    category: "EPFO",
+    title: "EPFO account and password support",
+    description:
+      "Helpful guidance for common EPFO account access issues.",
+  },
+];
+
+const Standalone = () => {
+  const [activeService, setActiveService] = useState("epf");
+  const [mobileMenu, setMobileMenu] = useState(false);
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
+  const selectedService =
+    services.find((service) => service.id === activeService) || services[0];
+
+  const updateForm = (field, value) => {
+    setForm((previous) => ({
+      ...previous,
+      [field]: value,
+    }));
+  };
+
+  const addInquiry = async (event) => {
+    event.preventDefault();
+
+    if (!form.name || !form.email || !form.subject || !form.message) {
+      Swal.fire({
+        title: "Please complete all fields",
+        icon: "warning",
+        confirmButtonColor: "#2563eb",
+      });
+      return;
     }
+
     try {
-      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-      const response = await inquiryRegister(params);
-      if (response.status == true) {
+      const response = await inquiryRegister(form);
+
+      if (response?.status === true) {
         Swal.fire({
-          title: response.message,
-          icon: 'success',
-          confirmButtonText: 'Okay'
+          title: response.message || "Inquiry submitted successfully",
+          text: "Our team will get back to you.",
+          icon: "success",
+          confirmButtonColor: "#2563eb",
+        });
+
+        setForm({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
         });
       } else {
         Swal.fire({
-          title: response.message,
-          icon: 'error',
-          confirmButtonText: 'Okay'
+          title: response?.message || "Unable to submit your inquiry",
+          icon: "error",
+          confirmButtonColor: "#2563eb",
         });
       }
-
-
     } catch (error) {
-      console.error('Error fetching data:', error);
-     
+      console.error("Inquiry submission error:", error);
+
+      Swal.fire({
+        title: "Something went wrong",
+        text: "Please try again later.",
+        icon: "error",
+        confirmButtonColor: "#2563eb",
+      });
     }
   };
 
+  const closeMobileMenu = () => setMobileMenu(false);
 
   return (
-    <div>
+    <div className="an-landing">
+      {/* Top information strip */}
+      <div className="an-topbar">
+        <div className="an-container an-topbar-inner">
+          <div className="an-topbar-info">
+            <a href="mailto:anand.esipf@gmail.com">
+              <i className="fa fa-envelope" />
+              anand.esipf@gmail.com
+            </a>
+            <a href="tel:+918793143976">
+              <i className="fa fa-phone" />
+              +91 87931 43976
+            </a>
+          </div>
 
-      <div id="js-preloader" className="js-preloader">
-        <div className="preloader-inner">
-          <span className="dot"></span>
-          <div className="dots">
-            <span></span>
-            <span></span>
-            <span></span>
+          <div className="an-topbar-right">
+            <span>Professional EPF & ESIC Consultancy</span>
           </div>
         </div>
       </div>
 
-      <div className="pre-header">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-8 col-sm-8 col-7">
-              <ul className="info">
-                <li><a href="#"><i className="fa fa-envelope"></i>anand.esipf@gmail.com</a></li>
-                <li><a href="#"><i className="fa fa-phone"></i>+91-8793143976</a></li>
-              </ul>
-            </div>
-            <div className="col-lg-4 col-sm-4 col-5">
-              <ul className="social-media">
-                <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                <li><a href="#"><i className="fa fa-behance"></i></a></li>
-                <li><a href="#"><i className="fa fa-twitter"></i></a></li>
-                <li><a href="#"><i className="fa fa-dribbble"></i></a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Header */}
+      <header className="an-header">
+        <div className="an-container an-header-inner">
+          <a href="#top" className="an-brand" onClick={closeMobileMenu}>
+            <img src={logo} alt="Anandam" />
+          </a>
 
-      <header className="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
-        <div className="container">
-          <div className="row">
-            <div className="col-12">
-              <nav className="main-nav">
-                <a href="index.html" className="">
-                  <img style={{width: '25%' }} src={logo} alt="" className="main_logo"/>
-                </a>
-                <ul className="nav">
-                  <li className="scroll-to-section"><a href="#top" className="active">Home</a></li>
-                  <li className="scroll-to-section"><a href="#about">About</a></li>
-                  <li className="scroll-to-section"><a href="#services">Services</a></li>
-                  <li className="scroll-to-section"><a href="#portfolio">Portfolio</a></li>
-                  <li className="scroll-to-section"><a href="#blog">Blog</a></li>
-                  <li className="scroll-to-section"><a href="#contact">Contact</a></li>
-                  <li className="scroll-to-section"><div className="border-first-button"><a href="/login">Login</a></div></li>
-                </ul>
-                <a className='menu-trigger'>
-                  <span>Menu</span>
-                </a>
-              </nav>
-            </div>
-          </div>
+          <button
+            type="button"
+            className={`an-menu-button ${mobileMenu ? "open" : ""}`}
+            onClick={() => setMobileMenu((value) => !value)}
+            aria-label="Toggle navigation"
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+
+          <nav className={`an-nav ${mobileMenu ? "open" : ""}`}>
+            <a href="#top" onClick={closeMobileMenu}>Home</a>
+            <a href="#about" onClick={closeMobileMenu}>About</a>
+            <a href="#services" onClick={closeMobileMenu}>Services</a>
+            <a href="#process" onClick={closeMobileMenu}>How It Works</a>
+            <a href="#insights" onClick={closeMobileMenu}>Insights</a>
+            <a href="#contact" onClick={closeMobileMenu}>Contact</a>
+            <a className="an-login-btn" href="/login">
+              Login
+            </a>
+          </nav>
         </div>
       </header>
 
-      <div className="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="row">
-                <div className="col-lg-6 align-self-center">
-                  <div className="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
-                    <div className="row">
-                      <div className="col-lg-12">
-                        <h6>EPF & ESIC Services</h6>
-                        <h2>EPF and ESIC Assistance</h2>
-                        <p>EPF and ESIC deductions ensure employees financial security and healthcare, providing essential benefits for their future and well-being.</p>
-                      </div>
-                      <div className="col-lg-12">
-                        <div className="border-first-button scroll-to-section">
-                          <a href="#contact">Free Quote</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+      {/* Hero */}
+      <main>
+        <section id="top" className="an-hero">
+          <div className="an-hero-pattern" />
+
+          <div className="an-container an-hero-grid">
+            <div className="an-hero-content">
+              <div className="an-eyebrow">
+                <span className="an-eyebrow-dot" />
+                EPF • ESIC • Labour Compliance
+              </div>
+
+              <h1>
+                Simplifying
+                <span> EPF & ESIC </span>
+                compliance for your organization.
+              </h1>
+
+              <p className="an-hero-text">
+                Professional consultancy and practical support for employers
+                and employees across EPF, ESIC, digital compliance and labour
+                documentation.
+              </p>
+
+              <div className="an-hero-actions">
+                <a href="#contact" className="an-btn an-btn-primary">
+                  Talk to an Expert
+                  <i className="fa fa-arrow-right" />
+                </a>
+
+                <a href="#services" className="an-btn an-btn-secondary">
+                  Explore Services
+                </a>
+              </div>
+
+              <div className="an-trust-row">
+                <div>
+                  <strong>30+</strong>
+                  <span>Years Experience</span>
                 </div>
-                <div className="col-lg-6">
-                  <div className="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
-                    <img src={slider} alt="" />
-                  </div>
+                <div>
+                  <strong>EPF</strong>
+                  <span>Compliance Support</span>
+                </div>
+                <div>
+                  <strong>ESIC</strong>
+                  <span>Consultancy</span>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
 
+            <div className="an-hero-visual">
+              <div className="an-hero-card an-card-main">
+                <div className="an-card-top">
+                  <span className="an-card-icon">
+                    <i className="fa fa-shield" />
+                  </span>
+                  <span className="an-status">
+                    <i /> Compliance Support
+                  </span>
+                </div>
 
-      <div id="about" className="about section">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="row">
-                <div className="col-lg-6">
-                  <div className="about-left-image  wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.5s">
+                <h3>One place for your labour compliance needs.</h3>
 
-                    <img src={aboutdec} alt="" />
-
+                <div className="an-compliance-list">
+                  <div>
+                    <span><i className="fa fa-check" /></span>
+                    EPF & Returns
+                  </div>
+                  <div>
+                    <span><i className="fa fa-check" /></span>
+                    ESIC & Benefits
+                  </div>
+                  <div>
+                    <span><i className="fa fa-check" /></span>
+                    DSC & Portal Support
+                  </div>
+                  <div>
+                    <span><i className="fa fa-check" /></span>
+                    Labour Solutions
                   </div>
                 </div>
-                <div className="col-lg-6 align-self-center  wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
-                  <div className="about-right-content">
-                    <div className="section-heading">
-                      <h6>About Us</h6>
-                      <h4>We Are Trusted Labor Consultant <em> Since 1990</em></h4>
-                      <div className="line-dec"></div>
-                    </div>
-                    <p>We are a team of professional consultants with over 30 years of experience in PF and ESIC consultancy services. Renowned for our efficiency, we provide top-tier legal advisory services including PF, ESIC, and PF withdrawal. Our expertise extends across all levels of organizational needs, ensuring we are the most valuable resource for our clients.</p>
-                    <div className="row">
-                      <div className="col-lg-4 col-sm-4">
-                        <div className="skill-item first-skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
-                          <div className="progress" data-percentage="90">
-                            <span className="progress-left">
-                              <span className="progress-bar"></span>
-                            </span>
-                            <span className="progress-right">
-                              <span className="progress-bar"></span>
-                            </span>
-                            <div className="progress-value">
-                              <div>
-                                90%<br />
-                                <span>Coding</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-lg-4 col-sm-4">
-                        <div className="skill-item second-skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
-                          <div className="progress" data-percentage="80">
-                            <span className="progress-left">
-                              <span className="progress-bar"></span>
-                            </span>
-                            <span className="progress-right">
-                              <span className="progress-bar"></span>
-                            </span>
-                            <div className="progress-value">
-                              <div>
-                                80%<br />
-                                <span>Photoshop</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-lg-4 col-sm-4">
-                        <div className="skill-item third-skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
-                          <div className="progress" data-percentage="80">
-                            <span className="progress-left">
-                              <span className="progress-bar"></span>
-                            </span>
-                            <span className="progress-right">
-                              <span className="progress-bar"></span>
-                            </span>
-                            <div className="progress-value">
-                              <div>
-                                80%<br />
-                                <span>Animation</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+              </div>
+
+              <div className="an-hero-image-card">
+                <img src={heroImage} alt="EPF and ESIC services" />
+              </div>
+
+              <div className="an-floating-card an-floating-one">
+                <i className="fa fa-check-circle" />
+                <div>
+                  <strong>Structured</strong>
+                  <span>Process support</span>
+                </div>
+              </div>
+
+              <div className="an-floating-card an-floating-two">
+                <i className="fa fa-file-text-o" />
+                <div>
+                  <strong>Digital</strong>
+                  <span>Documentation</span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </section>
 
-      <div id="services" className="services section">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="section-heading  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
-                <h6>Our Services</h6>
-                <h4>What we <em>Provides</em></h4>
-                <div className="line-dec"></div>
+        {/* Value strip */}
+        <section className="an-value-strip">
+          <div className="an-container an-value-grid">
+            <div>
+              <span className="an-value-icon"><i className="fa fa-users" /></span>
+              <div>
+                <strong>Employer Support</strong>
+                <span>Practical compliance assistance</span>
               </div>
             </div>
-            <div className="col-lg-12">
-              <div className="naccs">
-                <div className="grid">
-                  <div className="row">
-                    <div className="col-lg-12">
-                      <div className="menu">
-                        <div className="first-thumb active">
-                          <div className="thumb">
-                            <span className="icon"><img src={serviceicon01} alt="" />
-                            </span>
-                            EPF
-                          </div>
-                        </div>
-                        <div>
-                          <div className="thumb">
-                            <span className="icon"><img src={serviceicon02} alt="" />
-                            </span>
-                            ESIC
-                          </div>
-                        </div>
-                        <div>
-                          <div className="thumb">
-                            <span className="icon"><img src={serviceicon03} alt="" />
-                            </span>
-                            DSC
-                          </div>
-                        </div>
-                        <div>
-                          <div className="thumb">
-                            <span className="icon"><img src={serviceicon04} alt="" />
-                            </span>
-                            Labor Solution
-                          </div>
-                        </div>
-                        <div className="last-thumb">
-                          <div className="thumb">
-                            <span className="icon"><img src={serviceicon01} alt="" />
-                            </span>
-                            Workshops
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-12 text-justify">
-                      <ul className="nacc">
-                        <li className="active">
-                          <div>
-                            <div className="thumb">
-                              <div className="row">
-                                <div className="col-lg-6 align-self-center">
-                                  <div className="left-text">
-                                    <h4>Expert EPF Consulting for Compliance &amp; Security</h4>
-                                    <p>Our EPF consulting services simplify the complexities of the Employees' Provident Fund Organisation (EPFO) for both employees and employers. We provide expert guidance on EPF regulations, assist with compliance and reporting, and facilitate the filing of claims to ensure timely access to benefits. </p>
-                                    <div className="ticks-list"><span><i className="fa fa-check"></i> Smart Solution With Experience Team</span> <span><i className="fa fa-check"></i> Complience</span> <span><i className="fa fa-check"></i> Immediate 24/ 7 emergency services</span>
-                                      <span><i className="fa fa-check"></i> Quality services at affordable prices</span> <span><i className="fa fa-check"></i> Solving Labour Issue</span> <span><i className="fa fa-check"></i> Optimized Template</span></div>
-                                    {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedr do eiusmod deis tempor incididunt.</p> */}
-                                  </div>
-                                </div>
-                                <div className="col-lg-6 align-self-center">
-                                  <div className="right-image">
-                                    <img src={servicesimage} alt="" />
+            <div>
+              <span className="an-value-icon"><i className="fa fa-user" /></span>
+              <div>
+                <strong>Employee Support</strong>
+                <span>Guidance through benefit processes</span>
+              </div>
+            </div>
+            <div>
+              <span className="an-value-icon"><i className="fa fa-file-text" /></span>
+              <div>
+                <strong>Documentation</strong>
+                <span>Organized and transparent workflows</span>
+              </div>
+            </div>
+            <div>
+              <span className="an-value-icon"><i className="fa fa-headphones" /></span>
+              <div>
+                <strong>Consultancy</strong>
+                <span>Experienced professional guidance</span>
+              </div>
+            </div>
+          </div>
+        </section>
 
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <div className="thumb">
-                              <div className="row">
-                                <div className="col-lg-6 align-self-center">
-                                  <div className="left-text">
-                                    <h4>Expert ESIC Consultancy for Compliance   &amp; Employee Benefits</h4>
-                                    <p>Our consultancy provides comprehensive support for the Employees State Insurance Corporation (ESIC), assisting businesses in navigating the complexities of employee benefits and compliance. We offer expert guidance on ESIC registration, contribution calculations, and timely filing of returns. Additionally, we help employees access their entitled medical and financial benefits, ensuring smooth claim processes. With tailored solutions and ongoing support, we aim to enhance organizational compliance while safeguarding the welfare of employees under the ESIC framework.</p>
-                                    <div className="ticks-list"><span><i className="fa fa-check"></i> Smart Solution With Experience Team</span> <span><i className="fa fa-check"></i> Complience</span> <span><i className="fa fa-check"></i> Immediate 24/ 7 emergency services</span>
-                                      <span><i className="fa fa-check"></i> Quality services at affordable prices</span> <span><i className="fa fa-check"></i> Solving Labour Issue</span> <span><i className="fa fa-check"></i> Optimized Template</span></div>
-                                  </div>
-                                </div>
-                                <div className="col-lg-6 align-self-center">
-                                  <div className="right-image">
-                                    <img src={servicesimage02} alt="" />
+        {/* About */}
+        <section id="about" className="an-section an-about">
+          <div className="an-container an-about-grid">
+            <div className="an-about-visual">
+              <div className="an-about-image">
+                <img src={aboutImage} alt="Professional consultancy" />
+              </div>
+              <div className="an-experience-card">
+                <strong>30+</strong>
+                <span>Years of consultancy experience</span>
+              </div>
+            </div>
 
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <div className="thumb">
-                              <div className="row">
-                                <div className="col-lg-6 align-self-center">
-                                  <div className="left-text">
-                                    <h4>DSC for EPFO Portal</h4>
-                                    <p>Digital Signature Certificates (DSCs) are important for EPFO because they provide a high level of security for online transactions and communications</p>
-                                    <div className="ticks-list"><span><i className="fa fa-check"></i> Authenticate identity</span> <span><i className="fa fa-check"></i> Ensure data integrity</span> <span><i className="fa fa-check"></i>Offer non-repudiation</span>
-                                      <span><i className="fa fa-check"></i> Prevent fraud</span> <span><i className="fa fa-check"></i>Speed up processing</span> <span><i className="fa fa-check"></i> Reduce paperwork</span></div>
-                                    <p>Employers need a secure digital signature (DSC) to submit their employee's PF transfer application online. It's like your electronic signature to ensure everything is secure and authentic. Once you have it, you have to register it on the new EPFO portal for employers.</p>
-                                  </div>
-                                </div>
-                                <div className="col-lg-6 align-self-center">
-                                  <div className="right-image">
-                                    <img src={servicesimage03} alt="" />
+            <div className="an-about-content">
+              <div className="an-section-kicker">ABOUT US</div>
+              <h2>
+                Experience that makes
+                <span> compliance simpler.</span>
+              </h2>
 
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <div className="thumb">
-                              <div className="row">
-                                <div className="col-lg-6 align-self-center">
-                                  <div className="left-text">
-                                    <h4>Addressing labor problems &amp; Solution</h4>
-                                    <p>To effectively address labor issues related to EPF and ESIC consultancy, it is essential to ensure compliance with the latest regulations. This includes maintaining accurate employee documentation to avoid penalties and conducting regular audits to verify adherence to policies. Educating employees through workshops and providing accessible resources about their rights and benefits under these schemes can foster a more informed workforce.</p>
-                                    <div className="ticks-list"><span><i className="fa fa-check"></i>Ensure Compliance</span> <span><i className="fa fa-check"></i> Streamline Claims Process</span> <span><i className="fa fa-check"></i> Establish Grievance Mechanism</span>
-                                      <span><i className="fa fa-check"></i> Helping Hand For EPF &amp; ESIC</span> <span><i className="fa fa-check"></i>Digital &amp; Transparent  Solutions</span> </div>
-                                    
-                                  </div>
-                                </div>
-                                <div className="col-lg-6 align-self-center">
-                                  <div className="right-image">
-                                    <img src={servicesimage04} alt="" />
+              <p>
+                We are a team of professional consultants with extensive
+                experience in PF and ESIC consultancy services. We support
+                organizations with practical guidance across compliance,
+                reporting, documentation and employee-related processes.
+              </p>
 
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <div className="thumb">
-                              <div className="row">
-                                <div className="col-lg-6 align-self-center">
-                                  <div className="left-text">
-                                    <h4>Enjoy &amp; Travel</h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedr do eiusmod deis tempor incididunt ut labore et dolore kengan darwin doerski token.
-                                      dover lipsum lorem and the others.</p>
-                                    <div className="ticks-list"><span><i className="fa fa-check"></i> Optimized Template</span> <span><i className="fa fa-check"></i> Data Info</span> <span><i className="fa fa-check"></i> SEO Analysis</span>
-                                      <span><i className="fa fa-check"></i> Data Info</span> <span><i className="fa fa-check"></i> SEO Analysis</span> <span><i className="fa fa-check"></i> Optimized Template</span></div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedr do eiusmod deis tempor incididunt.</p>
-                                  </div>
-                                </div>
-                                <div className="col-lg-6 align-self-center">
-                                  <div className="right-image">
-                                    <img src={servicesimage} alt="" />
+              <p>
+                Our focus is to make complex labour compliance processes easier
+                to understand, organize and manage through clear communication
+                and structured support.
+              </p>
 
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+              <div className="an-feature-grid">
+                <div>
+                  <span><i className="fa fa-check" /></span>
+                  Compliance-focused approach
+                </div>
+                <div>
+                  <span><i className="fa fa-check" /></span>
+                  Practical documentation support
+                </div>
+                <div>
+                  <span><i className="fa fa-check" /></span>
+                  Employer & employee assistance
+                </div>
+                <div>
+                  <span><i className="fa fa-check" /></span>
+                  Transparent communication
+                </div>
+              </div>
+
+              <a href="#contact" className="an-text-link">
+                Discuss your requirement <i className="fa fa-arrow-right" />
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Services */}
+        <section id="services" className="an-section an-services">
+          <div className="an-container">
+            <div className="an-section-heading center">
+              <div className="an-section-kicker">OUR SERVICES</div>
+              <h2>Professional support for your <span>compliance journey.</span></h2>
+              <p>
+                From EPF and ESIC compliance to digital documentation and
+                labour support, explore the areas where we can help.
+              </p>
+            </div>
+
+            <div className="an-service-tabs">
+              {services.map((service) => (
+                <button
+                  type="button"
+                  key={service.id}
+                  className={activeService === service.id ? "active" : ""}
+                  onClick={() => setActiveService(service.id)}
+                >
+                  <span>
+                    <img src={service.icon} alt="" />
+                  </span>
+                  <strong>{service.shortTitle}</strong>
+                  <small>{service.title}</small>
+                </button>
+              ))}
+            </div>
+
+            <div className="an-service-detail">
+              <div className="an-service-copy">
+                <div className="an-service-number">0{services.findIndex(s => s.id === activeService) + 1}</div>
+                <h3>{selectedService.heading}</h3>
+                <p>{selectedService.description}</p>
+
+                <div className="an-service-points">
+                  {selectedService.points.map((point) => (
+                    <span key={point}>
+                      <i className="fa fa-check" />
+                      {point}
+                    </span>
+                  ))}
+                </div>
+
+                <a href="#contact" className="an-btn an-btn-primary">
+                  Enquire About This Service
+                  <i className="fa fa-arrow-right" />
+                </a>
+              </div>
+
+              <div className="an-service-image">
+                <img src={selectedService.image} alt={selectedService.title} />
+                <div className="an-image-caption">
+                  <i className="fa fa-shield" />
+                  Professional & structured support
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </section>
 
+        {/* Process */}
+        <section id="process" className="an-section an-process">
+          <div className="an-container">
+            <div className="an-section-heading center">
+              <div className="an-section-kicker">HOW IT WORKS</div>
+              <h2>A simple process. <span>Clear communication.</span></h2>
+              <p>
+                We keep the engagement straightforward so you always know what
+                happens next.
+              </p>
+            </div>
 
-      {/* <div id="free-quote" className="free-quote">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-4 offset-lg-4">
-              <div className="section-heading  wow fadeIn" data-wow-duration="1s" data-wow-delay="0.3s">
-                <h6>Get Your Free Quote</h6>
-                <h4>Grow With Us Now</h4>
-                <div className="line-dec"></div>
+            <div className="an-process-grid">
+              <div className="an-process-card">
+                <span className="an-process-number">01</span>
+                <i className="fa fa-comments-o" />
+                <h3>Share Your Requirement</h3>
+                <p>
+                  Tell us about your organization, employee or compliance
+                  requirement.
+                </p>
+              </div>
+
+              <div className="an-process-line" />
+
+              <div className="an-process-card">
+                <span className="an-process-number">02</span>
+                <i className="fa fa-search" />
+                <h3>Understand & Review</h3>
+                <p>
+                  We review the requirement and identify the appropriate
+                  process and documentation.
+                </p>
+              </div>
+
+              <div className="an-process-line" />
+
+              <div className="an-process-card">
+                <span className="an-process-number">03</span>
+                <i className="fa fa-cogs" />
+                <h3>Provide Support</h3>
+                <p>
+                  We guide you through the required compliance or documentation
+                  workflow.
+                </p>
+              </div>
+
+              <div className="an-process-line" />
+
+              <div className="an-process-card">
+                <span className="an-process-number">04</span>
+                <i className="fa fa-check-circle" />
+                <h3>Close the Requirement</h3>
+                <p>
+                  Complete the process with clear communication and organized
+                  documentation.
+                </p>
               </div>
             </div>
-            <div className="col-lg-8 offset-lg-2  wow fadeIn" data-wow-duration="1s" data-wow-delay="0.8s">
-              <form id="search" action="#" method="GET">
-                <div className="row">
-                  <div className="col-lg-4 col-sm-4">
-                    <fieldset>
-                      <input type="web" name="web" className="website" placeholder="Your website URL..." autoComplete="on" required />
-                    </fieldset>
-                  </div>
-                  <div className="col-lg-4 col-sm-4">
-                    <fieldset>
-                      <input type="address" name="address" className="email" placeholder="Email Address..." autoComplete="on" required />
-                    </fieldset>
-                  </div>
-                  <div className="col-lg-4 col-sm-4">
-                    <fieldset>
-                      <button type="submit" className="main-button">Get Quote Now</button>
-                    </fieldset>
+          </div>
+        </section>
+
+        {/* Why us */}
+        <section className="an-why">
+          <div className="an-container an-why-grid">
+            <div>
+              <div className="an-section-kicker">WHY WORK WITH US</div>
+              <h2>Built around <span>clarity, experience and support.</span></h2>
+              <p>
+                Compliance can be complicated. Our goal is to make the process
+                easier to understand and easier to manage.
+              </p>
+            </div>
+
+            <div className="an-why-items">
+              <div>
+                <i className="fa fa-briefcase" />
+                <div>
+                  <strong>Experienced Team</strong>
+                  <span>Professional experience across EPF and ESIC consultancy.</span>
+                </div>
+              </div>
+
+              <div>
+                <i className="fa fa-file-text-o" />
+                <div>
+                  <strong>Structured Documentation</strong>
+                  <span>Clear documentation and process-oriented support.</span>
+                </div>
+              </div>
+
+              <div>
+                <i className="fa fa-comments-o" />
+                <div>
+                  <strong>Clear Communication</strong>
+                  <span>Understand your requirement and keep the next step clear.</span>
+                </div>
+              </div>
+
+              <div>
+                <i className="fa fa-shield" />
+                <div>
+                  <strong>Compliance Focus</strong>
+                  <span>Support designed around compliance and employee welfare.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Team */}
+        <section id="team" className="an-section an-team">
+          <div className="an-container">
+            <div className="an-section-heading center">
+              <div className="an-section-kicker">OUR TEAM</div>
+              <h2>Professional people behind the <span>service.</span></h2>
+              <p>
+                A team focused on providing practical support for organizations
+                and employees.
+              </p>
+            </div>
+
+            <div className="an-team-grid">
+              {team.map((member, index) => (
+                <div className="an-team-card" key={index}>
+                  <img src={member} alt={`Team member ${index + 1}`} />
+                  <div>
+                    <strong>Consultancy Team</strong>
+                    <span>EPF & ESIC Support</span>
                   </div>
                 </div>
-              </form>
+              ))}
             </div>
           </div>
-        </div>
-      </div> */}
+        </section>
 
-
-      <div id="portfolio" className="our-portfolio section">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-5">
-              <div className="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
-                <h6>Our Portofolio</h6>
-                <h4>Here is Our <em>Expert Team</em></h4>
-                <div className="line-dec"></div>
-              </div>
+        {/* Insights */}
+        <section id="insights" className="an-section an-insights">
+          <div className="an-container">
+            <div className="an-section-heading center">
+              <div className="an-section-kicker">INSIGHTS</div>
+              <h2>Useful information about <span>EPF & ESIC.</span></h2>
+              <p>
+                Explore practical information and resources related to employee
+                benefits and compliance.
+              </p>
             </div>
-          </div>
-        </div>
-        <div className="container-fluid wow fadeIn" style={{ marginRight: '-45px' }} data-wow-duration="1s" data-wow-delay="0.7s">
-  <div className="row">
-    <div className="col-lg-12">
-      <div className="loop owl-carousel owl-loaded owl-drag">
-        <div className="owl-stage-outer">
-          <div className="owl-stage">
-            {/* Loop through items for better maintainability */}
-            {[portfolio01, portfolio02, portfolio03,portfolio04,portfolio05,portfolio06].map((portfolioItem, index) => (
-              <div className="owl-item" key={index} style={{ width: '210px' }}>
-                <div className="item">
-                  <a href="#">
-                    <div className="portfolio-item">
-                      <div className="thumb">
-                        <img style={{ height: '220px' }} src={portfolioItem} alt="" />
-                      </div>
-                      <div className="down-content">
-                        <h4>Manish Kirnapure</h4>
-                        <span>Developer</span>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-     </div>
 
-      {/* <div id="portfolio" className="our-portfolio section">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-5">
-              <div className="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
-                <h6>Our Portofolio</h6>
-                <h4>See Our Recent <em>Projects</em></h4>
-                <div className="line-dec"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="container-fluid wow fadeIn" data-wow-duration="1s" data-wow-delay="0.7s">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="loop owl-carousel">
-                {items.map((item, index) => (
-
-                  <div className="item" key={index} style={{ transform: `translate3d(${index * -1846}px, 0px, 0px)` }}>
-                    <a href="#">
-                      <div className="portfolio-item">
-                        <div className="thumb">
-                          <img src={item.image} alt="" />
-                        </div>
-                        <div className="down-content">
-                          <h4>{item.title}</h4>
-                          <span>{item.category}</span>
-                        </div>
-                      </div>
+            <div className="an-blog-grid">
+              {blogs.map((blog) => (
+                <article className="an-blog-card" key={blog.title}>
+                  <div className="an-blog-image">
+                    <img src={blog.image} alt={blog.title} />
+                    <span>{blog.category}</span>
+                  </div>
+                  <div className="an-blog-content">
+                    <h3>{blog.title}</h3>
+                    <p>{blog.description}</p>
+                    <a href="#contact">
+                      Learn more <i className="fa fa-arrow-right" />
                     </a>
                   </div>
-                ))}
-              </div>
+                </article>
+              ))}
             </div>
           </div>
-        </div>
-      </div> */}
+        </section>
 
-      <div id="blog" className="blog">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-4 offset-lg-4  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.3s">
-              <div className="section-heading">
-                <h6>Recent News</h6>
-                <h4>Check Our Blog <em>Posts</em></h4>
-                <div className="line-dec"></div>
-              </div>
+        {/* CTA */}
+        <section className="an-cta">
+          <div className="an-container an-cta-inner">
+            <div>
+              <div className="an-section-kicker light">READY TO GET STARTED?</div>
+              <h2>Let's discuss your EPF or ESIC requirement.</h2>
+              <p>
+                Share your requirement and our team will help you understand
+                the next steps.
+              </p>
             </div>
-            <div className="col-lg-6 show-up wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s">
-              <div className="blog-post">
-                <div className="thumb">
-                  <a href="https://www.informalnewz.com/government-will-increase-epfo-salary-limit-to-%E2%82%B9-21000-employees-will-get-%E2%82%B9-1-crore-on-retirement/"><img src={blogpost01} alt="" />
+
+            <a href="#contact" className="an-btn an-btn-white">
+              Contact Us
+              <i className="fa fa-arrow-right" />
+            </a>
+          </div>
+        </section>
+
+        {/* Contact */}
+        <section id="contact" className="an-section an-contact">
+          <div className="an-container">
+            <div className="an-section-heading center">
+              <div className="an-section-kicker">CONTACT US</div>
+              <h2>Have a requirement? <span>Let's talk.</span></h2>
+              <p>
+                Send us your requirement and we'll get back to you.
+              </p>
+            </div>
+
+            <div className="an-contact-grid">
+              <div className="an-contact-info">
+                <div className="an-contact-info-header">
+                  <span className="an-contact-badge">
+                    <i className="fa fa-headphones" />
+                  </span>
+                  <div>
+                    <strong>Let's connect</strong>
+                    <span>We're here to help.</span>
+                  </div>
+                </div>
+
+                <div className="an-contact-items">
+                  <a href="tel:+918793143976">
+                    <span><img src={phoneIcon} alt="" /></span>
+                    <div>
+                      <small>Call us</small>
+                      <strong>+91 87931 43976</strong>
+                    </div>
                   </a>
+
+                  <a href="mailto:anand.esipf@gmail.com">
+                    <span><img src={emailIcon} alt="" /></span>
+                    <div>
+                      <small>Email us</small>
+                      <strong>anand.esipf@gmail.com</strong>
+                    </div>
+                  </a>
+
+                  <div>
+                    <span><img src={locationIcon} alt="" /></span>
+                    <div>
+                      <small>Location</small>
+                      <strong>Tukdoji Square, Nagpur</strong>
+                    </div>
+                  </div>
                 </div>
-                <div className="down-content">
-                  <span className="category">EPFO Analysis</span>
-                  <span className="date">03 August 2021</span>
-                  <a href="#"><h4>Government will increase EPFO ​​salary limit to ₹ 21,000! Employees will get ₹ 1 crore on retirement</h4></a>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doers itii eiumod deis tempor incididunt ut labore.</p>
-                  <span className="author"><img src={authorpost} alt="" />
-                    By: Manish Kirnapure</span>
-                  <div className="border-first-button"><a href="https://www.informalnewz.com/government-will-increase-epfo-salary-limit-to-%E2%82%B9-21000-employees-will-get-%E2%82%B9-1-crore-on-retirement/">Discover More</a></div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-6 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s">
-              <div className="blog-posts">
-                <div className="row">
-                  <div className="col-lg-12">
-                    <div className="post-item">
-                      <div className="thumb">
-                        <a href="https://cleartax.in/s/pf-balance-check"><img src={blogpost02} alt="" />
-                        </a>
-                      </div>
-                      <div className="right-content">
-                        <span className="category">EPF Analysis</span>
-                        <span className="date">24 September 2021</span>
-                        <a href="https://cleartax.in/s/pf-balance-check"><h4>EPF Balance Check - PF Balance Check With and Without UAN Number</h4></a>
-                        <p>For more information Read More....</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-12">
-                    <div className="post-item">
-                      <div className="thumb">
-                        <a href="https://www.esic.gov.in/information-benefits"><img src={blogpost03} alt="" />
-                        </a>
-                      </div>
-                      <div className="right-content">
-                        <span className="category">ESIC Analysis</span>
-                        <span className="date">24 September 2021</span>
-                        <a href="https://www.esic.gov.in/information-benefits"><h4>ESIC Benefits</h4></a>
-                        <p>The section 46 of the Act envisages following six social security benefits.</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-12">
-                    <div className="post-item last-post-item">
-                      <div className="thumb">
-                        <a href="https://medium.com/@forgot_password/forgot-my-epfo-password-c5b691b5b4dc"><img src={blogpost04} alt="" />
-                        </a>
-                      </div>
-                      <div className="right-content">
-                        <span className="category">EPF Analysis</span>
-                        <span className="date">24 September 2021</span>
-                        <a href="https://medium.com/@forgot_password/forgot-my-epfo-password-c5b691b5b4dc"><h4>Forgot My Epfo Password</h4></a>
-                        <p>Struggling with a forgotten EPFO password?..Read More...</p>
-                      </div>
-                    </div>
-                  </div>
+
+                <div className="an-contact-note">
+                  <i className="fa fa-info-circle" />
+                  Please include your organization or requirement details in
+                  the message so we can understand your request.
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div id="contact" className="contact-us section">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-6 offset-lg-3">
-              <div className="section-heading wow fadeIn" data-wow-duration="1s" data-wow-delay="0.5s">
-                <h6>Contact Us</h6>
-                <h4>Get In Touch With Us <em>Now</em></h4>
-                <div className="line-dec"></div>
-              </div>
-            </div>
-            <div className="col-lg-12 wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.25s">
-              <form id="contact" action="" method="post">
-                <div className="row">
-                  <div className="col-lg-12">
-                    <div className="contact-dec">
-                      <img src={contactdec} alt="" />
+              <form className="an-contact-form" onSubmit={addInquiry}>
+                <div className="an-form-row">
+                  <label>
+                    Name
+                    <input
+                      type="text"
+                      value={form.name}
+                      placeholder="Your name"
+                      onChange={(e) => updateForm("name", e.target.value)}
+                      required
+                    />
+                  </label>
 
-                    </div>
-                  </div>
-                  <div className="col-lg-5">
-                    <div id="map">
-                      <iframe
-                        src="https://maps.google.com/maps?q=Tukdoji+Putla+Square,+Nagpur,+India&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                        width="100%"
-                        height="636"
-                        frameBorder="0"
-                        style={{ border: 0 }}
-                        allowFullScreen
-                        title="Map"
-                      ></iframe>
-                    </div>
-                  </div>
-                  <div className="col-lg-7">
-                    <div className="fill-form">
-                      <div className="row">
-                        <div className="col-lg-4">
-                          <div className="info-post">
-                            <div className="icon">
-                              <img src={phoneicon} alt="" />
-
-                              <a href="#">+91-8793143976</a>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <div className="info-post">
-                            <div className="icon">
-                              <img src={emailicon} alt="" />
-
-                              <a href="#" style={{"font-size":"13px"}}>anand.esipf@gmail.com</a>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <div className="info-post">
-                            <div className="icon">
-                              <img src={locationicon} alt="" />
-
-                              <a href="#" style={{"font-size":"13px"}}>Tokdoji Square, Nagpur</a>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-lg-6">
-                          <fieldset>
-                            <input type="name" name="name" id="name" placeholder="Name" autoComplete="on" required onChange={(e) => set_inquiryname(e.target.value)} />
-                          </fieldset>
-                          <fieldset>
-                            <input type="text" name="email" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email" required onChange={(e) => set_email(e.target.value)} />
-                          </fieldset>
-                          <fieldset>
-                            <input type="subject" name="subject" id="subject" placeholder="Subject" autoComplete="on" required onChange={(e) => set_subject(e.target.value)}/>
-                          </fieldset>
-                        </div>
-                        <div className="col-lg-6">
-                          <fieldset>
-                            <textarea name="message" type="text" className="form-control" id="message" placeholder="Message" required onChange={(e) => set_message(e.target.value)}></textarea>
-                          </fieldset>
-                        </div>
-                        <div className="col-lg-12">
-                          <fieldset>
-                            <button type="button"  className="main-button " onClick={addInquiry}>Send Message Now</button>
-                          </fieldset>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <label>
+                    Email
+                    <input
+                      type="email"
+                      value={form.email}
+                      placeholder="you@example.com"
+                      onChange={(e) => updateForm("email", e.target.value)}
+                      required
+                    />
+                  </label>
                 </div>
+
+                <label>
+                  Subject
+                  <input
+                    type="text"
+                    value={form.subject}
+                    placeholder="How can we help?"
+                    onChange={(e) => updateForm("subject", e.target.value)}
+                    required
+                  />
+                </label>
+
+                <label>
+                  Message
+                  <textarea
+                    value={form.message}
+                    placeholder="Tell us about your requirement..."
+                    onChange={(e) => updateForm("message", e.target.value)}
+                    required
+                  />
+                </label>
+
+                <button type="submit" className="an-btn an-btn-primary">
+                  Send Inquiry
+                  <i className="fa fa-paper-plane" />
+                </button>
               </form>
             </div>
           </div>
-        </div>
-      </div>
+        </section>
+      </main>
 
-      <footer>
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <p>Copyright © 2022 DigiMedia Co., Ltd. All Rights Reserved.
-                <br />Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
-            </div>
+      {/* Footer */}
+      <footer className="an-footer">
+        <div className="an-container an-footer-main">
+          <div className="an-footer-brand">
+            <img src={logo} alt="Anandam" />
+            <p>
+              Professional EPF, ESIC and labour compliance consultancy support
+              for organizations and employees.
+            </p>
+          </div>
+
+          <div className="an-footer-column">
+            <h4>Quick Links</h4>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#process">How It Works</a>
+            <a href="#insights">Insights</a>
+          </div>
+
+          <div className="an-footer-column">
+            <h4>Services</h4>
+            <a href="#services">EPF Consulting</a>
+            <a href="#services">ESIC Consultancy</a>
+            <a href="#services">Digital Signature</a>
+            <a href="#services">Labour Solutions</a>
+          </div>
+
+          <div className="an-footer-column">
+            <h4>Contact</h4>
+            <a href="tel:+918793143976">+91 87931 43976</a>
+            <a href="mailto:anand.esipf@gmail.com">anand.esipf@gmail.com</a>
+            <span>Tukdoji Square, Nagpur</span>
+          </div>
+        </div>
+
+        <div className="an-footer-bottom">
+          <div className="an-container">
+            <span>© {new Date().getFullYear()} Anandam. All rights reserved.</span>
+            <a href="/login">Customer Login</a>
           </div>
         </div>
       </footer>
-
-
-
-
     </div>
   );
 };
 
-export default standalone;
+export default Standalone;
