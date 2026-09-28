@@ -424,9 +424,9 @@ const Blogs = () => {
           month_date:
             item.month_date,
 
-          monthly_count: 0,
+          monthly_employer_count: 0,
 
-          esic_count: 0,
+          esic_employer_count: 0,
 
           bill_count: 0,
 
@@ -435,12 +435,12 @@ const Blogs = () => {
       }
 
 
-      monthMap[key].monthly_count +=
-        Number(item.monthly_count) || 0;
+      monthMap[key].monthly_employer_count +=
+        Number(item.monthly_employer_count) || 0;
 
 
-      monthMap[key].esic_count +=
-        Number(item.esic_count) || 0;
+      monthMap[key].esic_employer_count +=
+        Number(item.esic_employer_count) || 0;
 
 
       monthMap[key].bill_count +=
@@ -473,7 +473,7 @@ const Blogs = () => {
     monthWiseChartData.reduce(
       (sum, item) =>
         sum +
-        Number(item.monthly_count || 0),
+        Number(item.monthly_employer_count || 0),
       0
     );
 
@@ -482,7 +482,7 @@ const Blogs = () => {
     monthWiseChartData.reduce(
       (sum, item) =>
         sum +
-        Number(item.esic_count || 0),
+        Number(item.esic_employer_count || 0),
       0
     );
 
@@ -747,14 +747,14 @@ const Blogs = () => {
 
 
                   <Bar
-                    dataKey="monthly_count"
+                    dataKey="monthly_employer_count"
                     name="Monthly"
                     fill="url(#monthlyGradient)"
                     radius={[6, 6, 0, 0]}
                   >
 
                     <LabelList
-                      dataKey="monthly_count"
+                      dataKey="monthly_employer_count"
                       position="top"
                     />
 
@@ -762,14 +762,14 @@ const Blogs = () => {
 
 
                   <Bar
-                    dataKey="esic_count"
+                    dataKey="esic_empoyer_count"
                     name="ESIC Challan"
                     fill="url(#esicGradient)"
                     radius={[6, 6, 0, 0]}
                   >
 
                     <LabelList
-                      dataKey="esic_count"
+                      dataKey="esic_empoyer_count"
                       position="top"
                     />
 
@@ -1218,7 +1218,7 @@ const Blogs = () => {
 
 
                   <Bar
-                    dataKey="monthly_count"
+                    dataKey="monthly_employer_count"
                     name="Monthly"
                     fill="url(#historyMonthlyGradient)"
                     radius={[7, 7, 0, 0]}
@@ -1226,7 +1226,7 @@ const Blogs = () => {
                   >
 
                     <LabelList
-                      dataKey="monthly_count"
+                      dataKey="monthly_employer_count"
                       position="top"
                     />
 
@@ -1234,7 +1234,7 @@ const Blogs = () => {
 
 
                   <Bar
-                    dataKey="esic_count"
+                    dataKey="esic_employer_count"
                     name="ESIC Challan"
                     fill="url(#historyEsicGradient)"
                     radius={[7, 7, 0, 0]}
@@ -1242,7 +1242,7 @@ const Blogs = () => {
                   >
 
                     <LabelList
-                      dataKey="esic_count"
+                      dataKey="esic_employer_count"
                       position="top"
                     />
 
