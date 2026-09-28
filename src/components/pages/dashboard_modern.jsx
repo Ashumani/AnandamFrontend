@@ -43,6 +43,7 @@ const dashboard = () => {
   const [chartData, setChartData] = useState([]);
   const [pieChartData, setPieChartData] = useState([]);
   const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042"];
+  const [employeeYAxisMax1, set_employeeYAxisMax1] = useState('')
 
   const [employerList, setEmployerList] = useState([])
 
@@ -139,29 +140,44 @@ const dashboard = () => {
     }
   };
 
-  const getGraphDetails = async (fromMonth, toMonth, fromYear, toYear) => {
-    // api call
-
+const getGraphDetails = async (fromMonth, toMonth, fromYear, toYear) => {
     try {
+        const params = {
+            fromMonth: fromMonth,
+            toMonth: toMonth,
+            fromYear: fromYear,
+            toYear: toYear,
+            est_id: getEstId()
+        };
 
-      const params = {
-        "fromMonth": fromMonth,
-        "toMonth": toMonth,
-        "fromYear": fromYear,
-        "toYear": toYear,
-        "est_id": getEstId()
-      }
-      const response = await getGraph(params);
-      setData(response.data)
+        const response = await getGraph(params);
 
+        const graphData = response.data || [];
+
+        const maxEmployeeCount =
+            graphData.length > 0
+                ? Math.max(
+                    ...graphData.map(
+                        item => Number(item.employeeCount) || 0
+                    ),
+                    ...graphData.map(
+                        item => Number(item.employerCount) || 0
+                    )
+                )
+                : 0;
+
+        const employeeYAxisMax =
+            maxEmployeeCount > 0
+                ? Math.ceil((maxEmployeeCount * 1.1) / 500) * 500
+                : 500;
+
+        set_employeeYAxisMax1(employeeYAxisMax);
+        setData(graphData);
 
     } catch (error) {
-      console.error('Error fetching data:', error);
-      // setError('Error fetching data. Please try again.');
-      // setLoading(false);
+        console.error('Error fetching data:', error);
     }
-  };
-
+};
   const sortByStatus = () => {
     let sortedList = [];
     const today = new Date();
@@ -309,6 +325,7 @@ const dashboard = () => {
     // Call API here if required
     // getEsicDetails();
   };
+
   return (
     <div>
 
@@ -420,7 +437,16 @@ const dashboard = () => {
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
-                <YAxis />
+                <YAxis
+                  domain={[0, employeeYAxisMax1]}
+                  allowDataOverflow={false}
+                  tickCount={9}
+                  tickFormatter={(value) =>
+                    value >= 1000
+                      ? `${(value / 1000).toFixed(1)}K`
+                      : value
+                  }
+                />
                 <Tooltip />
                 <Legend
                   payload={[

@@ -48,7 +48,7 @@ const ecr = () => {
 
     const [IsUpdate, setIsUpdate] = useState(false);
     const [showTypeModal, setShowTypeModal] = useState(false);
-    const [billType, setBillType] = useState("");
+    const [billType, setBillType] = useState("consultant");
 
 
     const [receivedAmountDate, set_receivedAmountDate] = useState('')
@@ -148,6 +148,7 @@ const ecr = () => {
 
         }
     };
+
     const getBillById = async (bill_number) => {
 
         try {
@@ -590,6 +591,9 @@ const ecr = () => {
         setBillNumberMap('');
 
     };
+    const test =() =>{
+        alert(billType)
+    }
     // const generatePDF = () => {
     //     // Capture the HTML content as a canvas
     //     html2canvas(document.querySelector("#pdf-content")).then(canvas => {
@@ -1136,12 +1140,12 @@ const ecr = () => {
                                         </div>
                                     </div>
                                     <div className="modal-body">
-                                        <button type="button" className={`bill-type-option ${billType === 'consultant' ? '.selected' : ''}`} onClick={() => setBillType('consultant')}>
+                                        <button type="button" className={`bill-type-option ${billType === 'consultant' ? 'selected' : ''}`} onClick={() => setBillType('consultant')}>
                                             <span className="type-option-icon"><i className="bi bi-person-workspace"></i></span>
                                             <span><strong>Consultancy</strong><small>Professional consultancy billing</small></span>
                                             <i className="bi bi-chevron-right"></i>
                                         </button>
-                                        <button type="button" className={`bill-type-option ${billType === 'services' ? '.selected' : ''}`} onClick={() => setBillType('services')}>
+                                        <button type="button" className={`bill-type-option ${billType === 'services' ? 'selected' : ''}`} onClick={() => setBillType('services')}>
                                             <span className="type-option-icon"><i className="bi bi-gear"></i></span>
                                             <span><strong>Services</strong><small>Service and compliance billing</small></span>
                                             <i className="bi bi-chevron-right"></i>
