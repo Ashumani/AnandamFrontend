@@ -44,6 +44,7 @@ const dashboard = () => {
   const [pieChartData, setPieChartData] = useState([]);
   const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042"];
   const [employeeYAxisMax1, set_employeeYAxisMax1] = useState('')
+  const [ChallanAmountMaxYAxis, set_ChallanAmountMaxYAxis] = useState('')
 
   const [employerList, setEmployerList] = useState([])
 
@@ -51,7 +52,6 @@ const dashboard = () => {
     const fetchData = async () => {
       await getYears();
       await getAll();
-      alert(fromYear, toYear)
       await getGraphDetails(fromMonth, toMonth, fromYear, toYear)
       await getBillDetailsForGraph(fromMonth, toMonth, fromYear, toYear)
       await getUserGraphDetails(fromMonth, toMonth, fromYear, toYear)
@@ -141,19 +141,29 @@ const dashboard = () => {
     }
   };
 
-const getGraphDetails = async (fromMonth, toMonth, fromYear, toYear) => {
+const getGraphDetails = async (
+    fromMonth,
+    toMonth,
+    fromYear,
+    toYear
+) => {
     try {
         const params = {
-            fromMonth: fromMonth,
-            toMonth: toMonth,
-            fromYear: fromYear,
-            toYear: toYear,
+            fromMonth,
+            toMonth,
+            fromYear,
+            toYear,
             est_id: getEstId()
         };
 
         const response = await getGraph(params);
 
         const graphData = response.data || [];
+
+        // ==========================================
+        // FIRST CHART
+        // Employer Count + Employee Count
+        // ==========================================
 
         const maxEmployeeCount =
             graphData.length > 0
@@ -169,14 +179,40 @@ const getGraphDetails = async (fromMonth, toMonth, fromYear, toYear) => {
 
         const employeeYAxisMax =
             maxEmployeeCount > 0
-                ? Math.ceil((maxEmployeeCount * 1.1) / 500) * 500
+                ? Math.ceil((maxEmployeeCount * 1.15) / 500) * 500
                 : 500;
 
+
+        // ==========================================
+        // SECOND CHART
+        // Amount + Employer Contribution
+        // ==========================================
+
+        const maxChallanAmount =
+            graphData.length > 0
+                ? Math.max(
+                    ...graphData.map(
+                        item => Number(item.amt) || 0
+                    ),
+                    ...graphData.map(
+                        item => Number(item.employerCont) || 0
+                    )
+                )
+                : 0;
+
+        // Add 15% space above tallest bar
+        const ChallanAmountMaxYAxis =
+            maxChallanAmount > 0
+                ? Math.ceil((maxChallanAmount * 1.15) / 10000) * 10000
+                : 10000;
+
         set_employeeYAxisMax1(employeeYAxisMax);
+        set_ChallanAmountMaxYAxis(ChallanAmountMaxYAxis);
+
         setData(graphData);
 
     } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
     }
 };
   const sortByStatus = () => {
@@ -473,34 +509,187 @@ const getGraphDetails = async (fromMonth, toMonth, fromYear, toYear) => {
                 </div>
               )}
             </ResponsiveContainer>
-            <ResponsiveContainer width="100%" height={300}>
-              {data && data.length > 0 ? (<ComposedChart width={730} height={250} data={data}>
-                <defs>
-                  <linearGradient id="colorAmt" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" style={{ stopColor: '#8884d8', stopOpacity: 1 }} />
-                    <stop offset="100%" style={{ stopColor: '#d4c3e0', stopOpacity: 1 }} />
-                  </linearGradient>
-                  <linearGradient id="colorPv" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" style={{ stopColor: '#fcbdb3', stopOpacity: 1 }} />
-                    <stop offset="100%" style={{ stopColor: '#ff6b6b', stopOpacity: 1 }} />
-                  </linearGradient>
-                </defs>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <CartesianGrid stroke="#f5f5f5" />
-                <Area type="monotone" dataKey="amt" fill="url(#colorAmt)" stroke="#8884d8" />
-                <Bar dataKey="amt" barSize={20} fill="url(#colorPv)" />
-                <Bar dataKey="employerCont" barSize={20} fill="url(#colorPv)" />
-                <Line type="monotone" dataKey="challanCount" stroke="#ff7300" />
-              </ComposedChart>
-              ) : (
-                <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#999' }}>
-                  No Data Available
-                </div>
-              )}
-            </ResponsiveContainer>
+           <ResponsiveContainer width="100%" height={300}>
+    {data && data.length > 0 ? (
+        <ComposedChart
+            data={data}
+            margin={{
+                top: 20,
+                right: 30,
+                left: 20,
+                bottom: 5
+            }}
+        >
+
+            <defs>
+
+                <linearGradient
+                    id="challanAmountGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="0%"
+                    y2="100%"
+                >
+                    <stop
+                        offset="0%"
+                        stopColor="#8884d8"
+                        stopOpacity={0.7}
+                    />
+
+                    <stop
+                        offset="100%"
+                        stopColor="#d4c3e0"
+                        stopOpacity={0.2}
+                    />
+                </linearGradient>
+
+
+                <linearGradient
+                    id="employerContributionGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="0%"
+                    y2="100%"
+                >
+                    <stop
+                        offset="0%"
+                        stopColor="#2b6b86"
+                        stopOpacity={1}
+                    />
+
+                    <stop
+                        offset="100%"
+                        stopColor="#82ca9d"
+                        stopOpacity={1}
+                    />
+                </linearGradient>
+
+            </defs>
+
+
+            <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="#e5e7eb"
+            />
+
+
+            <XAxis
+                dataKey="name"
+            />
+
+
+            {/* LEFT Y AXIS - Amount */}
+            <YAxis
+                yAxisId="amount"
+                orientation="left"
+                domain={[0, ChallanAmountMaxYAxis]}
+                allowDataOverflow={false}
+                tickCount={6}
+                tickFormatter={(value) => {
+
+                    if (value >= 10000000) {
+                        return `${(value / 10000000).toFixed(1)}Cr`;
+                    }
+
+                    if (value >= 100000) {
+                        return `${(value / 100000).toFixed(1)}L`;
+                    }
+
+                    if (value >= 1000) {
+                        return `${(value / 1000).toFixed(1)}K`;
+                    }
+
+                    return value;
+                }}
+            />
+
+
+            {/* RIGHT Y AXIS - Challan Count */}
+            <YAxis
+                yAxisId="count"
+                orientation="right"
+                allowDecimals={false}
+            />
+
+
+            <Tooltip
+                formatter={(value, name) => {
+
+                    if (
+                        name === "Amount" ||
+                        name === "Employer Contribution"
+                    ) {
+                        return [
+                            Number(value).toLocaleString("en-IN"),
+                            name
+                        ];
+                    }
+
+                    return [value, name];
+                }}
+            />
+
+
+            <Legend />
+
+
+            {/* Amount Area */}
+
+            <Area
+                yAxisId="amount"
+                type="monotone"
+                dataKey="amt"
+                name="Amount"
+                fill="url(#challanAmountGradient)"
+                stroke="#8884d8"
+                strokeWidth={2}
+            />
+
+
+            {/* Employer Contribution */}
+
+            <Bar
+                yAxisId="amount"
+                dataKey="employerCont"
+                name="Employer Contribution"
+                barSize={20}
+                fill="url(#employerContributionGradient)"
+                radius={[5, 5, 0, 0]}
+            />
+
+
+            {/* Challan Count */}
+
+            <Line
+                yAxisId="count"
+                type="monotone"
+                dataKey="challanCount"
+                name="Challan Count"
+                stroke="#ff7300"
+                strokeWidth={3}
+                dot={{
+                    r: 4,
+                    fill: "#ff7300"
+                }}
+                activeDot={{
+                    r: 6
+                }}
+            />
+
+        </ComposedChart>
+    ) : (
+        <div
+            style={{
+                textAlign: "center",
+                padding: "20px",
+                fontSize: "16px",
+                color: "#999"
+            }}
+        >
+            No Data Available
+        </div>
+    )}
+</ResponsiveContainer>
 
             {/* </div> */}
 

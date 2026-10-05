@@ -130,6 +130,7 @@ const Header = () => {
       setShowAll(false);
 
       navigate('/auth/dashboard');
+      // window.location.reload();
     } else {
 
       // navigate(window.location.pathname)
