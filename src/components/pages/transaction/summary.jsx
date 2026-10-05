@@ -21,8 +21,8 @@ const summary = () => {
 
   const modalRef = useRef(null);
   const [selectedMonth, setSelectedMonth] = useState(1);
-  const [selectedYear, setSelectedYear] = useState(2025);
-  const [selectedReturnYear, setSelectedReturnYear] = useState(2025);
+  const [selectedYear, setSelectedYear] = useState(2026);
+  const [selectedReturnYear, setSelectedReturnYear] = useState(2026);
   const [selectedSubId, set_selectedSubId] = useState(0)
   const [sub_Ids, set_sub_Ids] = useState([])
 
@@ -152,6 +152,8 @@ const summary = () => {
       set_returnsYearInSystem(response.data)
       set_sub_Ids(response.est_sub_id)
       set_selected_sub_id(response.est_sub_id[0].est_sub_id)
+      setSelectedReturnYear(response.month_year.year[0])
+      setSelectedYear(response.month_year.year[0])
       await getAllSummary(getErId(), selectedYear, response.est_sub_id[0].est_sub_id);
     } catch (error) {
       console.error('Error fetching data:', error);

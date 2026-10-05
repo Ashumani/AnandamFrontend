@@ -35,8 +35,8 @@ const dashboard = () => {
 
   const fromMonth = 4
   const toMonth = 3
-  const fromYear = moment().year() - 1
-  const toYear = moment().year()
+  const [fromYear, set_fromYear] = useState(moment().year())
+  const [toYear, set_toYear] = useState(moment().year()+1)
   const [selectedYear, setSelectedYear] = useState(fromYear);
 
   const [userGraphData, setUserGraphData] = useState([]);
@@ -51,6 +51,7 @@ const dashboard = () => {
     const fetchData = async () => {
       await getYears();
       await getAll();
+      alert(fromYear, toYear)
       await getGraphDetails(fromMonth, toMonth, fromYear, toYear)
       await getBillDetailsForGraph(fromMonth, toMonth, fromYear, toYear)
       await getUserGraphDetails(fromMonth, toMonth, fromYear, toYear)
@@ -293,6 +294,10 @@ const getGraphDetails = async (fromMonth, toMonth, fromYear, toYear) => {
 
       const response = await getYearsAndMonth();
       setReturnsYear(response.data);
+      // console.log(response.data.yearTo)
+      setSelectedYear(response.data.year[0])
+      set_fromYear(response.data.year[0])
+      set_toYear(response.data.year[0] + 1)
       // await getGraphDetails(fromMonth, toMonth, parseInt(response.data.yearTo[0].startYear), parseInt(response.data.yearTo[0].startYear) + 1)
       // await getBillDetailsForGraph(fromMonth, toMonth, parseInt(response.data.yearTo[0].startYear), parseInt(response.data.yearTo[0].startYear) + 1)
 
