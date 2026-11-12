@@ -206,7 +206,14 @@ export const downloadMaster = async (params) => {
         throw error.response.data.error;
     }
 }
-
+export const downloadEmployees = async (id) => {
+    try {
+        const response = await api.get(`${BASE_URL}/upload/downloadEmployees/`+id, { headers: header });
+        return response.data
+    } catch (error) {
+        throw error.response.data.error;
+    }
+}
 export const getParameters = async () => {
     try {
         const response = await api.get(`${BASE_URL}/parameters/getAll`, { headers: header });
@@ -478,7 +485,7 @@ export const updateSubIdByUANUpload = async (id, formdata) => {
             'Content-Type': 'multipart/form-data'
         }
 
-        const response = await api.post(`${BASE_URL}/upload/employee/updateSubIdByUANUpload` + id, formdata, { headers: uplaodHeader, skipRequestEncryption: true  });
+        const response = await api.post(`${BASE_URL}/upload/employee/updateSubIdByUANUpload/` + id, formdata, { headers: uplaodHeader, skipRequestEncryption: true  });
         return response.data
     } catch (error) {
         throw error.response.data.error;

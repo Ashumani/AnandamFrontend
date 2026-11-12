@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getEstId, getErId } from "../Auth/authToken";
-import { getAllEmployee, saveEERegister, getEmployee, updateEmployee, uploadEmployee, updateSubIdByUANUpload, searchEmployee, deleteEmployeeById } from "../../api/services";
+import { getAllEmployee, saveEERegister, getEmployee, updateEmployee, uploadEmployee, updateSubIdByUANUpload, searchEmployee, deleteEmployeeById, downloadEmployees, downlaodFile } from "../../api/services";
 import Swal from 'sweetalert2';
 import moment from 'moment-timezone';
 import React, { useRef } from 'react';
@@ -610,6 +610,38 @@ const employee = () => {
     return pages;
   };
   const displayedPages = getDisplayedPages();
+  const downloadEmployee = async () => {
+    // api call
+
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+      const response = await downloadEmployees(getErId());
+      if (response.status == true) {
+        await downlaodFile(response.url);
+        Swal.fire({
+          title: response.message,
+          icon: 'success',
+          confirmButtonText: 'Okay'
+        });
+
+
+      } else {
+        Swal.fire({
+          title: response.message,
+          icon: 'error',
+          confirmButtonText: 'Okay'
+        });
+
+      }
+
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Error fetching data. Please try again.');
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
 
@@ -627,10 +659,13 @@ const employee = () => {
                     <button type="button" className="btn btn-primary rounded-4" onClick={openModal}>
                       Add Employee
                     </button>
+
+
                   </div>
                   <div className="col-12 col-md-6 col-lg-3">
                     <input className="form-control rounded-4" type="file" id="formFile" accept=".xlsx, .xls" onChange={handleFileChange} />
                   </div>
+
                   <div className="col-12 col-md-6 col-lg-2 text-center">
                     <small className="text-muted d-block mb-1">New Employees</small>
                     <button className="btn btn-primary w-100 rounded-4" onClick={uplaodEmployee}>
@@ -647,11 +682,28 @@ const employee = () => {
                   <div className="col-12 col-md-6 col-lg-3">
                     <input type="text" className="form-control rounded-4" placeholder="Search" onChange={(e) => set_search_emp(e.target.value)} onBlur={searchEmp} />
                   </div>
+                  
+
                 </div>
               </div>
 
-              <h5 className="card-title text-center"><strong>Employee Details</strong></h5>
+             <div className="row align-items-center position-relative mb-3">
+  <div className="col-12 text-center">
+    <h5 className="card-title mb-0">
+      <strong>Employee Details</strong>
+    </h5>
+  </div>
 
+  <div className="position-absolute end-0 d-flex justify-content-end">
+    <button
+      type="button"
+      className="btn btn-primary rounded-4 fa fa-download"
+      onClick={downloadEmployee}
+      title="Download Employees"
+    />
+  </div>
+</div>
+              
               <div className="table-responsive">
                 <table className="table table-sm table-striped table-hover text-center">
                   <thead>
